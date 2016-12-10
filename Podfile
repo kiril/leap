@@ -6,6 +6,7 @@ target 'Leap' do
   use_frameworks!
 
   # Pods for Leap
+  pod 'Google/SignIn'
 
   target 'LeapTests' do
     inherit! :search_paths

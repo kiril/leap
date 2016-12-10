@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07C6DED83707655B9180FBAB /* Pods_LeapTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD3697797FDA59625E0B46AF /* Pods_LeapTests.framework */; };
+		089087AD41FFD0DA87E0173B /* Pods_LeapUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD93F5894CA6A376F43F098A /* Pods_LeapUITests.framework */; };
+		445BC4AAC8EFCDDFB9659050 /* Pods_Leap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD09884940C2E4C0FBD8383B /* Pods_Leap.framework */; };
 		FBE0EFE41DFBBB80007BD8DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE0EFE31DFBBB80007BD8DF /* AppDelegate.swift */; };
 		FBE0EFE61DFBBB80007BD8DF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE0EFE51DFBBB80007BD8DF /* ViewController.swift */; };
 		FBE0EFE91DFBBB80007BD8DF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FBE0EFE71DFBBB80007BD8DF /* Main.storyboard */; };
@@ -35,6 +38,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		16D78AE36B88EA63012DB587 /* Pods-LeapUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LeapUITests/Pods-LeapUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		1FC7ABE027731F110B5A8A22 /* Pods-LeapTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LeapTests/Pods-LeapTests.release.xcconfig"; sourceTree = "<group>"; };
+		3303FCF9DF5422EFC1BC9EA4 /* Pods-Leap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leap.release.xcconfig"; path = "Pods/Target Support Files/Pods-Leap/Pods-Leap.release.xcconfig"; sourceTree = "<group>"; };
+		A6B009F8A999F17B9F19737C /* Pods-LeapUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LeapUITests/Pods-LeapUITests.release.xcconfig"; sourceTree = "<group>"; };
+		AD09884940C2E4C0FBD8383B /* Pods_Leap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Leap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AD93F5894CA6A376F43F098A /* Pods_LeapUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeapUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFC8905474AA067A38F3D481 /* Pods-Leap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Leap/Pods-Leap.debug.xcconfig"; sourceTree = "<group>"; };
+		DD3697797FDA59625E0B46AF /* Pods_LeapTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeapTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E01432D0A53F0FFFB8625670 /* Pods-LeapTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LeapTests/Pods-LeapTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FBE0EFE01DFBBB80007BD8DF /* Leap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Leap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBE0EFE31DFBBB80007BD8DF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FBE0EFE51DFBBB80007BD8DF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -56,6 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				445BC4AAC8EFCDDFB9659050 /* Pods_Leap.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07C6DED83707655B9180FBAB /* Pods_LeapTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,12 +84,36 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				089087AD41FFD0DA87E0173B /* Pods_LeapUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		91D77C98B1AC32CC81D53294 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BFC8905474AA067A38F3D481 /* Pods-Leap.debug.xcconfig */,
+				3303FCF9DF5422EFC1BC9EA4 /* Pods-Leap.release.xcconfig */,
+				E01432D0A53F0FFFB8625670 /* Pods-LeapTests.debug.xcconfig */,
+				1FC7ABE027731F110B5A8A22 /* Pods-LeapTests.release.xcconfig */,
+				16D78AE36B88EA63012DB587 /* Pods-LeapUITests.debug.xcconfig */,
+				A6B009F8A999F17B9F19737C /* Pods-LeapUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		EA223A4D6C9C0453B243A3E8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AD09884940C2E4C0FBD8383B /* Pods_Leap.framework */,
+				DD3697797FDA59625E0B46AF /* Pods_LeapTests.framework */,
+				AD93F5894CA6A376F43F098A /* Pods_LeapUITests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		FBE0EFD71DFBBB80007BD8DF = {
 			isa = PBXGroup;
 			children = (
@@ -83,6 +121,8 @@
 				FBE0EFFA1DFBBB80007BD8DF /* LeapTests */,
 				FBE0F0051DFBBB80007BD8DF /* LeapUITests */,
 				FBE0EFE11DFBBB80007BD8DF /* Products */,
+				91D77C98B1AC32CC81D53294 /* Pods */,
+				EA223A4D6C9C0453B243A3E8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -135,9 +175,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FBE0F00B1DFBBB80007BD8DF /* Build configuration list for PBXNativeTarget "Leap" */;
 			buildPhases = (
+				19845C32139535393B4FCECC /* [CP] Check Pods Manifest.lock */,
 				FBE0EFDC1DFBBB80007BD8DF /* Sources */,
 				FBE0EFDD1DFBBB80007BD8DF /* Frameworks */,
 				FBE0EFDE1DFBBB80007BD8DF /* Resources */,
+				705F09DC7880A0FE11EA2398 /* [CP] Embed Pods Frameworks */,
+				92AF4A1A065A1C234C3FC0E4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -152,9 +195,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FBE0F00E1DFBBB80007BD8DF /* Build configuration list for PBXNativeTarget "LeapTests" */;
 			buildPhases = (
+				C5B8FDE912DE126ACB83C398 /* [CP] Check Pods Manifest.lock */,
 				FBE0EFF31DFBBB80007BD8DF /* Sources */,
 				FBE0EFF41DFBBB80007BD8DF /* Frameworks */,
 				FBE0EFF51DFBBB80007BD8DF /* Resources */,
+				F77169826BA49D816F050C52 /* [CP] Embed Pods Frameworks */,
+				906A2846E42A503DE59D13AE /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -170,9 +216,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FBE0F0111DFBBB80007BD8DF /* Build configuration list for PBXNativeTarget "LeapUITests" */;
 			buildPhases = (
+				7002DA4CBDCBD0B8181D1F3F /* [CP] Check Pods Manifest.lock */,
 				FBE0EFFE1DFBBB80007BD8DF /* Sources */,
 				FBE0EFFF1DFBBB80007BD8DF /* Frameworks */,
 				FBE0F0001DFBBB80007BD8DF /* Resources */,
+				D9D50117B6304CFC7DBCDED3 /* [CP] Embed Pods Frameworks */,
+				8C739C93DA1613837F0733B9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -256,6 +305,144 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		19845C32139535393B4FCECC /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		7002DA4CBDCBD0B8181D1F3F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		705F09DC7880A0FE11EA2398 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Leap/Pods-Leap-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8C739C93DA1613837F0733B9 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LeapUITests/Pods-LeapUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		906A2846E42A503DE59D13AE /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LeapTests/Pods-LeapTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		92AF4A1A065A1C234C3FC0E4 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Leap/Pods-Leap-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C5B8FDE912DE126ACB83C398 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		D9D50117B6304CFC7DBCDED3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LeapUITests/Pods-LeapUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F77169826BA49D816F050C52 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LeapTests/Pods-LeapTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		FBE0EFDC1DFBBB80007BD8DF /* Sources */ = {
@@ -414,6 +601,7 @@
 		};
 		FBE0F00C1DFBBB80007BD8DF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BFC8905474AA067A38F3D481 /* Pods-Leap.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Leap/Info.plist;
@@ -426,6 +614,7 @@
 		};
 		FBE0F00D1DFBBB80007BD8DF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3303FCF9DF5422EFC1BC9EA4 /* Pods-Leap.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Leap/Info.plist;
@@ -438,6 +627,7 @@
 		};
 		FBE0F00F1DFBBB80007BD8DF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E01432D0A53F0FFFB8625670 /* Pods-LeapTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -452,6 +642,7 @@
 		};
 		FBE0F0101DFBBB80007BD8DF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1FC7ABE027731F110B5A8A22 /* Pods-LeapTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -466,6 +657,7 @@
 		};
 		FBE0F0121DFBBB80007BD8DF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 16D78AE36B88EA63012DB587 /* Pods-LeapUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				INFOPLIST_FILE = LeapUITests/Info.plist;
@@ -479,6 +671,7 @@
 		};
 		FBE0F0131DFBBB80007BD8DF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A6B009F8A999F17B9F19737C /* Pods-LeapUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				INFOPLIST_FILE = LeapUITests/Info.plist;
