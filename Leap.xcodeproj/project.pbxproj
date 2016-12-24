@@ -18,6 +18,9 @@
 		FBE0EFF11DFBBB80007BD8DF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FBE0EFEF1DFBBB80007BD8DF /* LaunchScreen.storyboard */; };
 		FBE0EFFC1DFBBB80007BD8DF /* LeapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE0EFFB1DFBBB80007BD8DF /* LeapTests.swift */; };
 		FBE0F0071DFBBB80007BD8DF /* LeapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE0F0061DFBBB80007BD8DF /* LeapUITests.swift */; };
+		FBE0F0151DFDBDA2007BD8DF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FBE0F0141DFDBDA2007BD8DF /* GoogleService-Info.plist */; };
+		FBE0F0161DFDBDAD007BD8DF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FBE0F0141DFDBDA2007BD8DF /* GoogleService-Info.plist */; };
+		FBE0F0171DFDBDAE007BD8DF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FBE0F0141DFDBDA2007BD8DF /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +64,8 @@
 		FBE0F0021DFBBB80007BD8DF /* LeapUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LeapUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBE0F0061DFBBB80007BD8DF /* LeapUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeapUITests.swift; sourceTree = "<group>"; };
 		FBE0F0081DFBBB80007BD8DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FBE0F0141DFDBDA2007BD8DF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		FBE0F0181DFDBF09007BD8DF /* Leap-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Leap-Bridging-Header.h"; path = "/Users/kiril/Library/Mobile Documents/com~apple~CloudDocs/Code/Leap/Leap-Bridging-Header.h"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +122,8 @@
 		FBE0EFD71DFBBB80007BD8DF = {
 			isa = PBXGroup;
 			children = (
+				FBE0F0141DFDBDA2007BD8DF /* GoogleService-Info.plist */,
+				FBE0F0181DFDBF09007BD8DF /* Leap-Bridging-Header.h */,
 				FBE0EFE21DFBBB80007BD8DF /* Leap */,
 				FBE0EFFA1DFBBB80007BD8DF /* LeapTests */,
 				FBE0F0051DFBBB80007BD8DF /* LeapUITests */,
@@ -285,6 +292,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FBE0EFF11DFBBB80007BD8DF /* LaunchScreen.storyboard in Resources */,
+				FBE0F0151DFDBDA2007BD8DF /* GoogleService-Info.plist in Resources */,
 				FBE0EFEE1DFBBB80007BD8DF /* Assets.xcassets in Resources */,
 				FBE0EFE91DFBBB80007BD8DF /* Main.storyboard in Resources */,
 			);
@@ -294,6 +302,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBE0F0161DFDBDAD007BD8DF /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -301,6 +310,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBE0F0171DFDBDAE007BD8DF /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -608,6 +618,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.singleleap.Leap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Leap-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -621,6 +632,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.singleleap.Leap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Leap-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
@@ -629,7 +641,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E01432D0A53F0FFFB8625670 /* Pods-LeapTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = LeapTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -644,7 +655,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1FC7ABE027731F110B5A8A22 /* Pods-LeapTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = LeapTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -659,7 +669,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 16D78AE36B88EA63012DB587 /* Pods-LeapUITests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				INFOPLIST_FILE = LeapUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.singleleap.LeapUITests;
@@ -673,7 +682,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A6B009F8A999F17B9F19737C /* Pods-LeapUITests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				INFOPLIST_FILE = LeapUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.singleleap.LeapUITests;
@@ -702,6 +710,7 @@
 				FBE0F00D1DFBBB80007BD8DF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		FBE0F00E1DFBBB80007BD8DF /* Build configuration list for PBXNativeTarget "LeapTests" */ = {
 			isa = XCConfigurationList;
@@ -710,6 +719,7 @@
 				FBE0F0101DFBBB80007BD8DF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		FBE0F0111DFBBB80007BD8DF /* Build configuration list for PBXNativeTarget "LeapUITests" */ = {
 			isa = XCConfigurationList;
@@ -718,6 +728,7 @@
 				FBE0F0131DFBBB80007BD8DF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
