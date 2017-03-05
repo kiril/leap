@@ -6,7 +6,8 @@ target 'Leap' do
   use_frameworks!
 
   # Pods for Leap
-  pod 'Google/SignIn'
+  pod 'Lock', '~> 2.0'
+  pod 'Auth0', '~> 1.2'
 
   target 'LeapTests' do
     inherit! :search_paths
