@@ -8,8 +8,6 @@
 
 import UIKit
 import CoreData
-import EventKit
-import Lock
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
