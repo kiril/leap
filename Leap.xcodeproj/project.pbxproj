@@ -22,6 +22,8 @@
 		FBE0F0151DFDBDA2007BD8DF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FBE0F0141DFDBDA2007BD8DF /* GoogleService-Info.plist */; };
 		FBE0F0161DFDBDAD007BD8DF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FBE0F0141DFDBDA2007BD8DF /* GoogleService-Info.plist */; };
 		FBE0F0171DFDBDAE007BD8DF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FBE0F0141DFDBDA2007BD8DF /* GoogleService-Info.plist */; };
+		FBE4DEA31E6CB9F10062507B /* Auth0.plist in Resources */ = {isa = PBXBuildFile; fileRef = FBE4DEA21E6CB9F10062507B /* Auth0.plist */; };
+		FBE4DEAA1E6CBD8A0062507B /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = FBE4DEA91E6CBD8A0062507B /* Resources */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +71,8 @@
 		FBE0F0081DFBBB80007BD8DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FBE0F0141DFDBDA2007BD8DF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FBE0F0181DFDBF09007BD8DF /* Leap-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Leap-Bridging-Header.h"; path = "/Users/kiril/Library/Mobile Documents/com~apple~CloudDocs/Code/Leap/Leap-Bridging-Header.h"; sourceTree = "<absolute>"; };
+		FBE4DEA21E6CB9F10062507B /* Auth0.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Auth0.plist; sourceTree = "<group>"; };
+		FBE4DEA91E6CBD8A0062507B /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resources; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +153,8 @@
 		FBE0EFE21DFBBB80007BD8DF /* Leap */ = {
 			isa = PBXGroup;
 			children = (
+				FBE4DEA91E6CBD8A0062507B /* Resources */,
+				FBE4DEA21E6CB9F10062507B /* Auth0.plist */,
 				FB0762DC1E1430A60035EF8F /* Leap.entitlements */,
 				FBE0EFE31DFBBB80007BD8DF /* AppDelegate.swift */,
 				FB0762DA1E142FBF0035EF8F /* ScheduleViewController.swift */,
@@ -302,7 +308,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBE4DEA31E6CB9F10062507B /* Auth0.plist in Resources */,
 				FBE0EFF11DFBBB80007BD8DF /* LaunchScreen.storyboard in Resources */,
+				FBE4DEAA1E6CBD8A0062507B /* Resources in Resources */,
 				FBE0F0151DFDBDA2007BD8DF /* GoogleService-Info.plist in Resources */,
 				FBE0EFEE1DFBBB80007BD8DF /* Assets.xcassets in Resources */,
 				FBE0EFE91DFBBB80007BD8DF /* Main.storyboard in Resources */,

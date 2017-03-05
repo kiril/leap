@@ -13,18 +13,6 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        Lock
-            .classic()
-            .withOptions {
-                $0.oidcConformant = true
-            }
-            .onAuth { credentials in
-                // Do something with credentials e.g.: save them.
-                // Lock will not save these objects for you.
-                // Lock will dismiss itself automatically by default.
-            }
-            .present(from: self)
         // Do any additional setup after loading the view, typically from a nib.
     }
 
@@ -34,6 +22,22 @@ class ViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        Lock
+            .classic()
+            .withStyle {
+                $0.title = "Leap"
+                $0.primaryColor = .purple
+                $0.logo = LazyImage(name: "logo")
+            }
+            .withOptions {
+                $0.oidcConformant = true
+            }
+            .onAuth { credentials in
+                // Do something with credentials e.g.: save them.
+                // Lock will not save these objects for you.
+                // Lock will dismiss itself automatically by default.
+            }
+            .present(from: self)
     }
 
 
