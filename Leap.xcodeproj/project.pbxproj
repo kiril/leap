@@ -633,6 +633,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BFC8905474AA067A38F3D481 /* Pods-Leap.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Leap/Leap.entitlements;
 				DEVELOPMENT_TEAM = HNRVQL94Y9;
@@ -649,6 +650,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3303FCF9DF5422EFC1BC9EA4 /* Pods-Leap.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Leap/Leap.entitlements;
 				DEVELOPMENT_TEAM = HNRVQL94Y9;
