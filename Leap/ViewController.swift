@@ -26,7 +26,7 @@ class ViewController: UIViewController {
             .classic()
             .withStyle {
                 $0.title = "Leap"
-                $0.primaryColor = .purple
+                $0.primaryColor = .magenta
                 $0.logo = LazyImage(name: "logo")
             }
             .withOptions {
