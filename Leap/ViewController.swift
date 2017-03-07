@@ -20,14 +20,14 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         Lock
             .classic()
             .withStyle {
-                $0.title = "Leap"
+                $0.title = ""
                 $0.primaryColor = .magenta
-                $0.logo = LazyImage(name: "logo")
+                $0.logo = LazyImage(name: "Logo Small Clear")
             }
             .withOptions {
                 $0.oidcConformant = true
@@ -42,4 +42,3 @@ class ViewController: UIViewController {
 
 
 }
-
