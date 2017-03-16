@@ -11,12 +11,12 @@
 		42D2911C1C35BD18F961382F /* Pods_LeapTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 726DA31B7DBD3655C83BFA3D /* Pods_LeapTests.framework */; };
 		DB41B30C348D9390E4320905 /* Pods_LeapUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 386ABDADBBC48EDACA0896BE /* Pods_LeapUITests.framework */; };
 		FB0762DB1E142FBF0035EF8F /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0762DA1E142FBF0035EF8F /* ScheduleViewController.swift */; };
+		FB4E11A51E79ABB400687702 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4E11A41E79ABB400687702 /* LaunchScreen.storyboard */; };
+		FB4E11A71E79B1F500687702 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4E11A61E79B1F500687702 /* Main.storyboard */; };
 		FBE0EFE41DFBBB80007BD8DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE0EFE31DFBBB80007BD8DF /* AppDelegate.swift */; };
-		FBE0EFE61DFBBB80007BD8DF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE0EFE51DFBBB80007BD8DF /* ViewController.swift */; };
-		FBE0EFE91DFBBB80007BD8DF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FBE0EFE71DFBBB80007BD8DF /* Main.storyboard */; };
+		FBE0EFE61DFBBB80007BD8DF /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE0EFE51DFBBB80007BD8DF /* AuthViewController.swift */; };
 		FBE0EFEC1DFBBB80007BD8DF /* Leap.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FBE0EFEA1DFBBB80007BD8DF /* Leap.xcdatamodeld */; };
 		FBE0EFEE1DFBBB80007BD8DF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FBE0EFED1DFBBB80007BD8DF /* Assets.xcassets */; };
-		FBE0EFF11DFBBB80007BD8DF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FBE0EFEF1DFBBB80007BD8DF /* LaunchScreen.storyboard */; };
 		FBE0EFFC1DFBBB80007BD8DF /* LeapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE0EFFB1DFBBB80007BD8DF /* LeapTests.swift */; };
 		FBE0F0071DFBBB80007BD8DF /* LeapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE0F0061DFBBB80007BD8DF /* LeapUITests.swift */; };
 		FBE4DEA31E6CB9F10062507B /* Auth0.plist in Resources */ = {isa = PBXBuildFile; fileRef = FBE4DEA21E6CB9F10062507B /* Auth0.plist */; };
@@ -52,13 +52,13 @@
 		F7F894F8D14B57D7372FF854 /* Pods-LeapTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LeapTests/Pods-LeapTests.release.xcconfig"; sourceTree = "<group>"; };
 		FB0762DA1E142FBF0035EF8F /* ScheduleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		FB0762DC1E1430A60035EF8F /* Leap.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Leap.entitlements; sourceTree = "<group>"; };
+		FB4E11A41E79ABB400687702 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FB4E11A61E79B1F500687702 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		FBE0EFE01DFBBB80007BD8DF /* Leap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Leap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBE0EFE31DFBBB80007BD8DF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		FBE0EFE51DFBBB80007BD8DF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		FBE0EFE81DFBBB80007BD8DF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		FBE0EFE51DFBBB80007BD8DF /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		FBE0EFEB1DFBBB80007BD8DF /* Leap.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Leap.xcdatamodel; sourceTree = "<group>"; };
 		FBE0EFED1DFBBB80007BD8DF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		FBE0EFF01DFBBB80007BD8DF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FBE0EFF21DFBBB80007BD8DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FBE0EFF71DFBBB80007BD8DF /* LeapTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LeapTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBE0EFFB1DFBBB80007BD8DF /* LeapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeapTests.swift; sourceTree = "<group>"; };
@@ -153,10 +153,10 @@
 				FB0762DC1E1430A60035EF8F /* Leap.entitlements */,
 				FBE0EFE31DFBBB80007BD8DF /* AppDelegate.swift */,
 				FB0762DA1E142FBF0035EF8F /* ScheduleViewController.swift */,
-				FBE0EFE51DFBBB80007BD8DF /* ViewController.swift */,
-				FBE0EFE71DFBBB80007BD8DF /* Main.storyboard */,
+				FBE0EFE51DFBBB80007BD8DF /* AuthViewController.swift */,
+				FB4E11A61E79B1F500687702 /* Main.storyboard */,
+				FB4E11A41E79ABB400687702 /* LaunchScreen.storyboard */,
 				FBE0EFED1DFBBB80007BD8DF /* Assets.xcassets */,
-				FBE0EFEF1DFBBB80007BD8DF /* LaunchScreen.storyboard */,
 				FBE0EFF21DFBBB80007BD8DF /* Info.plist */,
 				FBE0EFEA1DFBBB80007BD8DF /* Leap.xcdatamodeld */,
 			);
@@ -306,10 +306,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				FBE4DEA31E6CB9F10062507B /* Auth0.plist in Resources */,
-				FBE0EFF11DFBBB80007BD8DF /* LaunchScreen.storyboard in Resources */,
+				FB4E11A71E79B1F500687702 /* Main.storyboard in Resources */,
 				FBE4DEAA1E6CBD8A0062507B /* Res in Resources */,
 				FBE0EFEE1DFBBB80007BD8DF /* Assets.xcassets in Resources */,
-				FBE0EFE91DFBBB80007BD8DF /* Main.storyboard in Resources */,
+				FB4E11A51E79ABB400687702 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -473,7 +473,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FBE0EFEC1DFBBB80007BD8DF /* Leap.xcdatamodeld in Sources */,
-				FBE0EFE61DFBBB80007BD8DF /* ViewController.swift in Sources */,
+				FBE0EFE61DFBBB80007BD8DF /* AuthViewController.swift in Sources */,
 				FBE0EFE41DFBBB80007BD8DF /* AppDelegate.swift in Sources */,
 				FB0762DB1E142FBF0035EF8F /* ScheduleViewController.swift in Sources */,
 			);
@@ -509,25 +509,6 @@
 			targetProxy = FBE0F0031DFBBB80007BD8DF /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		FBE0EFE71DFBBB80007BD8DF /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				FBE0EFE81DFBBB80007BD8DF /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		FBE0EFEF1DFBBB80007BD8DF /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				FBE0EFF01DFBBB80007BD8DF /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		FBE0F0091DFBBB80007BD8DF /* Debug */ = {

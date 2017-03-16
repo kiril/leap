@@ -11,7 +11,7 @@ import Lock
 import SafariServices
 import CoreData
 
-class ViewController: UIViewController {
+class AuthViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,8 +26,9 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
-        if let credentials = appDelegate.credentials {
-            print("holy shit we're in!")
+        if appDelegate.credentials != nil {
+            self.performSegue(withIdentifier: "Home", sender: self)
+
         } else {
             if appDelegate.lostCredentials {
                 let logoutURL = "com.singleleap.Leap://singleleap.auth0.com/ios/com.singleleap.Leap/logout".addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
@@ -37,7 +38,6 @@ class ViewController: UIViewController {
 
             } else {
 
-                print("presenting login")
                 Lock
                   .classic()
                   .withStyle {
@@ -50,7 +50,6 @@ class ViewController: UIViewController {
                       $0.oidcConformant = true
                   }
                   .onAuth { credentials in
-                      print("well hey, here we are!")
                       let creds = NSEntityDescription.insertNewObject(forEntityName: "Credentials", into: appDelegate.persistentContainer.viewContext)
                       creds.setValue(credentials.accessToken, forKey: "accessToken")
                       creds.setValue(credentials.idToken, forKey: "idToken")

@@ -34,10 +34,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ app: UIApplication,
-                              open url: URL,
-                              options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+                     open url: URL,
+                     options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         // com.singleleap.leap://singleleap.auth0.com/ios/com.singleleap.Leap/callback?code=lEVGl5AJl0K1a9yS&state=oCFr3Esan6AeRS136liSH3YerF1zoxwlKNtea2i6OD4
-        print("Got URL open request from \(url)")
+        print("URL request: \(url)")
 
         if url.absoluteString.range(of: "auth0.com") != nil {
             let context = self.persistentContainer.viewContext
