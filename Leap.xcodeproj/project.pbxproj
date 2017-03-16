@@ -11,7 +11,10 @@
 		42D2911C1C35BD18F961382F /* Pods_LeapTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 726DA31B7DBD3655C83BFA3D /* Pods_LeapTests.framework */; };
 		831444BF1E7AF4E200A5EF06 /* AuthFlow.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 831444BE1E7AF4E200A5EF06 /* AuthFlow.storyboard */; };
 		831444C11E7AF77700A5EF06 /* LocalCalendar.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 831444C01E7AF77700A5EF06 /* LocalCalendar.storyboard */; };
-		831444C41E7AF8B300A5EF06 /* LocalCalendarTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444C31E7AF8B300A5EF06 /* LocalCalendarTableViewController.swift */; };
+		831444C61E7B020700A5EF06 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444C51E7B020700A5EF06 /* CalendarViewController.swift */; };
+		831444C81E7B034A00A5EF06 /* EventViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 831444C71E7B034A00A5EF06 /* EventViewCell.xib */; };
+		831444CA1E7B072600A5EF06 /* EventViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444C91E7B072600A5EF06 /* EventViewCell.swift */; };
+		831444CC1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444CB1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift */; };
 		DB41B30C348D9390E4320905 /* Pods_LeapUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 386ABDADBBC48EDACA0896BE /* Pods_LeapUITests.framework */; };
 		FB0762DB1E142FBF0035EF8F /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0762DA1E142FBF0035EF8F /* ScheduleViewController.swift */; };
 		FB4E11A51E79ABB400687702 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4E11A41E79ABB400687702 /* LaunchScreen.storyboard */; };
@@ -52,7 +55,10 @@
 		726DA31B7DBD3655C83BFA3D /* Pods_LeapTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeapTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		831444BE1E7AF4E200A5EF06 /* AuthFlow.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AuthFlow.storyboard; sourceTree = "<group>"; };
 		831444C01E7AF77700A5EF06 /* LocalCalendar.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LocalCalendar.storyboard; sourceTree = "<group>"; };
-		831444C31E7AF8B300A5EF06 /* LocalCalendarTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalCalendarTableViewController.swift; sourceTree = "<group>"; };
+		831444C51E7B020700A5EF06 /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
+		831444C71E7B034A00A5EF06 /* EventViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventViewCell.xib; sourceTree = "<group>"; };
+		831444C91E7B072600A5EF06 /* EventViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventViewCell.swift; sourceTree = "<group>"; };
+		831444CB1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewFlowLayout.swift; sourceTree = "<group>"; };
 		8EED8FB993394DE5707CFED0 /* Pods-LeapUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LeapUITests/Pods-LeapUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		EFE6A6E5DCCA6A604F469F66 /* Pods-Leap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Leap/Pods-Leap.debug.xcconfig"; sourceTree = "<group>"; };
 		F7F894F8D14B57D7372FF854 /* Pods-LeapTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LeapTests/Pods-LeapTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -132,7 +138,10 @@
 			isa = PBXGroup;
 			children = (
 				831444C01E7AF77700A5EF06 /* LocalCalendar.storyboard */,
-				831444C31E7AF8B300A5EF06 /* LocalCalendarTableViewController.swift */,
+				831444C51E7B020700A5EF06 /* CalendarViewController.swift */,
+				831444C71E7B034A00A5EF06 /* EventViewCell.xib */,
+				831444C91E7B072600A5EF06 /* EventViewCell.swift */,
+				831444CB1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift */,
 			);
 			name = LocalCalendar;
 			sourceTree = "<group>";
@@ -329,6 +338,7 @@
 				FBE0EFEE1DFBBB80007BD8DF /* Assets.xcassets in Resources */,
 				831444BF1E7AF4E200A5EF06 /* AuthFlow.storyboard in Resources */,
 				FB4E11A51E79ABB400687702 /* LaunchScreen.storyboard in Resources */,
+				831444C81E7B034A00A5EF06 /* EventViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -493,8 +503,10 @@
 			files = (
 				FBE0EFEC1DFBBB80007BD8DF /* Leap.xcdatamodeld in Sources */,
 				FBE0EFE61DFBBB80007BD8DF /* AuthViewController.swift in Sources */,
+				831444CC1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift in Sources */,
+				831444C61E7B020700A5EF06 /* CalendarViewController.swift in Sources */,
+				831444CA1E7B072600A5EF06 /* EventViewCell.swift in Sources */,
 				FBE0EFE41DFBBB80007BD8DF /* AppDelegate.swift in Sources */,
-				831444C41E7AF8B300A5EF06 /* LocalCalendarTableViewController.swift in Sources */,
 				FB0762DB1E142FBF0035EF8F /* ScheduleViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
