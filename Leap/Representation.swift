@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 
 /**
@@ -59,6 +60,10 @@ open class Representation {
 
     func purgeObservers() {
         observers.forEach { if $1.observer == nil { observers[$0] = nil } }
+    }
+
+    func asJSON() -> JSON {
+        return JSON(self.data)
     }
 }
 
