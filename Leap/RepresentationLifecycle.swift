@@ -18,9 +18,15 @@ protocol SourceIdentifiable {
  * Something that can have its data updated.
  */
 protocol Updateable {
-    func update(data: [String:Any], via source: SourceIdentifiable)
-    func update(field: String, toValue value: Any, via source: SourceIdentifiable)
-    func remove(field: String, via source: SourceIdentifiable)
+    func update(data: [String:Any], via source: SourceIdentifiable?, silently: Bool)
+    func update(field: String, toValue value: Any, via source: SourceIdentifiable?, silently: Bool)
+    func remove(field: String, via source: SourceIdentifiable?, silently: Bool)
+    func update(data: [String:Any])
+    func update(field: String, toValue value: Any)
+    func remove(field: String)
+    func updateSilently(data: [String:Any])
+    func updateSilently(field: String, toValue value: Any)
+    func removeSilently(field: String)
 }
 
 
