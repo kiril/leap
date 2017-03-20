@@ -31,12 +31,19 @@ internal class WeakObserver {
  * to the data this Representation holds.
  */
 open class Representation {
-    var store: RepresentationBackingStore?
-    let type: String
     let id: String
-    internal var fields: [String:Field] = [String:Field]()
+    private let schema: Schema
+
+    private var fields: [String:Field] = [String:Field]()
+
+    internal var store: RepresentationBackingStore?
     internal var data: [String:Any]
-    var dirtyFields: Set<String> = Set<String>()
+    internal var dirtyFields: Set<String> = []
+
+    var type: String {
+        return schema.type
+    }
+
 
     let isTransient: Bool = false // possible that we change this later
     var isDirty: Bool = false
@@ -47,18 +54,26 @@ open class Representation {
     internal var observers = [String:WeakObserver]()
 
     init(schema: Schema, id: String, data: [String:Any]) {
-        self.type = schema.type
+        self.schema = schema
+        self.id = id
+        self.data = data
+    }
+
+    init(store: RepresentationBackingStore, schema: Schema, id: String, data: [String:Any]) {
+        self.store = store
+        self.schema = schema
         self.id = id
         self.data = data
         self.fields = schema.fieldMap(for: self)
     }
 
-    init(store: RepresentationBackingStore, schema: Schema, id: String, data: [String:Any]) {
-        self.store = store
-        self.type = schema.type
-        self.id = id
-        self.data = data
-        self.fields = schema.fieldMap(for: self)
+
+    func mutable<Value>(_ name: String) -> MutableField<Value> {
+        return self.fields[name] as! MutableField<Value>
+    }
+
+    func immutable<Value>(_ name: String) -> ImmutableField<Value> {
+        return self.fields[name] as! ImmutableField<Value>
     }
 
     func setValue(_ value: Any, forKey key: String, via source: SourceIdentifiable) {
@@ -102,7 +117,7 @@ extension Representation: Observable {
  * change originated, and not notifying the originating Source.
  */
 extension Representation: Updateable {
-    func update(data: [String:Any], via source: SourceIdentifiable) {
+    func update(data: [String:Any], via source: SourceIdentifiable?, silently: Bool = false) {
         if !(source is RepresentationBackingStore) {
             isDirty = true
             if !isTransient {
@@ -115,16 +130,20 @@ extension Representation: Updateable {
 
         self.data = data
 
-        self.purgeObservers()
-        for (observerSourceId, ref) in self.observers {
-            if let observer = ref.observer {
-                guard observerSourceId != source.sourceId else { continue } // don't loop change notifications
-                observer.representationDidChange(self)
+        if !silently {
+            self.purgeObservers()
+            for (observerSourceId, ref) in self.observers {
+                if let observer = ref.observer {
+                    if let source = source {
+                        guard observerSourceId != source.sourceId else { continue } // don't loop change notifications
+                    }
+                    observer.representationDidChange(self)
+                }
             }
         }
     }
 
-    func update(field: String, toValue: Any, via source: SourceIdentifiable) {
+    func update(field: String, toValue: Any, via source: SourceIdentifiable?, silently: Bool = false) {
         if !(source is RepresentationBackingStore) {
             isDirty = true
             if !isTransient {
@@ -133,16 +152,20 @@ extension Representation: Updateable {
             dirtyFields.update(with: field)
         }
 
-        self.purgeObservers()
-        for (observerSourceId, ref) in self.observers {
-            if let observer = ref.observer {
-                guard observerSourceId != source.sourceId else { continue } // don't loop change notifications
-                observer.representationDidChange(self)
+        if !silently {
+            self.purgeObservers()
+            for (observerSourceId, ref) in self.observers {
+                if let observer = ref.observer {
+                    if let source = source {
+                        guard observerSourceId != source.sourceId else { continue } // don't loop change notifications
+                    }
+                    observer.representationDidChange(self)
+                }
             }
         }
     }
 
-    func remove(field: String, via source: SourceIdentifiable) {
+    func remove(field: String, via source: SourceIdentifiable?, silently: Bool = false) {
         if !(source is RepresentationBackingStore) {
             isDirty = true
             if !isTransient {
@@ -151,13 +174,41 @@ extension Representation: Updateable {
             dirtyFields.update(with: field)
         }
 
-        self.purgeObservers()
-        for(observerSourceId, ref) in self.observers {
-            if let observer = ref.observer {
-                guard observerSourceId != source.sourceId else { continue }
-                observer.representationDidChange(self)
+        if !silently {
+            self.purgeObservers()
+            for(observerSourceId, ref) in self.observers {
+                if let observer = ref.observer {
+                    if let source = source {
+                        guard observerSourceId != source.sourceId else { continue }
+                    }
+                    observer.representationDidChange(self)
+                }
             }
         }
+    }
+
+    func update(data: [String:Any]) {
+        self.update(data: data, via: nil)
+    }
+
+    func update(field: String, toValue value: Any) {
+        self.update(field: field, toValue: value, via: nil)
+    }
+
+    func remove(field: String) {
+        self.remove(field: field, via: nil)
+    }
+    
+    func updateSilently(data: [String:Any]) {
+        self.update(data: data, via: nil, silently: true)
+    }
+
+    func updateSilently(field: String, toValue value: Any) {
+        self.update(field: field, toValue: value, via: nil, silently: true)
+    }
+
+    func removeSilently(field: String) {
+        self.remove(field: field, via: nil, silently: true)
     }
 }
 
@@ -167,6 +218,7 @@ extension Representation: Updateable {
  * Also see the variables defined on the class above, which are required parts of the protocol.
  */
 extension Representation: Persistable {
+
 
     var isPersistable: Bool {
         return true

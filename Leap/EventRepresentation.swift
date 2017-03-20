@@ -11,21 +11,30 @@ let validTimeString: (Any) -> Bool = { value in
     return true
 }
 
-let eventSchema = Schema(type: "event",
-                         fields: [Field(key: "id", validator: alwaysValid),
-                                  MutableField(key: "title", validator: validIfAtLeast(characters: 5)),
-                                  MutableField(key: "start_time", validator: validTimeString),
-                                  MutableField(key: "end_time", validator: validTimeString)])
-
 class EventRepresentation: Representation {
-    let title: Field
-    let startTime: Field
-    let endTime: Field
+    static let schema = Schema(type: "event",
+                               fields: [MutableField<String>("title", validator: validIfAtLeast(characters: 5)),
+                                        MutableField<String>("start_time", validator: validTimeString),
+                                        MutableField<String>("end_time", validator: validTimeString),
+                                        ComputedField<String>("time_range", getter: {representation in return ""})])
 
-    override init(schema: Schema, id: String, data: [String:Any]) {
-        title = schema.field("title")!
-        startTime = schema.field("start_time")!
-        endTime = schema.field("end_time")!
-        super.init(schema: schema, id: id, data: data)
+    var title:     MutableField<String> { return mutable("title") }
+    var startTime: MutableField<String> { return mutable("start_time") }
+    var endTime:   MutableField<String> { return mutable("end_time") }
+    var timeRange: ImmutableField<String> { return immutable("time_range") }
+
+    init(id: String, data: [String:Any]) {
+        super.init(schema: EventRepresentation.schema, id: id, data: data)
     }
 }
+
+// var event = EventRepresentation.find(byId: "klsdhfgaoiusghdpoiuhy")
+// var event = EventRepresentation.new()
+// label.text = event.title.string
+// event.title.update(to: "New Title", via: self)
+//
+// "don't notify" is a thing, as might be "notify me of my own change"
+// don't include source if you're fine getting your own update
+// update(to: <T>)
+// updateSilently(to: <T>)
+// timeRange => a computed non-mutable ComputedField<T> property
