@@ -13,13 +13,16 @@ protocol SourceIdentifiable {
     var sourceId: String { get }
 }
 
+
 /**
  * Something that can have its data updated.
  */
 protocol Updateable {
-    func update(data: [String:Any], from source: SourceIdentifiable)
-    func update(field: String, toValue: Any, from source: SourceIdentifiable)
+    func update(data: [String:Any], via source: SourceIdentifiable)
+    func update(field: String, toValue value: Any, via source: SourceIdentifiable)
+    func remove(field: String, via source: SourceIdentifiable)
 }
+
 
 /*
  * Representation conforms to the Observable protocol, which

@@ -58,6 +58,10 @@ open class Representation {
         self.data = data
     }
 
+    func setValue(_ value: Any, forKey key: String, via source: SourceIdentifiable) {
+        self.update(field: key, toValue: value, via: source)
+    }
+
     func purgeObservers() {
         observers.forEach { if $1.observer == nil { observers[$0] = nil } }
     }
@@ -95,7 +99,7 @@ extension Representation: Observable {
  * change originated, and not notifying the originating Source.
  */
 extension Representation: Updateable {
-    func update(data: [String:Any], from source: SourceIdentifiable) {
+    func update(data: [String:Any], via source: SourceIdentifiable) {
         if !(source is RepresentationBackingStore) {
             isDirty = true
             if !isTransient {
@@ -117,7 +121,7 @@ extension Representation: Updateable {
         }
     }
 
-    func update(field: String, toValue: Any, from source: SourceIdentifiable) {
+    func update(field: String, toValue: Any, via source: SourceIdentifiable) {
         if !(source is RepresentationBackingStore) {
             isDirty = true
             if !isTransient {
@@ -130,6 +134,24 @@ extension Representation: Updateable {
         for (observerSourceId, ref) in self.observers {
             if let observer = ref.observer {
                 guard observerSourceId != source.sourceId else { continue } // don't loop change notifications
+                observer.representationDidChange(self)
+            }
+        }
+    }
+
+    func remove(field: String, via source: SourceIdentifiable) {
+        if !(source is RepresentationBackingStore) {
+            isDirty = true
+            if !isTransient {
+                isPersisted = false
+            }
+            dirtyFields.update(with: field)
+        }
+
+        self.purgeObservers()
+        for(observerSourceId, ref) in self.observers {
+            if let observer = ref.observer {
+                guard observerSourceId != source.sourceId else { continue }
                 observer.representationDidChange(self)
             }
         }
