@@ -19,6 +19,12 @@
 		FB0762DB1E142FBF0035EF8F /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0762DA1E142FBF0035EF8F /* ScheduleViewController.swift */; };
 		FB4E11A51E79ABB400687702 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4E11A41E79ABB400687702 /* LaunchScreen.storyboard */; };
 		FB4E11A71E79B1F500687702 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4E11A61E79B1F500687702 /* Main.storyboard */; };
+		FB934F201E7E01DF0068CDEF /* Representation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F1F1E7E01DF0068CDEF /* Representation.swift */; };
+		FB934F241E7EDF670068CDEF /* RepresentationBacking.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F231E7EDF670068CDEF /* RepresentationBacking.swift */; };
+		FB934F261E7EDFA80068CDEF /* RepresentationLifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F251E7EDFA80068CDEF /* RepresentationLifecycle.swift */; };
+		FBD614541E7F3370001F4050 /* EventRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD614531E7F3370001F4050 /* EventRepresentation.swift */; };
+		FBD614561E7F38D4001F4050 /* RepresentationSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD614551E7F38D4001F4050 /* RepresentationSchema.swift */; };
+		FBD614581E7F57B0001F4050 /* RepresentationValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD614571E7F57B0001F4050 /* RepresentationValidation.swift */; };
 		FBE0EFE41DFBBB80007BD8DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE0EFE31DFBBB80007BD8DF /* AppDelegate.swift */; };
 		FBE0EFE61DFBBB80007BD8DF /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE0EFE51DFBBB80007BD8DF /* AuthViewController.swift */; };
 		FBE0EFEC1DFBBB80007BD8DF /* Leap.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FBE0EFEA1DFBBB80007BD8DF /* Leap.xcdatamodeld */; };
@@ -66,6 +72,12 @@
 		FB0762DC1E1430A60035EF8F /* Leap.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Leap.entitlements; sourceTree = "<group>"; };
 		FB4E11A41E79ABB400687702 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FB4E11A61E79B1F500687702 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		FB934F1F1E7E01DF0068CDEF /* Representation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Representation.swift; sourceTree = "<group>"; };
+		FB934F231E7EDF670068CDEF /* RepresentationBacking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepresentationBacking.swift; sourceTree = "<group>"; };
+		FB934F251E7EDFA80068CDEF /* RepresentationLifecycle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepresentationLifecycle.swift; sourceTree = "<group>"; };
+		FBD614531E7F3370001F4050 /* EventRepresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventRepresentation.swift; sourceTree = "<group>"; };
+		FBD614551E7F38D4001F4050 /* RepresentationSchema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepresentationSchema.swift; sourceTree = "<group>"; };
+		FBD614571E7F57B0001F4050 /* RepresentationValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepresentationValidation.swift; sourceTree = "<group>"; };
 		FBE0EFE01DFBBB80007BD8DF /* Leap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Leap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBE0EFE31DFBBB80007BD8DF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FBE0EFE51DFBBB80007BD8DF /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
@@ -146,6 +158,19 @@
 			name = LocalCalendar;
 			sourceTree = "<group>";
 		};
+		FB934F1E1E7E019B0068CDEF /* Representations */ = {
+			isa = PBXGroup;
+			children = (
+				FB934F1F1E7E01DF0068CDEF /* Representation.swift */,
+				FB934F231E7EDF670068CDEF /* RepresentationBacking.swift */,
+				FB934F251E7EDFA80068CDEF /* RepresentationLifecycle.swift */,
+				FBD614531E7F3370001F4050 /* EventRepresentation.swift */,
+				FBD614551E7F38D4001F4050 /* RepresentationSchema.swift */,
+				FBD614571E7F57B0001F4050 /* RepresentationValidation.swift */,
+			);
+			name = Representations;
+			sourceTree = "<group>";
+		};
 		FBE0EFD71DFBBB80007BD8DF = {
 			isa = PBXGroup;
 			children = (
@@ -173,6 +198,7 @@
 		FBE0EFE21DFBBB80007BD8DF /* Leap */ = {
 			isa = PBXGroup;
 			children = (
+				FB934F1E1E7E019B0068CDEF /* Representations */,
 				FBE4DEA91E6CBD8A0062507B /* Res */,
 				FB0762DC1E1430A60035EF8F /* Leap.entitlements */,
 				FBE0EFE31DFBBB80007BD8DF /* AppDelegate.swift */,
@@ -280,7 +306,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0810;
 				LastUpgradeCheck = 0820;
-				ORGANIZATIONNAME = "Kiril Savino";
+				ORGANIZATIONNAME = "Single Leap, Inc";
 				TargetAttributes = {
 					FBE0EFDF1DFBBB80007BD8DF = {
 						CreatedOnToolsVersion = 8.1;
@@ -501,11 +527,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB934F241E7EDF670068CDEF /* RepresentationBacking.swift in Sources */,
 				FBE0EFEC1DFBBB80007BD8DF /* Leap.xcdatamodeld in Sources */,
 				FBE0EFE61DFBBB80007BD8DF /* AuthViewController.swift in Sources */,
+				FBD614541E7F3370001F4050 /* EventRepresentation.swift in Sources */,
+				FB934F261E7EDFA80068CDEF /* RepresentationLifecycle.swift in Sources */,
+				FB934F201E7E01DF0068CDEF /* Representation.swift in Sources */,
 				831444CC1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift in Sources */,
 				831444C61E7B020700A5EF06 /* CalendarViewController.swift in Sources */,
+				FBD614581E7F57B0001F4050 /* RepresentationValidation.swift in Sources */,
 				831444CA1E7B072600A5EF06 /* EventViewCell.swift in Sources */,
+				FBD614561E7F38D4001F4050 /* RepresentationSchema.swift in Sources */,
 				FBE0EFE41DFBBB80007BD8DF /* AppDelegate.swift in Sources */,
 				FB0762DB1E142FBF0035EF8F /* ScheduleViewController.swift in Sources */,
 			);

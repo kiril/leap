@@ -8,6 +8,8 @@ target 'Leap' do
   # Pods for Leap
   pod 'Lock', '~> 2.0'
   pod 'Auth0', '~> 1.2'
+  pod 'SwiftyJSON'
+  pod 'RealmSwift'
 
   target 'LeapTests' do
     inherit! :search_paths

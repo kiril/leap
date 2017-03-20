@@ -5,15 +5,26 @@ PODS:
     - Lock/Classic (= 2.0.0)
   - Lock/Classic (2.0.0):
     - Auth0 (~> 1.2)
+  - Realm (2.4.3):
+    - Realm/Headers (= 2.4.3)
+  - Realm/Headers (2.4.3)
+  - RealmSwift (2.4.3):
+    - Realm (= 2.4.3)
+  - SwiftyJSON (3.1.4)
 
 DEPENDENCIES:
   - Auth0 (~> 1.2)
   - Lock (~> 2.0)
+  - RealmSwift
+  - SwiftyJSON
 
 SPEC CHECKSUMS:
   Auth0: c5719a587c4f5fd78d8c16a26a6f0976f1718add
   Lock: b98cef67f5e6d1fc5222a59c6d97e9d73a8a9365
+  Realm: e08d60b0048ccccd3949c8c28a92c4db5712d7e9
+  RealmSwift: 30d49739ccb3385d201242736ca4dda56aec9dfc
+  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: 7a88362514da79f064756ee05066ce98c164d11e
+PODFILE CHECKSUM: a40fc1391982a6d52422664e2af61823eb850024
 
 COCOAPODS: 1.2.0
