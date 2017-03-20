@@ -31,7 +31,7 @@ internal class WeakObserver {
  * to the data this Representation holds.
  */
 open class Representation {
-    let id: String
+    let id: String?
     private let schema: Schema
 
     private var fields: [String:Field] = [String:Field]()
@@ -53,13 +53,14 @@ open class Representation {
 
     internal var observers = [String:WeakObserver]()
 
-    init(schema: Schema, id: String, data: [String:Any]) {
+    init(schema: Schema, id: String?, data: [String:Any]) {
         self.schema = schema
         self.id = id
         self.data = data
+        self.fields = schema.fieldMap(for: self)
     }
 
-    init(store: RepresentationBackingStore, schema: Schema, id: String, data: [String:Any]) {
+    init(store: RepresentationBackingStore, schema: Schema, id: String?, data: [String:Any]) {
         self.store = store
         self.schema = schema
         self.id = id
@@ -219,9 +220,8 @@ extension Representation: Updateable {
  */
 extension Representation: Persistable {
 
-
     var isPersistable: Bool {
-        return true
+        return self.id != nil // AND more stuff
     }
 
 
