@@ -3,7 +3,7 @@
 //  Leap
 //
 //  Created by Kiril Savino on 3/19/17.
-//  Copyright © 2017 Kiril Savino. All rights reserved.
+//  Copyright © 2017 Single Leap, Inc. All rights reserved.
 //
 
 typealias RepresentationFieldValidator = (String, Any) -> Bool
