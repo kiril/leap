@@ -6,16 +6,16 @@
 //  Copyright © 2017 Single Leap, Inc. All rights reserved.
 //
 
-typealias RepresentationFieldValidator = (String, Any) -> Bool
+typealias FieldValidator = (Any) -> Bool
 
 
-func alwaysValid(key: String, value: Any) -> Bool {
+func alwaysValid(value: Any) -> Bool {
     return true
 }
 
 
-func validIfNot(string badString: String) -> RepresentationFieldValidator {
-    return {(key:String, value: Any) in
+func validIfNot(string badString: String) -> FieldValidator {
+    return {(value: Any) in
         guard let s = value as? String, s == badString else {
             return false
         }
@@ -24,8 +24,8 @@ func validIfNot(string badString: String) -> RepresentationFieldValidator {
 }
 
 
-func validIfAtLeast(characters: Int) -> RepresentationFieldValidator {
-    return {(key: String, value: Any) in
+func validIfAtLeast(characters: Int) -> FieldValidator {
+    return {(value: Any) in
         guard let s = value as? String, s.characters.count >= characters else {
             return false
         }
@@ -33,8 +33,8 @@ func validIfAtLeast(characters: Int) -> RepresentationFieldValidator {
     }
 }
 
-func validIfGreaterThan(int: Int) -> RepresentationFieldValidator {
-    return {(key:String, value: Any) in
+func validIfGreaterThan(int: Int) -> FieldValidator {
+    return {(value: Any) in
         guard let i = value as? Int, i > int else {
             return false
         }

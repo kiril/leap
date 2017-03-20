@@ -7,24 +7,15 @@
 //
 
 
+let eventSchema = Schema(type: "event",
+                         fields: [Field(key: "id", validator: alwaysValid),
+                                  MutableField(key: "title", validator: validIfAtLeast(characters: 5))])
+
 class EventRepresentation: Representation {
-    var title: String {
-        return self.data["title"] as? String ?? ""
-    }
+    let title: Field
 
-    var startTime: String {
-        get {
-            return self.data["start_time"] as? String ?? ""
-        }
-    }
-
-    var timeRange: String {
-        get {
-            return self.data["time_range"] as? String ?? ""
-        }
-    }
-
-    var location: String {
-        return self.data["location"] as? String ?? ""
+    override init(schema: Schema, id: String, data: [String:Any]) {
+        title = schema.field("title")!
+        super.init(schema: schema, id: id, data: data)
     }
 }

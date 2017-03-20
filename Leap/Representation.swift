@@ -34,7 +34,8 @@ open class Representation {
     var store: RepresentationBackingStore?
     let type: String
     let id: String
-    var data: [String:Any]
+    internal var fields: [String:Field] = [String:Field]()
+    internal var data: [String:Any]
     var dirtyFields: Set<String> = Set<String>()
 
     let isTransient: Bool = false // possible that we change this later
@@ -45,17 +46,19 @@ open class Representation {
 
     internal var observers = [String:WeakObserver]()
 
-    init(type: String, id: String, data: [String:Any]) {
-        self.type = type
+    init(schema: Schema, id: String, data: [String:Any]) {
+        self.type = schema.type
         self.id = id
         self.data = data
+        self.fields = schema.fieldMap(for: self)
     }
 
-    init(store: RepresentationBackingStore, type: String, id: String, data: [String:Any]) {
+    init(store: RepresentationBackingStore, schema: Schema, id: String, data: [String:Any]) {
         self.store = store
-        self.type = type
+        self.type = schema.type
         self.id = id
         self.data = data
+        self.fields = schema.fieldMap(for: self)
     }
 
     func setValue(_ value: Any, forKey key: String, via source: SourceIdentifiable) {
