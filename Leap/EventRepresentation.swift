@@ -25,10 +25,6 @@ class EventRepresentation: Representation {
 
     init(id: String, data: [String:Any]) {
         super.init(schema: EventRepresentation.schema, id: id, data: data)
-        self.title.representation = self
-        self.startTime.representation = self
-        self.endTime.representation = self
-        self.timeRange.representation = self
     }
 }
 

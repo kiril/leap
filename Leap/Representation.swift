@@ -67,12 +67,13 @@ open class Representation {
         self.fields = schema.fieldMap(for: self)
     }
 
+
     func mutable<Value>(_ name: String) -> MutableField<Value> {
-        return self.schema.field(name) as! MutableField<Value>
+        return self.fields[name] as! MutableField<Value>
     }
 
     func immutable<Value>(_ name: String) -> ImmutableField<Value> {
-        return self.schema.field(name) as! ImmutableField<Value>
+        return self.fields[name] as! ImmutableField<Value>
     }
 
     func setValue(_ value: Any, forKey key: String, via source: SourceIdentifiable) {
