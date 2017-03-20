@@ -30,7 +30,7 @@ protocol TypedField: Field {
 
 class FieldBase<T>: TypedField {
     let key: String
-    let validator: FieldValidator
+    let validator: FieldValidator<T>
     internal weak var representation: Representation?
     var defaultValue: T?
 
@@ -57,7 +57,7 @@ class FieldBase<T>: TypedField {
     }
 
 
-    init(_ key: String, validator: @escaping FieldValidator) {
+    init(_ key: String, validator: @escaping FieldValidator<T>) {
         self.key = key
         self.validator = validator
     }
@@ -94,7 +94,7 @@ class ImmutableField<T>: FieldBase<T> {
         super.init(key, validator: alwaysValid)
     }
 
-    func update(to value: Any, via source: SourceIdentifiable) throws {
+    override func update(to value: T, via source: SourceIdentifiable) throws {
         throw SchemaError.fieldNotMutable(type: representationType, field: self.key)
     }
 
@@ -120,7 +120,7 @@ class ImmutableField<T>: FieldBase<T> {
 
 class MutableField<T>: FieldBase<T> {
 
-    func update(to value: Any, via source: SourceIdentifiable) throws {
+    override func update(to value: T, via source: SourceIdentifiable) throws {
         guard validator(value) else {
             throw SchemaError.invalidValueForField(type: representationType, field: self.key, value: value)
         }
