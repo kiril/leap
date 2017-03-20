@@ -306,7 +306,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0810;
 				LastUpgradeCheck = 0820;
-				ORGANIZATIONNAME = "Kiril Savino";
+				ORGANIZATIONNAME = "Single Leap, Inc";
 				TargetAttributes = {
 					FBE0EFDF1DFBBB80007BD8DF = {
 						CreatedOnToolsVersion = 8.1;
