@@ -221,6 +221,8 @@
 				FBE0EFE51DFBBB80007BD8DF /* AuthViewController.swift */,
 			);
 			name = Auth;
+			sourceTree = "<group>";
+		};
 		FB934F1E1E7E019B0068CDEF /* Representations */ = {
 			isa = PBXGroup;
 			children = (
