@@ -6,6 +6,15 @@
 //  Copyright © 2017 Single Leap, Inc. All rights reserved.
 //
 
+import Foundation
+
+
+protocol FieldUsable {}
+extension String: FieldUsable {}
+extension Int: FieldUsable {}
+extension Float: FieldUsable {}
+extension NSDate: FieldUsable {}
+
 
 protocol Field {
     var name: String { get }
@@ -17,7 +26,7 @@ protocol Field {
 
 
 protocol TypedField: Field {
-    associatedtype Value
+    associatedtype Value: FieldUsable
 
     var value: Value? { get }
 
@@ -28,18 +37,45 @@ protocol TypedField: Field {
 }
 
 
-class FieldBase<T>: TypedField {
+class FieldBase<T:FieldUsable>: TypedField {
     let key: String
     let validator: FieldValidator<T>
     internal weak var representation: Representation?
-    var defaultValue: T?
+
+    private let _defaultDefaults: [FieldUsable] = ["", Int(0), Float(0.0)]
+
+    func _defaultDefault() -> T? {
+        for aDefault in _defaultDefaults {
+            switch aDefault {
+            case let typeMatchedDefault as T:
+                return typeMatchedDefault
+            default:
+                continue
+            }
+        }
+        return nil
+    }
+
+    var _customDefault: T?
+
+    var defaultValue: T? {
+        get {
+            if let customDefault = _customDefault {
+                return customDefault
+            }
+            return _defaultDefault()
+        }
+        set (customDefault) {
+            _customDefault = customDefault
+        }
+    }
 
     var name: String {
         return key
     }
 
     var value: T? {
-        return representation!.data[self.key] as? T
+        return representation!.data[self.key] as? T ?? defaultValue
     }
 
     var stringValue: String {
@@ -57,13 +93,14 @@ class FieldBase<T>: TypedField {
     }
 
 
-    init(_ key: String, validator: @escaping FieldValidator<T>) {
+    init(_ key: String, validator: @escaping FieldValidator<T>, default customDefault: T? = nil) {
         self.key = key
         self.validator = validator
+        _customDefault = customDefault
     }
 
-    convenience init(_ key: String) {
-        self.init(key, validator: alwaysValid)
+    convenience init(_ key: String, default customDefault: T? = nil) {
+        self.init(key, validator: alwaysValid, default: customDefault)
     }
 
     func copyReferencing(_ representation: Representation) -> Field {
@@ -88,7 +125,7 @@ class FieldBase<T>: TypedField {
 }
 
 
-class ImmutableField<T>: FieldBase<T> {
+class ImmutableField<T:FieldUsable>: FieldBase<T> {
 
     init(_ key: String) {
         super.init(key, validator: alwaysValid)
@@ -118,7 +155,7 @@ class ImmutableField<T>: FieldBase<T> {
 }
 
 
-class MutableField<T>: FieldBase<T> {
+class MutableField<T:FieldUsable>: FieldBase<T> {
 
     override func update(to value: T, via source: SourceIdentifiable) throws {
         guard validator(value) else {
@@ -150,9 +187,9 @@ class MutableField<T>: FieldBase<T> {
 }
 
 
-typealias Computation<T> = (Representation) -> T
+typealias Computation<T:FieldUsable> = (Representation) -> T
 
-class ComputedField<T>: ImmutableField<T> {
+class ComputedField<T:FieldUsable>: ImmutableField<T> {
     internal let getter: Computation<T>
 
     override var value: T? {
@@ -166,7 +203,7 @@ class ComputedField<T>: ImmutableField<T> {
 }
 
 
-private class _AnyFieldBase<T>: TypedField {
+private class _AnyFieldBase<T:FieldUsable>: TypedField {
     var name: String { get { fatalError("Must override.") } }
     var stringValue: String { get { fatalError("Must override.") } }
     var value: T? { get { fatalError("Must override.") } }
@@ -233,7 +270,7 @@ private final class _AnyFieldBox<Concrete: TypedField>: _AnyFieldBase<Concrete.V
 }
 
 
-final class AnyField<T>: TypedField {
+final class AnyField<T:FieldUsable>: TypedField {
 
     private let box: _AnyFieldBase<T>
 

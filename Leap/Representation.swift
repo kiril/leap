@@ -144,7 +144,7 @@ extension Representation: Updateable {
         }
     }
 
-    func update(field: String, toValue: Any, via source: SourceIdentifiable?, silently: Bool = false) {
+    func update(field: String, toValue value: Any, via source: SourceIdentifiable?, silently: Bool = false) {
         if !(source is RepresentationBackingStore) {
             isDirty = true
             if !isTransient {
@@ -152,6 +152,8 @@ extension Representation: Updateable {
             }
             dirtyFields.update(with: field)
         }
+
+        data[field] = value
 
         if !silently {
             self.purgeObservers()

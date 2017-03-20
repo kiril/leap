@@ -11,9 +11,12 @@ import XCTest
 
 class TestRepresentation: Representation {
     static var schema = Schema(type: "test",
-                               fields: [MutableField<String>("title")])
+                               fields: [MutableField<String>("title"),
+                                        MutableField<Int>("count")])
 
     var title: MutableField<String> { return mutable("title") }
+    var count: MutableField<Int> { return mutable("count") }
+
     init(data: [String:Any]) {
         super.init(schema: TestRepresentation.schema, id: nil, data: data)
     }
@@ -32,8 +35,37 @@ class RepresentationTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
+
+    func testInitialization() {
+        guard let repr = testRepresentation else {
+            fatalError("OMG")
+        }
+        XCTAssertFalse(repr.isPersistable, "ID required for persistence")
+        XCTAssertFalse(repr.isPersisted, "New object can't have been persisted")
+        XCTAssertFalse(repr.isDirty, "New object should be clean")
+    }
     
-    func testProperties() {
-        XCTAssert(testRepresentation!.title.representation != nil, "Title property did in fact get mapped to the current thing")
+    func testPropertyAccess() {
+        guard let repr = testRepresentation else {
+            fatalError("OMG")
+        }
+        XCTAssert(repr.title.representation != nil, "Field association")
+        XCTAssertEqual(repr.title.value, "A Title", "Field reading")
+        XCTAssertEqual(repr.count.value, 0, "Default int value")
+    }
+
+    func testPropertyMutation() throws {
+        guard let repr = testRepresentation else {
+            fatalError("OMG")
+        }
+        try repr.title.update(to: "Another Title")
+        XCTAssertEqual(repr.title.value, "Another Title", "Field mutating")
+        XCTAssertTrue(repr.dirtyFields.contains("title"), "Dirty tracking")
+        XCTAssertTrue(repr.isDirty, "Dirty state tracking")
+
+        XCTAssertFalse(repr.dirtyFields.contains("count"), "Dirty tracking base")
+        try repr.count.update(to: 4)
+        XCTAssertEqual(repr.count.value, 4, "Int field mutating")
+        XCTAssertTrue(repr.dirtyFields.contains("count"), "Dirty tracking 2")
     }
 }
