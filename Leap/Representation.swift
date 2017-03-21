@@ -119,6 +119,17 @@ extension Representation: Observable {
  */
 extension Representation: Updateable {
     func update(data: [String:Any], via source: SourceIdentifiable?, silently: Bool = false) throws {
+        for (key, value) in data {
+            guard let fieldDef = fields[key] else {
+                throw SchemaError.noSuchField(type: self.type, field: key)
+            }
+            guard fieldDef.isValid(value: value) else {
+                throw SchemaError.invalidValueForField(type: self.type, field: key, value: value)
+            }
+        }
+
+        self.data = data
+
         if !(source is RepresentationBackingStore) {
             isDirty = true
             if !isTransient {
@@ -128,8 +139,6 @@ extension Representation: Updateable {
                 dirtyFields.update(with: field)
             }
         }
-
-        self.data = data
 
         if !silently {
             self.purgeObservers()

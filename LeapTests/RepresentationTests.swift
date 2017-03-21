@@ -78,6 +78,8 @@ class RepresentationTests: XCTestCase {
         XCTAssertThrowsError(try repr.update(field: "title", toValue: 2), "Mutation type checking, wrong value type",
                              {error in XCTAssert({if let se = error as? SchemaError, case SchemaError.invalidValueForField = se { return true } else { return false }}())})
         XCTAssertThrowsError(try repr.update(field: "foob", toValue: 2), "Mutation type checking, invalid key", {error in XCTAssert({if let se = error as? SchemaError, case SchemaError.noSuchField = se { return true } else { return false }}())})
+
+        XCTAssertThrowsError(try repr.update(data: ["title": 9]), "Mutation type checking, invalid key", {error in XCTAssert({if let se = error as? SchemaError, case SchemaError.invalidValueForField = se { return true } else { return false }}())})
     }
 
     func testPropertyRemoval() throws {
