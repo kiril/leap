@@ -19,14 +19,14 @@ protocol SourceIdentifiable {
  */
 protocol Updateable {
     func update(data: [String:Any], via source: SourceIdentifiable?, silently: Bool) throws
-    func update(field: String, toValue value: Any, via source: SourceIdentifiable?, silently: Bool) throws
-    func remove(field: String, via source: SourceIdentifiable?, silently: Bool)
+    func update(key: String, toValue value: Any, via source: SourceIdentifiable?, silently: Bool) throws
+    func remove(key: String, via source: SourceIdentifiable?, silently: Bool)
     func update(data: [String:Any]) throws
-    func update(field: String, toValue value: Any) throws
-    func remove(field: String)
+    func update(key: String, toValue value: Any) throws
+    func remove(key: String)
     func updateSilently(data: [String:Any]) throws
-    func updateSilently(field: String, toValue value: Any) throws
-    func removeSilently(field: String)
+    func updateSilently(key: String, toValue value: Any) throws
+    func removeSilently(key: String)
 }
 
 
