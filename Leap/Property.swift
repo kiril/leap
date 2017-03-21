@@ -27,8 +27,12 @@ protocol TypedProperty: Property {
 }
 
 
-protocol WritableTypedProperty: TypedProperty {
-    func update(to value: Value, via source: SourceIdentifiable) throws
+protocol Writable {
+}
+
+
+protocol WritableTypedProperty: TypedProperty, Writable {
+    func update(to value: Value, via source: SourceIdentifiable?) throws
     func update(to value: Value, silently: Bool) throws
     func clear(via source: SourceIdentifiable) throws
     func clear(silently: Bool) throws
@@ -108,7 +112,7 @@ public class ReadableProperty<T>: TypedProperty {
 }
 
 
-public class WritableProperty<T>: ReadableProperty<T> {
+public class WritableProperty<T>: ReadableProperty<T>, WritableTypedProperty {
 
     convenience init(_ key: String, validatedBy validator: @escaping Validator<T>) {
         self.init(key, validatedBy: validator, defaultingTo: nil, referencing: nil)
@@ -144,6 +148,9 @@ public class ComputedProperty<T>: ReadableProperty<T> {
         return getter(representation!)
     }
 
+    override func isValid(value: Any) -> Bool {
+        return false
+    }
 
     init(_ key: String, getter: @escaping Computation<T>, referencing representation: Representation?) {
         self.getter = getter

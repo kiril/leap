@@ -13,7 +13,8 @@ import Darwin
 class TestRepresentation: Representation {
     static var schema = Schema(type: "test",
                                properties: [WritableProperty<String>("title"),
-                                            WritableProperty<Int>("count")])
+                                            WritableProperty<Int>("count"),
+                                            ComputedProperty<Int>("magic", getter: {repr in return 88})])
 
     var title: WritableProperty<String> { return writable("title") }
     var count: WritableProperty<Int> { return writable("count") }
@@ -144,5 +145,13 @@ class RepresentationTests: XCTestCase {
         try repr.title.update(to: "A Real Title", via: dumb1)
         XCTAssertFalse(dumb1.observedChange, "No looping please")
         XCTAssertTrue(dumb2.observedChange, "But other observers get the change")
+    }
+
+    func testBulkWritabilityEnforced() {
+        guard let repr = testRepresentation else {
+            fatalError("OMG")
+        }
+
+        XCTAssertThrowsError(try repr.update(data: ["magic": 12]), "Mutation type checking, non-writable field", {error in XCTAssert({if let se = error as? SchemaError, case SchemaError.notWritable = se { return true } else { return false }}())})
     }
 }
