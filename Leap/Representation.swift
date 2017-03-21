@@ -31,10 +31,10 @@ internal class WeakObserver {
  * to the data this Representation holds.
  */
 open class Representation {
-    let id: String
+    let id: String?
     private let schema: Schema
 
-    private var fields: [String:Field] = [String:Field]()
+    internal var fields: [String:Field] = [String:Field]()
 
     internal var store: RepresentationBackingStore?
     internal var data: [String:Any]
@@ -53,13 +53,14 @@ open class Representation {
 
     internal var observers = [String:WeakObserver]()
 
-    init(schema: Schema, id: String, data: [String:Any]) {
+    init(schema: Schema, id: String?, data: [String:Any]) {
         self.schema = schema
         self.id = id
         self.data = data
+        self.fields = schema.fieldMap(for: self)
     }
 
-    init(store: RepresentationBackingStore, schema: Schema, id: String, data: [String:Any]) {
+    init(store: RepresentationBackingStore, schema: Schema, id: String?, data: [String:Any]) {
         self.store = store
         self.schema = schema
         self.id = id
@@ -76,8 +77,8 @@ open class Representation {
         return self.fields[name] as! ImmutableField<Value>
     }
 
-    func setValue(_ value: Any, forKey key: String, via source: SourceIdentifiable) {
-        self.update(field: key, toValue: value, via: source)
+    func setValue(_ value: Any, forKey key: String, via source: SourceIdentifiable) throws {
+        try self.update(field: key, toValue: value, via: source)
     }
 
     func purgeObservers() {
@@ -117,7 +118,7 @@ extension Representation: Observable {
  * change originated, and not notifying the originating Source.
  */
 extension Representation: Updateable {
-    func update(data: [String:Any], via source: SourceIdentifiable?, silently: Bool = false) {
+    func update(data: [String:Any], via source: SourceIdentifiable?, silently: Bool = false) throws {
         if !(source is RepresentationBackingStore) {
             isDirty = true
             if !isTransient {
@@ -143,7 +144,16 @@ extension Representation: Updateable {
         }
     }
 
-    func update(field: String, toValue: Any, via source: SourceIdentifiable?, silently: Bool = false) {
+    func update(field: String, toValue value: Any, via source: SourceIdentifiable?, silently: Bool = false) throws {
+        guard let fieldDef = fields[field] else {
+            throw SchemaError.noSuchField(type: self.type, field: field)
+        }
+        guard fieldDef.isValid(value: value) else {
+            throw SchemaError.invalidValueForField(type: self.type, field: field, value: value)
+        }
+
+        data[field] = value
+
         if !(source is RepresentationBackingStore) {
             isDirty = true
             if !isTransient {
@@ -166,6 +176,8 @@ extension Representation: Updateable {
     }
 
     func remove(field: String, via source: SourceIdentifiable?, silently: Bool = false) {
+        data[field] = nil
+
         if !(source is RepresentationBackingStore) {
             isDirty = true
             if !isTransient {
@@ -187,24 +199,25 @@ extension Representation: Updateable {
         }
     }
 
-    func update(data: [String:Any]) {
-        self.update(data: data, via: nil)
+    func update(data: [String:Any]) throws {
+        try self.update(data: data, via: nil)
     }
 
-    func update(field: String, toValue value: Any) {
-        self.update(field: field, toValue: value, via: nil)
+    func update(field: String, toValue value: Any) throws {
+        print("calling convenience update...")
+        try self.update(field: field, toValue: value, via: nil)
     }
 
     func remove(field: String) {
         self.remove(field: field, via: nil)
     }
     
-    func updateSilently(data: [String:Any]) {
-        self.update(data: data, via: nil, silently: true)
+    func updateSilently(data: [String:Any]) throws {
+        try self.update(data: data, via: nil, silently: true)
     }
 
-    func updateSilently(field: String, toValue value: Any) {
-        self.update(field: field, toValue: value, via: nil, silently: true)
+    func updateSilently(field: String, toValue value: Any) throws {
+        try self.update(field: field, toValue: value, via: nil, silently: true)
     }
 
     func removeSilently(field: String) {
@@ -219,9 +232,8 @@ extension Representation: Updateable {
  */
 extension Representation: Persistable {
 
-
     var isPersistable: Bool {
-        return true
+        return self.id != nil // AND more stuff
     }
 
 

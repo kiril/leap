@@ -7,7 +7,7 @@
 //
 
 
-let validTimeString: (Any) -> Bool = { value in
+func validTimeString(value: String) -> Bool {
     return true
 }
 
@@ -16,7 +16,7 @@ class EventRepresentation: Representation {
                                fields: [MutableField<String>("title", validator: validIfAtLeast(characters: 5)),
                                         MutableField<String>("start_time", validator: validTimeString),
                                         MutableField<String>("end_time", validator: validTimeString),
-                                        ComputedField<String>("time_range", getter: {representation in return ""})])
+                                        ComputedField<String>("time_range", getter: {(representation) in return ""})])
 
     var title:     MutableField<String> { return mutable("title") }
     var startTime: MutableField<String> { return mutable("start_time") }

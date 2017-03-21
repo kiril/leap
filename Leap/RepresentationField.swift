@@ -6,6 +6,16 @@
 //  Copyright © 2017 Single Leap, Inc. All rights reserved.
 //
 
+import Foundation
+
+
+protocol FieldUsable {}
+
+extension String: FieldUsable {}
+extension Int: FieldUsable {}
+extension Float: FieldUsable {}
+extension NSDate: FieldUsable {}
+
 
 protocol Field {
     var name: String { get }
@@ -13,13 +23,15 @@ protocol Field {
     var stringValue: String { get }
 
     func copyReferencing(_ representation: Representation) -> Field
+    func isValid(value: Any) -> Bool
 }
 
 
 protocol TypedField: Field {
-    associatedtype Value
+    associatedtype Value: FieldUsable
 
     var value: Value? { get }
+    var rawValue: Value? { get }
 
     func update(to value: Value, via source: SourceIdentifiable) throws
     func update(to value: Value, silently: Bool) throws
@@ -28,17 +40,48 @@ protocol TypedField: Field {
 }
 
 
-class FieldBase<T>: TypedField {
+class FieldBase<T:FieldUsable>: TypedField {
     let key: String
-    let validator: FieldValidator
+    let validator: FieldValidator<T>
     internal weak var representation: Representation?
-    var defaultValue: T?
+
+    private let _defaultDefaults: [FieldUsable] = ["", Int(0), Float(0.0)]
+
+    func _defaultDefault() -> T? {
+        for aDefault in _defaultDefaults {
+            switch aDefault {
+            case let typeMatchedDefault as T:
+                return typeMatchedDefault
+            default:
+                continue
+            }
+        }
+        return nil
+    }
+
+    var _customDefault: T?
+
+    var defaultValue: T? {
+        get {
+            if let customDefault = _customDefault {
+                return customDefault
+            }
+            return _defaultDefault()
+        }
+        set (customDefault) {
+            _customDefault = customDefault
+        }
+    }
 
     var name: String {
         return key
     }
 
     var value: T? {
+        return representation!.data[self.key] as? T ?? defaultValue
+    }
+
+    var rawValue: T? {
         return representation!.data[self.key] as? T
     }
 
@@ -56,14 +99,26 @@ class FieldBase<T>: TypedField {
         return representation!.type
     }
 
+    func isValid(value: Any) -> Bool {
+        guard value is T else {
+            return false
+        }
+        return self.validator(value as! T)
+    }
 
-    init(_ key: String, validator: @escaping FieldValidator) {
+    init(_ key: String, validator: @escaping FieldValidator<T>, customDefault: T?) {
+        self.key = key
+        self.validator = validator
+        _customDefault = customDefault
+    }
+
+    init(_ key: String, validator: @escaping FieldValidator<T>) {
         self.key = key
         self.validator = validator
     }
 
-    convenience init(_ key: String) {
-        self.init(key, validator: alwaysValid)
+    convenience init(_ key: String, customDefault: T? = nil) {
+        self.init(key, validator: alwaysValid, customDefault: customDefault)
     }
 
     func copyReferencing(_ representation: Representation) -> Field {
@@ -88,13 +143,13 @@ class FieldBase<T>: TypedField {
 }
 
 
-class ImmutableField<T>: FieldBase<T> {
+class ImmutableField<T:FieldUsable>: FieldBase<T> {
 
     init(_ key: String) {
         super.init(key, validator: alwaysValid)
     }
 
-    func update(to value: Any, via source: SourceIdentifiable) throws {
+    override func update(to value: T, via source: SourceIdentifiable) throws {
         throw SchemaError.fieldNotMutable(type: representationType, field: self.key)
     }
 
@@ -118,20 +173,14 @@ class ImmutableField<T>: FieldBase<T> {
 }
 
 
-class MutableField<T>: FieldBase<T> {
+class MutableField<T:FieldUsable>: FieldBase<T> {
 
-    func update(to value: Any, via source: SourceIdentifiable) throws {
-        guard validator(value) else {
-            throw SchemaError.invalidValueForField(type: representationType, field: self.key, value: value)
-        }
-        representation!.update(field: self.key, toValue: value, via: source)
+    override func update(to value: T, via source: SourceIdentifiable) throws {
+        try representation!.update(field: self.key, toValue: value, via: source)
     }
 
     override func update(to value: T, silently: Bool = false) throws {
-        guard validator(value) else {
-            throw SchemaError.invalidValueForField(type: representationType, field: self.key, value: value)
-        }
-        representation!.update(field: self.key, toValue: value, via: nil, silently: silently)
+        try representation!.update(field: self.key, toValue: value, via: nil, silently: silently)
     }
 
     override func clear(via source: SourceIdentifiable) throws {
@@ -150,9 +199,9 @@ class MutableField<T>: FieldBase<T> {
 }
 
 
-typealias Computation<T> = (Representation) -> T
+typealias Computation<T:FieldUsable> = (Representation) -> T
 
-class ComputedField<T>: ImmutableField<T> {
+class ComputedField<T:FieldUsable>: ImmutableField<T> {
     internal let getter: Computation<T>
 
     override var value: T? {
@@ -166,10 +215,11 @@ class ComputedField<T>: ImmutableField<T> {
 }
 
 
-private class _AnyFieldBase<T>: TypedField {
-    var name: String { get { fatalError("Must override.") } }
-    var stringValue: String { get { fatalError("Must override.") } }
-    var value: T? { get { fatalError("Must override.") } }
+private class _AnyFieldBase<T:FieldUsable>: TypedField {
+    var name: String { fatalError("Must override.") }
+    var stringValue: String { fatalError("Must override.") }
+    var value: T? { fatalError("Must override.") }
+    var rawValue: T? { fatalError("Must override") }
     var representationType: String { get { fatalError("Must override.") } }
 
     init() {
@@ -178,13 +228,10 @@ private class _AnyFieldBase<T>: TypedField {
         }
     }
 
-    func copyReferencing(_ representation: Representation) -> Field {
-        fatalError("Cannot be directly invoked. Use a subclass.")
-    }
 
-    func update(to value: T, via source: SourceIdentifiable) throws {
-        fatalError("Cannot be directly invoked. Use a subclass.")
-    }
+    func isValid(value: Any) -> Bool { fatalError("Use subclass") }
+    func copyReferencing(_ representation: Representation) -> Field { fatalError("Use subclass") }
+    func update(to value: T, via source: SourceIdentifiable) throws { fatalError("Use subclass") }
 
     func update(to value: T, silently: Bool = false) throws {
         fatalError("Cannot be directly invoked. Use a subclass.")
@@ -204,11 +251,16 @@ private final class _AnyFieldBox<Concrete: TypedField>: _AnyFieldBase<Concrete.V
     // variable used since we're calling mutating functions
     var concrete: Concrete
 
-    override var value: Concrete.Value? { get { return concrete.value } }
-    override var representationType: String { get { return concrete.representationType } }
+    override var value: Concrete.Value? { return concrete.value }
+    override var rawValue: Concrete.Value? { return concrete.rawValue }
+    override var representationType: String { return concrete.representationType }
 
     init(_ concrete: Concrete) {
         self.concrete = concrete
+    }
+
+    override func isValid(value: Any) -> Bool {
+        return self.concrete.isValid(value: value)
     }
 
     override func copyReferencing(_ representation: Representation) -> Field {
@@ -233,7 +285,7 @@ private final class _AnyFieldBox<Concrete: TypedField>: _AnyFieldBase<Concrete.V
 }
 
 
-final class AnyField<T>: TypedField {
+final class AnyField<T:FieldUsable>: TypedField {
 
     private let box: _AnyFieldBase<T>
 
@@ -241,11 +293,16 @@ final class AnyField<T>: TypedField {
     var name: String { return box.name }
     var stringValue: String { return box.stringValue }
     var value: T? { return box.value }
+    var rawValue: T? { return box.rawValue }
     var representationType: String { return box.representationType }
 
     // Initializer takes our concrete implementer of Row i.e. FileCell
     init<Concrete: TypedField>(_ concrete: Concrete) where Concrete.Value == T {
         box = _AnyFieldBox(concrete)
+    }
+
+    func isValid(value: Any) -> Bool {
+        return self.box.isValid(value: value)
     }
 
     func copyReferencing(_ representation: Representation) -> Field {

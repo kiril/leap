@@ -14,7 +14,7 @@ import Foundation
  */
 protocol Persistable {
     var type: String { get }
-    var id: String { get }
+    var id: String? { get }
 
     var isTransient: Bool { get }
     var isDirty: Bool { get }

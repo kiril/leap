@@ -6,38 +6,29 @@
 //  Copyright © 2017 Single Leap, Inc. All rights reserved.
 //
 
-typealias FieldValidator = (Any) -> Bool
+typealias FieldValidator<T> = (T) -> Bool
 
 
-func alwaysValid(value: Any) -> Bool {
+func alwaysValid<T>(value: T) -> Bool {
     return true
 }
 
 
-func validIfNot(string badString: String) -> FieldValidator {
-    return {(value: Any) in
-        guard let s = value as? String, s == badString else {
-            return false
-        }
-        return true
+func validIfNot(string badString: String) -> FieldValidator<String> {
+    return {(value:String) in
+        return value != badString
     }
 }
 
 
-func validIfAtLeast(characters: Int) -> FieldValidator {
-    return {(value: Any) in
-        guard let s = value as? String, s.characters.count >= characters else {
-            return false
-        }
-        return true
+func validIfAtLeast(characters: Int) -> FieldValidator<String> {
+    return {(value: String) in
+        return value.characters.count >= characters
     }
 }
 
-func validIfGreaterThan(int: Int) -> FieldValidator {
-    return {(value: Any) in
-        guard let i = value as? Int, i > int else {
-            return false
-        }
-        return true
+func validIfGreaterThan(int: Int) -> FieldValidator<Int> {
+    return {(value: Int) in
+        return value > int
     }
 }
