@@ -23,6 +23,7 @@ protocol Field {
     var stringValue: String { get }
 
     func copyReferencing(_ representation: Representation) -> Field
+    func isValid(value: Any) -> Bool
 }
 
 
@@ -91,6 +92,13 @@ class FieldBase<T:FieldUsable>: TypedField {
 
     var representationType: String {
         return representation!.type
+    }
+
+    func isValid(value: Any) -> Bool {
+        guard value is T else {
+            return false
+        }
+        return self.validator(value as! T)
     }
 
     init(_ key: String, validator: @escaping FieldValidator<T>, customDefault: T?) {
@@ -163,17 +171,11 @@ class ImmutableField<T:FieldUsable>: FieldBase<T> {
 class MutableField<T:FieldUsable>: FieldBase<T> {
 
     override func update(to value: T, via source: SourceIdentifiable) throws {
-        guard validator(value) else {
-            throw SchemaError.invalidValueForField(type: representationType, field: self.key, value: value)
-        }
-        representation!.update(field: self.key, toValue: value, via: source)
+        try representation!.update(field: self.key, toValue: value, via: source)
     }
 
     override func update(to value: T, silently: Bool = false) throws {
-        guard validator(value) else {
-            throw SchemaError.invalidValueForField(type: representationType, field: self.key, value: value)
-        }
-        representation!.update(field: self.key, toValue: value, via: nil, silently: silently)
+        try representation!.update(field: self.key, toValue: value, via: nil, silently: silently)
     }
 
     override func clear(via source: SourceIdentifiable) throws {
@@ -220,13 +222,10 @@ private class _AnyFieldBase<T:FieldUsable>: TypedField {
         }
     }
 
-    func copyReferencing(_ representation: Representation) -> Field {
-        fatalError("Cannot be directly invoked. Use a subclass.")
-    }
 
-    func update(to value: T, via source: SourceIdentifiable) throws {
-        fatalError("Cannot be directly invoked. Use a subclass.")
-    }
+    func isValid(value: Any) -> Bool { fatalError("Use subclass") }
+    func copyReferencing(_ representation: Representation) -> Field { fatalError("Use subclass") }
+    func update(to value: T, via source: SourceIdentifiable) throws { fatalError("Use subclass") }
 
     func update(to value: T, silently: Bool = false) throws {
         fatalError("Cannot be directly invoked. Use a subclass.")
@@ -251,6 +250,10 @@ private final class _AnyFieldBox<Concrete: TypedField>: _AnyFieldBase<Concrete.V
 
     init(_ concrete: Concrete) {
         self.concrete = concrete
+    }
+
+    override func isValid(value: Any) -> Bool {
+        return self.concrete.isValid(value: value)
     }
 
     override func copyReferencing(_ representation: Representation) -> Field {
@@ -288,6 +291,10 @@ final class AnyField<T:FieldUsable>: TypedField {
     // Initializer takes our concrete implementer of Row i.e. FileCell
     init<Concrete: TypedField>(_ concrete: Concrete) where Concrete.Value == T {
         box = _AnyFieldBox(concrete)
+    }
+
+    func isValid(value: Any) -> Bool {
+        return self.box.isValid(value: value)
     }
 
     func copyReferencing(_ representation: Representation) -> Field {

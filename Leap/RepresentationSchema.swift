@@ -7,7 +7,7 @@
 //
 
 
-enum SchemaError: Error {
+public enum SchemaError: Error {
     case fieldNotMutable(type: String, field: String)
     case invalidValueForField(type: String, field: String, value: Any)
     case noSuchField(type: String, field: String)

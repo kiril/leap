@@ -68,4 +68,14 @@ class RepresentationTests: XCTestCase {
         XCTAssertEqual(repr.count.value, 4, "Int field mutating")
         XCTAssertTrue(repr.dirtyFields.contains("count"), "Dirty tracking 2")
     }
+
+    func testPropertyTypeChecking() throws {
+        guard let repr = testRepresentation else {
+            fatalError("OMG")
+        }
+
+        XCTAssertThrowsError(try repr.update(field: "title", toValue: 2), "Mutation type checking, wrong value type",
+                             {error in XCTAssert({if let se = error as? SchemaError, case SchemaError.invalidValueForField = se { return true } else { return false }}())})
+        XCTAssertThrowsError(try repr.update(field: "foob", toValue: 2), "Mutation type checking, invalid key", {error in XCTAssert({if let se = error as? SchemaError, case SchemaError.noSuchField = se { return true } else { return false }}())})
+    }
 }
