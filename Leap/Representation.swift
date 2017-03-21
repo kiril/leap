@@ -176,6 +176,8 @@ extension Representation: Updateable {
     }
 
     func remove(field: String, via source: SourceIdentifiable?, silently: Bool = false) {
+        data[field] = nil
+
         if !(source is RepresentationBackingStore) {
             isDirty = true
             if !isTransient {

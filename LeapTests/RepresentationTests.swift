@@ -78,4 +78,15 @@ class RepresentationTests: XCTestCase {
                              {error in XCTAssert({if let se = error as? SchemaError, case SchemaError.invalidValueForField = se { return true } else { return false }}())})
         XCTAssertThrowsError(try repr.update(field: "foob", toValue: 2), "Mutation type checking, invalid key", {error in XCTAssert({if let se = error as? SchemaError, case SchemaError.noSuchField = se { return true } else { return false }}())})
     }
+
+    func testPropertyRemoval() throws {
+        guard let repr = testRepresentation else {
+            fatalError("OMG")
+        }
+
+        XCTAssertEqual(repr.title.value, "A Title", "Sane starting point")
+        try repr.title.clear()
+        XCTAssertEqual(repr.title.value, "", "Title is cleared")
+        XCTAssertEqual(repr.title.rawValue, nil, "Title is cleared")
+    }
 }

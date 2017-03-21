@@ -31,6 +31,7 @@ protocol TypedField: Field {
     associatedtype Value: FieldUsable
 
     var value: Value? { get }
+    var rawValue: Value? { get }
 
     func update(to value: Value, via source: SourceIdentifiable) throws
     func update(to value: Value, silently: Bool) throws
@@ -78,6 +79,10 @@ class FieldBase<T:FieldUsable>: TypedField {
 
     var value: T? {
         return representation!.data[self.key] as? T ?? defaultValue
+    }
+
+    var rawValue: T? {
+        return representation!.data[self.key] as? T
     }
 
     var stringValue: String {
@@ -211,9 +216,10 @@ class ComputedField<T:FieldUsable>: ImmutableField<T> {
 
 
 private class _AnyFieldBase<T:FieldUsable>: TypedField {
-    var name: String { get { fatalError("Must override.") } }
-    var stringValue: String { get { fatalError("Must override.") } }
-    var value: T? { get { fatalError("Must override.") } }
+    var name: String { fatalError("Must override.") }
+    var stringValue: String { fatalError("Must override.") }
+    var value: T? { fatalError("Must override.") }
+    var rawValue: T? { fatalError("Must override") }
     var representationType: String { get { fatalError("Must override.") } }
 
     init() {
@@ -245,8 +251,9 @@ private final class _AnyFieldBox<Concrete: TypedField>: _AnyFieldBase<Concrete.V
     // variable used since we're calling mutating functions
     var concrete: Concrete
 
-    override var value: Concrete.Value? { get { return concrete.value } }
-    override var representationType: String { get { return concrete.representationType } }
+    override var value: Concrete.Value? { return concrete.value }
+    override var rawValue: Concrete.Value? { return concrete.rawValue }
+    override var representationType: String { return concrete.representationType }
 
     init(_ concrete: Concrete) {
         self.concrete = concrete
@@ -286,6 +293,7 @@ final class AnyField<T:FieldUsable>: TypedField {
     var name: String { return box.name }
     var stringValue: String { return box.stringValue }
     var value: T? { return box.value }
+    var rawValue: T? { return box.rawValue }
     var representationType: String { return box.representationType }
 
     // Initializer takes our concrete implementer of Row i.e. FileCell
