@@ -121,6 +121,9 @@ extension Representation: Updateable {
             guard let property = properties[key] else {
                 throw SchemaError.noSuch(type: self.type, property: key)
             }
+            guard property is Writable else {
+                throw SchemaError.notWritable(type: self.type, property: key)
+            }
             guard property.isValid(value: value) else {
                 throw SchemaError.invalidValueFor(type: self.type, property: key, value: value)
             }
@@ -154,6 +157,10 @@ extension Representation: Updateable {
     func update(key: String, toValue value: Any, via source: SourceIdentifiable?, silently: Bool = false) throws {
         guard let property = properties[key] else {
             throw SchemaError.noSuch(type: self.type, property: key)
+        }
+        guard property is Writable else {
+            print("\(key) is not writable on \(self.type) : \(property)")
+            throw SchemaError.notWritable(type: self.type, property: key)
         }
         guard property.isValid(value: value) else {
             throw SchemaError.invalidValueFor(type: self.type, property: key, value: value)
