@@ -13,15 +13,15 @@ func validTimeString(value: String) -> Bool {
 
 class EventRepresentation: Representation {
     static let schema = Schema(type: "event",
-                               fields: [MutableField<String>("title", validator: validIfAtLeast(characters: 5)),
-                                        MutableField<String>("start_time", validator: validTimeString),
-                                        MutableField<String>("end_time", validator: validTimeString),
-                                        ComputedField<String>("time_range", getter: {(representation) in return ""})])
+                               properties: [WritableProperty<String>("title", validatedBy: validIfAtLeast(characters: 5)),
+                                            WritableProperty<String>("start_time", validatedBy: validTimeString),
+                                            WritableProperty<String>("end_time", validatedBy: validTimeString),
+                                            ComputedProperty<String>("time_range", getter: {(representation) in return ""})])
 
-    var title:     MutableField<String> { return mutable("title") }
-    var startTime: MutableField<String> { return mutable("start_time") }
-    var endTime:   MutableField<String> { return mutable("end_time") }
-    var timeRange: ImmutableField<String> { return immutable("time_range") }
+    var title:     WritableProperty<String> { return writable("title") }
+    var startTime: WritableProperty<String> { return writable("start_time") }
+    var endTime:   WritableProperty<String> { return writable("end_time") }
+    var timeRange: ReadableProperty<String> { return property("time_range") }
 
     init(id: String, data: [String:Any]) {
         super.init(schema: EventRepresentation.schema, id: id, data: data)

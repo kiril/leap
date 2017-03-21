@@ -24,11 +24,31 @@ protocol Persistable {
     var isPersistable: Bool { get }
     var lastPersisted: NSDate? { get }
     var lastModified: NSDate? { get }
-    var nonPersistableFields: [String] { get }
+    var nonPersistableKeys: [String] { get }
 
     func didPersist(into store: RepresentationBackingStore)
 
     func persist() throws -> Bool
+}
+
+
+protocol Retrievable {
+    associatedtype ConcreteRepresentation
+
+    static func find(byId id: String) throws -> ConcreteRepresentation
+}
+
+
+protocol Queryable {
+}
+
+protocol Query {
+    associatedtype ConcreteRepresentation
+
+    func all() throws -> [ConcreteRepresentation]
+    func first(_: Int) throws -> [ConcreteRepresentation]
+    func any() throws -> ConcreteRepresentation
+    func one() throws -> ConcreteRepresentation
 }
 
 
