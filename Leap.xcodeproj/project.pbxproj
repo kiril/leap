@@ -25,12 +25,12 @@
 		FB0762DB1E142FBF0035EF8F /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0762DA1E142FBF0035EF8F /* ScheduleViewController.swift */; };
 		FB4E11A51E79ABB400687702 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4E11A41E79ABB400687702 /* LaunchScreen.storyboard */; };
 		FB4E11A71E79B1F500687702 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4E11A61E79B1F500687702 /* Main.storyboard */; };
-		FB934F201E7E01DF0068CDEF /* Representation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F1F1E7E01DF0068CDEF /* Representation.swift */; };
-		FB934F241E7EDF670068CDEF /* RepresentationPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F231E7EDF670068CDEF /* RepresentationPersistence.swift */; };
-		FB934F261E7EDFA80068CDEF /* RepresentationLifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F251E7EDFA80068CDEF /* RepresentationLifecycle.swift */; };
+		FB934F201E7E01DF0068CDEF /* Shell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F1F1E7E01DF0068CDEF /* Shell.swift */; };
+		FB934F241E7EDF670068CDEF /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F231E7EDF670068CDEF /* Persistence.swift */; };
+		FB934F261E7EDFA80068CDEF /* Lifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F251E7EDFA80068CDEF /* Lifecycle.swift */; };
 		FBD1045D1E80309300DDF65B /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD1045C1E80309300DDF65B /* Property.swift */; };
-		FBD1045F1E80717E00DDF65B /* RepresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD1045E1E80717E00DDF65B /* RepresentationTests.swift */; };
-		FBD614541E7F3370001F4050 /* EventRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD614531E7F3370001F4050 /* EventRepresentation.swift */; };
+		FBD1045F1E80717E00DDF65B /* ShellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD1045E1E80717E00DDF65B /* ShellTests.swift */; };
+		FBD614541E7F3370001F4050 /* EventShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD614531E7F3370001F4050 /* EventShell.swift */; };
 		FBD614561E7F38D4001F4050 /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD614551E7F38D4001F4050 /* Schema.swift */; };
 		FBD614581E7F57B0001F4050 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD614571E7F57B0001F4050 /* Validation.swift */; };
 		FBE0EFE41DFBBB80007BD8DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE0EFE31DFBBB80007BD8DF /* AppDelegate.swift */; };
@@ -86,12 +86,12 @@
 		FB0762DC1E1430A60035EF8F /* Leap.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Leap.entitlements; sourceTree = "<group>"; };
 		FB4E11A41E79ABB400687702 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FB4E11A61E79B1F500687702 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		FB934F1F1E7E01DF0068CDEF /* Representation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Representation.swift; sourceTree = "<group>"; };
-		FB934F231E7EDF670068CDEF /* RepresentationPersistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepresentationPersistence.swift; sourceTree = "<group>"; };
-		FB934F251E7EDFA80068CDEF /* RepresentationLifecycle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepresentationLifecycle.swift; sourceTree = "<group>"; };
+		FB934F1F1E7E01DF0068CDEF /* Shell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shell.swift; sourceTree = "<group>"; };
+		FB934F231E7EDF670068CDEF /* Persistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		FB934F251E7EDFA80068CDEF /* Lifecycle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lifecycle.swift; sourceTree = "<group>"; };
 		FBD1045C1E80309300DDF65B /* Property.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Property.swift; sourceTree = "<group>"; };
-		FBD1045E1E80717E00DDF65B /* RepresentationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepresentationTests.swift; sourceTree = "<group>"; };
-		FBD614531E7F3370001F4050 /* EventRepresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventRepresentation.swift; sourceTree = "<group>"; };
+		FBD1045E1E80717E00DDF65B /* ShellTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShellTests.swift; sourceTree = "<group>"; };
+		FBD614531E7F3370001F4050 /* EventShell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventShell.swift; sourceTree = "<group>"; };
 		FBD614551E7F38D4001F4050 /* Schema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Schema.swift; sourceTree = "<group>"; };
 		FBD614571E7F57B0001F4050 /* Validation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
 		FBE0EFE01DFBBB80007BD8DF /* Leap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Leap.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -230,10 +230,10 @@
 		FB934F1E1E7E019B0068CDEF /* Representations */ = {
 			isa = PBXGroup;
 			children = (
-				FB934F1F1E7E01DF0068CDEF /* Representation.swift */,
-				FB934F231E7EDF670068CDEF /* RepresentationPersistence.swift */,
-				FB934F251E7EDFA80068CDEF /* RepresentationLifecycle.swift */,
-				FBD614531E7F3370001F4050 /* EventRepresentation.swift */,
+				FB934F1F1E7E01DF0068CDEF /* Shell.swift */,
+				FB934F231E7EDF670068CDEF /* Persistence.swift */,
+				FB934F251E7EDFA80068CDEF /* Lifecycle.swift */,
+				FBD614531E7F3370001F4050 /* EventShell.swift */,
 				FBD614551E7F38D4001F4050 /* Schema.swift */,
 				FBD614571E7F57B0001F4050 /* Validation.swift */,
 				FBD1045C1E80309300DDF65B /* Property.swift */,
@@ -291,7 +291,7 @@
 			children = (
 				FBE0EFFB1DFBBB80007BD8DF /* LeapTests.swift */,
 				FBE0EFFD1DFBBB80007BD8DF /* Info.plist */,
-				FBD1045E1E80717E00DDF65B /* RepresentationTests.swift */,
+				FBD1045E1E80717E00DDF65B /* ShellTests.swift */,
 			);
 			path = LeapTests;
 			sourceTree = "<group>";
@@ -599,12 +599,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FB934F241E7EDF670068CDEF /* RepresentationPersistence.swift in Sources */,
+				FB934F241E7EDF670068CDEF /* Persistence.swift in Sources */,
 				FBE0EFEC1DFBBB80007BD8DF /* Leap.xcdatamodeld in Sources */,
 				FBE0EFE61DFBBB80007BD8DF /* AuthViewController.swift in Sources */,
-				FBD614541E7F3370001F4050 /* EventRepresentation.swift in Sources */,
-				FB934F261E7EDFA80068CDEF /* RepresentationLifecycle.swift in Sources */,
-				FB934F201E7E01DF0068CDEF /* Representation.swift in Sources */,
+				FBD614541E7F3370001F4050 /* EventShell.swift in Sources */,
+				FB934F261E7EDFA80068CDEF /* Lifecycle.swift in Sources */,
+				FB934F201E7E01DF0068CDEF /* Shell.swift in Sources */,
 				831444CC1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift in Sources */,
 				831444D41E7B49A200A5EF06 /* DayScheduleViewModel.swift in Sources */,
 				831444C61E7B020700A5EF06 /* CalendarViewController.swift in Sources */,
@@ -626,7 +626,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FBD1045F1E80717E00DDF65B /* RepresentationTests.swift in Sources */,
+				FBD1045F1E80717E00DDF65B /* ShellTests.swift in Sources */,
 				FBE0EFFC1DFBBB80007BD8DF /* LeapTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

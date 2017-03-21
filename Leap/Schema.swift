@@ -1,5 +1,5 @@
 //
-//  RepresentationSchema.swift
+//  Schema.swift
 //  Leap
 //
 //  Created by Kiril Savino on 3/19/17.
@@ -32,8 +32,8 @@ struct Schema {
         return nil
     }
 
-    func map(for representation: Representation) -> [String:Property] {
-        let adapted = properties.map { $0.copyReferencing(representation) }
+    func map(for shell: Shell) -> [String:Property] {
+        let adapted = properties.map { $0.copyReferencing(shell) }
         var d = [String:Property]()
         for property in adapted {
             d[property.name] = property
