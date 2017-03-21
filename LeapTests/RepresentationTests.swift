@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import Darwin
 @testable import Leap
 
 class TestRepresentation: Representation {
@@ -88,5 +89,58 @@ class RepresentationTests: XCTestCase {
         try repr.title.clear()
         XCTAssertEqual(repr.title.value, "", "Title is cleared")
         XCTAssertEqual(repr.title.rawValue, nil, "Title is cleared")
+    }
+
+    func testObservation() throws {
+        class DumbObserver: RepresentationObserver {
+            var sourceId: String
+            var observedChange: Bool = false
+
+            init() {
+                self.sourceId = "DumbObserver-\(arc4random_uniform(100000))"
+            }
+
+            func representationDidChange(_ representation: Representation) {
+                observedChange = true
+            }
+
+            func reset() {
+                observedChange = false
+            }
+        }
+
+        guard let repr = testRepresentation else {
+            fatalError("OMG")
+        }
+
+        let dumb1 = DumbObserver()
+
+        repr.register(observer: dumb1)
+        try repr.title.update(to: "Well, New Titles Abound")
+        XCTAssertTrue(dumb1.observedChange, "Observer was notified")
+
+        dumb1.reset()
+        XCTAssertFalse(dumb1.observedChange, "Reset")
+        try repr.title.update(to: "New Title 2", silently: true)
+        XCTAssertFalse(dumb1.observedChange, "Silent didn't notify observer")
+
+        let dumb2 = DumbObserver()
+
+        XCTAssertFalse(dumb2.observedChange, "Just Checking")
+
+        repr.register(observer: dumb2)
+        try repr.title.update(to: "OMG A Title")
+        XCTAssertTrue(dumb1.observedChange, "Still goes to original")
+        XCTAssertTrue(dumb2.observedChange, "And goes to the new one")
+
+        dumb1.reset()
+        dumb2.reset()
+        try repr.title.update(to: "The Best Title Ever", silently: true)
+        XCTAssertFalse(dumb1.observedChange, "Silent")
+        XCTAssertFalse(dumb2.observedChange, "Silent")
+
+        try repr.title.update(to: "A Real Title", via: dumb1)
+        XCTAssertFalse(dumb1.observedChange, "No looping please")
+        XCTAssertTrue(dumb2.observedChange, "But other observers get the change")
     }
 }
