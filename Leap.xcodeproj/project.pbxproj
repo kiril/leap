@@ -20,6 +20,7 @@
 		831444D41E7B49A200A5EF06 /* DayScheduleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444D31E7B49A200A5EF06 /* DayScheduleViewModel.swift */; };
 		8351BDC91E7C58FD001221AF /* OpenTimeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDC81E7C58FD001221AF /* OpenTimeViewModel.swift */; };
 		8351BDCD1E7C596C001221AF /* GregorianDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDCC1E7C596C001221AF /* GregorianDay.swift */; };
+		8351BDD11E807C4C001221AF /* WeekOverviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDD01E807C4C001221AF /* WeekOverviewViewModel.swift */; };
 		83F4B1611E7C383F000FCB8D /* ScheduleEntryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F4B1601E7C383F000FCB8D /* ScheduleEntryViewModel.swift */; };
 		DB41B30C348D9390E4320905 /* Pods_LeapUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 386ABDADBBC48EDACA0896BE /* Pods_LeapUITests.framework */; };
 		FB0762DB1E142FBF0035EF8F /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0762DA1E142FBF0035EF8F /* ScheduleViewController.swift */; };
@@ -78,6 +79,7 @@
 		831444D31E7B49A200A5EF06 /* DayScheduleViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayScheduleViewModel.swift; sourceTree = "<group>"; };
 		8351BDC81E7C58FD001221AF /* OpenTimeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenTimeViewModel.swift; sourceTree = "<group>"; };
 		8351BDCC1E7C596C001221AF /* GregorianDay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GregorianDay.swift; sourceTree = "<group>"; };
+		8351BDD01E807C4C001221AF /* WeekOverviewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekOverviewViewModel.swift; sourceTree = "<group>"; };
 		83F4B1601E7C383F000FCB8D /* ScheduleEntryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleEntryViewModel.swift; sourceTree = "<group>"; };
 		8EED8FB993394DE5707CFED0 /* Pods-LeapUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LeapUITests/Pods-LeapUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		EFE6A6E5DCCA6A604F469F66 /* Pods-Leap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Leap/Pods-Leap.debug.xcconfig"; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 				831444D31E7B49A200A5EF06 /* DayScheduleViewModel.swift */,
 				83F4B1601E7C383F000FCB8D /* ScheduleEntryViewModel.swift */,
 				8351BDC81E7C58FD001221AF /* OpenTimeViewModel.swift */,
+				8351BDD01E807C4C001221AF /* WeekOverviewViewModel.swift */,
 			);
 			name = ViewModels;
 			sourceTree = "<group>";
@@ -605,6 +608,7 @@
 				FBD614541E7F3370001F4050 /* EventShell.swift in Sources */,
 				FB934F261E7EDFA80068CDEF /* Lifecycle.swift in Sources */,
 				FB934F201E7E01DF0068CDEF /* Shell.swift in Sources */,
+				8351BDD11E807C4C001221AF /* WeekOverviewViewModel.swift in Sources */,
 				831444CC1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift in Sources */,
 				831444D41E7B49A200A5EF06 /* DayScheduleViewModel.swift in Sources */,
 				831444C61E7B020700A5EF06 /* CalendarViewController.swift in Sources */,

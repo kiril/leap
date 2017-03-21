@@ -9,6 +9,19 @@
 import Foundation
 import EventKit
 
+enum InvitationResponse {
+    case none,
+    yes,
+    no,
+    maybe
+}
+
+enum TimePerspective {
+    case past,
+    future,
+    current
+}
+
 class EventViewModel: ViewModelUpdateable {
     var delegate: ViewModelDelegate?
 
@@ -20,6 +33,23 @@ class EventViewModel: ViewModelUpdateable {
 
     var title: String {
         return "My important meeting 👔"
+    }
+
+    var description: String {
+        return ""
+    }
+
+    var allDay: Bool {
+        return false
+        // is this a different class type?
+    }
+
+    var startTime: Date {
+        return Date()
+    }
+
+    var endTime: Date {
+        return Date()
     }
 
     var timeRange: String {
@@ -35,6 +65,36 @@ class EventViewModel: ViewModelUpdateable {
         /// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
     }
+
+    var userIgnored: Bool {
+        return false
+    }
+
+    var userInvitationResponse: InvitationResponse {
+        // for events for which there is an open invitation
+        return .none
+    }
+
+    var userIsInvited: Bool {
+        return true
+    }
+
+    var isUnresolved: Bool {
+        return userInvitationResponse == .none && !userIgnored
+    }
+
+    var happeningIn: TimePerspective {
+        return .future 
+    }
+
+    var percentElapsed: Float {
+        return 0.85
+    }
+
+//    var userPinned: Bool {
+//        return false
+//    }
+
 
     /// SAVED FROM THE OLD VIEWCONTROLLER CODE:
     let eventStore = EKEventStore()
@@ -59,4 +119,10 @@ class EventViewModel: ViewModelUpdateable {
         }
     }
     /// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+    /// NOT Handled yet in this ViewModel (yet):
+    /// [ ] - all day events, start / end
+    /// [ ] - shared calendar events (how to join. that vs. invitations)
+    /// [ ] - pins
 }
