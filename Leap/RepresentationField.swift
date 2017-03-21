@@ -10,6 +10,7 @@ import Foundation
 
 
 protocol FieldUsable {}
+
 extension String: FieldUsable {}
 extension Int: FieldUsable {}
 extension Float: FieldUsable {}
@@ -92,15 +93,19 @@ class FieldBase<T:FieldUsable>: TypedField {
         return representation!.type
     }
 
-
-    init(_ key: String, validator: @escaping FieldValidator<T>, default customDefault: T? = nil) {
+    init(_ key: String, validator: @escaping FieldValidator<T>, customDefault: T?) {
         self.key = key
         self.validator = validator
         _customDefault = customDefault
     }
 
-    convenience init(_ key: String, default customDefault: T? = nil) {
-        self.init(key, validator: alwaysValid, default: customDefault)
+    init(_ key: String, validator: @escaping FieldValidator<T>) {
+        self.key = key
+        self.validator = validator
+    }
+
+    convenience init(_ key: String, customDefault: T? = nil) {
+        self.init(key, validator: alwaysValid, customDefault: customDefault)
     }
 
     func copyReferencing(_ representation: Representation) -> Field {
