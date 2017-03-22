@@ -59,7 +59,7 @@ class DayViewModel {
     }
 
     var happensIn: TimePerspective {
-        today = Calendar.current.today
+        let today = Calendar.current.today
 
         if dayId > today.id {
             return .future
@@ -73,6 +73,6 @@ class DayViewModel {
     }
 
     var isToday: Bool {
-        return perspective == .current
+        return happensIn == .current
     }
 }

@@ -77,16 +77,16 @@ class CalendarViewController: UICollectionViewController {
 
         case .openTime(let openTime):
             // for now, just hack in a new event view model since we don't have an open time view to display
-            let event = EventViewModel(id: "")
+            let event = EventShell(id: "", data:[:])
             self.configureCell(cell, forEvent: event)
         }
 
         return cell
     }
 
-    func configureCell(_ cell: EventViewCell, forEvent event: EventViewModel) {
-        cell.timeLabel.text = event.timeRange
-        cell.titleLabel.text = event.title
+    func configureCell(_ cell: EventViewCell, forEvent event: EventShell) {
+        cell.timeLabel.text = event.timeRange.value
+        cell.titleLabel.text = event.title.value
         cell.widthAnchor.constraint(equalToConstant: collectionView!.bounds.size.width).isActive = true
 
     }

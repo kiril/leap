@@ -9,11 +9,11 @@
 import Foundation
 
 enum ScheduleEntryViewModel {
-    case event(entry: EventViewModel)
+    case event(entry: EventShell)
     case openTime(entry: OpenTimeViewModel)
 
     static func from(eventId: String) -> ScheduleEntryViewModel {
-        return .event(entry: EventViewModel(id: eventId))
+        return .event(entry: EventShell(id: "", data:[:]))
     }
 
     static func from(openTimeStart start: Date?, end: Date?) -> ScheduleEntryViewModel {
