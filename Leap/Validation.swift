@@ -1,5 +1,5 @@
 //
-//  RepresentationValidation.swift
+//  Validation.swift
 //  Leap
 //
 //  Created by Kiril Savino on 3/19/17.

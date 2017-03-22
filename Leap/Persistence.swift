@@ -1,5 +1,5 @@
 //
-//  RepresentationBacking.swift
+//  Persistence.swift
 //  Leap
 //
 //  Created by Kiril Savino on 3/19/17.
@@ -26,16 +26,16 @@ protocol Persistable {
     var lastModified: NSDate? { get }
     var nonPersistableKeys: [String] { get }
 
-    func didPersist(into store: RepresentationBackingStore)
+    func didPersist(into store: BackingStore)
 
     func persist() throws -> Bool
 }
 
 
 protocol Retrievable {
-    associatedtype ConcreteRepresentation
+    associatedtype ConcreteShell
 
-    static func find(byId id: String) throws -> ConcreteRepresentation
+    static func find(byId id: String) throws -> ConcreteShell
 }
 
 
@@ -43,20 +43,20 @@ protocol Queryable {
 }
 
 protocol Query {
-    associatedtype ConcreteRepresentation
+    associatedtype ConcreteShell
 
-    func all() throws -> [ConcreteRepresentation]
-    func first(_: Int) throws -> [ConcreteRepresentation]
-    func any() throws -> ConcreteRepresentation
-    func one() throws -> ConcreteRepresentation
+    func all() throws -> [ConcreteShell]
+    func first(_: Int) throws -> [ConcreteShell]
+    func any() throws -> ConcreteShell
+    func one() throws -> ConcreteShell
 }
 
 
 /*
- * A representation is in charge of communicating with its backing store,
- * which houses the underlying model(s) that the Representation is standing
+ * A Shell is in charge of communicating with its backing store,
+ * which houses the underlying model(s) that the Shell is standing
  * in for.
  */
-protocol RepresentationBackingStore: SourceIdentifiable {
-    func persist(_ representation: Representation) throws -> Bool
+protocol BackingStore: SourceIdentifiable {
+    func persist(_ shell: Shell) throws -> Bool
 }

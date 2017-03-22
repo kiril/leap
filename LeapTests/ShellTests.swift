@@ -1,5 +1,5 @@
 //
-//  RepresentationTests.swift
+//  ShellTests.swift
 //  Leap
 //
 //  Created by Kiril Savino on 3/20/17.
@@ -10,26 +10,26 @@ import XCTest
 import Darwin
 @testable import Leap
 
-class TestRepresentation: Representation {
+class TestShell: Shell {
     static var schema = Schema(type: "test",
                                properties: [WritableProperty<String>("title"),
                                             WritableProperty<Int>("count"),
-                                            ComputedProperty<Int>("magic", getter: {repr in return 88})])
+                                            ComputedProperty<Int,TestShell>("magic", {repr in return 88})])
 
     var title: WritableProperty<String> { return writable("title") }
     var count: WritableProperty<Int> { return writable("count") }
 
     init(data: [String:Any]) {
-        super.init(schema: TestRepresentation.schema, id: nil, data: data)
+        super.init(schema: TestShell.schema, id: nil, data: data)
     }
 }
 
-class RepresentationTests: XCTestCase {
-    var testRepresentation: TestRepresentation?
+class ShellTests: XCTestCase {
+    var testShell: TestShell?
 
     override func setUp() {
         super.setUp()
-        testRepresentation = TestRepresentation(data: ["title": "A Title", "anotherfield": 2])
+        testShell = TestShell(data: ["title": "A Title", "anotherfield": 2])
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
@@ -39,7 +39,7 @@ class RepresentationTests: XCTestCase {
     }
 
     func testInitialization() {
-        guard let repr = testRepresentation else {
+        guard let repr = testShell else {
             fatalError("OMG")
         }
         XCTAssertFalse(repr.isPersistable, "ID required for persistence")
@@ -48,16 +48,16 @@ class RepresentationTests: XCTestCase {
     }
     
     func testPropertyAccess() {
-        guard let repr = testRepresentation else {
+        guard let repr = testShell else {
             fatalError("OMG")
         }
-        XCTAssert(repr.title.representation != nil, "Field association")
+        XCTAssert(repr.title.shell != nil, "Field association")
         XCTAssertEqual(repr.title.value, "A Title", "Field reading")
         XCTAssertEqual(repr.count.value, 0, "Default int value")
     }
 
     func testPropertyMutation() throws {
-        guard let repr = testRepresentation else {
+        guard let repr = testShell else {
             fatalError("OMG")
         }
         try repr.title.update(to: "Another Title")
@@ -72,7 +72,7 @@ class RepresentationTests: XCTestCase {
     }
 
     func testPropertyTypeChecking() throws {
-        guard let repr = testRepresentation else {
+        guard let repr = testShell else {
             fatalError("OMG")
         }
 
@@ -84,7 +84,7 @@ class RepresentationTests: XCTestCase {
     }
 
     func testPropertyRemoval() throws {
-        guard let repr = testRepresentation else {
+        guard let repr = testShell else {
             fatalError("OMG")
         }
 
@@ -95,7 +95,7 @@ class RepresentationTests: XCTestCase {
     }
 
     func testObservation() throws {
-        class DumbObserver: RepresentationObserver {
+        class DumbObserver: ShellObserver {
             var sourceId: String
             var observedChange: Bool = false
 
@@ -103,7 +103,7 @@ class RepresentationTests: XCTestCase {
                 self.sourceId = "DumbObserver-\(arc4random_uniform(100000))"
             }
 
-            func representationDidChange(_ representation: Representation) {
+            func shellDidChange(_ shell: Shell) {
                 observedChange = true
             }
 
@@ -112,7 +112,7 @@ class RepresentationTests: XCTestCase {
             }
         }
 
-        guard let repr = testRepresentation else {
+        guard let repr = testShell else {
             fatalError("OMG")
         }
 
@@ -148,7 +148,7 @@ class RepresentationTests: XCTestCase {
     }
 
     func testBulkWritabilityEnforced() {
-        guard let repr = testRepresentation else {
+        guard let repr = testShell else {
             fatalError("OMG")
         }
 

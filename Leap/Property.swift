@@ -1,5 +1,5 @@
 //
-//  RepresentationField.swift
+//  Property.swift
 //  Leap
 //
 //  Created by Kiril Savino on 3/20/17.
@@ -11,10 +11,10 @@ import Foundation
 
 protocol Property {
     var name: String { get }
-    var representationType: String { get }
+    var shellType: String { get }
     var stringValue: String { get }
 
-    func copyReferencing(_ representation: Representation) -> Property
+    func copyReferencing(_ shell: Shell) -> Property
     func isValid(value: Any) -> Bool
 }
 
@@ -22,7 +22,7 @@ protocol Property {
 protocol TypedProperty: Property {
     associatedtype Value
 
-    var value: Value? { get }
+    var value: Value { get }
     var rawValue: Value? { get }
 }
 
@@ -42,9 +42,9 @@ protocol WritableTypedProperty: TypedProperty, Writable {
 public class ReadableProperty<T>: TypedProperty {
     let key: String
     let validator: Validator<T>
-    internal weak var representation: Representation?
+    internal weak var shell: Shell?
 
-    private let _defaultDefaults: [Any] = ["", Int(0), Float(0.0)]
+    private let _defaultDefaults: [Any] = ["", Int(0), Float(0.0), false]
 
     func _defaultDefault() -> T? {
         for aDefault in _defaultDefaults {
@@ -73,16 +73,16 @@ public class ReadableProperty<T>: TypedProperty {
     }
 
     var name: String { return key }
-    var value: T? { return representation!.data[self.key] as? T ?? defaultValue }
-    var rawValue: T? { return representation!.data[self.key] as? T }
-    var representationType: String { return representation!.type }
+    var value: T { return shell!.data[self.key] as? T ?? defaultValue! }
+    var rawValue: T? { return shell!.data[self.key] as? T }
+    var shellType: String { return shell!.type }
 
-    var stringValue: String { if let value = self.value { return value as? String ?? "\(value)" }; return "\(defaultValue)" }
+    var stringValue: String { return value as? String ?? "\(value)" }
 
-    init(_ key: String, validatedBy validator: @escaping Validator<T>, defaultingTo defaultValue: T?, referencing representation: Representation?) {
+    init(_ key: String, validatedBy validator: @escaping Validator<T>, defaultingTo defaultValue: T?, referencing shell: Shell?) {
         self.key = key
         self.validator = validator
-        self.representation = representation
+        self.shell = shell
         self.defaultValue = defaultValue
     }
 
@@ -94,8 +94,8 @@ public class ReadableProperty<T>: TypedProperty {
         self.init(key, validatedBy: alwaysValid, defaultingTo: defaultValue, referencing: nil)
     }
 
-    convenience init(_ key: String, referencing representation: Representation) {
-        self.init(key, validatedBy: alwaysValid, defaultingTo: nil, referencing: representation)
+    convenience init(_ key: String, referencing shell: Shell) {
+        self.init(key, validatedBy: alwaysValid, defaultingTo: nil, referencing: shell)
     }
 
 
@@ -106,8 +106,8 @@ public class ReadableProperty<T>: TypedProperty {
         return self.validator(value as! T)
     }
 
-    func copyReferencing(_ representation: Representation) -> Property {
-        return ReadableProperty(key, validatedBy: validator, defaultingTo: _customDefault, referencing: representation)
+    func copyReferencing(_ shell: Shell) -> Property {
+        return ReadableProperty(key, validatedBy: validator, defaultingTo: _customDefault, referencing: shell)
     }
 }
 
@@ -118,50 +118,54 @@ public class WritableProperty<T>: ReadableProperty<T>, WritableTypedProperty {
         self.init(key, validatedBy: validator, defaultingTo: nil, referencing: nil)
     }
 
+    convenience init(_ key: String, validatedBy validator: @escaping Validator<T>, referencing shell: Shell) {
+        self.init(key, validatedBy: validator, defaultingTo: nil, referencing: shell)
+    }
+
     func update(to value: T, via source: SourceIdentifiable?) throws {
-        try representation!.update(key: self.key, toValue: value, via: source)
+        try shell!.update(key: self.key, toValue: value, via: source)
     }
 
     func update(to value: T, silently: Bool = false) throws {
-        try representation!.update(key: self.key, toValue: value, via: nil, silently: silently)
+        try shell!.update(key: self.key, toValue: value, via: nil, silently: silently)
     }
 
     func clear(via source: SourceIdentifiable) throws {
-        representation!.remove(key: self.key, via: source)
+        shell!.remove(key: self.key, via: source)
     }
 
     func clear(silently: Bool = false) throws {
-        representation!.remove(key: self.key, via: nil, silently: silently)
+        shell!.remove(key: self.key, via: nil, silently: silently)
     }
 
-    override func copyReferencing(_ representation: Representation) -> Property {
-        return WritableProperty(key, validatedBy: self.validator, defaultingTo: _customDefault, referencing: representation)
+    override func copyReferencing(_ shell: Shell) -> Property {
+        return WritableProperty(key, validatedBy: self.validator, defaultingTo: _customDefault, referencing: shell)
     }
 }
 
-typealias Computation<T> = (Representation) -> T
+typealias Computation<T,R:Shell> = (R) -> T
 
-public class ComputedProperty<T>: ReadableProperty<T> {
-    internal let getter: Computation<T>
+public class ComputedProperty<T,R:Shell>: ReadableProperty<T> {
+    internal let getter: Computation<T,R>
 
-    override var value: T? {
-        return getter(representation!)
+    override var value: T {
+        return getter(shell as! R)
     }
 
     override func isValid(value: Any) -> Bool {
         return false
     }
 
-    init(_ key: String, getter: @escaping Computation<T>, referencing representation: Representation?) {
+    init(_ key: String, _ getter: @escaping Computation<T,R>, referencing shell: Shell?) {
         self.getter = getter
-        super.init(key, validatedBy: alwaysValid, defaultingTo: nil, referencing: representation)
+        super.init(key, validatedBy: alwaysValid, defaultingTo: nil, referencing: shell)
     }
 
-    convenience init(_ key: String, getter: @escaping Computation<T> ) {
-        self.init(key, getter: getter, referencing: nil)
+    convenience init(_ key: String, _ getter: @escaping Computation<T,R> ) {
+        self.init(key, getter, referencing: nil)
     }
 
-    override func copyReferencing(_ representation: Representation) -> Property {
-        return ComputedProperty(key, getter: getter, referencing: representation)
+    override func copyReferencing(_ shell: Shell) -> Property {
+        return ComputedProperty(key, getter, referencing: shell)
     }
 }

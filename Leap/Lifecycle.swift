@@ -1,5 +1,5 @@
 //
-//  RepresentationLifecycle.swift
+//  Lifecycle.swift
 //  Leap
 //
 //  Created by Kiril Savino on 3/19/17.
@@ -31,34 +31,34 @@ protocol Updateable {
 
 
 /*
- * Representation conforms to the Observable protocol, which
+ * Shell conforms to the Observable protocol, which
  * allows Observers to register themselves for updates about
- * the Representation's state.
+ * the Shell's state.
  */
 protocol Observable {
-    func register(observer: RepresentationObserver)
-    func deregister(observer: RepresentationObserver)
+    func register(observer: ShellObserver)
+    func deregister(observer: ShellObserver)
 }
 
 
 /*
  * ReprsentationObservers are the most basic kind of observer that
- * can get notifications about changes to a Representation.
+ * can get notifications about changes to a Shell.
  *
- * All they get is an update when anything about the Representation's
+ * All they get is an update when anything about the Shell's
  * underlying data changes.
  */
-protocol RepresentationObserver: AnyObject, SourceIdentifiable {
-    func representationDidChange(_ representation: Representation)
+protocol ShellObserver: AnyObject, SourceIdentifiable {
+    func shellDidChange(_ shell: Shell)
 }
 
 
 /**
- * A more advanced form of RepresentationObserver, RepresentationLifecycleObservers
+ * A more advanced form of ShellObserver, LifecycleObservers
  * also get updates about what happens to the storage state of the underlying
- * Representation.
+ * Shell.
  */
-protocol RepresentationLifecycleObserver: RepresentationObserver {
-    func representationDidPersist(_ representation: Representation)
-    func representationWasDeleted(_ representation: Representation)
+protocol LifecycleObserver: ShellObserver {
+    func shellDidPersist(_ shell: Shell)
+    func shellWasDeleted(_ shell: Shell)
 }
