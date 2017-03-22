@@ -15,13 +15,6 @@ extension EKEventStore {
         let eventCalendars = self.calendars(for: EKEntityType.event)
         let reminderCalendars = self.calendars(for: EKEntityType.reminder)
 
-        var legacy = [LegacyCalendar]()
-        for calendar in eventCalendars {
-            legacy.append(calendar.asLegacyCalendar())
-        }
-        for calendar in reminderCalendars {
-            legacy.append(calendar.asLegacyCalendar())
-        }
-        return legacy
+        return eventCalendars.map { $0.asLegacyCalendar() } + reminderCalendars.map { $0.asLegacyCalendar() }
     }
 }
