@@ -39,6 +39,12 @@ protocol WritableTypedProperty: TypedProperty, Writable {
     func clear(silently: Bool) throws
 }
 
+extension String {
+    init(_ property: Property) {
+        self.init(property.stringValue)!
+    }
+}
+
 
 public class ReadableProperty<T>: TypedProperty {
     let key: String
