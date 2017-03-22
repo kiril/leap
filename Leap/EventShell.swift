@@ -46,22 +46,22 @@ func computeElapsed(event: EventShell) -> Float {
 
 
 class EventShell: Shell {
-    var title =                  WritableProperty<String>("title", validatedBy: validIfAtLeast(characters: 5))
-    var startTime =              WritableProperty<Date>("start_time")
-    var endTime =                WritableProperty<Date>("end_time")
-    var timeRange =              ComputedProperty<String,EventShell>("time_range", eventTimeRange)
-    var userIgnored =            WritableProperty<Bool>("ignored", defaultingTo: false)
-    var userIsInvited =          ReadableProperty<Bool>("invited", defaultingTo: false)
-    var userInvitationResponse = WritableProperty<InvitationResponse>("response", defaultingTo: .none)
-    var isUnresolved =           ComputedProperty<Bool,EventShell>("unresolved", {event in
+    let title =                  WritableProperty<String>("title", validatedBy: validIfAtLeast(characters: 5))
+    let startTime =              WritableProperty<Date>("start_time")
+    let endTime =                WritableProperty<Date>("end_time")
+    let timeRange =              ComputedProperty<String,EventShell>("time_range", eventTimeRange)
+    let userIgnored =            WritableProperty<Bool>("ignored", defaultingTo: false)
+    let userIsInvited =          ReadableProperty<Bool>("invited", defaultingTo: false)
+    let userInvitationResponse = WritableProperty<InvitationResponse>("response", defaultingTo: .none)
+    let isUnresolved =           ComputedProperty<Bool,EventShell>("unresolved", {event in
         if event.userIsInvited.value, event.userInvitationResponse.value == .none {
             return true
         } else {
             return false
         }
     })
-    var happeningIn =            ComputedProperty<TimePerspective,EventShell>("perspective", TimePerspective.compute)
-    var percentElapsed =         ComputedProperty<Float,EventShell>("elapsed", computeElapsed)
+    let userPerspective =        ComputedProperty<TimePerspective,EventShell>("perspective", TimePerspective.compute)
+    let percentElapsed =         ComputedProperty<Float,EventShell>("elapsed", computeElapsed)
 
 
     init(id: String, data: [String:Any]) {
