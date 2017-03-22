@@ -21,7 +21,9 @@ enum TimePerspective {
     case past,
     future,
     current
+}
 
+extension TimePerspective {
     static func compute(fromEvent event: EventShell) -> TimePerspective {
         let now = Date()
         if event.startTime.value > now {
@@ -34,10 +36,6 @@ enum TimePerspective {
     }
 }
 
-func timeRangeString(fromDate date: Date) -> String {
-    return ""
-}
-
 func eventTimeRange(event: EventShell) -> String {
     return "10am-2pm" // TODO: actually do this
 }
@@ -46,37 +44,28 @@ func computeElapsed(event: EventShell) -> Float {
     return 0.0 // TODO: calcualte elapsed time
 }
 
-class EventShell: Shell {
-    static let schema = Schema(type: "event",
-                               properties: [WritableProperty<String>("title", validatedBy: validIfAtLeast(characters: 5)),
-                                            WritableProperty<Date>("start_time"),
-                                            WritableProperty<Date>("end_time"),
-                                            ComputedProperty<String,EventShell>("time_range", eventTimeRange),
-                                            WritableProperty<Bool>("ignored", defaultingTo: false),
-                                            WritableProperty<InvitationResponse>("response", defaultingTo: .none),
-                                            ComputedProperty<Bool,EventShell>("unresolved", {event in
-                                                if event.userIsInvited.value, event.userInvitationResponse.value == .none {
-                                                    return true
-                                                } else {
-                                                    return false
-                                                }
-                                            }),
-                                            ComputedProperty<TimePerspective,EventShell>("perspective", TimePerspective.compute),
-                                            ComputedProperty<Float,EventShell>("elapsed", computeElapsed)])
 
-    var title:                  WritableProperty<String>             { return writable("title") }
-    var startTime:              WritableProperty<Date>               { return writable("start_time") }
-    var endTime:                WritableProperty<Date>               { return writable("end_time") }
-    var timeRange:              ReadableProperty<String>             { return property("time_range") }
-    var userIgnored:            WritableProperty<Bool>               { return writable("ignored") }
-    var userIsInvited:          ReadableProperty<Bool>               { return property("invited") }
-    var userInvitationResponse: WritableProperty<InvitationResponse> { return writable("response") }
-    var isUnresolved:           ReadableProperty<Bool>               { return property("unresolved") }
-    var happeningIn:            ReadableProperty<TimePerspective>    { return property("perspective") }
-    var percentElapsed:         ReadableProperty<Float>              { return property("elapsed") }
+class EventShell: Shell {
+    var title =                  WritableProperty<String>("title", validatedBy: validIfAtLeast(characters: 5))
+    var startTime =              WritableProperty<Date>("start_time")
+    var endTime =                WritableProperty<Date>("end_time")
+    var timeRange =              ComputedProperty<String,EventShell>("time_range", eventTimeRange)
+    var userIgnored =            WritableProperty<Bool>("ignored", defaultingTo: false)
+    var userIsInvited =          ReadableProperty<Bool>("invited", defaultingTo: false)
+    var userInvitationResponse = WritableProperty<InvitationResponse>("response", defaultingTo: .none)
+    var isUnresolved =           ComputedProperty<Bool,EventShell>("unresolved", {event in
+        if event.userIsInvited.value, event.userInvitationResponse.value == .none {
+            return true
+        } else {
+            return false
+        }
+    })
+    var happeningIn =            ComputedProperty<TimePerspective,EventShell>("perspective", TimePerspective.compute)
+    var percentElapsed =         ComputedProperty<Float,EventShell>("elapsed", computeElapsed)
+
 
     init(id: String, data: [String:Any]) {
-        super.init(schema: EventShell.schema, id: id, data: data)
+        super.init(type: "event", id: id, data: data)
     }
 }
 

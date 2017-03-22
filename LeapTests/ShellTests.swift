@@ -11,16 +11,13 @@ import Darwin
 @testable import Leap
 
 class TestShell: Shell {
-    static var schema = Schema(type: "test",
-                               properties: [WritableProperty<String>("title"),
-                                            WritableProperty<Int>("count"),
-                                            ComputedProperty<Int,TestShell>("magic", {repr in return 88})])
 
-    var title: WritableProperty<String> { return writable("title") }
-    var count: WritableProperty<Int> { return writable("count") }
+    let title = WritableProperty<String>("title")
+    let count = WritableProperty<Int>("count")
+    let magic = ComputedProperty<Int,TestShell>("magic", {repr in return 88})
 
     init(data: [String:Any]) {
-        super.init(schema: TestShell.schema, id: nil, data: data)
+        super.init(type: "test", id: nil, data: data)
     }
 }
 

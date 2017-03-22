@@ -11,6 +11,7 @@ import Foundation
 
 protocol Property {
     var name: String { get }
+    var shell: Shell? { get set }
     var shellType: String { get }
     var stringValue: String { get }
 
@@ -42,7 +43,7 @@ protocol WritableTypedProperty: TypedProperty, Writable {
 public class ReadableProperty<T>: TypedProperty {
     let key: String
     let validator: Validator<T>
-    internal weak var shell: Shell?
+    weak var shell: Shell?
 
     private let _defaultDefaults: [Any] = ["", Int(0), Float(0.0), false]
 

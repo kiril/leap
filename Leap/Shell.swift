@@ -32,15 +32,13 @@ internal class WeakObserver {
  */
 open class Shell {
     let id: String?
-    private let schema: Schema
+    let type: String
 
     internal var properties: [String:Property] = [String:Property]()
 
     internal var store: BackingStore?
     internal var data: [String:Any]
     internal var dirtyFields: Set<String> = []
-
-    var type: String { return schema.type }
 
 
     let isTransient: Bool = false // possible that we change this later
@@ -51,28 +49,29 @@ open class Shell {
 
     internal var observers = [String:WeakObserver]()
 
-    init(schema: Schema, id: String?, data: [String:Any]) {
-        self.schema = schema
+    init(type: String, id: String?, data: [String:Any]) {
+        self.type = type
         self.id = id
         self.data = data
-        self.properties = schema.map(for: self)
+        associateProperties()
     }
 
-    init(store: BackingStore, schema: Schema, id: String?, data: [String:Any]) {
+    init(store: BackingStore, type: String, id: String?, data: [String:Any]) {
         self.store = store
-        self.schema = schema
+        self.type = type
         self.id = id
         self.data = data
-        self.properties = schema.map(for: self)
+        associateProperties()
     }
 
-
-    func writable<Value>(_ name: String) -> WritableProperty<Value> {
-        return self.properties[name] as! WritableProperty<Value>
-    }
-
-    func property<Value>(_ name: String) -> ReadableProperty<Value> {
-        return self.properties[name] as! ReadableProperty<Value>
+    private func associateProperties() {
+        let me = Mirror(reflecting: self)
+        for child in me.children {
+            if var property = child.value as? Property {
+                property.shell = self
+                properties[child.label!] = property
+            }
+        }
     }
 
     func setValue(_ value: Any, forKey key: String, via source: SourceIdentifiable) throws {
