@@ -17,12 +17,6 @@ enum InvitationResponse {
     maybe
 }
 
-enum TimePerspective {
-    case past,
-    future,
-    current
-}
-
 extension TimePerspective {
     static func compute(fromEvent event: EventShell) -> TimePerspective {
         let now = Date()

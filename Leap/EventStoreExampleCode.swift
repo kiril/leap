@@ -9,33 +9,7 @@
 import Foundation
 import EventKit
 
-class EventViewModel: ViewModelUpdateable {
-    var delegate: ViewModelDelegate?
-
-    let id: String
-
-    init(id: String) {
-        self.id = id
-    }
-
-    var title: String {
-        return "My important meeting 👔"
-    }
-
-    var timeRange: String {
-        return "10 - 11pm"
-
-        /// SAVED FROM THE OLD VIEWCONTROLLER CODE:
-        // should be moved to some place we can share with open time display too.
-
-        //        let formatter = DateFormatter()
-        //        formatter.dateFormat = "h:mma"
-        //
-        //        cell.timeLabel.text = "\(formatter.string(from: event.startDate))-\(formatter.string(from: event.endDate))".lowercased()
-        /// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-    }
-
+struct EventStoreExampleCode {
     /// SAVED FROM THE OLD VIEWCONTROLLER CODE:
     let eventStore = EKEventStore()
 
@@ -58,5 +32,4 @@ class EventViewModel: ViewModelUpdateable {
             }
         }
     }
-    /// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 }
