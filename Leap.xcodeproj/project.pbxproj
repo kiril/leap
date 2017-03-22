@@ -25,6 +25,16 @@
 		83F4B1611E7C383F000FCB8D /* ScheduleEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F4B1601E7C383F000FCB8D /* ScheduleEntry.swift */; };
 		DB41B30C348D9390E4320905 /* Pods_LeapUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 386ABDADBBC48EDACA0896BE /* Pods_LeapUITests.framework */; };
 		FB0762DB1E142FBF0035EF8F /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0762DA1E142FBF0035EF8F /* ScheduleViewController.swift */; };
+		FB2046A31E82DA2200F130C8 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A21E82DA2200F130C8 /* Event.swift */; };
+		FB2046A61E82E20100F130C8 /* EKEventStore+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A51E82E20100F130C8 /* EKEventStore+Realm.swift */; };
+		FB2046A81E82E28800F130C8 /* EKCalendar+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A71E82E28800F130C8 /* EKCalendar+Realm.swift */; };
+		FB2046AA1E82E74700F130C8 /* EKParticipant+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A91E82E74700F130C8 /* EKParticipant+Realm.swift */; };
+		FB2046AC1E82E76000F130C8 /* EKAlarm+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046AB1E82E76000F130C8 /* EKAlarm+Realm.swift */; };
+		FB2046AE1E82E77C00F130C8 /* EKEvent+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046AD1E82E77C00F130C8 /* EKEvent+Realm.swift */; };
+		FB2046B01E82E7B000F130C8 /* LegacyCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046AF1E82E7B000F130C8 /* LegacyCalendar.swift */; };
+		FB2046B21E82E7BF00F130C8 /* Reminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046B11E82E7BF00F130C8 /* Reminder.swift */; };
+		FB2046B41E82E7DD00F130C8 /* LeapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046B31E82E7DD00F130C8 /* LeapModel.swift */; };
+		FB2046B61E82E9B100F130C8 /* DeviceAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046B51E82E9B100F130C8 /* DeviceAccount.swift */; };
 		FB4E11A51E79ABB400687702 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4E11A41E79ABB400687702 /* LaunchScreen.storyboard */; };
 		FB4E11A71E79B1F500687702 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4E11A61E79B1F500687702 /* Main.storyboard */; };
 		FB934F201E7E01DF0068CDEF /* Shell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F1F1E7E01DF0068CDEF /* Shell.swift */; };
@@ -88,6 +98,16 @@
 		F7F894F8D14B57D7372FF854 /* Pods-LeapTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LeapTests/Pods-LeapTests.release.xcconfig"; sourceTree = "<group>"; };
 		FB0762DA1E142FBF0035EF8F /* ScheduleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		FB0762DC1E1430A60035EF8F /* Leap.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Leap.entitlements; sourceTree = "<group>"; };
+		FB2046A21E82DA2200F130C8 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		FB2046A51E82E20100F130C8 /* EKEventStore+Realm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EKEventStore+Realm.swift"; sourceTree = "<group>"; };
+		FB2046A71E82E28800F130C8 /* EKCalendar+Realm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EKCalendar+Realm.swift"; sourceTree = "<group>"; };
+		FB2046A91E82E74700F130C8 /* EKParticipant+Realm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EKParticipant+Realm.swift"; sourceTree = "<group>"; };
+		FB2046AB1E82E76000F130C8 /* EKAlarm+Realm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EKAlarm+Realm.swift"; sourceTree = "<group>"; };
+		FB2046AD1E82E77C00F130C8 /* EKEvent+Realm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EKEvent+Realm.swift"; sourceTree = "<group>"; };
+		FB2046AF1E82E7B000F130C8 /* LegacyCalendar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LegacyCalendar.swift; sourceTree = "<group>"; };
+		FB2046B11E82E7BF00F130C8 /* Reminder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reminder.swift; sourceTree = "<group>"; };
+		FB2046B31E82E7DD00F130C8 /* LeapModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeapModel.swift; sourceTree = "<group>"; };
+		FB2046B51E82E9B100F130C8 /* DeviceAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceAccount.swift; sourceTree = "<group>"; };
 		FB4E11A41E79ABB400687702 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FB4E11A61E79B1F500687702 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		FB934F1F1E7E01DF0068CDEF /* Shell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shell.swift; sourceTree = "<group>"; };
@@ -198,6 +218,11 @@
 		8351BDCA1E7C5932001221AF /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				FB2046A21E82DA2200F130C8 /* Event.swift */,
+				FB2046AF1E82E7B000F130C8 /* LegacyCalendar.swift */,
+				FB2046B11E82E7BF00F130C8 /* Reminder.swift */,
+				FB2046B31E82E7DD00F130C8 /* LeapModel.swift */,
+				FB2046B51E82E9B100F130C8 /* DeviceAccount.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -236,6 +261,18 @@
 				831444CE1E7B46A200A5EF06 /* EventStoreExampleCode.swift */,
 			);
 			name = "Temporary (seriously) example code";
+                        sourceTree = "<group>";
+                };
+		FB2046A41E82E1C300F130C8 /* EventKit */ = {
+			isa = PBXGroup;
+			children = (
+				FB2046A51E82E20100F130C8 /* EKEventStore+Realm.swift */,
+				FB2046A71E82E28800F130C8 /* EKCalendar+Realm.swift */,
+				FB2046A91E82E74700F130C8 /* EKParticipant+Realm.swift */,
+				FB2046AB1E82E76000F130C8 /* EKAlarm+Realm.swift */,
+				FB2046AD1E82E77C00F130C8 /* EKEvent+Realm.swift */,
+			);
+			name = EventKit;
 			sourceTree = "<group>";
 		};
 		FB934F1E1E7E019B0068CDEF /* Representations */ = {
@@ -281,6 +318,7 @@
 		FBE0EFE21DFBBB80007BD8DF /* Leap */ = {
 			isa = PBXGroup;
 			children = (
+				FB2046A41E82E1C300F130C8 /* EventKit */,
 				FB934F1E1E7E019B0068CDEF /* Representations */,
 				FBE4DEA91E6CBD8A0062507B /* Res */,
 				FB0762DC1E1430A60035EF8F /* Leap.entitlements */,
@@ -613,26 +651,40 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB2046AE1E82E77C00F130C8 /* EKEvent+Realm.swift in Sources */,
 				FB934F241E7EDF670068CDEF /* Persistence.swift in Sources */,
 				FBE0EFEC1DFBBB80007BD8DF /* Leap.xcdatamodeld in Sources */,
+				FB2046AC1E82E76000F130C8 /* EKAlarm+Realm.swift in Sources */,
 				FBE0EFE61DFBBB80007BD8DF /* AuthViewController.swift in Sources */,
+				FB2046B61E82E9B100F130C8 /* DeviceAccount.swift in Sources */,
 				FBD614541E7F3370001F4050 /* EventShell.swift in Sources */,
 				FB934F261E7EDFA80068CDEF /* Lifecycle.swift in Sources */,
 				FB934F201E7E01DF0068CDEF /* Shell.swift in Sources */,
 				8351BDD11E807C4C001221AF /* WeekOverviewViewModel.swift in Sources */,
 				831444CC1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift in Sources */,
+				FB2046A81E82E28800F130C8 /* EKCalendar+Realm.swift in Sources */,
+				FB2046AA1E82E74700F130C8 /* EKParticipant+Realm.swift in Sources */,
+				831444CC1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift in Sources */,
+				831444D41E7B49A200A5EF06 /* DayScheduleViewModel.swift in Sources */,
+				FB2046B01E82E7B000F130C8 /* LegacyCalendar.swift in Sources */,
 				831444C61E7B020700A5EF06 /* CalendarViewController.swift in Sources */,
 				FBD614581E7F57B0001F4050 /* Validation.swift in Sources */,
+				FB2046B21E82E7BF00F130C8 /* Reminder.swift in Sources */,
 				831444CA1E7B072600A5EF06 /* EventViewCell.swift in Sources */,
 				831444D21E7B472500A5EF06 /* ViewModelUpdateable.swift in Sources */,
 				83F4B1611E7C383F000FCB8D /* ScheduleEntry.swift in Sources */,
 				831444CF1E7B46A200A5EF06 /* EventStoreExampleCode.swift in Sources */,
+				FB2046A61E82E20100F130C8 /* EKEventStore+Realm.swift in Sources */,
+				83F4B1611E7C383F000FCB8D /* ScheduleEntryViewModel.swift in Sources */,
+				FB2046B41E82E7DD00F130C8 /* LeapModel.swift in Sources */,
+				831444CF1E7B46A200A5EF06 /* EventViewModel.swift in Sources */,
 				FBD614561E7F38D4001F4050 /* Schema.swift in Sources */,
 				FBE0EFE41DFBBB80007BD8DF /* AppDelegate.swift in Sources */,
 				83A72D771E82DF95005EB213 /* DayScheduleShell.swift in Sources */,
 				8351BDCD1E7C596C001221AF /* GregorianDay.swift in Sources */,
 				8351BDC91E7C58FD001221AF /* OpenTimeViewModel.swift in Sources */,
 				FB0762DB1E142FBF0035EF8F /* ScheduleViewController.swift in Sources */,
+				FB2046A31E82DA2200F130C8 /* Event.swift in Sources */,
 				FBD1045D1E80309300DDF65B /* Property.swift in Sources */,
 				83A72D741E82DAE0005EB213 /* TimePerspective.swift in Sources */,
 			);
