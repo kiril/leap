@@ -1,5 +1,5 @@
 //
-//  Reminder.swift
+//  Temporality.swift
 //  Leap
 //
 //  Created by Kiril Savino on 3/22/17.
@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import RealmSwift
 
-class Reminder: LeapModel, Temporality {
+protocol Temporality {
 }

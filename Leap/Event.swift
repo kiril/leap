@@ -9,21 +9,14 @@
 import RealmSwift
 import Foundation
 
-enum EventRelationship: String {
-    case invitee     = "invitee"
-    case creator     = "creator"
-    case participant = "participant"
-    case observer    = "observer"
-}
 
-class Event: LeapModel {
+/**
+ * Here's our core!
+ */
+class Event: LeapModel, Temporality {
+    dynamic var title: String = ""
+    dynamic var detail: String = ""
     dynamic var startTime: Date = Date()
     dynamic var endTime: Date = Date()
-    dynamic var calendar: LegacyCalendar? = nil
-    dynamic var relationshipString = EventRelationship.creator.rawValue
-
-    var relationship: EventRelationship {
-        get { return EventRelationship(rawValue: relationshipString)! }
-        set { relationshipString = newValue.rawValue }
-    }
+    dynamic var sourceCalendars: [LegacyCalendar]?
 }

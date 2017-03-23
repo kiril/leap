@@ -40,13 +40,21 @@ extension EKSource {
 
 
 extension EKCalendar {
-    func asLegacyCalendar() -> LegacyCalendar {
+    func asLegacyCalendar(eventStoreId: String) -> LegacyCalendar {
         return LegacyCalendar(value: ["id": self.calendarIdentifier,
+                                      "eventStoreId": eventStoreId,
                                       "account": self.source.asDeviceAccount(),
                                       "color": hexString(from: self.cgColor),
                                       "writable": self.allowsContentModifications,
                                       "editable": !self.isImmutable,
                                       "relationshipString": self.isSubscribed ? CalendarRelationship.follower.rawValue : CalendarRelationship.owner.rawValue])
+    }
+}
+
+extension LegacyCalendar {
+    func asEKCalendar() -> EKCalendar? {
+        let eventStore = EKEventStore()
+        return eventStore.calendar(withIdentifier: self.id)
     }
 }
 

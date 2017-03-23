@@ -10,4 +10,13 @@ import Foundation
 import EventKit
 
 extension EKEvent {
+    func asTemporality() -> Temporality? {
+        return nil
+    }
+
+    func asEvent() -> Event {
+    }
+
+    func asReminder() -> Reminder {
+    }
 }

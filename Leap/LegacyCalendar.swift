@@ -16,6 +16,7 @@ enum CalendarRelationship: String {
 
 class LegacyCalendar: LeapModel {
     dynamic var userId: String = ""
+    dynamic var eventStoreId: String = ""
     dynamic var writable: Bool = false
     dynamic var editable: Bool = false
     dynamic var relationshipString: String = CalendarRelationship.owner.rawValue
@@ -30,4 +31,10 @@ class LegacyCalendar: LeapModel {
     }
 
     dynamic var account: DeviceAccount?
+
+    func sync(event: Event) {
+    }
+
+    func sync(reminder: Reminder) {
+    }
 }
