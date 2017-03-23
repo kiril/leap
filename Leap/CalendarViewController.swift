@@ -14,7 +14,7 @@ private let reuseIdentifier = "EventViewCell"
 
 class CalendarViewController: UICollectionViewController {
 
-    let scheduleViewModel = DayScheduleViewModel(dayId: Calendar.current.today.id)
+    let scheduleViewModel = DayScheduleShell(id: String(Calendar.current.today.id))
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,7 +61,7 @@ class CalendarViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return scheduleViewModel.entries.count
+        return scheduleViewModel.entries.value.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -69,7 +69,7 @@ class CalendarViewController: UICollectionViewController {
     
         // Configure the cell
 
-        let entry = scheduleViewModel.entries[indexPath.row]
+        let entry = scheduleViewModel.entries.value[indexPath.row]
 
         switch entry {
         case .event(let event):

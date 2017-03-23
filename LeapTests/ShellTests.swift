@@ -11,14 +11,9 @@ import Darwin
 @testable import Leap
 
 class TestShell: Shell {
-
     let title = WritableProperty<String>("title")
     let count = WritableProperty<Int>("count")
     let magic = ComputedProperty<Int,TestShell>("magic", {repr in return 88})
-
-    init(data: [String:Any]) {
-        super.init(type: "test", id: nil, data: data)
-    }
 }
 
 class ShellTests: XCTestCase {
@@ -150,5 +145,16 @@ class ShellTests: XCTestCase {
         }
 
         XCTAssertThrowsError(try repr.update(data: ["magic": 12]), "Mutation type checking, non-writable field", {error in XCTAssert({if let se = error as? SchemaError, case SchemaError.notWritable = se { return true } else { return false }}())})
+    }
+
+    func testMockInit() {
+        guard let repr = testShell else {
+            fatalError("OMG")
+        }
+
+        let mockRepr = TestShell(mockData: ["magic":42])
+
+        XCTAssertTrue(repr.magic.value == 88)
+        XCTAssertTrue(mockRepr.magic.value == 42)
     }
 }

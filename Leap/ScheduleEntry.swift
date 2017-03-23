@@ -8,15 +8,19 @@
 
 import Foundation
 
-enum ScheduleEntryViewModel {
+enum ScheduleEntry {
     case event(entry: EventShell)
     case openTime(entry: OpenTimeViewModel)
 
-    static func from(eventId: String) -> ScheduleEntryViewModel {
-        return .event(entry: EventShell(id: "", data:[:]))
+    static func from(eventId: String) -> ScheduleEntry {
+        return from(event: EventShell(id: eventId, data:[:])) // find?
     }
 
-    static func from(openTimeStart start: Date?, end: Date?) -> ScheduleEntryViewModel {
+    static func from(event: EventShell) -> ScheduleEntry {
+        return .event(entry: event)
+    }
+
+    static func from(openTimeStart start: Date?, end: Date?) -> ScheduleEntry {
         let openTime = OpenTimeViewModel(startTime: start, endTime: end)
         return .openTime(entry: openTime)
     }

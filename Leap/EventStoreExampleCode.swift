@@ -9,7 +9,7 @@
 import Foundation
 import EventKit
 
-struct EventStoreExampleCode {
+class EventStoreExampleCode {
     /// SAVED FROM THE OLD VIEWCONTROLLER CODE:
     let eventStore = EKEventStore()
 
@@ -32,4 +32,25 @@ struct EventStoreExampleCode {
             }
         }
     }
+
+
+    // SAVED FROM THE OLD DAY SCHEDULE VIEW MODEL
+    private var localEvents = [EKEvent]()
+
+    private func fetchEventsFor(dayId: Int) {
+        let calendar = NSCalendar.current
+        let day = GregorianDay(id: dayId)
+        let date = calendar.date(from: day.components)!
+        let startOfDay = calendar.startOfDay(for: date)
+
+        let nextDate = calendar.date(from: day.dayAfter.components)!
+        let endOfDay = calendar.startOfDay(for: nextDate)
+
+        let dayPredicate = eventStore.predicateForEvents(withStart: startOfDay,
+                                                         end: endOfDay,
+                                                         calendars: nil)
+
+        self.localEvents = eventStore.events(matching: dayPredicate)
+    }
+
 }
