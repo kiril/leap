@@ -10,13 +10,34 @@ import RealmSwift
 import Foundation
 
 
+enum EventModality: String {
+    case unknown  = "unknown"
+    case inPerson = "in_person"
+    case video    = "video"
+    case phone    = "phone"
+    case chat     = "chat"
+}
+
 /**
  * Here's our core!
  */
-class Event: LeapModel, Temporality {
+class Event: _TemporalBase, Temporality {
     dynamic var title: String = ""
     dynamic var detail: String = ""
-    dynamic var startTime: Date = Date()
-    dynamic var endTime: Date = Date()
-    dynamic var sourceCalendars: [LegacyCalendar]?
+    dynamic var startTime: Date?
+    dynamic var endTime: Date?
+    dynamic var venue: Venue?
+    dynamic var room: Room?
+    dynamic var modalityString: String = EventModality.unknown.rawValue
+    dynamic var remoteCreated: Date?
+    dynamic var remoteLastModified: Date?
+
+    let channels = List<Channel>()
+
+    var modality: EventModality {
+        get { return EventModality(rawValue: modalityString)! }
+        set { modalityString = newValue.rawValue }
+    }
+
+    var date: Date? { return self.startTime }
 }

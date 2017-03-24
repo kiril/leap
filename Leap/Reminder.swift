@@ -9,5 +9,11 @@
 import Foundation
 import RealmSwift
 
-class Reminder: LeapModel, Temporality {
+class Reminder: _TemporalBase, Temporality {
+    dynamic var event: Event?
+    dynamic var startDate: Date?
+    dynamic var endDate: Date?
+    dynamic var timeUTC: Int = 0
+
+    var date: Date? { return startDate }
 }

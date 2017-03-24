@@ -7,3 +7,9 @@
 //
 
 import Foundation
+
+class Location: LeapModel {
+    dynamic var name: String?
+    dynamic var address: Address?
+    dynamic var timeZone: String?
+}
