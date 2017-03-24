@@ -32,14 +32,18 @@ internal class WeakObserver {
  */
 open class Shell {
     let id: String?
-    let type: String
+    typealias ShellData = [String:Any]
 
     internal var properties: [String:Property] = [String:Property]()
 
     internal var store: BackingStore?
-    internal var data: [String:Any]
+    internal var data: ShellData
+    internal var mockData: ShellData?
     internal var dirtyFields: Set<String> = []
 
+    var type: String {
+        return "shell" // default to class name?
+    }
 
     let isTransient: Bool = false // possible that we change this later
     var isDirty: Bool = false
@@ -49,19 +53,20 @@ open class Shell {
 
     internal var observers = [String:WeakObserver]()
 
-    init(type: String, id: String?, data: [String:Any]) {
-        self.type = type
+    init(store: BackingStore? = nil,
+         id: String? = nil,
+         data: [String:Any] = [:]) {
+
+        self.store = store
         self.id = id
         self.data = data
+
         associateProperties()
     }
 
-    init(store: BackingStore, type: String, id: String?, data: [String:Any]) {
-        self.store = store
-        self.type = type
-        self.id = id
-        self.data = data
-        associateProperties()
+    convenience init(mockData data: ShellData) {
+        self.init(store: nil, id: nil, data: data)
+        self.mockData = data
     }
 
     private func associateProperties() {

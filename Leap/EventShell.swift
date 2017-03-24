@@ -30,20 +30,13 @@ extension TimePerspective {
     }
 }
 
-func eventTimeRange(event: EventShell) -> String {
-    return "10am-2pm" // TODO: actually do this
-}
-
-func computeElapsed(event: EventShell) -> Float {
-    return 0.0 // TODO: calcualte elapsed time
-}
-
-
 class EventShell: Shell {
+    override var type: String { return "event" }
+
     let title =                  WritableProperty<String>("title", validatedBy: validIfAtLeast(characters: 5))
     let startTime =              WritableProperty<Date>("start_time")
     let endTime =                WritableProperty<Date>("end_time")
-    let timeRange =              ComputedProperty<String,EventShell>("time_range", eventTimeRange)
+    let timeRange =              ComputedProperty<String,EventShell>("time_range", EventShell.eventTimeRange)
     let userIgnored =            WritableProperty<Bool>("ignored", defaultingTo: false)
     let userIsInvited =          ReadableProperty<Bool>("invited", defaultingTo: false)
     let userInvitationResponse = WritableProperty<InvitationResponse>("response", defaultingTo: .none)
@@ -55,11 +48,14 @@ class EventShell: Shell {
         }
     })
     let userPerspective =        ComputedProperty<TimePerspective,EventShell>("perspective", TimePerspective.compute)
-    let percentElapsed =         ComputedProperty<Float,EventShell>("elapsed", computeElapsed)
+    let percentElapsed =         ComputedProperty<Float,EventShell>("elapsed", EventShell.computeElapsed)
 
+    static func eventTimeRange(event: EventShell) -> String {
+        return "10am-2pm" // TODO: actually do this
+    }
 
-    init(id: String, data: [String:Any]) {
-        super.init(type: "event", id: id, data: data)
+    static func computeElapsed(event: EventShell) -> Float {
+        return 0.0 // TODO: calcualte elapsed time
     }
 }
 

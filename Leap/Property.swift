@@ -105,7 +105,6 @@ public class ReadableProperty<T>: TypedProperty {
         self.init(key, validatedBy: alwaysValid, defaultingTo: nil, referencing: shell)
     }
 
-
     func isValid(value: Any) -> Bool {
         guard value is T else {
             return false
@@ -156,6 +155,9 @@ public class ComputedProperty<T,R:Shell>: ReadableProperty<T> {
     internal let getter: Computation<T,R>
 
     override var value: T {
+        if let mockValue = shell!.mockData?[key] as? T {
+            return mockValue
+        }
         return getter(shell as! R)
     }
 
