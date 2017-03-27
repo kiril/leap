@@ -58,6 +58,7 @@
 		FB4208721E8985DC007F4DBD /* Organization.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208711E8985DC007F4DBD /* Organization.swift */; };
 		FB4E11A51E79ABB400687702 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4E11A41E79ABB400687702 /* LaunchScreen.storyboard */; };
 		FB4E11A71E79B1F500687702 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4E11A61E79B1F500687702 /* Main.storyboard */; };
+		FB8BB6231E89A76A00A30315 /* EventKitMigrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8BB6221E89A76A00A30315 /* EventKitMigrationTests.swift */; };
 		FB934F201E7E01DF0068CDEF /* Shell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F1F1E7E01DF0068CDEF /* Shell.swift */; };
 		FB934F241E7EDF670068CDEF /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F231E7EDF670068CDEF /* Persistence.swift */; };
 		FB934F261E7EDFA80068CDEF /* Lifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F251E7EDFA80068CDEF /* Lifecycle.swift */; };
@@ -154,6 +155,7 @@
 		FB4208711E8985DC007F4DBD /* Organization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Organization.swift; sourceTree = "<group>"; };
 		FB4E11A41E79ABB400687702 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FB4E11A61E79B1F500687702 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		FB8BB6221E89A76A00A30315 /* EventKitMigrationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventKitMigrationTests.swift; sourceTree = "<group>"; };
 		FB934F1F1E7E01DF0068CDEF /* Shell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shell.swift; sourceTree = "<group>"; };
 		FB934F231E7EDF670068CDEF /* Persistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		FB934F251E7EDFA80068CDEF /* Lifecycle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lifecycle.swift; sourceTree = "<group>"; };
@@ -309,8 +311,8 @@
 				831444CE1E7B46A200A5EF06 /* EventStoreExampleCode.swift */,
 			);
 			name = "Temporary (seriously) example code";
-                        sourceTree = "<group>";
-                };
+			sourceTree = "<group>";
+		};
 		FB2046A41E82E1C300F130C8 /* EventKit */ = {
 			isa = PBXGroup;
 			children = (
@@ -453,6 +455,7 @@
 				FBE0EFFB1DFBBB80007BD8DF /* LeapTests.swift */,
 				FBE0EFFD1DFBBB80007BD8DF /* Info.plist */,
 				FBD1045E1E80717E00DDF65B /* ShellTests.swift */,
+				FB8BB6221E89A76A00A30315 /* EventKitMigrationTests.swift */,
 			);
 			path = LeapTests;
 			sourceTree = "<group>";
@@ -786,7 +789,6 @@
 				FB2046A81E82E28800F130C8 /* EKCalendar+Realm.swift in Sources */,
 				FB42085D1E896847007F4DBD /* Resource.swift in Sources */,
 				FB2046AA1E82E74700F130C8 /* EKParticipant+Realm.swift in Sources */,
-				831444D41E7B49A200A5EF06 /* DayScheduleViewModel.swift in Sources */,
 				FB2046B01E82E7B000F130C8 /* LegacyCalendar.swift in Sources */,
 				FB4208551E859606007F4DBD /* Alarm.swift in Sources */,
 				831444C61E7B020700A5EF06 /* CalendarViewController.swift in Sources */,
@@ -823,6 +825,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB8BB6231E89A76A00A30315 /* EventKitMigrationTests.swift in Sources */,
 				FBD1045F1E80717E00DDF65B /* ShellTests.swift in Sources */,
 				FBE0EFFC1DFBBB80007BD8DF /* LeapTests.swift in Sources */,
 			);
