@@ -16,6 +16,4 @@ class Address: LeapModel {
     dynamic var state: String?
     dynamic var country: String?
     dynamic var code: String?
-    dynamic var latitude: Float = 0.0
-    dynamic var longitude: Float = 0.0
 }

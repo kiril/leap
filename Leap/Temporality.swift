@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 
 /**
@@ -43,15 +44,14 @@ protocol Temporality {
     var participants: List<Participant> { get }
     var me: Participant? { get }
     var externalURL: String? { get set }
+    var alarms: List<Alarm> { get }
 }
 
 extension Temporality {
     var me: Participant? {
-        if let participants = self.participants {
-            for participant in participants {
-                if let person = participant.person, person.isMe {
-                    return participant
-                }
+        for participant in participants {
+            if let person = participant.person, person.isMe {
+                return participant
             }
         }
 
@@ -60,10 +60,13 @@ extension Temporality {
 }
 
 class _TemporalBase: LeapModel {
+    dynamic var title: String = ""
+    dynamic var detail: String = ""
     dynamic var recurrence: Recurrence?
     dynamic var userOwnershipString = Ownership.creator.rawValue // right default?
     dynamic var userEngagementString = Engagement.undecided.rawValue
     dynamic var externalURL: String?
+    let alarms = List<Alarm>()
     let participants = List<Participant>()
     let sourceCalendars = List<LegacyCalendar>()
 

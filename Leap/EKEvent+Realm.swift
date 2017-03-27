@@ -8,25 +8,54 @@
 
 import Foundation
 import EventKit
-
-// EKParticipant
-// .isCurrentUser
-// .name?
-// .participantRole EKParticipantRole (unknown, required, optional, chair, nonParticipant)
-// .participantStatus EKParticipantstatus (unknown, pending, accepted, declined, tentative, delegated, completed, inProcess)
-//     note: "inProcess" and "completed" are about the event...???
-// .participantType EKParticipantType (unknown, person, room, resource, group)
-// .url
+import RealmSwift
 
 extension EKEvent {
-    func asTemporality() -> Temporality? {
-        if self.isAllDay {
-            return self.allDayAsReminder()
+    static func engagement(for type: Any,
+                           from status: EKEventStatus,
+                           and availability: EKEventAvailability) -> Engagement {
+        switch status {
+        case .none:
+            return Engagement.undecided // I think this is right
+        case .confirmed:
+            if type is Reminder.Type {
+                // reminders are by definition sorta ephemeral,
+                // so it doesn't matter how the event was originally configured
+                return Engagement.engaged
+            } else {
+                // Events are intended to be real things, so we're going to
+                // only show them as real things in your calendar if they're
+                // actually concrete things that'll actually happen (as distinct
+                // from Reminders as above)
+                switch availability {
+                case .busy, .unavailable, .notSupported:
+                    return Engagement.engaged
+                case .tentative, .free:
+                    return Engagement.tracking
+                }
+            }
+        case .tentative:
+            return Engagement.tracking
+        case .canceled:
+            return Engagement.disengaged
         }
-        return self.asEvent()
     }
 
-    func asEvent() -> Event {
+    func asTemporality(in realm: Realm) -> Temporality? {
+        if self.isAllDay {
+            return self.asReminder(in: realm)
+        } else {
+            switch self.availability {
+            case .free:
+                return self.asReminder(in: realm)
+            default:
+                return self.asEvent(in: realm)
+            }
+        }
+    }
+
+    func asEvent(in realm: Realm) -> Event {
+        // .title
         // .location?
         // .creationDate?
         // .lastModifiedDate?
@@ -49,8 +78,57 @@ extension EKEvent {
         // .isDetached -> if it's a modified instance of a repeating event
         // .organizer EKParticipant?
         // .status EKEventStatus (none, confirmed, tentative, canceled)
+        let data: [String:Any?] = [
+            "title": self.title,
+            "detail": self.notes,
+            "startTime": self.startDate,
+            "endTime": self.endDate,
+            "locationString": self.location,
+            "remoteCreated": self.creationDate,
+            "remoteModified": self.lastModifiedDate,
+            "legacyTimeZone": self.timeZone,
+            "externalURL": self.url,
+            "engagementString": EKEvent.engagement(for: Event.self, from: self.status, and: self.availability)
+        ]
+
+        let event = Event(value: data)
+
+        var organizerId: String? = nil
+
+        if let organizer = self.organizer, let participant = organizer.asParticipant(in: realm) {
+            if let person = participant.person {
+                organizerId = person.id
+            }
+            event.participants.append(participant)
+        }
+
+        if let attendees = self.attendees {
+            for attendee in attendees {
+                if let participant = attendee.asParticipant(in: realm), let person = participant.person, person.id != organizerId {
+                    event.participants.append(participant)
+                } else if let reservation = attendee.asRoomReservation(in: realm) {
+                    event.rooms.append(reservation)
+                } else if let reservation = attendee.asResourceReservation(in: realm) {
+                    event.resources.append(reservation)
+                }
+            }
+        }
+
+        if let ekAlarms = self.alarms {
+            for alarm in ekAlarms {
+                event.alarms.append(alarm.asAlarm(in: realm))
+            }
+        }
+
+        // .recurrenceRules -> [EKRecurrenceRule]? -> Recurrence?
+
+        return event
     }
 
-    func allDayAsReminder() -> Reminder {
+    func asReminder(in realm: Realm) -> Reminder {
+        let data: [String:Any?] = [
+            "title": self.title
+        ]
+        return Reminder(value: data)
     }
 }

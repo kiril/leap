@@ -44,6 +44,11 @@
 		FB4208511E8593DA007F4DBD /* Venue.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208501E8593DA007F4DBD /* Venue.swift */; };
 		FB4208531E85948A007F4DBD /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208521E85948A007F4DBD /* Channel.swift */; };
 		FB4208551E859606007F4DBD /* Alarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208541E859606007F4DBD /* Alarm.swift */; };
+		FB4208571E85A168007F4DBD /* GeoFence.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208561E85A168007F4DBD /* GeoFence.swift */; };
+		FB4208591E85A2DD007F4DBD /* Realm+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208581E85A2DD007F4DBD /* Realm+Leap.swift */; };
+		FB42085B1E85A650007F4DBD /* TimeZone.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42085A1E85A650007F4DBD /* TimeZone.swift */; };
+		FB42085D1E896847007F4DBD /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42085C1E896847007F4DBD /* Resource.swift */; };
+		FB42085F1E896C40007F4DBD /* Reservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42085E1E896C40007F4DBD /* Reservation.swift */; };
 		FB4E11A51E79ABB400687702 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4E11A41E79ABB400687702 /* LaunchScreen.storyboard */; };
 		FB4E11A71E79B1F500687702 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4E11A61E79B1F500687702 /* Main.storyboard */; };
 		FB934F201E7E01DF0068CDEF /* Shell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F1F1E7E01DF0068CDEF /* Shell.swift */; };
@@ -128,6 +133,11 @@
 		FB4208501E8593DA007F4DBD /* Venue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Venue.swift; sourceTree = "<group>"; };
 		FB4208521E85948A007F4DBD /* Channel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
 		FB4208541E859606007F4DBD /* Alarm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alarm.swift; sourceTree = "<group>"; };
+		FB4208561E85A168007F4DBD /* GeoFence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeoFence.swift; sourceTree = "<group>"; };
+		FB4208581E85A2DD007F4DBD /* Realm+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Realm+Leap.swift"; sourceTree = "<group>"; };
+		FB42085A1E85A650007F4DBD /* TimeZone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeZone.swift; sourceTree = "<group>"; };
+		FB42085C1E896847007F4DBD /* Resource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
+		FB42085E1E896C40007F4DBD /* Reservation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reservation.swift; sourceTree = "<group>"; };
 		FB4E11A41E79ABB400687702 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FB4E11A61E79B1F500687702 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		FB934F1F1E7E01DF0068CDEF /* Shell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shell.swift; sourceTree = "<group>"; };
@@ -240,6 +250,7 @@
 		8351BDCA1E7C5932001221AF /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				FB4208581E85A2DD007F4DBD /* Realm+Leap.swift */,
 				FB2046B71E830E4600F130C8 /* Temporality.swift */,
 				FB2046A21E82DA2200F130C8 /* Event.swift */,
 				FB2046B11E82E7BF00F130C8 /* Reminder.swift */,
@@ -256,6 +267,10 @@
 				FB2046B31E82E7DD00F130C8 /* LeapModel.swift */,
 				FB4208521E85948A007F4DBD /* Channel.swift */,
 				FB4208541E859606007F4DBD /* Alarm.swift */,
+				FB4208561E85A168007F4DBD /* GeoFence.swift */,
+				FB42085A1E85A650007F4DBD /* TimeZone.swift */,
+				FB42085C1E896847007F4DBD /* Resource.swift */,
+				FB42085E1E896C40007F4DBD /* Reservation.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -688,6 +703,7 @@
 				FB4208531E85948A007F4DBD /* Channel.swift in Sources */,
 				FBCA4D1E1E84490A003E7AB7 /* Location.swift in Sources */,
 				FB934F241E7EDF670068CDEF /* Persistence.swift in Sources */,
+				FB42085B1E85A650007F4DBD /* TimeZone.swift in Sources */,
 				FBE0EFEC1DFBBB80007BD8DF /* Leap.xcdatamodeld in Sources */,
 				FB2046AC1E82E76000F130C8 /* EKAlarm+Realm.swift in Sources */,
 				FBE0EFE61DFBBB80007BD8DF /* AuthViewController.swift in Sources */,
@@ -695,6 +711,7 @@
 				FB2046B61E82E9B100F130C8 /* DeviceAccount.swift in Sources */,
 				FB4208491E8579D0007F4DBD /* Auditable.swift in Sources */,
 				FB42084D1E857F7C007F4DBD /* Person.swift in Sources */,
+				FB4208571E85A168007F4DBD /* GeoFence.swift in Sources */,
 				FBD614541E7F3370001F4050 /* EventShell.swift in Sources */,
 				FB934F261E7EDFA80068CDEF /* Lifecycle.swift in Sources */,
 				FB42084B1E857DAF007F4DBD /* Participant.swift in Sources */,
@@ -702,6 +719,7 @@
 				8351BDD11E807C4C001221AF /* WeekOverviewViewModel.swift in Sources */,
 				831444CC1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift in Sources */,
 				FB2046A81E82E28800F130C8 /* EKCalendar+Realm.swift in Sources */,
+				FB42085D1E896847007F4DBD /* Resource.swift in Sources */,
 				FB2046AA1E82E74700F130C8 /* EKParticipant+Realm.swift in Sources */,
 				831444CC1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift in Sources */,
 				831444D41E7B49A200A5EF06 /* DayScheduleViewModel.swift in Sources */,
@@ -713,6 +731,7 @@
 				FB4208471E857984007F4DBD /* Recurrence.swift in Sources */,
 				831444CA1E7B072600A5EF06 /* EventViewCell.swift in Sources */,
 				FB42084F1E8592E8007F4DBD /* Address.swift in Sources */,
+				FB4208591E85A2DD007F4DBD /* Realm+Leap.swift in Sources */,
 				831444D21E7B472500A5EF06 /* ViewModelUpdateable.swift in Sources */,
 				83F4B1611E7C383F000FCB8D /* ScheduleEntry.swift in Sources */,
 				831444CF1E7B46A200A5EF06 /* EventStoreExampleCode.swift in Sources */,
@@ -722,6 +741,7 @@
 				831444CF1E7B46A200A5EF06 /* EventViewModel.swift in Sources */,
 				FBD614561E7F38D4001F4050 /* Schema.swift in Sources */,
 				FB2046B81E830E4600F130C8 /* Temporality.swift in Sources */,
+				FB42085F1E896C40007F4DBD /* Reservation.swift in Sources */,
 				FBE0EFE41DFBBB80007BD8DF /* AppDelegate.swift in Sources */,
 				83A72D771E82DF95005EB213 /* DayScheduleShell.swift in Sources */,
 				8351BDCD1E7C596C001221AF /* GregorianDay.swift in Sources */,

@@ -38,17 +38,7 @@ enum ParticipationType: String {
 }
 
 
-protocol Participant {
-    var person: Person? { get }
-    var identifierUsed: String? { get } // the email used to invite them...?
-    var participation: Participation { get set }
-    var engagement: Engagement { get set }
-    var importance: ParticipationImportance { get set }
-    var type: ParticipationType { get set }
-}
-
-
-class _ParticipantBase: LeapModel {
+class Participant: LeapModel {
     dynamic var person: Person?
     dynamic var identifierUsed: String?
     dynamic var participationString: String = Participation.unknown.rawValue

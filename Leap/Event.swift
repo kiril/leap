@@ -22,17 +22,19 @@ enum EventModality: String {
  * Here's our core!
  */
 class Event: _TemporalBase, Temporality {
-    dynamic var title: String = ""
-    dynamic var detail: String = ""
     dynamic var startTime: Date?
     dynamic var endTime: Date?
-    dynamic var venue: Venue?
-    dynamic var room: Room?
+    dynamic var locationString: String?
+    dynamic var legacyTimeZone: TimeZone?
     dynamic var modalityString: String = EventModality.unknown.rawValue
     dynamic var remoteCreated: Date?
     dynamic var remoteLastModified: Date?
+    dynamic var organizer: Person?
 
     let channels = List<Channel>()
+    let venues = List<Venue>()
+    let rooms = List<Room>()
+    let resources = List<Resource>()
 
     var modality: EventModality {
         get { return EventModality(rawValue: modalityString)! }
@@ -40,4 +42,8 @@ class Event: _TemporalBase, Temporality {
     }
 
     var date: Date? { return self.startTime }
+
+    override static func indexedProperties() -> [String] {
+        return ["venue", "room", "startTime", "participants"]
+    }
 }

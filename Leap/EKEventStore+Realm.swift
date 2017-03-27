@@ -8,10 +8,11 @@
 
 import Foundation
 import EventKit
+import RealmSwift
 
-func syncEventSearchCallback(for calendar: LegacyCalendar) -> EKEventSearchCallback {
+func syncEventSearchCallback(for calendar: LegacyCalendar, in realm: Realm) -> EKEventSearchCallback {
     func sync(ekEvent: EKEvent, stopBoolPointer: UnsafeMutablePointer<ObjCBool>) {
-        let temporality = ekEvent.asTemporality()
+        let temporality = ekEvent.asTemporality(in: realm)
         switch temporality {
         case let event as Event:
             calendar.sync(event: event)
@@ -33,7 +34,7 @@ extension EKEventStore {
         return eventCalendars.map { $0.asLegacyCalendar(eventStoreId: self.eventStoreIdentifier) } + reminderCalendars.map { $0.asLegacyCalendar(eventStoreId: self.eventStoreIdentifier) }
     }
 
-    func syncPastEvents(forCalendar calendar: LegacyCalendar) -> Bool {
+    func syncPastEvents(forCalendar calendar: LegacyCalendar, in realm: Realm) -> Bool {
         guard let ekCalendar = calendar.asEKCalendar() else {
             return false
         }
@@ -47,11 +48,11 @@ extension EKEventStore {
                                                         calendars: [ekCalendar])
 
 
-        self.enumerateEvents(matching: predicate, using: syncEventSearchCallback(for: calendar))
+        self.enumerateEvents(matching: predicate, using: syncEventSearchCallback(for: calendar, in: realm))
         return true
     }
 
-    func syncFutureEvents(forCalendar calendar: LegacyCalendar) -> Bool {
+    func syncFutureEvents(forCalendar calendar: LegacyCalendar, in realm: Realm) -> Bool {
         guard let ekCalendar = calendar.asEKCalendar() else {
             return false
         }
@@ -64,7 +65,7 @@ extension EKEventStore {
                                                         end: farFuture,
                                                         calendars: [ekCalendar])
 
-        self.enumerateEvents(matching: predicate, using: syncEventSearchCallback(for: calendar))
+        self.enumerateEvents(matching: predicate, using: syncEventSearchCallback(for: calendar, in: realm))
         return true
     }
 }

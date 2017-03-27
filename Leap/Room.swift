@@ -8,7 +8,11 @@
 
 import Foundation
 
-class Room: LeapModel {
-    dynamic var name: String = ""
-    dynamic var venue: Venue?
+class Room: Resource {
+    dynamic var capacity: Int = 0
+
+    override var type: ResourceType {
+        get { return .room }
+        set { }
+    }
 }

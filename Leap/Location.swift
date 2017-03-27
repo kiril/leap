@@ -11,5 +11,7 @@ import Foundation
 class Location: LeapModel {
     dynamic var name: String?
     dynamic var address: Address?
-    dynamic var timeZone: String?
+    dynamic var timeZone: TimeZone?
+    dynamic var latitude: Float = 0.0
+    dynamic var longitude: Float = 0.0
 }
