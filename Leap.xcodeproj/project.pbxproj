@@ -11,7 +11,7 @@
 		42D2911C1C35BD18F961382F /* Pods_LeapTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 726DA31B7DBD3655C83BFA3D /* Pods_LeapTests.framework */; };
 		831444BF1E7AF4E200A5EF06 /* AuthFlow.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 831444BE1E7AF4E200A5EF06 /* AuthFlow.storyboard */; };
 		831444C11E7AF77700A5EF06 /* LocalCalendar.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 831444C01E7AF77700A5EF06 /* LocalCalendar.storyboard */; };
-		831444C61E7B020700A5EF06 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444C51E7B020700A5EF06 /* CalendarViewController.swift */; };
+		831444C61E7B020700A5EF06 /* CalendarCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444C51E7B020700A5EF06 /* CalendarCollectionViewController.swift */; };
 		831444C81E7B034A00A5EF06 /* EventViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 831444C71E7B034A00A5EF06 /* EventViewCell.xib */; };
 		831444CA1E7B072600A5EF06 /* EventViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444C91E7B072600A5EF06 /* EventViewCell.swift */; };
 		831444CC1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444CB1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift */; };
@@ -111,7 +111,7 @@
 		726DA31B7DBD3655C83BFA3D /* Pods_LeapTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeapTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		831444BE1E7AF4E200A5EF06 /* AuthFlow.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AuthFlow.storyboard; sourceTree = "<group>"; };
 		831444C01E7AF77700A5EF06 /* LocalCalendar.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LocalCalendar.storyboard; sourceTree = "<group>"; };
-		831444C51E7B020700A5EF06 /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
+		831444C51E7B020700A5EF06 /* CalendarCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewController.swift; sourceTree = "<group>"; };
 		831444C71E7B034A00A5EF06 /* EventViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventViewCell.xib; sourceTree = "<group>"; };
 		831444C91E7B072600A5EF06 /* EventViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventViewCell.swift; sourceTree = "<group>"; };
 		831444CB1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewFlowLayout.swift; sourceTree = "<group>"; };
@@ -252,7 +252,7 @@
 				831444C01E7AF77700A5EF06 /* LocalCalendar.storyboard */,
 				831444C71E7B034A00A5EF06 /* EventViewCell.xib */,
 				831444C91E7B072600A5EF06 /* EventViewCell.swift */,
-				831444C51E7B020700A5EF06 /* CalendarViewController.swift */,
+				831444C51E7B020700A5EF06 /* CalendarCollectionViewController.swift */,
 				831444CB1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift */,
 			);
 			name = LocalCalendar;
@@ -821,7 +821,7 @@
 				FB2046AA1E82E74700F130C8 /* EKParticipant+Realm.swift in Sources */,
 				FB2046B01E82E7B000F130C8 /* LegacyCalendar.swift in Sources */,
 				FB4208551E859606007F4DBD /* Alarm.swift in Sources */,
-				831444C61E7B020700A5EF06 /* CalendarViewController.swift in Sources */,
+				831444C61E7B020700A5EF06 /* CalendarCollectionViewController.swift in Sources */,
 				FBD614581E7F57B0001F4050 /* Validation.swift in Sources */,
 				FB2046B21E82E7BF00F130C8 /* Reminder.swift in Sources */,
 				FB42086E1E89816B007F4DBD /* EKRecurrenceRule+Realm.swift in Sources */,

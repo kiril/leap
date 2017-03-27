@@ -22,21 +22,6 @@ class DayScheduleShell: Shell {
     }
 
     private static func scheduleEntries(schedule: DayScheduleShell) -> [ScheduleEntry] {
-        // MOCKING OUT LIST OF ENTRIES
-
-        var entries = [ScheduleEntry]()
-
-        for i in 2...4 {
-            let event = EventShell(mockData: ["title": "testing", "time_range": "\(i)pm - \(i+1)pm"])
-            let eventEntry = ScheduleEntry.from(event: event)
-            entries.append(eventEntry)
-        }
-
-        entries.append(ScheduleEntry.from(openTimeStart: nil, end: nil))
-
-        let eventEntry = ScheduleEntry.from(eventId: "")
-        entries.append(eventEntry)
-        
-        return entries
+        return [ScheduleEntry]()
     }
 }

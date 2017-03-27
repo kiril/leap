@@ -12,23 +12,42 @@ import EventKit
 
 private let reuseIdentifier = "EventViewCell"
 
-class CalendarViewController: UICollectionViewController {
+class CalendarCollectionViewController: UICollectionViewController {
 
-    let scheduleViewModel = DayScheduleShell(id: String(Calendar.current.today.id))
+    let scheduleViewModel: DayScheduleShell = {
+        // mocking out entries
+
+        var entries = [ScheduleEntry]()
+
+        for i in 2...4 {
+            let event = EventShell(mockData: ["title": "testing", "time_range": "\(i)pm - \(i+1)pm"])
+            let eventEntry = ScheduleEntry.from(event: event)
+            entries.append(eventEntry)
+        }
+
+        entries.append(ScheduleEntry.from(openTimeStart: nil, end: nil))
+
+        let eventEntry = ScheduleEntry.from(eventId: "")
+        entries.append(eventEntry)
+
+        return DayScheduleShell(mockData: ["entries": entries])
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
+//        self.automaticallyAdjustsScrollViewInsets = false
         // Register cell classes
         self.collectionView!.register(UINib(nibName: "EventViewCell", bundle: nil), forCellWithReuseIdentifier: reuseIdentifier)
 
         let layout = CalendarViewFlowLayout()
-        layout.estimatedItemSize = CGSize(width: self.collectionView!.bounds.size.width, height: 100)
+
         self.collectionView!.collectionViewLayout = layout
-        self.collectionView!.alwaysBounceVertical = true
+        self.collectionView!.contentInset = UIEdgeInsets(top: 15.0, left: 15.0, bottom: 0.0, right: 15.0)
+
+//        self.collectionView!.delegate = self
 
         // Do any additional setup after loading the view.
     }
@@ -84,14 +103,21 @@ class CalendarViewController: UICollectionViewController {
         return cell
     }
 
+
     func configureCell(_ cell: EventViewCell, forEvent event: EventShell) {
         cell.timeLabel.text = event.timeRange.value
         cell.titleLabel.text = event.title.value
-        cell.widthAnchor.constraint(equalToConstant: collectionView!.bounds.size.width).isActive = true
-
+        let targetWidth = collectionView!.bounds.size.width - 30
+        cell.contentView.widthAnchor.constraint(equalToConstant: targetWidth).isActive = true
     }
 
     // MARK: UICollectionViewDelegate
 
 
+}
+
+extension CalendarCollectionViewController: UICollectionViewDelegateFlowLayout {
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+//        return UIEdgeInsets(top: 0.0, left: 15.0, bottom: 0.0, right: 15.0)
+//    }
 }

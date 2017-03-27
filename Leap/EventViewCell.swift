@@ -11,4 +11,28 @@ import UIKit
 class EventViewCell: UICollectionViewCell {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
+    var borderColor: UIColor = UIColor.black {
+        didSet { setBorderColor() }
+    }
+
+    private func setBorderColor() {
+        self.layer.borderColor = borderColor.cgColor
+        self.layer.borderWidth = 1.0
+    }
+
+    private func setup() {
+        setBorderColor()
+    }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        setup()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+
+        setup()
+    }
 }
