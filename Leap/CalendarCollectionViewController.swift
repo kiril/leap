@@ -14,72 +14,31 @@ private let reuseIdentifier = "EventViewCell"
 
 class CalendarCollectionViewController: UICollectionViewController {
 
-    let scheduleViewModel: DayScheduleShell = {
-        // mocking out entries
-
-        var entries = [ScheduleEntry]()
-
-        for i in 2...4 {
-            let event = EventShell(mockData: ["title": "testing", "time_range": "\(i)pm - \(i+1)pm"])
-            let eventEntry = ScheduleEntry.from(event: event)
-            entries.append(eventEntry)
-        }
-
-        entries.append(ScheduleEntry.from(openTimeStart: nil, end: nil))
-
-        let eventEntry = ScheduleEntry.from(eventId: "")
-        entries.append(eventEntry)
-
-        return DayScheduleShell(mockData: ["entries": entries])
-    }()
+    let scheduleViewModel = CalendarCollectionViewController.mockedEntries()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-//        self.automaticallyAdjustsScrollViewInsets = false
-        // Register cell classes
+        setupCollectionView()
+    }
+
+    private func setupCollectionView() {
         self.collectionView!.register(UINib(nibName: "EventViewCell", bundle: nil), forCellWithReuseIdentifier: reuseIdentifier)
 
         let layout = CalendarViewFlowLayout()
 
         self.collectionView!.collectionViewLayout = layout
         self.collectionView!.contentInset = UIEdgeInsets(top: 15.0, left: 15.0, bottom: 0.0, right: 15.0)
-
-//        self.collectionView!.delegate = self
-
-        // Do any additional setup after loading the view.
+        self.collectionView!.alwaysBounceVertical = true
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
 
     // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
-
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
         return scheduleViewModel.entries.value.count
     }
 
@@ -107,6 +66,8 @@ class CalendarCollectionViewController: UICollectionViewController {
     func configureCell(_ cell: EventViewCell, forEvent event: EventShell) {
         cell.timeLabel.text = event.timeRange.value
         cell.titleLabel.text = event.title.value
+        cell.invitationSummaryLabel.text = event.invitationSummary.value
+
         let targetWidth = collectionView!.bounds.size.width - 30
         cell.contentView.widthAnchor.constraint(equalToConstant: targetWidth).isActive = true
     }
@@ -114,6 +75,54 @@ class CalendarCollectionViewController: UICollectionViewController {
     // MARK: UICollectionViewDelegate
 
 
+}
+
+extension CalendarCollectionViewController {
+    static func mockedEntries() -> DayScheduleShell {
+        // mocking out entries
+
+        var entries = [ScheduleEntry]()
+        var tmpEvent: EventShell!
+
+        tmpEvent = EventShell(mockData: [
+            "time_range": "8 - 9am",
+            "title": "Breakfast with John",
+            "perspective": TimePerspective.past,
+            "unresolved": false
+        ])
+        entries.append(ScheduleEntry.from(event: tmpEvent))
+
+        tmpEvent = EventShell(mockData: [
+            "time_range": "10:30am - 12:30am",
+            "title": "Important Meeting",
+            "perspective": TimePerspective.current,
+            "invitation_summary": "Eric Skiff ➝ You and 3 others",
+            "unresolved": true,
+            "elapsed": 0.67
+        ])
+        entries.append(ScheduleEntry.from(event: tmpEvent))
+
+        tmpEvent = EventShell(mockData: [
+            "time_range": "3 - 4:30pm",
+            "title": "Afternoon Meeting with a very long title this is a long title how big is it?! SO BIG",
+            "perspective": TimePerspective.future,
+            "unresolved": false
+        ])
+        entries.append(ScheduleEntry.from(event: tmpEvent))
+
+
+        tmpEvent = EventShell(mockData: [
+            "time_range": "7 - 11:30pm",
+            "title": "PARTY TIME 🎉",
+            "perspective": TimePerspective.future,
+            "invitation_summary": "Elizabeth Ricca ➝ You and 23 others",
+            "unresolved": true
+        ])
+        entries.append(ScheduleEntry.from(event: tmpEvent))
+
+
+        return DayScheduleShell(mockData: ["entries": entries])
+    }
 }
 
 extension CalendarCollectionViewController: UICollectionViewDelegateFlowLayout {

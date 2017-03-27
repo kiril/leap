@@ -11,6 +11,8 @@ import UIKit
 class EventViewCell: UICollectionViewCell {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var invitationSummaryLabel: UILabel!
+
     var borderColor: UIColor = UIColor.black {
         didSet { setBorderColor() }
     }
@@ -24,15 +26,16 @@ class EventViewCell: UICollectionViewCell {
         setBorderColor()
     }
 
+    override func awakeFromNib() {
+        setup()
+    }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-
         setup()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-
-        setup()
     }
 }
