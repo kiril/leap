@@ -10,9 +10,20 @@ import Foundation
 import RealmSwift
 
 
+protocol ValueWrapper {
+    associatedtype T
+    var value: T { get }
+}
+
+extension ValueWrapper {
+    static func primaryKey() -> String? {
+        return "value"
+    }
+}
 
 
-class IntWrapper: Object {
+
+class IntWrapper: Object, ValueWrapper {
     var value: Int = 0
 
     static func of(_ int: Int) -> IntWrapper {
@@ -21,10 +32,6 @@ class IntWrapper: Object {
 
     static func of(num: NSNumber) -> IntWrapper {
         return IntWrapper(value: ["value": num.intValue])
-    }
-
-    override static func primaryKey() -> String? {
-        return "value"
     }
 }
 

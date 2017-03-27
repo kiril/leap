@@ -8,6 +8,8 @@
 
 import XCTest
 import RealmSwift
+import EventKit
+@testable import Leap
 
 class EventKitMigrationTests: XCTestCase {
     var realm: Realm?
@@ -21,6 +23,15 @@ class EventKitMigrationTests: XCTestCase {
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
+    }
+
+    func testRecurrence() {
+        let ek1 = EKRecurrenceRule(recurrenceWith: EKRecurrenceFrequency.daily,
+                                 interval: 1, end: EKRecurrenceEnd(occurrenceCount: 2))
+        let r1: Recurrence = ek1.asRecurrence()
+        XCTAssertEqual(r1.count, 2)
+        XCTAssertEqual(r1.interval, 1)
+        XCTAssertEqual(r1.frequency, Frequency.daily)
     }
     
     func testExample() {

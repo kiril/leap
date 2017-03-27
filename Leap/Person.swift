@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 
 enum PersonRelationship: String {
@@ -15,12 +16,17 @@ enum PersonRelationship: String {
     case contact = "contact"
 }
 
+class Email: Object, ValueWrapper {
+    dynamic var value: String = ""
+}
+
+class Phone: Object, ValueWrapper {
+    dynamic var value: String = ""
+}
+
 class Person: LeapModel {
     dynamic var givenName: String?
     dynamic var familyName: String?
-    dynamic var emails: [String]?
-    dynamic var numbers: [String]?
-    dynamic var addresses: [Address]?
     dynamic var organization: String?
     dynamic var title: String?
     dynamic var notes: String?
@@ -29,6 +35,10 @@ class Person: LeapModel {
     dynamic var isMe: Bool = false
     dynamic var work: Location?
     dynamic var home: Location?
+
+    let emails = List<Email>()
+    let numbers = List<Phone>()
+    let addresses = List<Address>()
 
     var name: String { return "\(givenName) \(familyName)" }
 
