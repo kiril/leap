@@ -129,15 +129,13 @@ extension EKEvent {
             if series == nil {
                 series = Series(value: ["id": event.id,
                                         "title": event.title])
-                let template = EventTemplate(value: ["title": event.title,
-                                                     "duration": event.duration,
-                                                     "detail": event.detail,
-                                                     "locationString": event.locationString,
-                                                     "modalityString": event.modalityString])
-                series.template = template
-
-                let recurrence = Recurrence(value: [])
-                series.recurrence = recurrence
+                let templateData: [String:Any?] = ["title": event.title,
+                                                   "duration": event.duration,
+                                                   "detail": event.detail,
+                                                   "locationString": event.locationString,
+                                                   "modalityString": event.modalityString]
+                series!.template = EventTemplate(value: templateData)
+                series!.recurrence = rule.asRecurrence()
             }
 
             if let series = series {
@@ -145,8 +143,6 @@ extension EKEvent {
                 event.template = series.template
             }
         }
-
-        // .recurrenceRules -> [EKRecurrenceRule]? -> Recurrence?
 
         return event
     }

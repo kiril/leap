@@ -24,7 +24,7 @@ class Reminder: _TemporalBase, Temporality {
     }
 
     var duration: TimeInterval {
-        guard let end = endTime, let start = startTime else {
+        guard let end = endDate, let start = startDate else {
             return 0.0
         }
         return end.timeIntervalSince(start)

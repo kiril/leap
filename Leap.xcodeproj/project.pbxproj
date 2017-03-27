@@ -269,7 +269,6 @@
 				FB4208621E896D33007F4DBD /* Resources */,
 				FB4208611E896D2C007F4DBD /* People */,
 				FB4208601E896D25007F4DBD /* Events */,
-				FB4208581E85A2DD007F4DBD /* Realm+Leap.swift */,
 				FB2046AF1E82E7B000F130C8 /* LegacyCalendar.swift */,
 				FB2046B51E82E9B100F130C8 /* DeviceAccount.swift */,
 			);
@@ -365,6 +364,7 @@
 		FB4208631E896D6E007F4DBD /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				FB4208581E85A2DD007F4DBD /* Realm+Leap.swift */,
 				FB2046B31E82E7DD00F130C8 /* LeapModel.swift */,
 				FB4208481E8579D0007F4DBD /* Auditable.swift */,
 				FB42085A1E85A650007F4DBD /* TimeZone.swift */,

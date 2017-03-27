@@ -9,6 +9,26 @@
 import Foundation
 import RealmSwift
 
+
+
+
+class IntWrapper: Object {
+    var value: Int = 0
+
+    static func of(_ int: Int) -> IntWrapper {
+        return IntWrapper(value: ["value": int])
+    }
+
+    static func of(num: NSNumber) -> IntWrapper {
+        return IntWrapper(value: ["value": num.intValue])
+    }
+
+    override static func primaryKey() -> String? {
+        return "value"
+    }
+}
+
+
 extension Realm {
 
     // Series
