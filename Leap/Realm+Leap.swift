@@ -11,7 +11,15 @@ import RealmSwift
 
 extension Realm {
 
+    // Series
+
+    func series(byId id: String) -> Series? {
+        let query = objects(Series.self)
+        return query.filter("id = %@", id).first
+    }
+
     // Events
+
     func event(byId id: String) -> Event? {
         return objects(Event.self).filter("id = '\(id)'").first
     }
@@ -47,6 +55,8 @@ extension Realm {
     func person(byEmail email: String) -> Person? {
         return objects(Person.self).filter("email = '\(email)'").first
     }
+
+    // Resources
 
     func venue(byId id: String) -> Venue? {
         return objects(Venue.self).filter("id = '\(id)'").first

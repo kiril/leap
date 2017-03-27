@@ -21,6 +21,7 @@ enum ChannelType: String {
 class Channel: LeapModel {
     dynamic var name: String = ""
     dynamic var typeString: String = ChannelType.unknown.rawValue
+    dynamic var value: String?
 
     var type: ChannelType {
         get { return ChannelType(rawValue: typeString)! }

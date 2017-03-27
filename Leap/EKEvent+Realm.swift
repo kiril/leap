@@ -79,6 +79,8 @@ extension EKEvent {
         // .organizer EKParticipant?
         // .status EKEventStatus (none, confirmed, tentative, canceled)
         let data: [String:Any?] = [
+            "id": self.calendarItemIdentifier,
+            "externalId": self.calendarItemExternalIdentifier,
             "title": self.title,
             "detail": self.notes,
             "startTime": self.startDate,
@@ -87,6 +89,7 @@ extension EKEvent {
             "remoteCreated": self.creationDate,
             "remoteModified": self.lastModifiedDate,
             "legacyTimeZone": self.timeZone,
+            "modalityString": EventModality.inPerson.rawValue,
             "externalURL": self.url,
             "engagementString": EKEvent.engagement(for: Event.self, from: self.status, and: self.availability)
         ]
@@ -106,10 +109,10 @@ extension EKEvent {
             for attendee in attendees {
                 if let participant = attendee.asParticipant(in: realm), let person = participant.person, person.id != organizerId {
                     event.participants.append(participant)
-                } else if let reservation = attendee.asRoomReservation(in: realm) {
-                    event.rooms.append(reservation)
-                } else if let reservation = attendee.asResourceReservation(in: realm) {
-                    event.resources.append(reservation)
+                } else if let reservation = attendee.asRoomReservation(in: realm, for: event) {
+                    event.reservations.append(reservation)
+                } else if let reservation = attendee.asResourceReservation(in: realm, for: event) {
+                    event.reservations.append(reservation)
                 }
             }
         }
@@ -117,6 +120,29 @@ extension EKEvent {
         if let ekAlarms = self.alarms {
             for alarm in ekAlarms {
                 event.alarms.append(alarm.asAlarm(in: realm))
+            }
+        }
+
+        if self.hasRecurrenceRules, let rules = self.recurrenceRules {
+            let rule = rules[0] // despite the interface, documentation says there can Only Be One <boom boom>
+            var series: Series? = realm.series(byId: event.id)
+            if series == nil {
+                series = Series(value: ["id": event.id,
+                                        "title": event.title])
+                let template = EventTemplate(value: ["title": event.title,
+                                                     "duration": event.duration,
+                                                     "detail": event.detail,
+                                                     "locationString": event.locationString,
+                                                     "modalityString": event.modalityString])
+                series.template = template
+
+                let recurrence = Recurrence(value: [])
+                series.recurrence = recurrence
+            }
+
+            if let series = series {
+                event.series = series
+                event.template = series.template
             }
         }
 

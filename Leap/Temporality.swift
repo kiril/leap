@@ -36,6 +36,7 @@ enum Engagement: String {
 
 
 protocol Temporality {
+    var externalId: String? { get }
     var date: Date? { get }
     var isRecurring: Bool { get }
     var userEngagement: Engagement { get set }
@@ -45,6 +46,7 @@ protocol Temporality {
     var me: Participant? { get }
     var externalURL: String? { get set }
     var alarms: List<Alarm> { get }
+    var duration: TimeInterval { get }
 }
 
 extension Temporality {
@@ -60,6 +62,7 @@ extension Temporality {
 }
 
 class _TemporalBase: LeapModel {
+    dynamic var externalId: String? = nil
     dynamic var title: String = ""
     dynamic var detail: String = ""
     dynamic var recurrence: Recurrence?

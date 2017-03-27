@@ -95,9 +95,35 @@ extension EKParticipant {
         return Participant(value: data)
     }
 
-    func asRoomReservation(in realm: Realm) -> Reservation? {
+    func asRoomReservation(in realm: Realm, for event: Event) -> Reservation? {
+        guard self.participantType == EKParticipantType.room, let name = self.name else {
+            return nil
+        }
+
+        let query: Results<Room> = realm.objects(Room.self)
+        var room: Room? = query.filter("name = %@", name).first
+        if room == nil {
+            room = Room(value: ["name": self.name, "typeString": "room"])
+        }
+
+        return Reservation(value: ["resource": room as Any?,
+                                   "startTime": event.startTime as Any?,
+                                   "endTime": event.endTime as Any?])
     }
 
-    func asResourceReservation(in realm: Realm) -> Reservation? {
+    func asResourceReservation(in realm: Realm, for event: Event) -> Reservation? {
+        guard self.participantType == EKParticipantType.resource, let name = self.name else {
+            return nil
+        }
+
+        let query: Results<Resource> = realm.objects(Resource.self)
+        var resource: Resource? = query.filter("name = %@", name).first
+        if resource == nil {
+            resource = Resource(value: ["name": self.name, "typeString": "equipment"])
+        }
+
+        return Reservation(value: ["resource": resource as Any?,
+                                   "startTime": event.startTime as Any?,
+                                   "endTime": event.endTime as Any?])
     }
 }

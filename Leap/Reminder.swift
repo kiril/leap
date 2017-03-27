@@ -22,4 +22,11 @@ class Reminder: _TemporalBase, Temporality {
     override static func indexedProperties() -> [String] {
         return ["location", "startDate", "participants"]
     }
+
+    var duration: TimeInterval {
+        guard let end = endTime, let start = startTime else {
+            return 0.0
+        }
+        return end.timeIntervalSince(start)
+    }
 }
