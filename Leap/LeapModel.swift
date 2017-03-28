@@ -26,6 +26,6 @@ class LeapModel: Object, Auditable {
     }
 
     static func fetch<ModelType:Object>(id: String) -> ModelType? {
-        return Realm.primary().objects(ModelType.self).filter("id = %@", id).first
+        return Realm.user().objects(ModelType.self).filter("id = %@", id).first
     }
 }

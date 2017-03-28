@@ -61,7 +61,7 @@ extension EKParticipant {
     }
 
     func asParticipant() -> Participant? {
-        let realm = Realm.primary()
+        let realm = Realm.user()
         guard self.participantType == EKParticipantType.person else {
             return nil
         }
@@ -97,7 +97,7 @@ extension EKParticipant {
     }
 
     func asRoomReservation(for event: Event) -> Reservation? {
-        let realm = Realm.primary()
+        let realm = Realm.user()
         guard self.participantType == EKParticipantType.room, let name = self.name else {
             return nil
         }
@@ -118,7 +118,7 @@ extension EKParticipant {
             return nil
         }
 
-        let realm = Realm.primary()
+        let realm = Realm.user()
 
         let query: Results<Resource> = realm.objects(Resource.self)
         var resource: Resource? = query.filter("name = %@", name).first

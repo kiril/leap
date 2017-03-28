@@ -12,7 +12,7 @@ import RealmSwift
 
 func syncEventSearchCallback(for calendar: LegacyCalendar) -> EKEventSearchCallback {
     let calendarId = calendar.id
-    func sync(ekEvent: EKEvent, stopBoolPointer: UnsafeMutablePointer<ObjCBool>) {        let realm = Realm.primary()
+    func sync(ekEvent: EKEvent, stopBoolPointer: UnsafeMutablePointer<ObjCBool>) {        let realm = Realm.user()
         let calendar = LegacyCalendar.by(id: calendarId)
         let temporality = ekEvent.asTemporality()
         switch temporality {

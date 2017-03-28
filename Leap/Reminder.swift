@@ -36,6 +36,6 @@ class Reminder: _TemporalBase, Temporality {
 
     static func range(starting: Date, before: Date) -> Results<Reminder> {
         let predicate = NSPredicate(format: "startTime >= %@ AND startTime < %@", starting as NSDate, before as NSDate)
-        return Realm.primary().objects(Reminder.self).filter(predicate)
+        return Realm.user().objects(Reminder.self).filter(predicate)
     }
 }

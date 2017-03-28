@@ -59,11 +59,11 @@ class Event: _TemporalBase, Temporality {
     }
 
     static func by(id: String) -> Event? {
-        return Realm.primary().objects(Event.self).filter("id = %@", id).first
+        return Realm.user().objects(Event.self).filter("id = %@", id).first
     }
 
     static func range(starting: Date, before: Date) -> Results<Event> {
         let predicate = NSPredicate(format: "startTime >= %@ AND startTime < %@", starting as NSDate, before as NSDate)
-        return Realm.primary().objects(Event.self).filter(predicate)
+        return Realm.user().objects(Event.self).filter(predicate)
     }
 }

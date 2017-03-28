@@ -63,7 +63,7 @@ extension Realm {
         return try! Realm(configuration: config)
     }
 
-    static func primary() -> Realm {
+    static func user() -> Realm {
         return inMemory()
     }
 }

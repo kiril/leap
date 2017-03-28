@@ -57,7 +57,7 @@ class Person: LeapModel {
     }
 
     static func me() -> Person? {
-        return Realm.primary().objects(Person.self).filter("isMe = true").first
+        return Realm.user().objects(Person.self).filter("isMe = true").first
     }
 
     static func by(id: String) -> Person? {
@@ -65,6 +65,6 @@ class Person: LeapModel {
     }
 
     static func by(email: String) -> Person? {
-        return Realm.primary().objects(Person.self).filter("email = %@", email).first
+        return Realm.user().objects(Person.self).filter("email = %@", email).first
     }
 }

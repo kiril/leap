@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
-        let realm = Realm.primary()
+        let realm = Realm.user()
         let eventStore = EKEventStore()
         let calendars = eventStore.legacyCalendars()
         for calendar in calendars {
