@@ -11,4 +11,8 @@ import Foundation
 class Venue: LeapModel {
     dynamic var name: String = ""
     dynamic var location: Location?
+
+    static func by(id: String) -> Venue? {
+        return fetch(id: id)
+    }
 }

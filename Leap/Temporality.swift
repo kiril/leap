@@ -47,6 +47,7 @@ protocol Temporality {
     var externalURL: String? { get set }
     var alarms: List<Alarm> { get }
     var duration: TimeInterval { get }
+    var calendar: LegacyCalendar? { get set }
 }
 
 extension Temporality {
@@ -62,9 +63,10 @@ extension Temporality {
 }
 
 class _TemporalBase: LeapModel {
+    dynamic var calendar: LegacyCalendar? = nil
     dynamic var externalId: String? = nil
     dynamic var title: String = ""
-    dynamic var detail: String = ""
+    dynamic var detail: String? = nil
     dynamic var recurrence: Recurrence?
     dynamic var userOwnershipString = Ownership.creator.rawValue // right default?
     dynamic var userEngagementString = Engagement.undecided.rawValue

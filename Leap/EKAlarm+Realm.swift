@@ -20,7 +20,7 @@ extension EKAlarm {
             return AlarmType.relative
         }
     }
-    func asAlarm(in realm: Realm) -> Alarm {
+    func asAlarm() -> Alarm {
         let data: [String:Any?] = ["absoluteTime": self.absoluteDate,
                                    "relativeOffset": self.relativeOffset,
                                    "geoFence": GeoFence.from(location: self.structuredLocation),

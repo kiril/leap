@@ -55,4 +55,16 @@ class Person: LeapModel {
     override static func indexedProperties() -> [String] {
         return ["url", "emails", "isMe"]
     }
+
+    static func me() -> Person? {
+        return Realm.primary().objects(Person.self).filter("isMe = true").first
+    }
+
+    static func by(id: String) -> Person? {
+        return fetch(id: id)
+    }
+
+    static func by(email: String) -> Person? {
+        return Realm.primary().objects(Person.self).filter("email = %@", email).first
+    }
 }

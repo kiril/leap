@@ -64,6 +64,9 @@ class EventKitMigrationTests: XCTestCase {
         XCTAssertEqual(r4.monthsOfYear[1].value, 2)
         XCTAssertEqual(Int(r4.endTime!.timeIntervalSince1970), Int(endDate.timeIntervalSince1970)) // weird that comparing dates directly doesn't work
     }
+
+    func testParticipants() {
+    }
     
     func testExample() {
         // This is an example of a functional test case.

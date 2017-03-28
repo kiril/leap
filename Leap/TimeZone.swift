@@ -11,7 +11,10 @@ import Foundation
 class TimeZone: LeapModel {
     dynamic var descriptionString: String = ""
 
-    static func from(_ tz: Foundation.TimeZone) -> TimeZone {
+    static func from(_ tz: Foundation.TimeZone?) -> TimeZone? {
+        guard let tz = tz else {
+            return nil
+        }
         return TimeZone(value: ["id": tz.identifier,
                                 "descriptionString": tz.description])
     }

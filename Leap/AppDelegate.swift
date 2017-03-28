@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import Lock
 import RealmSwift
+import EventKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,32 +18,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var lostCredentials: Bool = false
     var credentials: NSManagedObject?
-    var realm: Realm?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
-        let config = Realm.Configuration(
-            schemaVersion: 1
-            /*
-             ,
-            migrationBlock: { migration, oldSchemaVersion in
-                if (oldSchemaVersion < 1) {
-                    // The enumerateObjects(ofType:_:) method iterates
-                    // over every Person object stored in the Realm file
-                    migration.enumerateObjects(ofType: Person.className()) { oldObject, newObject in
-                        // combine name fields into a single field
-                        let firstName = oldObject!["firstName"] as! String
-                        let lastName = oldObject!["lastName"] as! String
-                        newObject!["fullName"] = "\(firstName) \(lastName)"
-                    }
-                }
+        let realm = Realm.primary()
+        let eventStore = EKEventStore()
+        let calendars = eventStore.legacyCalendars()
+        for calendar in calendars {
+            try! realm.write {
+                realm.add(calendar)
             }
-             */
-        )
-        Realm.Configuration.defaultConfiguration = config
-        realm = try! Realm()
+            eventStore.syncPastEvents(forCalendar: calendar)
+            print("I got a calendar! \(calendar.account?.title)")
+        }
 
-        // Override point for customization after application launch.
         let context = self.persistentContainer.viewContext
         let credentialFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Credentials")
 
