@@ -44,30 +44,25 @@ class CalendarCollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! EventViewCell
-    
+        self.configureCellWidth(cell)
+
         // Configure the cell
 
         let entry = scheduleViewModel.entries.value[indexPath.row]
 
         switch entry {
         case .event(let event):
-            self.configureCell(cell, forEvent: event)
-
+            cell.configure(with: event)
         case .openTime(let openTime):
             // for now, just hack in a new event view model since we don't have an open time view to display
-            let event = EventShell(id: "", data:[:])
-            self.configureCell(cell, forEvent: event)
+            self.configureCellWidth(cell)
         }
 
         return cell
     }
 
 
-    func configureCell(_ cell: EventViewCell, forEvent event: EventShell) {
-        cell.timeLabel.text = event.timeRange.value
-        cell.titleLabel.text = event.title.value
-        cell.invitationSummaryLabel.text = event.invitationSummary.value
-
+    func configureCellWidth(_ cell: EventViewCell) {
         let targetWidth = collectionView!.bounds.size.width - 30
         cell.contentView.widthAnchor.constraint(equalToConstant: targetWidth).isActive = true
     }
