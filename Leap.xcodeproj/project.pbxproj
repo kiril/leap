@@ -25,6 +25,7 @@
 		83F4B1611E7C383F000FCB8D /* ScheduleEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F4B1601E7C383F000FCB8D /* ScheduleEntry.swift */; };
 		DB41B30C348D9390E4320905 /* Pods_LeapUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 386ABDADBBC48EDACA0896BE /* Pods_LeapUITests.framework */; };
 		FB0762DB1E142FBF0035EF8F /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0762DA1E142FBF0035EF8F /* ScheduleViewController.swift */; };
+		FB166B571E8ABE1C00CB95EC /* RealmUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B561E8ABE1C00CB95EC /* RealmUtil.swift */; };
 		FB2046A31E82DA2200F130C8 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A21E82DA2200F130C8 /* Event.swift */; };
 		FB2046A61E82E20100F130C8 /* EKEventStore+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A51E82E20100F130C8 /* EKEventStore+Realm.swift */; };
 		FB2046A81E82E28800F130C8 /* EKCalendar+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A71E82E28800F130C8 /* EKCalendar+Realm.swift */; };
@@ -122,6 +123,7 @@
 		F7F894F8D14B57D7372FF854 /* Pods-LeapTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LeapTests/Pods-LeapTests.release.xcconfig"; sourceTree = "<group>"; };
 		FB0762DA1E142FBF0035EF8F /* ScheduleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		FB0762DC1E1430A60035EF8F /* Leap.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Leap.entitlements; sourceTree = "<group>"; };
+		FB166B561E8ABE1C00CB95EC /* RealmUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmUtil.swift; sourceTree = "<group>"; };
 		FB2046A21E82DA2200F130C8 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		FB2046A51E82E20100F130C8 /* EKEventStore+Realm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EKEventStore+Realm.swift"; sourceTree = "<group>"; };
 		FB2046A71E82E28800F130C8 /* EKCalendar+Realm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EKCalendar+Realm.swift"; sourceTree = "<group>"; };
@@ -370,6 +372,7 @@
 				FB2046B31E82E7DD00F130C8 /* LeapModel.swift */,
 				FB4208481E8579D0007F4DBD /* Auditable.swift */,
 				FB42085A1E85A650007F4DBD /* TimeZone.swift */,
+				FB166B561E8ABE1C00CB95EC /* RealmUtil.swift */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -804,6 +807,7 @@
 				831444CF1E7B46A200A5EF06 /* EventStoreExampleCode.swift in Sources */,
 				FB2046A61E82E20100F130C8 /* EKEventStore+Realm.swift in Sources */,
 				FB2046B41E82E7DD00F130C8 /* LeapModel.swift in Sources */,
+				FB166B571E8ABE1C00CB95EC /* RealmUtil.swift in Sources */,
 				FBD614561E7F38D4001F4050 /* Schema.swift in Sources */,
 				FB2046B81E830E4600F130C8 /* Temporality.swift in Sources */,
 				FB42085F1E896C40007F4DBD /* Reservation.swift in Sources */,

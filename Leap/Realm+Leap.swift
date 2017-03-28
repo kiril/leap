@@ -10,32 +10,6 @@ import Foundation
 import RealmSwift
 
 
-protocol ValueWrapper {
-    associatedtype T
-    var value: T { get }
-}
-
-extension ValueWrapper {
-    static func primaryKey() -> String? {
-        return "value"
-    }
-}
-
-
-
-class IntWrapper: Object, ValueWrapper {
-    var value: Int = 0
-
-    static func of(_ int: Int) -> IntWrapper {
-        return IntWrapper(value: ["value": int])
-    }
-
-    static func of(num: NSNumber) -> IntWrapper {
-        return IntWrapper(value: ["value": num.intValue])
-    }
-}
-
-
 extension Realm {
 
     static func inMemory() -> Realm {
