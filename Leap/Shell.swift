@@ -39,7 +39,15 @@ open class Shell {
     internal var store: BackingStore?
     internal var data: ShellData
     internal var mockData: ShellData?
-    internal var dirtyFields: Set<String> = []
+    internal var operations = [Operation]()
+
+    var dirtyFields: Set<String> {
+        var set = Set<String>()
+        for operation in operations {
+            set.insert(operation.field)
+        }
+        return set
+    }
 
     var type: String {
         return "shell" // default to class name?
@@ -133,17 +141,19 @@ extension Shell: Updateable {
             }
         }
 
-        self.data = data
-
         if !(source is BackingStore) {
             isDirty = true
             if !isTransient {
                 isPersisted = false
             }
-            for (key, _) in data {
-                dirtyFields.update(with: key)
+            for (key, value) in data {
+                if value !~= data[key] {
+                    operations.append(SetOperation(key, to: value))
+                }
             }
         }
+
+        self.data = data
 
         if !silently {
             self.purgeObservers()
@@ -170,15 +180,16 @@ extension Shell: Updateable {
             throw SchemaError.invalidValueFor(type: self.type, property: key, value: value)
         }
 
-        data[key] = value
-
         if !(source is BackingStore) {
             isDirty = true
             if !isTransient {
                 isPersisted = false
             }
-            dirtyFields.update(with: key)
+
+            operations.append(SetOperation(key, to: value))
         }
+
+        data[key] = value
 
         if !silently {
             self.purgeObservers()
@@ -194,15 +205,16 @@ extension Shell: Updateable {
     }
 
     func remove(key: String, via source: SourceIdentifiable?, silently: Bool = false) {
-        data[key] = nil
 
         if !(source is BackingStore) {
             isDirty = true
             if !isTransient {
                 isPersisted = false
             }
-            dirtyFields.update(with: key)
+            operations.append(UnsetOperation(key))
         }
+
+        data[key] = nil
 
         if !silently {
             self.purgeObservers()
@@ -266,7 +278,7 @@ extension Shell: Persistable {
         }
     }
 
-    func persist() throws -> Bool {
+    func persist(_ shell: Shell) throws -> Bool {
         return try self.store?.persist(self) ?? false
     }
 }

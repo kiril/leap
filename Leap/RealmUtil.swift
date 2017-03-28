@@ -10,6 +10,9 @@ import Foundation
 import RealmSwift
 
 
+typealias ModelData = [String:Any]
+
+
 protocol ValueWrapper {
     associatedtype T
     var value: T { get }
