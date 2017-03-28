@@ -29,7 +29,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 realm.add(calendar)
             }
             eventStore.syncPastEvents(forCalendar: calendar)
-            print("I got a calendar! \(calendar.account?.title)")
         }
 
         let context = self.persistentContainer.viewContext

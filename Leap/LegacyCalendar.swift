@@ -32,9 +32,7 @@ class LegacyCalendar: LeapModel {
 
     dynamic var account: DeviceAccount?
 
-    func sync(event: Event, in realm: Realm) {
-    }
-
-    func sync(reminder: Reminder) {
+    static func by(id: String) -> LegacyCalendar? {
+        return fetch(id: id)
     }
 }
