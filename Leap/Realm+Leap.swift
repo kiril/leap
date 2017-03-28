@@ -66,4 +66,12 @@ extension Realm {
     static func user() -> Realm {
         return inMemory()
     }
+
+    static func auth() -> Realm {
+        return inMemory()
+    }
+
+    static func config() -> Realm {
+        return inMemory()
+    }
 }
