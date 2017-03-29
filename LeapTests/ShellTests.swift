@@ -1,5 +1,5 @@
 //
-//  ShellTests.swift
+//  SurfaceTests.swift
 //  Leap
 //
 //  Created by Kiril Savino on 3/20/17.
@@ -10,18 +10,18 @@ import XCTest
 import Darwin
 @testable import Leap
 
-class TestShell: Shell {
+class TestSurface: Surface {
     let title = WritableProperty<String>("title")
     let count = WritableProperty<Int>("count")
-    let magic = ComputedProperty<Int,TestShell>("magic", {repr in return 88})
+    let magic = ComputedProperty<Int,TestSurface>("magic", {repr in return 88})
 }
 
-class ShellTests: XCTestCase {
-    var testShell: TestShell?
+class SurfaceTests: XCTestCase {
+    var testSurface: TestSurface?
 
     override func setUp() {
         super.setUp()
-        testShell = TestShell(data: ["title": "A Title", "anotherfield": 2])
+        testSurface = TestSurface(data: ["title": "A Title", "anotherfield": 2])
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
@@ -31,7 +31,7 @@ class ShellTests: XCTestCase {
     }
 
     func testInitialization() {
-        guard let repr = testShell else {
+        guard let repr = testSurface else {
             fatalError("OMG")
         }
         XCTAssertFalse(repr.isPersistable, "ID required for persistence")
@@ -40,16 +40,16 @@ class ShellTests: XCTestCase {
     }
     
     func testPropertyAccess() {
-        guard let repr = testShell else {
+        guard let repr = testSurface else {
             fatalError("OMG")
         }
-        XCTAssert(repr.title.shell != nil, "Field association")
+        XCTAssert(repr.title.surface != nil, "Field association")
         XCTAssertEqual(repr.title.value, "A Title", "Field reading")
         XCTAssertEqual(repr.count.value, 0, "Default int value")
     }
 
     func testPropertyMutation() throws {
-        guard let repr = testShell else {
+        guard let repr = testSurface else {
             fatalError("OMG")
         }
         try repr.title.update(to: "Another Title")
@@ -64,7 +64,7 @@ class ShellTests: XCTestCase {
     }
 
     func testPropertyTypeChecking() throws {
-        guard let repr = testShell else {
+        guard let repr = testSurface else {
             fatalError("OMG")
         }
 
@@ -76,7 +76,7 @@ class ShellTests: XCTestCase {
     }
 
     func testPropertyRemoval() throws {
-        guard let repr = testShell else {
+        guard let repr = testSurface else {
             fatalError("OMG")
         }
 
@@ -87,7 +87,7 @@ class ShellTests: XCTestCase {
     }
 
     func testObservation() throws {
-        class DumbObserver: ShellObserver {
+        class DumbObserver: SurfaceObserver {
             var sourceId: String
             var observedChange: Bool = false
 
@@ -95,7 +95,7 @@ class ShellTests: XCTestCase {
                 self.sourceId = "DumbObserver-\(arc4random_uniform(100000))"
             }
 
-            func shellDidChange(_ shell: Shell) {
+            func surfaceDidChange(_ surface: Surface) {
                 observedChange = true
             }
 
@@ -104,7 +104,7 @@ class ShellTests: XCTestCase {
             }
         }
 
-        guard let repr = testShell else {
+        guard let repr = testSurface else {
             fatalError("OMG")
         }
 
@@ -140,7 +140,7 @@ class ShellTests: XCTestCase {
     }
 
     func testBulkWritabilityEnforced() {
-        guard let repr = testShell else {
+        guard let repr = testSurface else {
             fatalError("OMG")
         }
 
@@ -148,11 +148,11 @@ class ShellTests: XCTestCase {
     }
 
     func testMockInit() {
-        guard let repr = testShell else {
+        guard let repr = testSurface else {
             fatalError("OMG")
         }
 
-        let mockRepr = TestShell(mockData: ["magic":42])
+        let mockRepr = TestSurface(mockData: ["magic":42])
 
         XCTAssertTrue(repr.magic.value == 88)
         XCTAssertTrue(mockRepr.magic.value == 42)

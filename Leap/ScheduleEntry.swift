@@ -1,5 +1,5 @@
 //
-//  ScheduleEntryViewModel.swift
+//  ScheduleEntry.swift
 //  Leap
 //
 //  Created by Chris Ricca on 3/17/17.
@@ -9,14 +9,14 @@
 import Foundation
 
 enum ScheduleEntry {
-    case event(entry: EventShell)
+    case event(entry: EventSurface)
     case openTime(entry: OpenTimeViewModel)
 
     static func from(eventId: String) -> ScheduleEntry {
-        return from(event: EventShell(id: eventId, data:[:])) // find?
+        return from(event: EventSurface(id: eventId, data:[:])) // find?
     }
 
-    static func from(event: EventShell) -> ScheduleEntry {
+    static func from(event: EventSurface) -> ScheduleEntry {
         return .event(entry: event)
     }
 

@@ -36,19 +36,19 @@ class Bridge: BackingStore {
         writers[field.name] = writer
     }
 
-    func populate(_ shell: Shell) {
-        for key in shell.keys {
+    func populate(_ surface: Surface) {
+        for key in surface.keys {
             if let reader = readers[key],
                 let value = reader() {
-                try! shell.update(key: key, toValue: value, via: self)
+                try! surface.update(key: key, toValue: value, via: self)
             }
         }
     }
 
-    func persist(_ shell: Shell) throws -> Bool {
+    func persist(_ surface: Surface) throws -> Bool {
         var changed = false
 
-        for operation in shell.operations {
+        for operation in surface.operations {
             var modelData: ModelData = [:]
             if operation.apply(&modelData) {
                 changed = true

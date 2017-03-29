@@ -1,5 +1,5 @@
 //
-//  DayScheduleShell.swift
+//  DayScheduleSurface.swift
 //  Leap
 //
 //  Created by Chris Ricca on 3/22/17.
@@ -9,19 +9,19 @@
 import Foundation
 import EventKit
 
-class DayScheduleShell: Shell {
+class DayScheduleSurface: Surface {
 
-    override var type: String { return "dayScheduleShell" }
+    override var type: String { return "dayScheduleSurface" }
 
     private let eventStore = EKEventStore() // should do this once per app load instead... somewhere?
 
-    let entries = ComputedProperty<[ScheduleEntry], DayScheduleShell>("entries", DayScheduleShell.scheduleEntries)
+    let entries = ComputedProperty<[ScheduleEntry], DayScheduleSurface>("entries", DayScheduleSurface.scheduleEntries)
 
     var numerOfEntries: Int {
         return entries.value.count
     }
 
-    private static func scheduleEntries(schedule: DayScheduleShell) -> [ScheduleEntry] {
+    private static func scheduleEntries(schedule: DayScheduleSurface) -> [ScheduleEntry] {
         return [ScheduleEntry]()
     }
 }

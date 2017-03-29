@@ -11,11 +11,11 @@ import Foundation
 
 protocol Property {
     var name: String { get }
-    var shell: Shell? { get set }
-    var shellType: String { get }
+    var surface: Surface? { get set }
+    var surfaceType: String { get }
     var stringValue: String { get }
 
-    func copyReferencing(_ shell: Shell) -> Property
+    func copyReferencing(_ surface: Surface) -> Property
     func isValid(value: Any) -> Bool
 }
 
@@ -49,7 +49,7 @@ extension String {
 public class ReadableProperty<T>: TypedProperty {
     let key: String
     let validator: Validator<T>
-    weak var shell: Shell?
+    weak var surface: Surface?
 
     private let _defaultDefaults: [Any] = ["", Int(0), Float(0.0), false]
 
@@ -80,16 +80,16 @@ public class ReadableProperty<T>: TypedProperty {
     }
 
     var name: String { return key }
-    var value: T { return shell!.data[self.key] as? T ?? defaultValue! }
-    var rawValue: T? { return shell!.data[self.key] as? T }
-    var shellType: String { return shell!.type }
+    var value: T { return surface!.data[self.key] as? T ?? defaultValue! }
+    var rawValue: T? { return surface!.data[self.key] as? T }
+    var surfaceType: String { return surface!.type }
 
     var stringValue: String { return value as? String ?? "\(value)" }
 
-    init(_ key: String, validatedBy validator: @escaping Validator<T>, defaultingTo defaultValue: T?, referencing shell: Shell?) {
+    init(_ key: String, validatedBy validator: @escaping Validator<T>, defaultingTo defaultValue: T?, referencing surface: Surface?) {
         self.key = key
         self.validator = validator
-        self.shell = shell
+        self.surface = surface
         self.defaultValue = defaultValue
     }
 
@@ -101,8 +101,8 @@ public class ReadableProperty<T>: TypedProperty {
         self.init(key, validatedBy: alwaysValid, defaultingTo: defaultValue, referencing: nil)
     }
 
-    convenience init(_ key: String, referencing shell: Shell) {
-        self.init(key, validatedBy: alwaysValid, defaultingTo: nil, referencing: shell)
+    convenience init(_ key: String, referencing surface: Surface) {
+        self.init(key, validatedBy: alwaysValid, defaultingTo: nil, referencing: surface)
     }
 
     func isValid(value: Any) -> Bool {
@@ -112,8 +112,8 @@ public class ReadableProperty<T>: TypedProperty {
         return self.validator(value as! T)
     }
 
-    func copyReferencing(_ shell: Shell) -> Property {
-        return ReadableProperty(key, validatedBy: validator, defaultingTo: _customDefault, referencing: shell)
+    func copyReferencing(_ surface: Surface) -> Property {
+        return ReadableProperty(key, validatedBy: validator, defaultingTo: _customDefault, referencing: surface)
     }
 }
 
@@ -124,57 +124,57 @@ public class WritableProperty<T>: ReadableProperty<T>, WritableTypedProperty {
         self.init(key, validatedBy: validator, defaultingTo: nil, referencing: nil)
     }
 
-    convenience init(_ key: String, validatedBy validator: @escaping Validator<T>, referencing shell: Shell) {
-        self.init(key, validatedBy: validator, defaultingTo: nil, referencing: shell)
+    convenience init(_ key: String, validatedBy validator: @escaping Validator<T>, referencing surface: Surface) {
+        self.init(key, validatedBy: validator, defaultingTo: nil, referencing: surface)
     }
 
     func update(to value: T, via source: SourceIdentifiable?) throws {
-        try shell!.update(key: self.key, toValue: value, via: source)
+        try surface!.update(key: self.key, toValue: value, via: source)
     }
 
     func update(to value: T, silently: Bool = false) throws {
-        try shell!.update(key: self.key, toValue: value, via: nil, silently: silently)
+        try surface!.update(key: self.key, toValue: value, via: nil, silently: silently)
     }
 
     func clear(via source: SourceIdentifiable) throws {
-        shell!.remove(key: self.key, via: source)
+        surface!.remove(key: self.key, via: source)
     }
 
     func clear(silently: Bool = false) throws {
-        shell!.remove(key: self.key, via: nil, silently: silently)
+        surface!.remove(key: self.key, via: nil, silently: silently)
     }
 
-    override func copyReferencing(_ shell: Shell) -> Property {
-        return WritableProperty(key, validatedBy: self.validator, defaultingTo: _customDefault, referencing: shell)
+    override func copyReferencing(_ surface: Surface) -> Property {
+        return WritableProperty(key, validatedBy: self.validator, defaultingTo: _customDefault, referencing: surface)
     }
 }
 
-typealias Computation<T,R:Shell> = (R) -> T
+typealias Computation<T,R:Surface> = (R) -> T
 
-public class ComputedProperty<T,R:Shell>: ReadableProperty<T> {
+public class ComputedProperty<T,R:Surface>: ReadableProperty<T> {
     internal let getter: Computation<T,R>
 
     override var value: T {
-        if let mockValue = shell!.mockData?[key] as? T {
+        if let mockValue = surface!.mockData?[key] as? T {
             return mockValue
         }
-        return getter(shell as! R)
+        return getter(surface as! R)
     }
 
     override func isValid(value: Any) -> Bool {
         return false
     }
 
-    init(_ key: String, _ getter: @escaping Computation<T,R>, referencing shell: Shell?) {
+    init(_ key: String, _ getter: @escaping Computation<T,R>, referencing surface: Surface?) {
         self.getter = getter
-        super.init(key, validatedBy: alwaysValid, defaultingTo: nil, referencing: shell)
+        super.init(key, validatedBy: alwaysValid, defaultingTo: nil, referencing: surface)
     }
 
     convenience init(_ key: String, _ getter: @escaping Computation<T,R> ) {
         self.init(key, getter, referencing: nil)
     }
 
-    override func copyReferencing(_ shell: Shell) -> Property {
-        return ComputedProperty(key, getter, referencing: shell)
+    override func copyReferencing(_ surface: Surface) -> Property {
+        return ComputedProperty(key, getter, referencing: surface)
     }
 }
