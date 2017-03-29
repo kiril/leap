@@ -462,13 +462,13 @@
 			children = (
 				FB4208581E85A2DD007F4DBD /* Realm+Leap.swift */,
 				FB39ADA81E8C65AF00B79A7B /* Object+Leap.swift */,
+				FB166B5D1E8AC6DB00CB95EC /* ModelReference.swift */,
+				FB166B5B1E8AC3CA00CB95EC /* Fetchable.swift */,
 				FB39ADAA1E8C69BB00B79A7B /* SurfaceBridge.swift */,
 				FB2046B31E82E7DD00F130C8 /* LeapModel.swift */,
 				FB4208481E8579D0007F4DBD /* Auditable.swift */,
 				FB42085A1E85A650007F4DBD /* TimeZone.swift */,
 				FB166B561E8ABE1C00CB95EC /* RealmUtil.swift */,
-				FB166B5B1E8AC3CA00CB95EC /* Fetchable.swift */,
-				FB166B5D1E8AC6DB00CB95EC /* ModelReference.swift */,
 			);
 			name = Util;
 			sourceTree = "<group>";

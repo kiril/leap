@@ -81,6 +81,7 @@ class EventSurface: Surface {
         bridge.bind(surface.userIgnored)
         bridge.bind(surface.userIsInvited)
         surface.store = bridge
+        surface.populate()
         return surface
     }
 }
