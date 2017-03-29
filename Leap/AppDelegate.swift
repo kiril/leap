@@ -21,6 +21,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
+        let attemptSync = false
+        if attemptSync {
+            attemptCalendarSync()
+        }
+
+        return true
+    }
+
+    private func attemptCalendarSync() {
         let realm = Realm.user()
         let eventStore = EKEventStore()
         let calendars = eventStore.legacyCalendars()
@@ -42,7 +51,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch {
             print("Failed to get credentials \(error)")
         }
-        return true
     }
 
     func application(_ app: UIApplication,

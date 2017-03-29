@@ -16,6 +16,15 @@ class InitialViewController: UIViewController {
     }
 
     private func launchDebugViewController() {
+
+        if false {
+            presentCalendarViewController()
+        }
+
+
+    }
+
+    private func presentCalendarViewController() {
         let debugEventViewController = UIStoryboard(name: "LocalCalendar", bundle: nil).instantiateInitialViewController()!
 
         self.present(debugEventViewController,
