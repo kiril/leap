@@ -82,13 +82,13 @@ class CalendarCollectionViewController: UICollectionViewController {
 }
 
 extension CalendarCollectionViewController {
-    static func mockedEntries() -> DayScheduleShell {
+    static func mockedEntries() -> DayScheduleSurface {
         // mocking out entries
 
         var entries = [ScheduleEntry]()
-        var tmpEvent: EventShell!
+        var tmpEvent: EventSurface!
 
-        tmpEvent = EventShell(mockData: [
+        tmpEvent = EventSurface(mockData: [
             "time_range": "8 - 9am",
             "title": "Breakfast with John",
             "perspective": TimePerspective.past,
@@ -96,7 +96,7 @@ extension CalendarCollectionViewController {
         ])
         entries.append(ScheduleEntry.from(event: tmpEvent))
 
-        tmpEvent = EventShell(mockData: [
+        tmpEvent = EventSurface(mockData: [
             "time_range": "10:30am - 12:30am",
             "title": "Important Meeting",
             "perspective": TimePerspective.current,
@@ -106,7 +106,7 @@ extension CalendarCollectionViewController {
         ])
         entries.append(ScheduleEntry.from(event: tmpEvent))
 
-        tmpEvent = EventShell(mockData: [
+        tmpEvent = EventSurface(mockData: [
             "time_range": "3 - 4:30pm",
             "title": "Afternoon Meeting with a very long title this is a long title how big is it?! SO BIG",
             "perspective": TimePerspective.future,
@@ -115,7 +115,7 @@ extension CalendarCollectionViewController {
         entries.append(ScheduleEntry.from(event: tmpEvent))
 
 
-        tmpEvent = EventShell(mockData: [
+        tmpEvent = EventSurface(mockData: [
             "time_range": "7 - 11:30pm",
             "title": "PARTY TIME 🎉",
             "perspective": TimePerspective.future,
@@ -125,7 +125,7 @@ extension CalendarCollectionViewController {
         entries.append(ScheduleEntry.from(event: tmpEvent))
 
 
-        return DayScheduleShell(mockData: ["entries": entries])
+        return DayScheduleSurface(mockData: ["entries": entries])
     }
 }
 

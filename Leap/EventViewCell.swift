@@ -61,7 +61,7 @@ class EventViewCell: UICollectionViewCell {
         super.init(coder: aDecoder)
     }
 
-    func configure(with event: EventShell) {
+    func configure(with event: EventSurface) {
         // move out of here to seperate helper classes
         // if this needs to be different
         // for different contexts

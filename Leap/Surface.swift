@@ -1,5 +1,5 @@
 //
-//  Shell.swift
+//  Surface.swift
 //  Leap
 //
 //  Created by Kiril Savino on 3/18/17.
@@ -11,26 +11,26 @@ import SwiftyJSON
 
 
 /**
- * In order to tread ShellObserver objects as weak references,
- * and have multiple of them stored for a given Shell,
+ * In order to tread SurfaceObserver objects as weak references,
+ * and have multiple of them stored for a given Surface,
  * we have to only put weakly held references to them into our collection.
  */
 internal class WeakObserver {
-    weak var observer: ShellObserver?
-    init(_ observer: ShellObserver) {
+    weak var observer: SurfaceObserver?
+    init(_ observer: SurfaceObserver) {
         self.observer = observer
     }
 }
 
 
 /**
- * This is the big show! A Shell is a ViewModel type that
+ * This is the big show! A Surface is a ViewModel type that
  * allows a View/Controller (Interface) to deal with data that's backed by
  * a Model somewhere, without knowing about that Model, and both update the
- * underlying Model via the Shell, and receive updates about changes
- * to the data this Shell holds.
+ * underlying Model via the Surface, and receive updates about changes
+ * to the data this Surface holds.
  */
-open class Shell {
+open class Surface {
     let id: String?
 
     internal var properties: [String:Property] = [String:Property]()
@@ -49,7 +49,7 @@ open class Shell {
     }
 
     var type: String {
-        return "shell" // default to class name?
+        return "surface" // default to class name?
     }
 
     var keys: Set<String> {
@@ -84,7 +84,7 @@ open class Shell {
         let me = Mirror(reflecting: self)
         for child in me.children {
             if var property = child.value as? Property {
-                property.shell = self
+                property.surface = self
                 properties[child.label!] = property
             }
         }
@@ -104,33 +104,33 @@ open class Shell {
 }
 
 /**
- * Just to separate out the Observable conformance of the Shell.
+ * Just to separate out the Observable conformance of the Surface.
  * I can't imagine that anything else would ever conform to Observable,
  * because it's specifically tied to this class cluster, but this at least
  * makes it clear how we're dividing up the semantics of this class.
  *
- * A fundamental thing about Shell is that you can observe changes to them.
+ * A fundamental thing about Surface is that you can observe changes to them.
  */
-extension Shell: Observable {
-    func register(observer: ShellObserver) {
+extension Surface: Observable {
+    func register(observer: SurfaceObserver) {
         self.observers[observer.sourceId] = WeakObserver(observer)
     }
 
-    func deregister(observer: ShellObserver) {
+    func deregister(observer: SurfaceObserver) {
         self.observers.removeValue(forKey: observer.sourceId)
     }
 }
 
 /**
  * Again, separating out the Updateable conformance.
- * Shells can be updated by either a BackingStore, or by
+ * Surfaces can be updated by either a BackingStore, or by
  * some Interface component (Model or more likely Controller).
  * We'll propagate those changes to all Observers, but avoid
  * having an observer accidentally notify itself of changes its making,
  * resulting in update or render loops, by keeping track of where a
  * change originated, and not notifying the originating Source.
  */
-extension Shell: Updateable {
+extension Surface: Updateable {
     func update(data: [String:Any], via source: SourceIdentifiable?, silently: Bool = false) throws {
         for (key, value) in data {
             guard let property = properties[key] else {
@@ -165,7 +165,7 @@ extension Shell: Updateable {
                     if let source = source {
                         guard observerSourceId != source.sourceId else { continue } // don't loop change notifications
                     }
-                    observer.shellDidChange(self)
+                    observer.surfaceDidChange(self)
                 }
             }
         }
@@ -201,7 +201,7 @@ extension Shell: Updateable {
                     if let source = source {
                         guard observerSourceId != source.sourceId else { continue } // don't loop change notifications
                     }
-                    observer.shellDidChange(self)
+                    observer.surfaceDidChange(self)
                 }
             }
         }
@@ -226,7 +226,7 @@ extension Shell: Updateable {
                     if let source = source {
                         guard observerSourceId != source.sourceId else { continue }
                     }
-                    observer.shellDidChange(self)
+                    observer.surfaceDidChange(self)
                 }
             }
         }
@@ -258,11 +258,11 @@ extension Shell: Updateable {
 }
 
 /**
- * Persistable implementation: the parts of Shell that allow it to interact with
+ * Persistable implementation: the parts of Surface that allow it to interact with
  * a backing store, and represent its state vis a vis persistence.
  * Also see the variables defined on the class above, which are required parts of the protocol.
  */
-extension Shell: Persistable {
+extension Surface: Persistable {
 
     var isPersistable: Bool {
         return self.id != nil // AND more stuff
@@ -276,7 +276,7 @@ extension Shell: Persistable {
         self.purgeObservers()
         for (_, ref) in self.observers {
             if let observer:LifecycleObserver = ref.observer as? LifecycleObserver {
-                observer.shellDidPersist(self)
+                observer.surfaceDidPersist(self)
             }
         }
     }

@@ -35,9 +35,9 @@ protocol Persistable {
 
 
 protocol Retrievable {
-    associatedtype ConcreteShell
+    associatedtype ConcreteSurface
 
-    static func find(byId id: String) throws -> ConcreteShell
+    static func find(byId id: String) throws -> ConcreteSurface
 }
 
 
@@ -45,21 +45,21 @@ protocol Queryable {
 }
 
 protocol Query {
-    associatedtype ConcreteShell
+    associatedtype ConcreteSurface
 
-    func all() throws -> [ConcreteShell]
-    func first(_: Int) throws -> [ConcreteShell]
-    func any() throws -> ConcreteShell
-    func one() throws -> ConcreteShell
+    func all() throws -> [ConcreteSurface]
+    func first(_: Int) throws -> [ConcreteSurface]
+    func any() throws -> ConcreteSurface
+    func one() throws -> ConcreteSurface
 }
 
 
 /*
- * A Shell is in charge of communicating with its backing store,
- * which houses the underlying model(s) that the Shell is standing
+ * A Surface is in charge of communicating with its backing store,
+ * which houses the underlying model(s) that the Surface is standing
  * in for.
  */
 protocol BackingStore: SourceIdentifiable {
-    func persist(_ shell: Shell) throws -> Bool
-    func populate(_ shell: Shell)
+    func persist(_ surface : Surface) throws -> Bool
+    func populate(_ surface: Surface)
 }

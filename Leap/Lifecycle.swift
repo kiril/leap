@@ -31,34 +31,34 @@ protocol Updateable {
 
 
 /*
- * Shell conforms to the Observable protocol, which
+ * Surface conforms to the Observable protocol, which
  * allows Observers to register themselves for updates about
- * the Shell's state.
+ * the Surface's state.
  */
 protocol Observable {
-    func register(observer: ShellObserver)
-    func deregister(observer: ShellObserver)
+    func register(observer: SurfaceObserver)
+    func deregister(observer: SurfaceObserver)
 }
 
 
 /*
  * ReprsentationObservers are the most basic kind of observer that
- * can get notifications about changes to a Shell.
+ * can get notifications about changes to a Surface.
  *
- * All they get is an update when anything about the Shell's
+ * All they get is an update when anything about the Surface's
  * underlying data changes.
  */
-protocol ShellObserver: AnyObject, SourceIdentifiable {
-    func shellDidChange(_ shell: Shell)
+protocol SurfaceObserver: AnyObject, SourceIdentifiable {
+    func surfaceDidChange(_ surface: Surface)
 }
 
 
 /**
- * A more advanced form of ShellObserver, LifecycleObservers
+ * A more advanced form of SurfaceObserver, LifecycleObservers
  * also get updates about what happens to the storage state of the underlying
- * Shell.
+ * Surface.
  */
-protocol LifecycleObserver: ShellObserver {
-    func shellDidPersist(_ shell: Shell)
-    func shellWasDeleted(_ shell: Shell)
+protocol LifecycleObserver: SurfaceObserver {
+    func surfaceDidPersist(_ surface: Surface)
+    func surfaceWasDeleted(_ surface: Surface)
 }

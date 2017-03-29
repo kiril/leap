@@ -1,5 +1,5 @@
 //
-//  EventRepresentation.swift
+//  EventSurface.swift
 //  Leap
 //
 //  Created by Kiril Savino on 3/19/17.
@@ -18,7 +18,7 @@ enum InvitationResponse {
 }
 
 extension TimePerspective {
-    static func compute(fromEvent event: EventShell) -> TimePerspective {
+    static func compute(fromEvent event: EventSurface) -> TimePerspective {
         let now = Date()
         if event.startTime.value > now {
             return .future
@@ -30,37 +30,37 @@ extension TimePerspective {
     }
 }
 
-class EventShell: Shell {
+class EventSurface: Surface {
     override var type: String { return "event" }
 
     let title =                  WritableProperty<String>("title", validatedBy: validIfAtLeast(characters: 5))
     let startTime =              WritableProperty<Date>("start_time")
     let endTime =                WritableProperty<Date>("end_time")
-    let timeRange =              ComputedProperty<String,EventShell>("time_range", EventShell.eventTimeRange)
+    let timeRange =              ComputedProperty<String,EventSurface>("time_range", EventSurface.eventTimeRange)
     let userIgnored =            WritableProperty<Bool>("ignored", defaultingTo: false)
     let userIsInvited =          ReadableProperty<Bool>("invited", defaultingTo: false)
     let userInvitationResponse = WritableProperty<InvitationResponse>("response", defaultingTo: .none)
-    let isUnresolved =           ComputedProperty<Bool,EventShell>("unresolved", {event in
+    let isUnresolved =           ComputedProperty<Bool,EventSurface>("unresolved", {event in
         if event.userIsInvited.value, event.userInvitationResponse.value == .none {
             return true
         } else {
             return false
         }
     })
-    let perspective =            ComputedProperty<TimePerspective,EventShell>("perspective", TimePerspective.compute)
-    let percentElapsed =         ComputedProperty<Float,EventShell>("elapsed", EventShell.computeElapsed)
-    let invitationSummary =      ComputedProperty<String,EventShell>("invitation_summary", EventShell.formatInvitationSummary)
+    let perspective =            ComputedProperty<TimePerspective,EventSurface>("perspective", TimePerspective.compute)
+    let percentElapsed =         ComputedProperty<Float,EventSurface>("elapsed", EventSurface.computeElapsed)
+    let invitationSummary =      ComputedProperty<String,EventSurface>("invitation_summary", EventSurface.formatInvitationSummary)
 
 
-    static func eventTimeRange(event: EventShell) -> String {
+    static func eventTimeRange(event: EventSurface) -> String {
         return "10am-2pm" // TODO: actually do this
     }
 
-    static func computeElapsed(event: EventShell) -> Float {
+    static func computeElapsed(event: EventSurface) -> Float {
         return 0.0 // TODO: calcualte elapsed time
     }
 
-    static func formatInvitationSummary(event: EventShell) -> String {
+    static func formatInvitationSummary(event: EventSurface) -> String {
         return "" // TODO: format Invitation Summary
     }
 }

@@ -24,7 +24,7 @@
 		835456181E8AFD7200A03B34 /* UIColor+ProjectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835456171E8AFD7200A03B34 /* UIColor+ProjectExtensions.swift */; };
 		8354561A1E8C09A100A03B34 /* DayScheduleTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 835456191E8C09A100A03B34 /* DayScheduleTitleView.xib */; };
 		83A72D741E82DAE0005EB213 /* TimePerspective.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A72D731E82DAE0005EB213 /* TimePerspective.swift */; };
-		83A72D771E82DF95005EB213 /* DayScheduleShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A72D761E82DF95005EB213 /* DayScheduleShell.swift */; };
+		83A72D771E82DF95005EB213 /* DayScheduleSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A72D761E82DF95005EB213 /* DayScheduleSurface.swift */; };
 		83F4B1611E7C383F000FCB8D /* ScheduleEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F4B1601E7C383F000FCB8D /* ScheduleEntry.swift */; };
 		DB41B30C348D9390E4320905 /* Pods_LeapUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 386ABDADBBC48EDACA0896BE /* Pods_LeapUITests.framework */; };
 		FB0762DB1E142FBF0035EF8F /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0762DA1E142FBF0035EF8F /* ScheduleViewController.swift */; };
@@ -66,7 +66,7 @@
 		FB4E11A51E79ABB400687702 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4E11A41E79ABB400687702 /* LaunchScreen.storyboard */; };
 		FB4E11A71E79B1F500687702 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4E11A61E79B1F500687702 /* Main.storyboard */; };
 		FB8BB6231E89A76A00A30315 /* EventKitMigrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8BB6221E89A76A00A30315 /* EventKitMigrationTests.swift */; };
-		FB934F201E7E01DF0068CDEF /* Shell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F1F1E7E01DF0068CDEF /* Shell.swift */; };
+		FB934F201E7E01DF0068CDEF /* Surface.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F1F1E7E01DF0068CDEF /* Surface.swift */; };
 		FB934F241E7EDF670068CDEF /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F231E7EDF670068CDEF /* Persistence.swift */; };
 		FB934F261E7EDFA80068CDEF /* Lifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F251E7EDFA80068CDEF /* Lifecycle.swift */; };
 		FBB4BFD81E8ACED1001679BF /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB4BFD71E8ACED1001679BF /* Operation.swift */; };
@@ -75,7 +75,7 @@
 		FBCA4D201E844924003E7AB7 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBCA4D1F1E844924003E7AB7 /* Room.swift */; };
 		FBD1045D1E80309300DDF65B /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD1045C1E80309300DDF65B /* Property.swift */; };
 		FBD1045F1E80717E00DDF65B /* ShellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD1045E1E80717E00DDF65B /* ShellTests.swift */; };
-		FBD614541E7F3370001F4050 /* EventShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD614531E7F3370001F4050 /* EventShell.swift */; };
+		FBD614541E7F3370001F4050 /* EventSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD614531E7F3370001F4050 /* EventSurface.swift */; };
 		FBD614561E7F38D4001F4050 /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD614551E7F38D4001F4050 /* Schema.swift */; };
 		FBD614581E7F57B0001F4050 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD614571E7F57B0001F4050 /* Validation.swift */; };
 		FBE0EFE41DFBBB80007BD8DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE0EFE31DFBBB80007BD8DF /* AppDelegate.swift */; };
@@ -127,7 +127,7 @@
 		835456171E8AFD7200A03B34 /* UIColor+ProjectExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+ProjectExtensions.swift"; sourceTree = "<group>"; };
 		835456191E8C09A100A03B34 /* DayScheduleTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DayScheduleTitleView.xib; sourceTree = "<group>"; };
 		83A72D731E82DAE0005EB213 /* TimePerspective.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimePerspective.swift; sourceTree = "<group>"; };
-		83A72D761E82DF95005EB213 /* DayScheduleShell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayScheduleShell.swift; sourceTree = "<group>"; };
+		83A72D761E82DF95005EB213 /* DayScheduleSurface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayScheduleSurface.swift; sourceTree = "<group>"; };
 		83F4B1601E7C383F000FCB8D /* ScheduleEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleEntry.swift; sourceTree = "<group>"; };
 		8EED8FB993394DE5707CFED0 /* Pods-LeapUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LeapUITests/Pods-LeapUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		EFE6A6E5DCCA6A604F469F66 /* Pods-Leap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Leap/Pods-Leap.debug.xcconfig"; sourceTree = "<group>"; };
@@ -172,7 +172,7 @@
 		FB4E11A41E79ABB400687702 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FB4E11A61E79B1F500687702 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		FB8BB6221E89A76A00A30315 /* EventKitMigrationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventKitMigrationTests.swift; sourceTree = "<group>"; };
-		FB934F1F1E7E01DF0068CDEF /* Shell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shell.swift; sourceTree = "<group>"; };
+		FB934F1F1E7E01DF0068CDEF /* Surface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Surface.swift; sourceTree = "<group>"; };
 		FB934F231E7EDF670068CDEF /* Persistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		FB934F251E7EDFA80068CDEF /* Lifecycle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lifecycle.swift; sourceTree = "<group>"; };
 		FBB4BFD71E8ACED1001679BF /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
@@ -181,7 +181,7 @@
 		FBCA4D1F1E844924003E7AB7 /* Room.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		FBD1045C1E80309300DDF65B /* Property.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Property.swift; sourceTree = "<group>"; };
 		FBD1045E1E80717E00DDF65B /* ShellTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShellTests.swift; sourceTree = "<group>"; };
-		FBD614531E7F3370001F4050 /* EventShell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventShell.swift; sourceTree = "<group>"; };
+		FBD614531E7F3370001F4050 /* EventSurface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventSurface.swift; sourceTree = "<group>"; };
 		FBD614551E7F38D4001F4050 /* Schema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Schema.swift; sourceTree = "<group>"; };
 		FBD614571E7F57B0001F4050 /* Validation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
 		FBE0EFE01DFBBB80007BD8DF /* Leap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Leap.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -349,11 +349,14 @@
 			name = "Temporary (seriously) example code";
 			sourceTree = "<group>";
 		};
-		FB166B581E8ABE9D00CB95EC /* LeapShells */ = {
+		FB166B581E8ABE9D00CB95EC /* Surfaces */ = {
 			isa = PBXGroup;
 			children = (
+				FBD614531E7F3370001F4050 /* EventSurface.swift */,
+				83A72D761E82DF95005EB213 /* DayScheduleSurface.swift */,
+				83F4B1601E7C383F000FCB8D /* ScheduleEntry.swift */,
 			);
-			name = LeapShells;
+			name = Surfaces;
 			sourceTree = "<group>";
 		};
 		FB2046A41E82E1C300F130C8 /* EventKit */ = {
@@ -432,15 +435,12 @@
 			name = Metadata;
 			sourceTree = "<group>";
 		};
-		FB934F1E1E7E019B0068CDEF /* Shells */ = {
+		FB934F1E1E7E019B0068CDEF /* Surface */ = {
 			isa = PBXGroup;
 			children = (
-				FB934F1F1E7E01DF0068CDEF /* Shell.swift */,
+				FB934F1F1E7E01DF0068CDEF /* Surface.swift */,
 				FB934F231E7EDF670068CDEF /* Persistence.swift */,
 				FB934F251E7EDFA80068CDEF /* Lifecycle.swift */,
-				FBD614531E7F3370001F4050 /* EventShell.swift */,
-				83A72D761E82DF95005EB213 /* DayScheduleShell.swift */,
-				83F4B1601E7C383F000FCB8D /* ScheduleEntry.swift */,
 				FBD614551E7F38D4001F4050 /* Schema.swift */,
 				FBD614571E7F57B0001F4050 /* Validation.swift */,
 				FBD1045C1E80309300DDF65B /* Property.swift */,
@@ -448,7 +448,7 @@
 				FBB4BFD71E8ACED1001679BF /* Operation.swift */,
 				FBB4BFD91E8B1026001679BF /* EventBridge.swift */,
 			);
-			name = Shells;
+			name = Surface;
 			sourceTree = "<group>";
 		};
 		FBE0EFD71DFBBB80007BD8DF = {
@@ -479,8 +479,8 @@
 			isa = PBXGroup;
 			children = (
 				FB2046A41E82E1C300F130C8 /* EventKit */,
-				FB934F1E1E7E019B0068CDEF /* Shells */,
-				FB166B581E8ABE9D00CB95EC /* LeapShells */,
+				FB934F1E1E7E019B0068CDEF /* Surface */,
+				FB166B581E8ABE9D00CB95EC /* Surfaces */,
 				FBE4DEA91E6CBD8A0062507B /* Res */,
 				FB0762DC1E1430A60035EF8F /* Leap.entitlements */,
 				FBE0EFE31DFBBB80007BD8DF /* AppDelegate.swift */,
@@ -835,10 +835,10 @@
 				FB166B5C1E8AC3CA00CB95EC /* Fetchable.swift in Sources */,
 				FB166B5E1E8AC6DB00CB95EC /* ModelReference.swift in Sources */,
 				FB4208661E8976B1007F4DBD /* Series.swift in Sources */,
-				FBD614541E7F3370001F4050 /* EventShell.swift in Sources */,
+				FBD614541E7F3370001F4050 /* EventSurface.swift in Sources */,
 				FB934F261E7EDFA80068CDEF /* Lifecycle.swift in Sources */,
 				FB42084B1E857DAF007F4DBD /* Participant.swift in Sources */,
-				FB934F201E7E01DF0068CDEF /* Shell.swift in Sources */,
+				FB934F201E7E01DF0068CDEF /* Surface.swift in Sources */,
 				FBB4BFD81E8ACED1001679BF /* Operation.swift in Sources */,
 				8351BDD11E807C4C001221AF /* WeekOverviewViewModel.swift in Sources */,
 				831444CC1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift in Sources */,
@@ -869,7 +869,7 @@
 				FB42085F1E896C40007F4DBD /* Reservation.swift in Sources */,
 				FB42086C1E897AD1007F4DBD /* ChecklistItem.swift in Sources */,
 				FBE0EFE41DFBBB80007BD8DF /* AppDelegate.swift in Sources */,
-				83A72D771E82DF95005EB213 /* DayScheduleShell.swift in Sources */,
+				83A72D771E82DF95005EB213 /* DayScheduleSurface.swift in Sources */,
 				8351BDCD1E7C596C001221AF /* GregorianDay.swift in Sources */,
 				8351BDC91E7C58FD001221AF /* OpenTimeViewModel.swift in Sources */,
 				FB0762DB1E142FBF0035EF8F /* ScheduleViewController.swift in Sources */,
