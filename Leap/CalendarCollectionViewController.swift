@@ -20,6 +20,7 @@ class CalendarCollectionViewController: UICollectionViewController {
         super.viewDidLoad()
 
         setupCollectionView()
+        setupNavigation()
     }
 
     private func setupCollectionView() {
@@ -30,6 +31,14 @@ class CalendarCollectionViewController: UICollectionViewController {
         self.collectionView!.collectionViewLayout = layout
         self.collectionView!.contentInset = UIEdgeInsets(top: 15.0, left: 15.0, bottom: 0.0, right: 15.0)
         self.collectionView!.alwaysBounceVertical = true
+    }
+
+    private func setupNavigation() {
+        let titleNib = UINib(nibName: "DayScheduleTitleView", bundle: nil)
+        let titleView = titleNib.instantiate(withOwner: nil, options: nil).first as! UIView
+        let buttonItem = UIBarButtonItem(customView: titleView)
+        titleView.translatesAutoresizingMaskIntoConstraints = false
+        navigationItem.leftBarButtonItems = [buttonItem]
     }
 
     // MARK: UICollectionViewDataSource

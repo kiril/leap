@@ -32,7 +32,7 @@ class EventViewCell: UICollectionViewCell {
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowOffset = CGSize(width: 2, height: 2)
         layer.shadowPath = shadowPath.cgPath
-        layer.shadowOpacity = displayShadow ? 0.15 : 0
+        layer.shadowOpacity = displayShadow ? 0.1 : 0
         layer.shadowRadius = 2
     }
 
