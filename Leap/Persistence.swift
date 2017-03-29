@@ -19,8 +19,6 @@ protocol Persistable {
     var isTransient: Bool { get }
     var isDirty: Bool { get }
     var dirtyFields: Set<String> { get }
-    var keys: Set<String> { get }
-    var operations: [Operation] { get }
 
     var isPersisted: Bool { get }
     var isPersistable: Bool { get }

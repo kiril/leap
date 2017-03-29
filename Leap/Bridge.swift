@@ -29,11 +29,11 @@ class Bridge: BackingStore {
     }
 
     func read(_ field: Property, with reader: @escaping FieldReader) {
-        readers[field.name] = reader
+        readers[field.key] = reader
     }
 
     func write(_ field: Property, with writer: @escaping FieldWriter) {
-        writers[field.name] = writer
+        writers[field.key] = writer
     }
 
     func populate(_ surface: Surface) {
@@ -46,6 +46,9 @@ class Bridge: BackingStore {
     }
 
     func persist(_ surface: Surface) throws -> Bool {
+        return false
+
+        /*
         var changed = false
 
         for operation in surface.operations {
@@ -56,5 +59,6 @@ class Bridge: BackingStore {
         }
 
         return changed
+ */
     }
 }

@@ -17,14 +17,14 @@ protocol Reference {
 }
 
 func refer<Model:LeapModel>(to model: Model, as name: String) -> ModelReference<Model> where Model:Fetchable {
-    return ModelReference<Model>(model: model, name: name)
+    return ModelReference<Model>(to: model, as: name)
 }
 
 class ModelReference<Model:LeapModel>: Reference where Model:Fetchable {
     var id: String
     var name: String
 
-    init(model: Model, name: String) {
+    init(to model: Model, as name: String) {
         id = model.id
         self.name = name
     }
