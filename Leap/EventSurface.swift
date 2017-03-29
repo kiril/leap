@@ -75,10 +75,12 @@ class EventSurface: Surface {
         }
 
         let surface = EventSurface(id: event.id)
-        surface.reference(event, as: "event")
-        surface.bindAll(surface.title, surface.startTime, surface.endTime) // these are all default-bound to identical fields in the model
-        surface.bind(surface.userIgnored)
-        surface.bind(surface.userIsInvited)
+        let bridge = SurfaceBridge(id: event.id)
+        bridge.reference(event, as: "event")
+        bridge.bindAll(surface.title, surface.startTime, surface.endTime) // these are all default-bound to identical fields in the model
+        bridge.bind(surface.userIgnored)
+        bridge.bind(surface.userIsInvited)
+        surface.store = bridge
         return surface
     }
 }

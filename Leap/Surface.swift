@@ -36,12 +36,9 @@ open class Surface {
     var type: String { fatalError("Must override type") }
 
     public fileprivate (set) var keys: Set<String> = []
-
-    fileprivate var references: [String:Any] = [:]
-    fileprivate var bindings: [String:(String,[String])] = [:]
     fileprivate var properties: [String:Property] = [:]
 
-    fileprivate var store: BackingStore?
+    var store: BackingStore?
     fileprivate var mockData: ModelData?
     fileprivate var data: ModelData
 
@@ -120,38 +117,6 @@ open class Surface {
 
     func asJSON() -> JSON {
         return JSON(self.data)
-    }
-
-    func dereference(_ name: String) -> LeapModel? {
-        if let reference = references[name] as? Reference,
-            let model = reference.resolve() {
-            return model
-        }
-        return nil
-    }
-
-    func reference<Model:LeapModel>(_ model: Model, as name: String) where Model:Fetchable {
-        references[name] = refer(to: model, as: name)
-    }
-
-    func bind(_ property: Property, to name: String? = nil, on model: String? = nil) {
-        guard model != nil || references.count == 1 else {
-            fatalError("")
-        }
-        bindings[property.key] = (model ?? references.keys.first!, name?.components(separatedBy: ".") ?? [property.key])
-    }
-
-    func bindAll(_ properties:Property...) {
-        properties.forEach { property in bind(property) }
-    }
-
-    func populate() {
-        for (key, (sourceName, sourceKeyPath)) in bindings {
-            if let model = dereference(sourceName),
-                let value = model.getValue(forKeysRecursively: sourceKeyPath) {
-                data[key] = value
-            }
-        }
     }
 }
 

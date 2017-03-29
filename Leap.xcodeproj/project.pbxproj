@@ -62,6 +62,7 @@
 		FB2046B61E82E9B100F130C8 /* DeviceAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046B51E82E9B100F130C8 /* DeviceAccount.swift */; };
 		FB2046B81E830E4600F130C8 /* Temporality.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046B71E830E4600F130C8 /* Temporality.swift */; };
 		FB39ADA91E8C65AF00B79A7B /* Object+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADA81E8C65AF00B79A7B /* Object+Leap.swift */; };
+		FB39ADAB1E8C69BB00B79A7B /* SurfaceBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADAA1E8C69BB00B79A7B /* SurfaceBridge.swift */; };
 		FB4208471E857984007F4DBD /* Recurrence.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208461E857984007F4DBD /* Recurrence.swift */; };
 		FB4208491E8579D0007F4DBD /* Auditable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208481E8579D0007F4DBD /* Auditable.swift */; };
 		FB42084B1E857DAF007F4DBD /* Participant.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42084A1E857DAF007F4DBD /* Participant.swift */; };
@@ -174,6 +175,7 @@
 		FB2046B51E82E9B100F130C8 /* DeviceAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceAccount.swift; sourceTree = "<group>"; };
 		FB2046B71E830E4600F130C8 /* Temporality.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Temporality.swift; sourceTree = "<group>"; };
 		FB39ADA81E8C65AF00B79A7B /* Object+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Object+Leap.swift"; sourceTree = "<group>"; };
+		FB39ADAA1E8C69BB00B79A7B /* SurfaceBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurfaceBridge.swift; sourceTree = "<group>"; };
 		FB4208461E857984007F4DBD /* Recurrence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recurrence.swift; sourceTree = "<group>"; };
 		FB4208481E8579D0007F4DBD /* Auditable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auditable.swift; sourceTree = "<group>"; };
 		FB42084A1E857DAF007F4DBD /* Participant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Participant.swift; sourceTree = "<group>"; };
@@ -460,6 +462,7 @@
 			children = (
 				FB4208581E85A2DD007F4DBD /* Realm+Leap.swift */,
 				FB39ADA81E8C65AF00B79A7B /* Object+Leap.swift */,
+				FB39ADAA1E8C69BB00B79A7B /* SurfaceBridge.swift */,
 				FB2046B31E82E7DD00F130C8 /* LeapModel.swift */,
 				FB4208481E8579D0007F4DBD /* Auditable.swift */,
 				FB42085A1E85A650007F4DBD /* TimeZone.swift */,
@@ -894,6 +897,7 @@
 				FB934F261E7EDFA80068CDEF /* Lifecycle.swift in Sources */,
 				FB42084B1E857DAF007F4DBD /* Participant.swift in Sources */,
 				FB934F201E7E01DF0068CDEF /* Surface.swift in Sources */,
+				FB39ADAB1E8C69BB00B79A7B /* SurfaceBridge.swift in Sources */,
 				FBB4BFD81E8ACED1001679BF /* Operation.swift in Sources */,
 				8351BDD11E807C4C001221AF /* WeekOverviewViewModel.swift in Sources */,
 				831444CC1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift in Sources */,
