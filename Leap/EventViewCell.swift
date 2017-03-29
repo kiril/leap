@@ -117,4 +117,10 @@ extension UIColor {
                        b: 112)
     }
 
+    static var projectDarkerGray: UIColor {
+        return UIColor(r: 84,
+                       g: 84,
+                       b: 84)
+    }
+
 }

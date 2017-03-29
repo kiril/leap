@@ -36,9 +36,15 @@ class CalendarCollectionViewController: UICollectionViewController {
     private func setupNavigation() {
         let titleNib = UINib(nibName: "DayScheduleTitleView", bundle: nil)
         let titleView = titleNib.instantiate(withOwner: nil, options: nil).first as! UIView
-        let buttonItem = UIBarButtonItem(customView: titleView)
         titleView.translatesAutoresizingMaskIntoConstraints = false
-        navigationItem.leftBarButtonItems = [buttonItem]
+        let titleButtonItem = UIBarButtonItem(customView: titleView)
+
+        let arrowNib = UINib(nibName: "NavigationToggleArrowView", bundle: nil)
+        let arrowView = arrowNib.instantiate(withOwner: nil, options: nil).first as! UIView
+        arrowView.translatesAutoresizingMaskIntoConstraints = false
+        let arrowButtonItem = UIBarButtonItem(customView: arrowView)
+
+        navigationItem.leftBarButtonItems = [arrowButtonItem, titleButtonItem]
     }
 
     // MARK: UICollectionViewDataSource

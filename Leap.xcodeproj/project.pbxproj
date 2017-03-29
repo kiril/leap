@@ -17,6 +17,16 @@
 		831444CC1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444CB1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift */; };
 		831444CF1E7B46A200A5EF06 /* EventStoreExampleCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444CE1E7B46A200A5EF06 /* EventStoreExampleCode.swift */; };
 		831444D21E7B472500A5EF06 /* ViewModelUpdateable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444D11E7B472500A5EF06 /* ViewModelUpdateable.swift */; };
+		833617601E8C1D3A009A97FF /* DayScheduleTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8336175F1E8C1D3A009A97FF /* DayScheduleTitleView.swift */; };
+		833617631E8C21E8009A97FF /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = 833617621E8C21E8009A97FF /* FontAwesome.otf */; };
+		833617641E8C21E8009A97FF /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = 833617621E8C21E8009A97FF /* FontAwesome.otf */; };
+		833617651E8C21E8009A97FF /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = 833617621E8C21E8009A97FF /* FontAwesome.otf */; };
+		833617671E8C2538009A97FF /* NavigationToggleArrowView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 833617661E8C2538009A97FF /* NavigationToggleArrowView.xib */; };
+		833617681E8C2538009A97FF /* NavigationToggleArrowView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 833617661E8C2538009A97FF /* NavigationToggleArrowView.xib */; };
+		833617691E8C2538009A97FF /* NavigationToggleArrowView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 833617661E8C2538009A97FF /* NavigationToggleArrowView.xib */; };
+		8336176B1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8336176A1E8C277D009A97FF /* NavigationToggleArrowView.swift */; };
+		8336176C1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8336176A1E8C277D009A97FF /* NavigationToggleArrowView.swift */; };
+		8336176D1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8336176A1E8C277D009A97FF /* NavigationToggleArrowView.swift */; };
 		8351BDC91E7C58FD001221AF /* OpenTimeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDC81E7C58FD001221AF /* OpenTimeViewModel.swift */; };
 		8351BDCD1E7C596C001221AF /* GregorianDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDCC1E7C596C001221AF /* GregorianDay.swift */; };
 		8351BDD11E807C4C001221AF /* WeekOverviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDD01E807C4C001221AF /* WeekOverviewViewModel.swift */; };
@@ -120,6 +130,10 @@
 		831444CB1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewFlowLayout.swift; sourceTree = "<group>"; };
 		831444CE1E7B46A200A5EF06 /* EventStoreExampleCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventStoreExampleCode.swift; sourceTree = "<group>"; };
 		831444D11E7B472500A5EF06 /* ViewModelUpdateable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelUpdateable.swift; sourceTree = "<group>"; };
+		8336175F1E8C1D3A009A97FF /* DayScheduleTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayScheduleTitleView.swift; sourceTree = "<group>"; };
+		833617621E8C21E8009A97FF /* FontAwesome.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.otf; sourceTree = "<group>"; };
+		833617661E8C2538009A97FF /* NavigationToggleArrowView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NavigationToggleArrowView.xib; sourceTree = "<group>"; };
+		8336176A1E8C277D009A97FF /* NavigationToggleArrowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationToggleArrowView.swift; sourceTree = "<group>"; };
 		8351BDC81E7C58FD001221AF /* OpenTimeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenTimeViewModel.swift; sourceTree = "<group>"; };
 		8351BDCC1E7C596C001221AF /* GregorianDay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GregorianDay.swift; sourceTree = "<group>"; };
 		8351BDD01E807C4C001221AF /* WeekOverviewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekOverviewViewModel.swift; sourceTree = "<group>"; };
@@ -261,6 +275,9 @@
 				831444C51E7B020700A5EF06 /* CalendarCollectionViewController.swift */,
 				831444CB1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift */,
 				835456191E8C09A100A03B34 /* DayScheduleTitleView.xib */,
+				8336175F1E8C1D3A009A97FF /* DayScheduleTitleView.swift */,
+				833617661E8C2538009A97FF /* NavigationToggleArrowView.xib */,
+				8336176A1E8C277D009A97FF /* NavigationToggleArrowView.swift */,
 			);
 			name = LocalCalendar;
 			sourceTree = "<group>";
@@ -280,6 +297,14 @@
 				831444D11E7B472500A5EF06 /* ViewModelUpdateable.swift */,
 			);
 			name = Protocols;
+			sourceTree = "<group>";
+		};
+		833617611E8C21B1009A97FF /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				833617621E8C21E8009A97FF /* FontAwesome.otf */,
+			);
+			name = Fonts;
 			sourceTree = "<group>";
 		};
 		8351BDCA1E7C5932001221AF /* Models */ = {
@@ -492,6 +517,7 @@
 				8351BDCA1E7C5932001221AF /* Models */,
 				83A72D751E82DBE7005EB213 /* Temporary (seriously) example code */,
 				8351BDCB1E7C593C001221AF /* Utilities */,
+				833617611E8C21B1009A97FF /* Fonts */,
 				FB4E11A41E79ABB400687702 /* LaunchScreen.storyboard */,
 				FBE0EFED1DFBBB80007BD8DF /* Assets.xcassets */,
 				FBE0EFF21DFBBB80007BD8DF /* Info.plist */,
@@ -650,6 +676,8 @@
 				FBE4DEAA1E6CBD8A0062507B /* Res in Resources */,
 				FBE0EFEE1DFBBB80007BD8DF /* Assets.xcassets in Resources */,
 				8354561A1E8C09A100A03B34 /* DayScheduleTitleView.xib in Resources */,
+				833617631E8C21E8009A97FF /* FontAwesome.otf in Resources */,
+				833617671E8C2538009A97FF /* NavigationToggleArrowView.xib in Resources */,
 				831444BF1E7AF4E200A5EF06 /* AuthFlow.storyboard in Resources */,
 				FB4E11A51E79ABB400687702 /* LaunchScreen.storyboard in Resources */,
 				831444C81E7B034A00A5EF06 /* EventViewCell.xib in Resources */,
@@ -660,6 +688,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				833617641E8C21E8009A97FF /* FontAwesome.otf in Resources */,
+				833617681E8C2538009A97FF /* NavigationToggleArrowView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -667,6 +697,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				833617651E8C21E8009A97FF /* FontAwesome.otf in Resources */,
+				833617691E8C2538009A97FF /* NavigationToggleArrowView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -844,6 +876,7 @@
 				831444CC1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift in Sources */,
 				FB4208701E89855D007F4DBD /* Group.swift in Sources */,
 				FB2046A81E82E28800F130C8 /* EKCalendar+Realm.swift in Sources */,
+				833617601E8C1D3A009A97FF /* DayScheduleTitleView.swift in Sources */,
 				FB42085D1E896847007F4DBD /* Resource.swift in Sources */,
 				FB2046AA1E82E74700F130C8 /* EKParticipant+Realm.swift in Sources */,
 				FB2046B01E82E7B000F130C8 /* LegacyCalendar.swift in Sources */,
@@ -865,6 +898,7 @@
 				FB2046B41E82E7DD00F130C8 /* LeapModel.swift in Sources */,
 				FB166B571E8ABE1C00CB95EC /* RealmUtil.swift in Sources */,
 				FBD614561E7F38D4001F4050 /* Schema.swift in Sources */,
+				8336176B1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */,
 				FB2046B81E830E4600F130C8 /* Temporality.swift in Sources */,
 				FB42085F1E896C40007F4DBD /* Reservation.swift in Sources */,
 				FB42086C1E897AD1007F4DBD /* ChecklistItem.swift in Sources */,
@@ -887,6 +921,7 @@
 			files = (
 				FB8BB6231E89A76A00A30315 /* EventKitMigrationTests.swift in Sources */,
 				FBD1045F1E80717E00DDF65B /* ShellTests.swift in Sources */,
+				8336176C1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */,
 				FBE0EFFC1DFBBB80007BD8DF /* LeapTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -895,6 +930,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8336176D1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */,
 				FBE0F0071DFBBB80007BD8DF /* LeapUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

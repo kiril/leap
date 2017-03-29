@@ -17,7 +17,7 @@ class InitialViewController: UIViewController {
 
     private func launchDebugViewController() {
 
-        if false {
+        if true {
             presentCalendarViewController()
         }
 

@@ -17,7 +17,7 @@ class DayScheduleSurface: Surface {
 
     let entries = ComputedProperty<[ScheduleEntry], DayScheduleSurface>("entries", DayScheduleSurface.scheduleEntries)
 
-    var numerOfEntries: Int {
+    var numberOfEntries: Int {
         return entries.value.count
     }
 
