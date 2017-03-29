@@ -25,10 +25,11 @@
             </objects>
             <point key="canvasLocation" x="-298" y="190"/>
         </scene>
-        <!--Calendar View Controller-->
+        <!--Calendar Collection View Controller-->
         <scene sceneID="J8J-0N-lqd">
             <objects>
-                <collectionViewController id="YVr-8B-PJb" customClass="CalendarViewController" customModule="Leap" customModuleProvider="target" sceneMemberID="viewController">
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Yk4-K6-KLl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <collectionViewController id="YVr-8B-PJb" customClass="CalendarCollectionViewController" customModule="Leap" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="MYT-Un-QBk">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -56,7 +57,6 @@
                     </collectionView>
                     <navigationItem key="navigationItem" id="vYy-xe-UEy"/>
                 </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Yk4-K6-KLl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="478" y="189"/>
         </scene>

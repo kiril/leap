@@ -47,8 +47,10 @@ class EventShell: Shell {
             return false
         }
     })
-    let userPerspective =        ComputedProperty<TimePerspective,EventShell>("perspective", TimePerspective.compute)
+    let perspective =            ComputedProperty<TimePerspective,EventShell>("perspective", TimePerspective.compute)
     let percentElapsed =         ComputedProperty<Float,EventShell>("elapsed", EventShell.computeElapsed)
+    let invitationSummary =      ComputedProperty<String,EventShell>("invitation_summary", EventShell.formatInvitationSummary)
+
 
     static func eventTimeRange(event: EventShell) -> String {
         return "10am-2pm" // TODO: actually do this
@@ -56,6 +58,10 @@ class EventShell: Shell {
 
     static func computeElapsed(event: EventShell) -> Float {
         return 0.0 // TODO: calcualte elapsed time
+    }
+
+    static func formatInvitationSummary(event: EventShell) -> String {
+        return "" // TODO: format Invitation Summary
     }
 }
 

@@ -11,7 +11,7 @@
 		42D2911C1C35BD18F961382F /* Pods_LeapTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 726DA31B7DBD3655C83BFA3D /* Pods_LeapTests.framework */; };
 		831444BF1E7AF4E200A5EF06 /* AuthFlow.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 831444BE1E7AF4E200A5EF06 /* AuthFlow.storyboard */; };
 		831444C11E7AF77700A5EF06 /* LocalCalendar.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 831444C01E7AF77700A5EF06 /* LocalCalendar.storyboard */; };
-		831444C61E7B020700A5EF06 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444C51E7B020700A5EF06 /* CalendarViewController.swift */; };
+		831444C61E7B020700A5EF06 /* CalendarCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444C51E7B020700A5EF06 /* CalendarCollectionViewController.swift */; };
 		831444C81E7B034A00A5EF06 /* EventViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 831444C71E7B034A00A5EF06 /* EventViewCell.xib */; };
 		831444CA1E7B072600A5EF06 /* EventViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444C91E7B072600A5EF06 /* EventViewCell.swift */; };
 		831444CC1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444CB1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift */; };
@@ -20,6 +20,9 @@
 		8351BDC91E7C58FD001221AF /* OpenTimeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDC81E7C58FD001221AF /* OpenTimeViewModel.swift */; };
 		8351BDCD1E7C596C001221AF /* GregorianDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDCC1E7C596C001221AF /* GregorianDay.swift */; };
 		8351BDD11E807C4C001221AF /* WeekOverviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDD01E807C4C001221AF /* WeekOverviewViewModel.swift */; };
+		835456151E8AF9EA00A03B34 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835456141E8AF9EA00A03B34 /* InitialViewController.swift */; };
+		835456181E8AFD7200A03B34 /* UIColor+ProjectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835456171E8AFD7200A03B34 /* UIColor+ProjectExtensions.swift */; };
+		8354561A1E8C09A100A03B34 /* DayScheduleTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 835456191E8C09A100A03B34 /* DayScheduleTitleView.xib */; };
 		83A72D741E82DAE0005EB213 /* TimePerspective.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A72D731E82DAE0005EB213 /* TimePerspective.swift */; };
 		83A72D771E82DF95005EB213 /* DayScheduleShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A72D761E82DF95005EB213 /* DayScheduleShell.swift */; };
 		83F4B1611E7C383F000FCB8D /* ScheduleEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F4B1601E7C383F000FCB8D /* ScheduleEntry.swift */; };
@@ -111,7 +114,7 @@
 		726DA31B7DBD3655C83BFA3D /* Pods_LeapTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeapTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		831444BE1E7AF4E200A5EF06 /* AuthFlow.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AuthFlow.storyboard; sourceTree = "<group>"; };
 		831444C01E7AF77700A5EF06 /* LocalCalendar.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LocalCalendar.storyboard; sourceTree = "<group>"; };
-		831444C51E7B020700A5EF06 /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
+		831444C51E7B020700A5EF06 /* CalendarCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewController.swift; sourceTree = "<group>"; };
 		831444C71E7B034A00A5EF06 /* EventViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventViewCell.xib; sourceTree = "<group>"; };
 		831444C91E7B072600A5EF06 /* EventViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventViewCell.swift; sourceTree = "<group>"; };
 		831444CB1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewFlowLayout.swift; sourceTree = "<group>"; };
@@ -120,6 +123,9 @@
 		8351BDC81E7C58FD001221AF /* OpenTimeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenTimeViewModel.swift; sourceTree = "<group>"; };
 		8351BDCC1E7C596C001221AF /* GregorianDay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GregorianDay.swift; sourceTree = "<group>"; };
 		8351BDD01E807C4C001221AF /* WeekOverviewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekOverviewViewModel.swift; sourceTree = "<group>"; };
+		835456141E8AF9EA00A03B34 /* InitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
+		835456171E8AFD7200A03B34 /* UIColor+ProjectExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+ProjectExtensions.swift"; sourceTree = "<group>"; };
+		835456191E8C09A100A03B34 /* DayScheduleTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DayScheduleTitleView.xib; sourceTree = "<group>"; };
 		83A72D731E82DAE0005EB213 /* TimePerspective.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimePerspective.swift; sourceTree = "<group>"; };
 		83A72D761E82DF95005EB213 /* DayScheduleShell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayScheduleShell.swift; sourceTree = "<group>"; };
 		83F4B1601E7C383F000FCB8D /* ScheduleEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleEntry.swift; sourceTree = "<group>"; };
@@ -252,8 +258,9 @@
 				831444C01E7AF77700A5EF06 /* LocalCalendar.storyboard */,
 				831444C71E7B034A00A5EF06 /* EventViewCell.xib */,
 				831444C91E7B072600A5EF06 /* EventViewCell.swift */,
-				831444C51E7B020700A5EF06 /* CalendarViewController.swift */,
+				831444C51E7B020700A5EF06 /* CalendarCollectionViewController.swift */,
 				831444CB1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift */,
+				835456191E8C09A100A03B34 /* DayScheduleTitleView.xib */,
 			);
 			name = LocalCalendar;
 			sourceTree = "<group>";
@@ -301,6 +308,7 @@
 		8351BDCE1E7C5CCC001221AF /* Flows */ = {
 			isa = PBXGroup;
 			children = (
+				835456131E8AF9BE00A03B34 /* InitialNavigation */,
 				8351BDCF1E7C5D45001221AF /* Auth */,
 				831444C21E7AF7AD00A5EF06 /* LocalCalendar */,
 			);
@@ -315,6 +323,22 @@
 				FBE0EFE51DFBBB80007BD8DF /* AuthViewController.swift */,
 			);
 			name = Auth;
+			sourceTree = "<group>";
+		};
+		835456131E8AF9BE00A03B34 /* InitialNavigation */ = {
+			isa = PBXGroup;
+			children = (
+				835456141E8AF9EA00A03B34 /* InitialViewController.swift */,
+			);
+			name = InitialNavigation;
+			sourceTree = "<group>";
+		};
+		835456161E8AFD5500A03B34 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				835456171E8AFD7200A03B34 /* UIColor+ProjectExtensions.swift */,
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 		83A72D751E82DBE7005EB213 /* Temporary (seriously) example code */ = {
@@ -464,6 +488,7 @@
 				8351BDCE1E7C5CCC001221AF /* Flows */,
 				831444CD1E7B462500A5EF06 /* ViewModels */,
 				831444D01E7B46AB00A5EF06 /* Protocols */,
+				835456161E8AFD5500A03B34 /* Extensions */,
 				8351BDCA1E7C5932001221AF /* Models */,
 				83A72D751E82DBE7005EB213 /* Temporary (seriously) example code */,
 				8351BDCB1E7C593C001221AF /* Utilities */,
@@ -624,6 +649,7 @@
 				FB4E11A71E79B1F500687702 /* Main.storyboard in Resources */,
 				FBE4DEAA1E6CBD8A0062507B /* Res in Resources */,
 				FBE0EFEE1DFBBB80007BD8DF /* Assets.xcassets in Resources */,
+				8354561A1E8C09A100A03B34 /* DayScheduleTitleView.xib in Resources */,
 				831444BF1E7AF4E200A5EF06 /* AuthFlow.storyboard in Resources */,
 				FB4E11A51E79ABB400687702 /* LaunchScreen.storyboard in Resources */,
 				831444C81E7B034A00A5EF06 /* EventViewCell.xib in Resources */,
@@ -794,6 +820,7 @@
 				FBCA4D1E1E84490A003E7AB7 /* Location.swift in Sources */,
 				FB934F241E7EDF670068CDEF /* Persistence.swift in Sources */,
 				FB42085B1E85A650007F4DBD /* TimeZone.swift in Sources */,
+				835456181E8AFD7200A03B34 /* UIColor+ProjectExtensions.swift in Sources */,
 				FBE0EFEC1DFBBB80007BD8DF /* Leap.xcdatamodeld in Sources */,
 				FB2046AC1E82E76000F130C8 /* EKAlarm+Realm.swift in Sources */,
 				FBE0EFE61DFBBB80007BD8DF /* AuthViewController.swift in Sources */,
@@ -821,7 +848,7 @@
 				FB2046AA1E82E74700F130C8 /* EKParticipant+Realm.swift in Sources */,
 				FB2046B01E82E7B000F130C8 /* LegacyCalendar.swift in Sources */,
 				FB4208551E859606007F4DBD /* Alarm.swift in Sources */,
-				831444C61E7B020700A5EF06 /* CalendarViewController.swift in Sources */,
+				831444C61E7B020700A5EF06 /* CalendarCollectionViewController.swift in Sources */,
 				FBD614581E7F57B0001F4050 /* Validation.swift in Sources */,
 				FB2046B21E82E7BF00F130C8 /* Reminder.swift in Sources */,
 				FB42086E1E89816B007F4DBD /* EKRecurrenceRule+Realm.swift in Sources */,
@@ -831,6 +858,7 @@
 				FB4208591E85A2DD007F4DBD /* Realm+Leap.swift in Sources */,
 				831444D21E7B472500A5EF06 /* ViewModelUpdateable.swift in Sources */,
 				83F4B1611E7C383F000FCB8D /* ScheduleEntry.swift in Sources */,
+				835456151E8AF9EA00A03B34 /* InitialViewController.swift in Sources */,
 				831444CF1E7B46A200A5EF06 /* EventStoreExampleCode.swift in Sources */,
 				FB2046A61E82E20100F130C8 /* EKEventStore+Realm.swift in Sources */,
 				FBB4BFDA1E8B1026001679BF /* EventBridge.swift in Sources */,
