@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 
 enum PersonRelationship: String {
@@ -15,12 +16,17 @@ enum PersonRelationship: String {
     case contact = "contact"
 }
 
+class Email: Object, ValueWrapper {
+    dynamic var value: String = ""
+}
+
+class Phone: Object, ValueWrapper {
+    dynamic var value: String = ""
+}
+
 class Person: LeapModel {
     dynamic var givenName: String?
     dynamic var familyName: String?
-    dynamic var emails: [String]?
-    dynamic var numbers: [String]?
-    dynamic var addresses: [Address]?
     dynamic var organization: String?
     dynamic var title: String?
     dynamic var notes: String?
@@ -30,7 +36,11 @@ class Person: LeapModel {
     dynamic var work: Location?
     dynamic var home: Location?
 
-    var name: String { return "\(givenName) \(familyName)" }
+    let emails = List<Email>()
+    let numbers = List<Phone>()
+    let addresses = List<Address>()
+
+    var name: String { return "\(givenName!) \(familyName!)" }
 
     func setNameComponents(from fullName: String?) {
         if let fullName = fullName {
@@ -44,5 +54,17 @@ class Person: LeapModel {
 
     override static func indexedProperties() -> [String] {
         return ["url", "emails", "isMe"]
+    }
+
+    static func me() -> Person? {
+        return Realm.user().objects(Person.self).filter("isMe = true").first
+    }
+
+    static func by(id: String) -> Person? {
+        return fetch(id: id)
+    }
+
+    static func by(email: String) -> Person? {
+        return Realm.user().objects(Person.self).filter("email = %@", email).first
     }
 }

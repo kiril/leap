@@ -10,75 +10,42 @@ import Foundation
 import RealmSwift
 
 
-
-
-class IntWrapper: Object {
-    var value: Int = 0
-
-    static func of(_ int: Int) -> IntWrapper {
-        return IntWrapper(value: ["value": int])
-    }
-
-    static func of(num: NSNumber) -> IntWrapper {
-        return IntWrapper(value: ["value": num.intValue])
-    }
-
-    override static func primaryKey() -> String? {
-        return "value"
-    }
-}
-
-
 extension Realm {
 
-    // Series
-
-    func series(byId id: String) -> Series? {
-        let query = objects(Series.self)
-        return query.filter("id = %@", id).first
+    static func inMemory() -> Realm {
+        return try! Realm(configuration: Realm.Configuration(inMemoryIdentifier: "Leap"))
     }
 
-    // Events
-
-    func event(byId id: String) -> Event? {
-        return objects(Event.self).filter("id = '\(id)'").first
+    static func diskBacked() -> Realm {
+        let config = Realm.Configuration(
+            schemaVersion: 1,
+            migrationBlock: { migration, oldSchemaVersion in
+                /*
+                if (oldSchemaVersion < 1) {
+                    // The enumerateObjects(ofType:_:) method iterates
+                    // over every Person object stored in the Realm file
+                    migration.enumerateObjects(ofType: Person.className()) { oldObject, newObject in
+                        // combine name fields into a single field
+                        let firstName = oldObject!["firstName"] as! String
+                        let lastName = oldObject!["lastName"] as! String
+                        newObject!["fullName"] = "\(firstName) \(lastName)"
+                    }
+                }
+                */
+            }
+        )
+        return try! Realm(configuration: config)
     }
 
-    func events(startingOnOrAfter after: Date,
-                butBefore before: Date) -> Results<Event> {
-        let predicate = NSPredicate(format: "startTime >= %@ AND startTime < %@", after as NSDate, before as NSDate)
-        return objects(Event.self).filter(predicate)
+    static func user() -> Realm {
+        return inMemory()
     }
 
-    // Reminders
-
-    func reminder(byId id: String) -> Reminder? {
-        return objects(Reminder.self).filter("id = '\(id)'").first
+    static func auth() -> Realm {
+        return inMemory()
     }
 
-    func reminders(startingOnOrAfter after: Date,
-                   butBefore before: Date) -> Results<Reminder> {
-        let predicate = NSPredicate(format: "startDate >= %@ AND startDate < %@", after as NSDate, before as NSDate)
-        return objects(Reminder.self).filter(predicate).sorted(byKeyPath: "startDate")
-    }
-
-    // People
-
-    func me() -> Person? {
-        return objects(Person.self).filter("isMe = true").first
-    }
-
-    func person(byId id: String) -> Person? {
-        return objects(Person.self).filter("id = '\(id)'").first
-    }
-
-    func person(byEmail email: String) -> Person? {
-        return objects(Person.self).filter("email = '\(email)'").first
-    }
-
-    // Resources
-
-    func venue(byId id: String) -> Venue? {
-        return objects(Venue.self).filter("id = '\(id)'").first
+    static func config() -> Realm {
+        return inMemory()
     }
 }

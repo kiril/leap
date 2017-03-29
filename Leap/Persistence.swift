@@ -19,6 +19,8 @@ protocol Persistable {
     var isTransient: Bool { get }
     var isDirty: Bool { get }
     var dirtyFields: Set<String> { get }
+    var keys: Set<String> { get }
+    var operations: [Operation] { get }
 
     var isPersisted: Bool { get }
     var isPersistable: Bool { get }
@@ -28,7 +30,7 @@ protocol Persistable {
 
     func didPersist(into store: BackingStore)
 
-    func persist() throws -> Bool
+    func flush() throws -> Bool
 }
 
 
@@ -59,4 +61,5 @@ protocol Query {
  */
 protocol BackingStore: SourceIdentifiable {
     func persist(_ shell: Shell) throws -> Bool
+    func populate(_ shell: Shell)
 }

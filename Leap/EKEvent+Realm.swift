@@ -41,43 +41,20 @@ extension EKEvent {
         }
     }
 
-    func asTemporality(in realm: Realm) -> Temporality? {
+    func asTemporality() -> Temporality? {
         if self.isAllDay {
-            return self.asReminder(in: realm)
+            return self.asReminder()
         } else {
             switch self.availability {
             case .free:
-                return self.asReminder(in: realm)
+                return self.asReminder()
             default:
-                return self.asEvent(in: realm)
+                return self.asEvent()
             }
         }
     }
 
-    func asEvent(in realm: Realm) -> Event {
-        // .title
-        // .location?
-        // .creationDate?
-        // .lastModifiedDate?
-        // .timeZone?
-        // .url?
-        // .hasNotes
-        // .notes?
-        // .hasAttendees
-        // .attendees [EKParticipant]?
-        // .hasAlarms
-        // .alarms [EKAlarm]?
-        // .hasRecurrenceRules
-        // .recurrenceRules [EKRecurrenceRule]?
-
-        // .availability EKEventAvailability (notSupported, busy, free, tentative, unavailable)
-        // .occurrenceDate (the original date of a recurrence)
-        // .isAllDay
-        // .startDate
-        // .endDate
-        // .isDetached -> if it's a modified instance of a repeating event
-        // .organizer EKParticipant?
-        // .status EKEventStatus (none, confirmed, tentative, canceled)
+    func asEvent() -> Event {
         let data: [String:Any?] = [
             "id": self.calendarItemIdentifier,
             "externalId": self.calendarItemExternalIdentifier,
@@ -88,7 +65,7 @@ extension EKEvent {
             "locationString": self.location,
             "remoteCreated": self.creationDate,
             "remoteModified": self.lastModifiedDate,
-            "legacyTimeZone": self.timeZone,
+            "legacyTimeZone": TimeZone.from(self.timeZone),
             "modalityString": EventModality.inPerson.rawValue,
             "externalURL": self.url,
             "engagementString": EKEvent.engagement(for: Event.self, from: self.status, and: self.availability)
@@ -98,7 +75,7 @@ extension EKEvent {
 
         var organizerId: String? = nil
 
-        if let organizer = self.organizer, let participant = organizer.asParticipant(in: realm) {
+        if let organizer = self.organizer, let participant = organizer.asParticipant() {
             if let person = participant.person {
                 organizerId = person.id
             }
@@ -107,11 +84,11 @@ extension EKEvent {
 
         if let attendees = self.attendees {
             for attendee in attendees {
-                if let participant = attendee.asParticipant(in: realm), let person = participant.person, person.id != organizerId {
+                if let participant = attendee.asParticipant(), let person = participant.person, person.id != organizerId {
                     event.participants.append(participant)
-                } else if let reservation = attendee.asRoomReservation(in: realm, for: event) {
+                } else if let reservation = attendee.asRoomReservation(for: event) {
                     event.reservations.append(reservation)
-                } else if let reservation = attendee.asResourceReservation(in: realm, for: event) {
+                } else if let reservation = attendee.asResourceReservation(for: event) {
                     event.reservations.append(reservation)
                 }
             }
@@ -119,13 +96,13 @@ extension EKEvent {
 
         if let ekAlarms = self.alarms {
             for alarm in ekAlarms {
-                event.alarms.append(alarm.asAlarm(in: realm))
+                event.alarms.append(alarm.asAlarm())
             }
         }
 
         if self.hasRecurrenceRules, let rules = self.recurrenceRules {
             let rule = rules[0] // despite the interface, documentation says there can Only Be One <boom boom>
-            var series: Series? = realm.series(byId: event.id)
+            var series = Series.by(id: event.id)
             if series == nil {
                 series = Series(value: ["id": event.id,
                                         "title": event.title])
@@ -147,7 +124,7 @@ extension EKEvent {
         return event
     }
 
-    func asReminder(in realm: Realm) -> Reminder {
+    func asReminder() -> Reminder {
         let data: [String:Any?] = [
             "title": self.title
         ]

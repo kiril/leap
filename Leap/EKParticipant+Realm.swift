@@ -60,14 +60,15 @@ extension EKParticipant {
         }
     }
 
-    func asParticipant(in realm: Realm) -> Participant? {
+    func asParticipant() -> Participant? {
+        let realm = Realm.user()
         guard self.participantType == EKParticipantType.person else {
             return nil
         }
 
         var person: Person?
         if self.isCurrentUser {
-            person = realm.me()
+            person = Person.me()
             if person == nil {
                 let data: [String:Any?] = ["isMe": true, "url": self.url]
                 person = Person(value: data)
@@ -95,7 +96,8 @@ extension EKParticipant {
         return Participant(value: data)
     }
 
-    func asRoomReservation(in realm: Realm, for event: Event) -> Reservation? {
+    func asRoomReservation(for event: Event) -> Reservation? {
+        let realm = Realm.user()
         guard self.participantType == EKParticipantType.room, let name = self.name else {
             return nil
         }
@@ -111,10 +113,12 @@ extension EKParticipant {
                                    "endTime": event.endTime as Any?])
     }
 
-    func asResourceReservation(in realm: Realm, for event: Event) -> Reservation? {
+    func asResourceReservation(for event: Event) -> Reservation? {
         guard self.participantType == EKParticipantType.resource, let name = self.name else {
             return nil
         }
+
+        let realm = Realm.user()
 
         let query: Results<Resource> = realm.objects(Resource.self)
         var resource: Resource? = query.filter("name = %@", name).first

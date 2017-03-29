@@ -24,4 +24,8 @@ class LeapModel: Object, Auditable {
         get { return ObjectStatus(rawValue: statusString)! }
         set { statusString = newValue.rawValue }
     }
+
+    static func fetch<ModelType:Object>(id: String) -> ModelType? {
+        return Realm.user().objects(ModelType.self).filter("id = %@", id).first
+    }
 }
