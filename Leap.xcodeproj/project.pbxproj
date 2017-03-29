@@ -26,7 +26,7 @@
 		DB41B30C348D9390E4320905 /* Pods_LeapUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 386ABDADBBC48EDACA0896BE /* Pods_LeapUITests.framework */; };
 		FB0762DB1E142FBF0035EF8F /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0762DA1E142FBF0035EF8F /* ScheduleViewController.swift */; };
 		FB166B571E8ABE1C00CB95EC /* RealmUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B561E8ABE1C00CB95EC /* RealmUtil.swift */; };
-		FB166B5A1E8AC05300CB95EC /* Facade.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B591E8AC05300CB95EC /* Facade.swift */; };
+		FB166B5A1E8AC05300CB95EC /* Bridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B591E8AC05300CB95EC /* Bridge.swift */; };
 		FB166B5C1E8AC3CA00CB95EC /* Fetchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B5B1E8AC3CA00CB95EC /* Fetchable.swift */; };
 		FB166B5E1E8AC6DB00CB95EC /* ModelReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B5D1E8AC6DB00CB95EC /* ModelReference.swift */; };
 		FB2046A31E82DA2200F130C8 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A21E82DA2200F130C8 /* Event.swift */; };
@@ -67,6 +67,7 @@
 		FB934F241E7EDF670068CDEF /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F231E7EDF670068CDEF /* Persistence.swift */; };
 		FB934F261E7EDFA80068CDEF /* Lifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F251E7EDFA80068CDEF /* Lifecycle.swift */; };
 		FBB4BFD81E8ACED1001679BF /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB4BFD71E8ACED1001679BF /* Operation.swift */; };
+		FBB4BFDA1E8B1026001679BF /* EventBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB4BFD91E8B1026001679BF /* EventBridge.swift */; };
 		FBCA4D1E1E84490A003E7AB7 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBCA4D1D1E84490A003E7AB7 /* Location.swift */; };
 		FBCA4D201E844924003E7AB7 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBCA4D1F1E844924003E7AB7 /* Room.swift */; };
 		FBD1045D1E80309300DDF65B /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD1045C1E80309300DDF65B /* Property.swift */; };
@@ -128,7 +129,7 @@
 		FB0762DA1E142FBF0035EF8F /* ScheduleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		FB0762DC1E1430A60035EF8F /* Leap.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Leap.entitlements; sourceTree = "<group>"; };
 		FB166B561E8ABE1C00CB95EC /* RealmUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmUtil.swift; sourceTree = "<group>"; };
-		FB166B591E8AC05300CB95EC /* Facade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Facade.swift; sourceTree = "<group>"; };
+		FB166B591E8AC05300CB95EC /* Bridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bridge.swift; sourceTree = "<group>"; };
 		FB166B5B1E8AC3CA00CB95EC /* Fetchable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fetchable.swift; sourceTree = "<group>"; };
 		FB166B5D1E8AC6DB00CB95EC /* ModelReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelReference.swift; sourceTree = "<group>"; };
 		FB2046A21E82DA2200F130C8 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
@@ -169,6 +170,7 @@
 		FB934F231E7EDF670068CDEF /* Persistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		FB934F251E7EDFA80068CDEF /* Lifecycle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lifecycle.swift; sourceTree = "<group>"; };
 		FBB4BFD71E8ACED1001679BF /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
+		FBB4BFD91E8B1026001679BF /* EventBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventBridge.swift; sourceTree = "<group>"; };
 		FBCA4D1D1E84490A003E7AB7 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		FBCA4D1F1E844924003E7AB7 /* Room.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		FBD1045C1E80309300DDF65B /* Property.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Property.swift; sourceTree = "<group>"; };
@@ -418,8 +420,9 @@
 				FBD614551E7F38D4001F4050 /* Schema.swift */,
 				FBD614571E7F57B0001F4050 /* Validation.swift */,
 				FBD1045C1E80309300DDF65B /* Property.swift */,
-				FB166B591E8AC05300CB95EC /* Facade.swift */,
+				FB166B591E8AC05300CB95EC /* Bridge.swift */,
 				FBB4BFD71E8ACED1001679BF /* Operation.swift */,
+				FBB4BFD91E8B1026001679BF /* EventBridge.swift */,
 			);
 			name = Shells;
 			sourceTree = "<group>";
@@ -801,7 +804,7 @@
 				FB42084D1E857F7C007F4DBD /* Person.swift in Sources */,
 				FB4208681E897997007F4DBD /* EventTemplate.swift in Sources */,
 				FB4208571E85A168007F4DBD /* GeoFence.swift in Sources */,
-				FB166B5A1E8AC05300CB95EC /* Facade.swift in Sources */,
+				FB166B5A1E8AC05300CB95EC /* Bridge.swift in Sources */,
 				FB166B5C1E8AC3CA00CB95EC /* Fetchable.swift in Sources */,
 				FB166B5E1E8AC6DB00CB95EC /* ModelReference.swift in Sources */,
 				FB4208661E8976B1007F4DBD /* Series.swift in Sources */,
@@ -830,6 +833,7 @@
 				83F4B1611E7C383F000FCB8D /* ScheduleEntry.swift in Sources */,
 				831444CF1E7B46A200A5EF06 /* EventStoreExampleCode.swift in Sources */,
 				FB2046A61E82E20100F130C8 /* EKEventStore+Realm.swift in Sources */,
+				FBB4BFDA1E8B1026001679BF /* EventBridge.swift in Sources */,
 				FB2046B41E82E7DD00F130C8 /* LeapModel.swift in Sources */,
 				FB166B571E8ABE1C00CB95EC /* RealmUtil.swift in Sources */,
 				FBD614561E7F38D4001F4050 /* Schema.swift in Sources */,

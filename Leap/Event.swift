@@ -21,7 +21,7 @@ enum EventModality: String {
 /**
  * Here's our core!
  */
-class Event: _TemporalBase, Temporality {
+class Event: _TemporalBase, Temporality, Fetchable {
     dynamic var startTime: Date? = nil
     dynamic var endTime: Date? = nil
     dynamic var locationString: String? = nil
@@ -58,9 +58,11 @@ class Event: _TemporalBase, Temporality {
         return end.timeIntervalSince(start)
     }
 
-    static func by(id: String) -> Event? {
+    /*
+    static func by(id: String) -> Self? {
         return Realm.user().objects(Event.self).filter("id = %@", id).first
     }
+ */
 
     static func range(starting: Date, before: Date) -> Results<Event> {
         let predicate = NSPredicate(format: "startTime >= %@ AND startTime < %@", starting as NSDate, before as NSDate)

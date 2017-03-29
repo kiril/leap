@@ -40,7 +40,7 @@ class Person: LeapModel {
     let numbers = List<Phone>()
     let addresses = List<Address>()
 
-    var name: String { return "\(givenName) \(familyName)" }
+    var name: String { return "\(givenName!) \(familyName!)" }
 
     func setNameComponents(from fullName: String?) {
         if let fullName = fullName {

@@ -32,13 +32,12 @@ internal class WeakObserver {
  */
 open class Shell {
     let id: String?
-    typealias ShellData = [String:Any]
 
     internal var properties: [String:Property] = [String:Property]()
 
     internal var store: BackingStore?
-    internal var data: ShellData
-    internal var mockData: ShellData?
+    internal var data: ModelData
+    internal var mockData: ModelData?
     internal var operations = [Operation]()
 
     var dirtyFields: Set<String> {
@@ -51,6 +50,10 @@ open class Shell {
 
     var type: String {
         return "shell" // default to class name?
+    }
+
+    var keys: Set<String> {
+        return Set<String>(properties.keys)
     }
 
     let isTransient: Bool = false // possible that we change this later
@@ -72,7 +75,7 @@ open class Shell {
         associateProperties()
     }
 
-    convenience init(mockData data: ShellData) {
+    convenience init(mockData data: ModelData) {
         self.init(store: nil, id: nil, data: data)
         self.mockData = data
     }
@@ -148,7 +151,7 @@ extension Shell: Updateable {
             }
             for (key, value) in data {
                 if value !~= data[key] {
-                    operations.append(SetOperation(key, to: value))
+                    operations.append(SetOperation(key, to: value, from: data[key]))
                 }
             }
         }
@@ -172,7 +175,7 @@ extension Shell: Updateable {
         guard let property = properties[key] else {
             throw SchemaError.noSuch(type: self.type, property: key)
         }
-        guard property is Writable else {
+        guard property is Writable || source is BackingStore else {
             print("\(key) is not writable on \(self.type) : \(property)")
             throw SchemaError.notWritable(type: self.type, property: key)
         }
@@ -186,7 +189,7 @@ extension Shell: Updateable {
                 isPersisted = false
             }
 
-            operations.append(SetOperation(key, to: value))
+            operations.append(SetOperation(key, to: value, from: data[key]))
         }
 
         data[key] = value
@@ -211,7 +214,7 @@ extension Shell: Updateable {
             if !isTransient {
                 isPersisted = false
             }
-            operations.append(UnsetOperation(key))
+            operations.append(UnsetOperation(key, from: data[key]))
         }
 
         data[key] = nil
@@ -278,7 +281,7 @@ extension Shell: Persistable {
         }
     }
 
-    func persist(_ shell: Shell) throws -> Bool {
+    func flush() throws -> Bool {
         return try self.store?.persist(self) ?? false
     }
 }

@@ -19,20 +19,29 @@ enum OperationType: String {
 }
 
 protocol Operation {
+    var time: TimeInterval { get }
     var type: OperationType { get }
     var field: String { get }
     var value: Any? { get }
     func apply(_ data: inout ModelData) -> Bool
+    func isNoOp() -> Bool
+    func combine(with op: Operation) -> Operation?
 }
 
-class SetOperation: Operation {
+class _Operation {
+    let time = Date().timeIntervalSinceReferenceDate
+}
+
+class SetOperation: _Operation, Operation {
     let type: OperationType = OperationType.set
     var field: String
     var value: Any?
+    var before: Any?
 
-    init(_ field: String, to value: Any) {
+    init(_ field: String, to value: Any, from before: Any?) {
         self.field = field
         self.value = value
+        self.before = before
     }
 
     func apply(_ data: inout ModelData) -> Bool {
@@ -42,15 +51,34 @@ class SetOperation: Operation {
         data[field] = value
         return true
     }
+
+    func isNoOp() -> Bool {
+        return before ~= value
+    }
+
+    func combine(with op: Operation) -> Operation? {
+        guard self.field == op.field else {
+            return nil
+        }
+
+        switch op {
+        case is SetOperation, is UnsetOperation:
+            return op.time > time ? op : self
+        default:
+            return nil
+        }
+    }
 }
 
-class UnsetOperation: Operation {
+class UnsetOperation: _Operation, Operation {
     let type: OperationType = OperationType.unset
     let value: Any? = nil
+    let before: Any?
     var field: String
 
-    init(_ field: String) {
+    init(_ field: String, from before: Any?) {
         self.field = field
+        self.before = before
     }
 
     func apply(_ data: inout ModelData) -> Bool {
@@ -59,6 +87,23 @@ class UnsetOperation: Operation {
         }
         data.removeValue(forKey: field)
         return true
+    }
+
+    func isNoOp() -> Bool {
+        return before == nil
+    }
+
+    func combine(with op: Operation) -> Operation? {
+        guard self.field == op.field else {
+            return nil
+        }
+
+        switch op {
+        case is SetOperation, is UnsetOperation:
+            return op.time > time ? op : self
+        default:
+            return nil
+        }
     }
 }
 
@@ -101,5 +146,21 @@ func !~= (left: Any?, right: Any?) -> Bool {
     return !(left ~= right)
 }
 
-func coalesce(operations: [Operation]) {
+/*
+func coalesce(operations: [Operation]) -> [Operation] {
+    var results = [Operation]()
+    for op in operations {
+        if op.isNoOp() {
+            continue
+        }
+        var toRemove = [Operation]()
+        for op2 in results {
+            if let combined = op.combine(with: op2) {
+                toRemove.append(op2)
+            }
+        }
+        results.append(op)
+    }
+    return results
 }
+*/
