@@ -38,7 +38,7 @@ open class Surface {
     public fileprivate (set) var keys: Set<String> = []
 
     fileprivate var references: [String:Any] = [:]
-    fileprivate var bindings: [String:Any] = [:]
+    fileprivate var bindings: [String:(String,[String])] = [:]
     fileprivate var properties: [String:Property] = [:]
 
     fileprivate var store: BackingStore?
@@ -98,7 +98,7 @@ open class Surface {
         }
     }
 
-    private func property(byName name: String) -> Property? {
+    private func property(named name: String) -> Property? {
         return properties[name]
     }
 
@@ -122,8 +122,8 @@ open class Surface {
         return JSON(self.data)
     }
 
-    func dereference<Model:LeapModel>(_ name: String) -> Model? where Model:Fetchable {
-        if let reference = references[name] as? ModelReference<Model>,
+    func dereference(_ name: String) -> LeapModel? {
+        if let reference = references[name] as? Reference,
             let model = reference.resolve() {
             return model
         }
@@ -138,11 +138,20 @@ open class Surface {
         guard model != nil || references.count == 1 else {
             fatalError("")
         }
-        bindings[property.key] = (model ?? references.keys.first!, name ?? property.key)
+        bindings[property.key] = (model ?? references.keys.first!, name?.components(separatedBy: ".") ?? [property.key])
     }
 
     func bindAll(_ properties:Property...) {
         properties.forEach { property in bind(property) }
+    }
+
+    func populate() {
+        for (key, (sourceName, sourceKeyPath)) in bindings {
+            if let model = dereference(sourceName),
+                let value = model.getValue(forKeysRecursively: sourceKeyPath) {
+                data[key] = value
+            }
+        }
     }
 }
 

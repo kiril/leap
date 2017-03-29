@@ -21,7 +21,7 @@ enum EventModality: String {
 /**
  * Here's our core!
  */
-class Event: _TemporalBase, Temporality, Fetchable {
+class Event: _TemporalBase, Temporality {
     dynamic var startTime: Date? = nil
     dynamic var endTime: Date? = nil
     dynamic var locationString: String? = nil
@@ -69,3 +69,11 @@ class Event: _TemporalBase, Temporality, Fetchable {
         return Realm.user().objects(Event.self).filter(predicate)
     }
 }
+
+/*
+extension Fetchable where Self:Event {
+    static func by(id: String) -> Event? {
+        return fetch(id: id)
+    }
+}
+ */
