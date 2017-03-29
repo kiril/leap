@@ -11,35 +11,6 @@ import EventKit
 import RealmSwift
 
 extension EKEvent {
-    static func engagement(for type: Any,
-                           from status: EKEventStatus,
-                           and availability: EKEventAvailability) -> Engagement {
-        switch status {
-        case .none:
-            return Engagement.undecided // I think this is right
-        case .confirmed:
-            if type is Reminder.Type {
-                // reminders are by definition sorta ephemeral,
-                // so it doesn't matter how the event was originally configured
-                return Engagement.engaged
-            } else {
-                // Events are intended to be real things, so we're going to
-                // only show them as real things in your calendar if they're
-                // actually concrete things that'll actually happen (as distinct
-                // from Reminders as above)
-                switch availability {
-                case .busy, .unavailable, .notSupported:
-                    return Engagement.engaged
-                case .tentative, .free:
-                    return Engagement.tracking
-                }
-            }
-        case .tentative:
-            return Engagement.tracking
-        case .canceled:
-            return Engagement.disengaged
-        }
-    }
 
     func asTemporality() -> Temporality? {
         if self.isAllDay {
@@ -67,15 +38,18 @@ extension EKEvent {
             "remoteModified": self.lastModifiedDate,
             "legacyTimeZone": TimeZone.from(self.timeZone),
             "modalityString": EventModality.inPerson.rawValue,
-            "externalURL": self.url,
-            "engagementString": EKEvent.engagement(for: Event.self, from: self.status, and: self.availability)
+            "externalURL": self.url
         ]
+
+        // TODO: Ownership needs to be adjusted for shared calendar data (not for the owner, but for the consumer who's not an 'invitee' in that case)
 
         let event = Event(value: data)
 
         var organizerId: String? = nil
 
-        if let organizer = self.organizer, let participant = organizer.asParticipant() {
+        let availability: EKEventAvailability = self.availability
+
+        if let organizer = self.organizer, let participant = organizer.asParticipant(availability: availability, ownership: Ownership.organizer) {
             if let person = participant.person {
                 organizerId = person.id
             }
@@ -84,7 +58,7 @@ extension EKEvent {
 
         if let attendees = self.attendees {
             for attendee in attendees {
-                if let participant = attendee.asParticipant(), let person = participant.person, person.id != organizerId {
+                if let participant = attendee.asParticipant(availability: availability, ownership: Ownership.invitee), let person = participant.person, person.id != organizerId {
                     event.participants.append(participant)
                 } else if let reservation = attendee.asRoomReservation(for: event) {
                     event.reservations.append(reservation)
@@ -128,6 +102,7 @@ extension EKEvent {
         let data: [String:Any?] = [
             "title": self.title
         ]
+        //let availability: EKEventAvailability = EKEventAvailability.free
         return Reminder(value: data)
     }
 }

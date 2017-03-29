@@ -45,12 +45,18 @@ extension EKParticipant {
         return ParticipationType.inPerson // I don't think there's any info that reflects otherwise in existing EK
     }
 
-    func getEngagement() -> Engagement {
+    func getEngagement(availability: EKEventAvailability) -> Engagement {
         switch self.participantStatus {
         case .unknown, .pending:
             return Engagement.undecided
         case .accepted, .completed, .inProcess:
-            return Engagement.engaged
+            // in our world, an event is an event, so if it's not really an event, fuck it
+            switch availability {
+            case .busy, .unavailable, .notSupported:
+                return Engagement.engaged
+            case .tentative, .free:
+                return Engagement.tracking
+            }
         case .declined:
             return Engagement.disengaged
         case .tentative:
@@ -60,7 +66,7 @@ extension EKParticipant {
         }
     }
 
-    func asParticipant() -> Participant? {
+    func asParticipant(availability: EKEventAvailability, ownership: Ownership) -> Participant? {
         let realm = Realm.user()
         guard self.participantType == EKParticipantType.person else {
             return nil
@@ -90,8 +96,9 @@ extension EKParticipant {
         let data: [String:Any?] = ["person": person,
                                    "participationString": getParticipation().rawValue,
                                    "importanceString": getImportance().rawValue,
-                                   "engagementString": getEngagement().rawValue,
-                                   "typeString": getParticipationType().rawValue
+                                   "engagementString": getEngagement(availability: availability).rawValue,
+                                   "typeString": getParticipationType().rawValue,
+                                   "ownershipString": ownership.rawValue
                                    ]
         return Participant(value: data)
     }
