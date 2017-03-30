@@ -25,7 +25,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cVP-VO-cXg">
-                            <rect key="frame" x="0.0" y="10.5" width="13" height="23"/>
+                            <rect key="frame" x="0.0" y="10.5" width="13.5" height="23"/>
                             <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="23"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>

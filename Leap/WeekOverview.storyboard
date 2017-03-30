@@ -18,7 +18,7 @@
         <scene sceneID="Asw-VK-Epc">
             <objects>
                 <navigationController id="MrE-9g-1Qo" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" id="aTc-zM-Tmm">
+                    <navigationBar key="navigationBar" clipsSubviews="YES" contentMode="scaleToFill" id="aTc-zM-Tmm">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -139,12 +139,6 @@
                                     <constraint firstItem="kR9-fr-PWS" firstAttribute="leading" secondItem="EvP-2A-zOg" secondAttribute="leading" id="yQF-gR-qWh"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fake Week Controller" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dK6-1G-yjh">
-                                <rect key="frame" x="106.5" y="323.5" width="162.5" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <constraints>
                             <constraint firstItem="EvP-2A-zOg" firstAttribute="top" secondItem="vmo-76-W8c" secondAttribute="bottom" id="3Mz-rQ-DUS"/>
@@ -154,8 +148,6 @@
                             <constraint firstItem="ODD-jD-quW" firstAttribute="top" secondItem="vmo-76-W8c" secondAttribute="bottom" id="Xf7-zf-wqp"/>
                             <constraint firstItem="EvP-2A-zOg" firstAttribute="leading" secondItem="uph-uG-3Fo" secondAttribute="leading" id="dbW-mh-QLS"/>
                             <constraint firstItem="UVx-ij-zJK" firstAttribute="top" secondItem="ODD-jD-quW" secondAttribute="bottom" id="oe6-1q-DTh"/>
-                            <constraint firstItem="dK6-1G-yjh" firstAttribute="centerX" secondItem="uph-uG-3Fo" secondAttribute="centerX" id="rQs-u2-u3f"/>
-                            <constraint firstItem="dK6-1G-yjh" firstAttribute="centerY" secondItem="uph-uG-3Fo" secondAttribute="centerY" id="umK-Qb-Pmm"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="EzG-e7-h5e"/>
