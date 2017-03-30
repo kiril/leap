@@ -26,6 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             attemptCalendarSync()
         }
 
+        setupDefaultAppearance()
+
         return true
     }
 
@@ -120,6 +122,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
         self.saveContext()
+    }
+
+    private func setupDefaultAppearance() {
+        UISegmentedControl.appearance().tintColor = UIColor.projectDarkerGray
+
+        let attributes = [NSForegroundColorAttributeName: UIColor.projectDarkerGray]
+        UISegmentedControl.appearance().setTitleTextAttributes(attributes, for: .normal)
     }
 
     // MARK: - Core Data stack

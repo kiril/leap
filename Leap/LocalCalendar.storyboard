@@ -13,7 +13,7 @@
         <scene sceneID="dq3-vj-L2E">
             <objects>
                 <navigationController id="W2V-q3-pBY" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="bkV-fC-t7n">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="bkV-fC-t7n">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -28,7 +28,6 @@
         <!--Calendar Collection View Controller-->
         <scene sceneID="J8J-0N-lqd">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Yk4-K6-KLl" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <collectionViewController id="YVr-8B-PJb" customClass="CalendarCollectionViewController" customModule="Leap" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="MYT-Un-QBk">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -40,16 +39,7 @@
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
-                        <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="yzb-rv-jlP">
-                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </view>
-                            </collectionViewCell>
-                        </cells>
+                        <cells/>
                         <connections>
                             <outlet property="dataSource" destination="YVr-8B-PJb" id="yvQ-Ae-X82"/>
                             <outlet property="delegate" destination="YVr-8B-PJb" id="eK1-bj-0bG"/>
@@ -57,6 +47,7 @@
                     </collectionView>
                     <navigationItem key="navigationItem" id="vYy-xe-UEy"/>
                 </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Yk4-K6-KLl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="478" y="189"/>
         </scene>

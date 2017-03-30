@@ -25,9 +25,9 @@ class InitialViewController: UIViewController {
     }
 
     private func presentCalendarViewController() {
-        let debugEventViewController = UIStoryboard(name: "LocalCalendar", bundle: nil).instantiateInitialViewController()!
+        let (navVC,_) = CalendarCollectionViewController.loadFromStoryboardWithNavController()
 
-        self.present(debugEventViewController,
+        self.present(navVC,
                      animated: true,
                      completion: nil)
     }

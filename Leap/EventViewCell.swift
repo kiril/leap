@@ -96,31 +96,3 @@ class EventViewCell: UICollectionViewCell {
         updateShadow()
     }
 }
-
-
-extension UIColor {
-    static var projectLightBackgroundGray: UIColor {
-        return UIColor(r: 246,
-                       g: 246,
-                       b: 246)
-    }
-
-    static var projectLightGray: UIColor {
-        return UIColor(r: 189,
-                       g: 189,
-                       b: 189)
-    }
-
-    static var projectDarkGray: UIColor {
-        return UIColor(r: 112,
-                       g: 112,
-                       b: 112)
-    }
-
-    static var projectDarkerGray: UIColor {
-        return UIColor(r: 84,
-                       g: 84,
-                       b: 84)
-    }
-
-}

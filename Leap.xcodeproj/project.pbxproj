@@ -27,6 +27,15 @@
 		8336176B1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8336176A1E8C277D009A97FF /* NavigationToggleArrowView.swift */; };
 		8336176C1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8336176A1E8C277D009A97FF /* NavigationToggleArrowView.swift */; };
 		8336176D1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8336176A1E8C277D009A97FF /* NavigationToggleArrowView.swift */; };
+		833617701E8C2C75009A97FF /* WeekOverview.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8336176F1E8C2C75009A97FF /* WeekOverview.storyboard */; };
+		833617711E8C2C75009A97FF /* WeekOverview.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8336176F1E8C2C75009A97FF /* WeekOverview.storyboard */; };
+		833617721E8C2C75009A97FF /* WeekOverview.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8336176F1E8C2C75009A97FF /* WeekOverview.storyboard */; };
+		833617741E8C2C9B009A97FF /* WeekOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833617731E8C2C9B009A97FF /* WeekOverviewViewController.swift */; };
+		833617751E8C2C9B009A97FF /* WeekOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833617731E8C2C9B009A97FF /* WeekOverviewViewController.swift */; };
+		833617761E8C2C9B009A97FF /* WeekOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833617731E8C2C9B009A97FF /* WeekOverviewViewController.swift */; };
+		833617781E8C4756009A97FF /* StoryboardLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833617771E8C4756009A97FF /* StoryboardLoadable.swift */; };
+		833617791E8C4756009A97FF /* StoryboardLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833617771E8C4756009A97FF /* StoryboardLoadable.swift */; };
+		8336177A1E8C4756009A97FF /* StoryboardLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833617771E8C4756009A97FF /* StoryboardLoadable.swift */; };
 		8351BDC91E7C58FD001221AF /* OpenTimeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDC81E7C58FD001221AF /* OpenTimeViewModel.swift */; };
 		8351BDCD1E7C596C001221AF /* GregorianDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDCC1E7C596C001221AF /* GregorianDay.swift */; };
 		8351BDD11E807C4C001221AF /* WeekOverviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDD01E807C4C001221AF /* WeekOverviewViewModel.swift */; };
@@ -134,6 +143,9 @@
 		833617621E8C21E8009A97FF /* FontAwesome.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.otf; sourceTree = "<group>"; };
 		833617661E8C2538009A97FF /* NavigationToggleArrowView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NavigationToggleArrowView.xib; sourceTree = "<group>"; };
 		8336176A1E8C277D009A97FF /* NavigationToggleArrowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationToggleArrowView.swift; sourceTree = "<group>"; };
+		8336176F1E8C2C75009A97FF /* WeekOverview.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WeekOverview.storyboard; sourceTree = "<group>"; };
+		833617731E8C2C9B009A97FF /* WeekOverviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekOverviewViewController.swift; sourceTree = "<group>"; };
+		833617771E8C4756009A97FF /* StoryboardLoadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardLoadable.swift; sourceTree = "<group>"; };
 		8351BDC81E7C58FD001221AF /* OpenTimeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenTimeViewModel.swift; sourceTree = "<group>"; };
 		8351BDCC1E7C596C001221AF /* GregorianDay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GregorianDay.swift; sourceTree = "<group>"; };
 		8351BDD01E807C4C001221AF /* WeekOverviewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekOverviewViewModel.swift; sourceTree = "<group>"; };
@@ -295,6 +307,7 @@
 			isa = PBXGroup;
 			children = (
 				831444D11E7B472500A5EF06 /* ViewModelUpdateable.swift */,
+				833617771E8C4756009A97FF /* StoryboardLoadable.swift */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -305,6 +318,15 @@
 				833617621E8C21E8009A97FF /* FontAwesome.otf */,
 			);
 			name = Fonts;
+			sourceTree = "<group>";
+		};
+		8336176E1E8C2C1F009A97FF /* WeekNavigation */ = {
+			isa = PBXGroup;
+			children = (
+				8336176F1E8C2C75009A97FF /* WeekOverview.storyboard */,
+				833617731E8C2C9B009A97FF /* WeekOverviewViewController.swift */,
+			);
+			name = WeekNavigation;
 			sourceTree = "<group>";
 		};
 		8351BDCA1E7C5932001221AF /* Models */ = {
@@ -335,6 +357,7 @@
 			children = (
 				835456131E8AF9BE00A03B34 /* InitialNavigation */,
 				8351BDCF1E7C5D45001221AF /* Auth */,
+				8336176E1E8C2C1F009A97FF /* WeekNavigation */,
 				831444C21E7AF7AD00A5EF06 /* LocalCalendar */,
 			);
 			name = Flows;
@@ -670,6 +693,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				833617701E8C2C75009A97FF /* WeekOverview.storyboard in Resources */,
 				FBE4DEA31E6CB9F10062507B /* Auth0.plist in Resources */,
 				831444C11E7AF77700A5EF06 /* LocalCalendar.storyboard in Resources */,
 				FB4E11A71E79B1F500687702 /* Main.storyboard in Resources */,
@@ -688,6 +712,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				833617711E8C2C75009A97FF /* WeekOverview.storyboard in Resources */,
 				833617641E8C21E8009A97FF /* FontAwesome.otf in Resources */,
 				833617681E8C2538009A97FF /* NavigationToggleArrowView.xib in Resources */,
 			);
@@ -697,6 +722,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				833617721E8C2C75009A97FF /* WeekOverview.storyboard in Resources */,
 				833617651E8C21E8009A97FF /* FontAwesome.otf in Resources */,
 				833617691E8C2538009A97FF /* NavigationToggleArrowView.xib in Resources */,
 			);
@@ -866,6 +892,7 @@
 				FB166B5A1E8AC05300CB95EC /* Bridge.swift in Sources */,
 				FB166B5C1E8AC3CA00CB95EC /* Fetchable.swift in Sources */,
 				FB166B5E1E8AC6DB00CB95EC /* ModelReference.swift in Sources */,
+				833617781E8C4756009A97FF /* StoryboardLoadable.swift in Sources */,
 				FB4208661E8976B1007F4DBD /* Series.swift in Sources */,
 				FBD614541E7F3370001F4050 /* EventSurface.swift in Sources */,
 				FB934F261E7EDFA80068CDEF /* Lifecycle.swift in Sources */,
@@ -879,6 +906,7 @@
 				833617601E8C1D3A009A97FF /* DayScheduleTitleView.swift in Sources */,
 				FB42085D1E896847007F4DBD /* Resource.swift in Sources */,
 				FB2046AA1E82E74700F130C8 /* EKParticipant+Realm.swift in Sources */,
+				833617741E8C2C9B009A97FF /* WeekOverviewViewController.swift in Sources */,
 				FB2046B01E82E7B000F130C8 /* LegacyCalendar.swift in Sources */,
 				FB4208551E859606007F4DBD /* Alarm.swift in Sources */,
 				831444C61E7B020700A5EF06 /* CalendarCollectionViewController.swift in Sources */,
@@ -920,8 +948,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB8BB6231E89A76A00A30315 /* EventKitMigrationTests.swift in Sources */,
+				833617751E8C2C9B009A97FF /* WeekOverviewViewController.swift in Sources */,
 				FBD1045F1E80717E00DDF65B /* ShellTests.swift in Sources */,
 				8336176C1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */,
+				833617791E8C4756009A97FF /* StoryboardLoadable.swift in Sources */,
 				FBE0EFFC1DFBBB80007BD8DF /* LeapTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -930,8 +960,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8336177A1E8C4756009A97FF /* StoryboardLoadable.swift in Sources */,
 				8336176D1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */,
 				FBE0F0071DFBBB80007BD8DF /* LeapUITests.swift in Sources */,
+				833617761E8C2C9B009A97FF /* WeekOverviewViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

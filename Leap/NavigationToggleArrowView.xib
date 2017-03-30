@@ -18,7 +18,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="NavigationToggleArrowView" customModule="Leap" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="130" height="44"/>
+            <rect key="frame" x="0.0" y="0.0" width="64" height="44"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ghk-oH-2Ns">
@@ -50,7 +50,7 @@
             <connections>
                 <outlet property="arrowLabel" destination="cVP-VO-cXg" id="UjN-kv-aFz"/>
             </connections>
-            <point key="canvasLocation" x="-38" y="-215"/>
+            <point key="canvasLocation" x="-71" y="-215"/>
         </view>
     </objects>
 </document>
