@@ -12,7 +12,11 @@ import EventKit
 
 private let reuseIdentifier = "EventViewCell"
 
-class CalendarCollectionViewController: UICollectionViewController {
+class CalendarCollectionViewController: UICollectionViewController, StoryboardLoadable {
+
+    static var storyboardName: String {
+        return "LocalCalendar"
+    }
 
     let scheduleViewModel = CalendarCollectionViewController.mockedEntries()
 
@@ -36,9 +40,31 @@ class CalendarCollectionViewController: UICollectionViewController {
     private func setupNavigation() {
         let titleNib = UINib(nibName: "DayScheduleTitleView", bundle: nil)
         let titleView = titleNib.instantiate(withOwner: nil, options: nil).first as! UIView
-        let buttonItem = UIBarButtonItem(customView: titleView)
-        titleView.translatesAutoresizingMaskIntoConstraints = false
-        navigationItem.leftBarButtonItems = [buttonItem]
+
+        let arrowNib = UINib(nibName: "NavigationToggleArrowView", bundle: nil)
+        let arrowView = arrowNib.instantiate(withOwner: nil, options: nil).first as! UIView
+
+        navigationItem.leftBarButtonItems = [
+            barButtonItemFor(navView: arrowView),
+            barButtonItemFor(navView: titleView)
+        ]
+    }
+
+    private func barButtonItemFor(navView view: UIView) -> UIBarButtonItem {
+        view.translatesAutoresizingMaskIntoConstraints = false
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapNavigation))
+        view.addGestureRecognizer(tap)
+
+        return UIBarButtonItem(customView: view)
+    }
+
+    @objc private func didTapNavigation() {
+        let (navVC, _) = WeekOverviewViewController.loadFromStoryboardWithNavController()
+
+        navVC.modalPresentationStyle = .overCurrentContext
+        navVC.modalTransitionStyle = .crossDissolve
+
+        present(navVC, animated: true, completion: nil)
     }
 
     // MARK: UICollectionViewDataSource
@@ -62,7 +88,7 @@ class CalendarCollectionViewController: UICollectionViewController {
         switch entry {
         case .event(let event):
             cell.configure(with: event)
-        case .openTime(let openTime):
+        case .openTime:
             // for now, just hack in a new event view model since we don't have an open time view to display
             self.configureCellWidth(cell)
         }

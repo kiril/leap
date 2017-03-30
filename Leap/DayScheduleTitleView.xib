@@ -11,7 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB">
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="DayScheduleTitleView" customModule="Leap" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="223" height="24"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -44,6 +44,10 @@
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="subtitleLabel" destination="GbA-Ws-ows" id="bOg-ef-AgA"/>
+                <outlet property="titleLabel" destination="iYo-Td-6np" id="S27-yO-UI5"/>
+            </connections>
             <point key="canvasLocation" x="48.5" y="-228"/>
         </view>
     </objects>
