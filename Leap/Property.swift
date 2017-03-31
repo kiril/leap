@@ -82,7 +82,9 @@ public class ReadableProperty<T>: TypedProperty {
     }
 
     var key: String { return _key! }
-    var value: T { return surface!.getValue(for: key) as? T ?? defaultValue! }
+    var value: T {
+        return surface!.getValue(for: key) as? T ?? defaultValue!
+    }
     var rawValue: T? { return surface!.getValue(for: key) as? T }
     var surfaceType: String { return surface!.type }
 

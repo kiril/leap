@@ -33,6 +33,10 @@ class SurfaceBridge: BackingStore {
         references[name] = refer(to: model, as: name)
     }
 
+    func addReferenceDirectly(_ reference: Reference) {
+        references[reference.name] = reference
+    }
+
     func bind(_ property: Property, to name: String? = nil, on model: String? = nil) {
         guard model != nil || references.count == 1 else {
             fatalError("")
