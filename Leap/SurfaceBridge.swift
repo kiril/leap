@@ -8,6 +8,8 @@
 
 import Foundation
 
+typealias BridgeCalculation = (LeapModel) -> Any?
+
 class SurfaceBridge: BackingStore {
 
     let sourceId: String
@@ -17,7 +19,7 @@ class SurfaceBridge: BackingStore {
     }
 
     fileprivate var references: [String:Any] = [:]
-    fileprivate var bindings: [String:(String,[String])] = [:]
+    fileprivate var bindings: [String:(String,BridgeCalculation)] = [:]
 
     func dereference(_ name: String) -> LeapModel? {
         if let reference = references[name] as? Reference,
@@ -35,7 +37,17 @@ class SurfaceBridge: BackingStore {
         guard model != nil || references.count == 1 else {
             fatalError("")
         }
-        bindings[property.key] = (model ?? references.keys.first!, name?.components(separatedBy: ".") ?? [property.key])
+        let keys = name?.components(separatedBy: ".") ?? [property.key]
+        let calculation = { (model:LeapModel) in
+            model.getValue(forKeysRecursively: keys)
+        }
+        let modelName = model ?? references.keys.first!
+        bind(property, on: modelName, with: calculation)
+    }
+
+    func bind(_ property: Property, on model: String? = nil, with calculation: @escaping BridgeCalculation) {
+        let modelName = model ?? references.keys.first!
+        bindings[property.key] = (modelName, calculation)
     }
 
     func bindAll(_ properties:Property...) {
@@ -44,9 +56,9 @@ class SurfaceBridge: BackingStore {
 
     func populate(_ surface: Surface) {
         var data: ModelData = [:]
-        for (key, (sourceName, sourceKeyPath)) in bindings {
+        for (key, (sourceName, calculation)) in bindings {
             if let model = dereference(sourceName),
-                let value = model.getValue(forKeysRecursively: sourceKeyPath) {
+                let value = calculation(model) {
                 data[key] = value
             }
         }
