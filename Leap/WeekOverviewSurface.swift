@@ -9,41 +9,41 @@
 import Foundation
 import UIKit
 
-class WeekOverviewViewModel: ViewModelUpdateable {
+class WeekOverviewSurface: Surface {
     var delegate: ViewModelDelegate?
     let daysInAWeek = 7
 
-    let id: Int // identified by the dayId of the starting day (i.e. the last occuringSunday)
-
-    init(id: Int) {
-        self.id = id
+    // The id of a week points to the id of the first day of the week (which might be a Sunday or Monday, depending
+    // on the preferences of the observing user. But this id is transient so that's okay
+    var intId: Int {
+        return Int(id!)!
     }
 
-    init(containingDayId dayId: Int) {
+    convenience init(containingDayId dayId: String) {
         let beginningOfWeekId = dayId // should find the id of the beginning of the week i.e. Sunday
-        self.id = beginningOfWeekId
+        self.init(id: beginningOfWeekId)
     }
 
-    var weekAfter: WeekOverviewViewModel {
-        return WeekOverviewViewModel(id: self.id + daysInAWeek)
+    var weekAfter: WeekOverviewSurface {
+        return WeekOverviewSurface(id: String(intId + daysInAWeek))
     }
 
-    var weekBefore: WeekOverviewViewModel {
-        return WeekOverviewViewModel(id: self.id - daysInAWeek)
+    var weekBefore: WeekOverviewSurface {
+        return WeekOverviewSurface(id: String(intId - daysInAWeek))
     }
 
-    var days: [DayViewModel] {
-        var days = [DayViewModel]()
+    var days: [DaySurface] {
+        var days = [DaySurface]()
 
         for i in 0...(daysInAWeek - 1) {
-            days.append(DayViewModel(dayId: id + i))
+            days.append(DaySurface(dayId: intId + i))
         }
 
         return days
     }
 }
 
-class DayViewModel {
+class DaySurface {
     // how is this different from a day schedule view model? Does the day schedule view model end up using this to display things like the day name, etc.?
 
     init(dayId: Int) {
