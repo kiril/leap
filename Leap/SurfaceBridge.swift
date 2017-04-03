@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import RealmSwift
+
 
 typealias ModelGetter = (LeapModel) -> Any?
 typealias ModelSetter = (LeapModel, Any?) -> Void
@@ -86,10 +88,15 @@ class SurfaceBridge: BackingStore {
     @discardableResult
     func persist(_ surface: Surface) throws -> Bool {
         var mutated = false
-        for (key, (modelName, _, set)) in bindings {
-            if let value = surface.getValue(for: key), let model = dereference(modelName) {
-                set(model, value)
-                mutated = true
+        let realm = Realm.user()
+
+        try realm.write {
+            for (key, (modelName, _, set)) in bindings {
+                if let value = surface.getValue(for: key), let model = dereference(modelName) {
+                    set(model, value)
+                    mutated = true
+                    realm.add(model, update: true)
+                }
             }
         }
         return mutated

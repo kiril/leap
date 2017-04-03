@@ -11,6 +11,7 @@ import RealmSwift
 
 
 extension Realm {
+    static var isInTestMode: Bool { return false }
 
     static func inMemory() -> Realm {
         return try! Realm(configuration: Realm.Configuration(inMemoryIdentifier: "Leap"))
@@ -38,14 +39,20 @@ extension Realm {
     }
 
     static func user() -> Realm {
-        return inMemory()
+        if isInTestMode {
+            return inMemory() // always
+        }
+        return inMemory() // for now
     }
 
     static func auth() -> Realm {
-        return inMemory()
+        if isInTestMode {
+            return inMemory() // always
+        }
+        return inMemory() // for now
     }
 
     static func config() -> Realm {
-        return inMemory()
+        return inMemory() // for now
     }
 }

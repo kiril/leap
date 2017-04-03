@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import RealmSwift
 
 @testable import Leap
 
@@ -14,14 +15,17 @@ import XCTest
 
 class BridgeTest: XCTestCase {
 
-    var model: TestModel?
-    var surface: TestSurface?
+    let testId: String = "testmodel"
+    var testSurface: TestSurface?
     
     override func setUp() {
         super.setUp()
-        model = TestModel(value: ["id": "testmodel", "title": "Just a Test", "count": 8])
-        model!.register()
-        surface = TestSurface.load(byId: "testmodel")
+        let model = TestModel(value: ["id": testId, "title": "Just a Test", "count": 8])
+        let realm = Realm.user()
+        try! realm.write {
+            realm.add(model, update: true)
+        }
+        testSurface = TestSurface.load(byId: "testmodel")
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
@@ -31,15 +35,25 @@ class BridgeTest: XCTestCase {
     }
 
     func testPopulation() {
-        XCTAssertEqual(surface!.count.value, model!.count)
-        XCTAssertEqual(surface!.title.value, model!.title)
+        guard let model = TestModel.by(id: testId), let surface = testSurface else {
+            fatalError("yikes")
+        }
+        XCTAssertEqual(surface.count.value, model.count)
+        XCTAssertEqual(surface.title.value, model.title)
     }
 
     func testPersistence() {
-        try! surface!.title.update(to: "New Title")
-        XCTAssertNotEqual(surface!.title.value, model!.title)
-        try! surface!.flush()
-        XCTAssertEqual(surface!.title.value, model!.title)
+        guard let model = TestModel.by(id: testId), let surface = testSurface else {
+            fatalError("yikes")
+        }
+        try! surface.title.update(to: "New Title")
+        XCTAssertNotEqual(surface.title.value, model.title)
+        try! surface.flush()
+        XCTAssertEqual(surface.title.value, model.title)
+
+        let reFetched = TestModel.by(id: model.id)
+        XCTAssertNotNil(reFetched)
+        XCTAssertEqual(reFetched!.title, surface.title.value)
     }
     
     func testExample() {

@@ -8,21 +8,12 @@
 
 import Foundation
 import RealmSwift
-@testable import Leap
 
-var __testModels: [String:TestModel] = [:]
+@testable import Leap
 
 class TestModel: LeapModel {
     dynamic var title: String = ""
     dynamic var count: Int = 0
-
-    func register() {
-        __testModels[self.id] = self
-    }
-
-    static func by(id: String) -> TestModel? {
-        return __testModels[id]
-    }
 }
 
 class TestSurface: Surface {
@@ -36,7 +27,7 @@ class TestSurface: Surface {
         let model = TestModel.by(id: id)!
         let surface = TestSurface(id: id)
         let bridge = SurfaceBridge(id: id)
-        bridge.addReferenceDirectly(TestModelReference(to: model, as: "test"))
+        bridge.addReferenceDirectly(ModelReference(to: model, as: "test"))
         bridge.bindAll(surface.title, surface.count)
         surface.store = bridge
         surface.populate()
@@ -44,15 +35,6 @@ class TestSurface: Surface {
     }
 }
 
-class TestModelReference: ModelReference<TestModel> {
-    var _model: TestModel
-    override init(to model: TestModel, as name: String) {
-        _model = model
-        super.init(to: model, as: name)
-    }
-
-    override func model() -> TestModel {
-        print("resolving via TestModelReference")
-        return _model
-    }
+extension Realm {
+    var isInTest: Bool { return true }
 }
