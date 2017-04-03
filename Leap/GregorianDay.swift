@@ -83,6 +83,11 @@ extension Calendar {
         return component(.weekday, from: date)
     }
 
+    func month(for day: GregorianDay) -> Int {
+        let date = self.date(from: day.components)!
+        return component(.month, from: date)
+    }
+
     var today: GregorianDay {
         var gregorianTimeAdjustedCalendar = Calendar(identifier: .gregorian)
         gregorianTimeAdjustedCalendar.timeZone = self.timeZone

@@ -42,6 +42,15 @@ class WeekOverviewSurface: Surface, IntIdInitable {
         return WeekOverviewSurface(intId: intId - daysInAWeek)
     }
 
+    var titleForWeek: String {
+        let firstDay = days.first!
+        let lastDay = days.last!
+
+        let firstDayString = "\(firstDay.monthNameShort) \(firstDay.dayOfTheMonth)"
+        let lastDayString = "\(lastDay.monthNameShort) \(lastDay.dayOfTheMonth), \(lastDay.year)"
+        return "\(firstDayString) - \(lastDayString)"
+    }
+
     var days: [DaySurface] {
         var days = [DaySurface]()
 
@@ -60,24 +69,42 @@ class DaySurface: Surface, IntIdInitable {
         self.init(id: String(intId))
     }
     var intId: Int { return Int(id!)! }
+    private var gregorianDay: GregorianDay { return GregorianDay(id: intId) }
 
     var weekdayName: String {
-        let weekdaySymbols = Calendar.current.standaloneWeekdaySymbols // force gregorian here but change the locale? Maybe... maybe.
-        let weekdayIndex = Calendar.current.dayOfTheWeek(for: GregorianDay(id: intId)) - 1
-        return weekdaySymbols[weekdayIndex]
+        return Calendar.current.weekdaySymbols[weekdayIndex] // force gregorian here but change the locale? Maybe... maybe.
     }
 
-    var weekdayInt: Int { // Sunday is 1 by default, index 1
-        return Calendar.current.dayOfTheWeek(for: GregorianDay(id: intId))
+    var weekdayNameShort: String {
+        return Calendar.current.shortWeekdaySymbols[weekdayIndex] // force gregorian here but change the locale? Maybe... maybe.
+    }
+
+    private var weekdayInt: Int { // Sunday is 1 by default, index 1
+        return Calendar.current.dayOfTheWeek(for: gregorianDay)
     }
 
     var weekdayIndex: Int { // Sunday is 0 by default, index 0
         return weekdayInt - 1
     }
 
+    private var monthIndex: Int {
+        return gregorianDay.month - 1
+    }
+
+    var monthNameShort: String {
+        return Calendar.current.shortMonthSymbols[monthIndex]
+    }
+
+    var monthName: String {
+        return Calendar.current.monthSymbols[monthIndex]
+    }
+
+    var year: String {
+        return String(gregorianDay.year)
+    }
+
     var dayOfTheMonth: String {
-        let intDay = GregorianDay(id: intId).day
-        return String(intDay)
+        return String(gregorianDay.day)
     }
 
     var overviewDescription: String {

@@ -10,6 +10,7 @@ import UIKit
 
 class WeekNavigationViewController: UIViewController, StoryboardLoadable {
 
+    var titleView: DayScheduleTitleView!
 
     @IBOutlet weak var weekNavContainerView: UIView!
     @IBOutlet weak var navigationBarUnderlay: UIView!
@@ -52,7 +53,8 @@ class WeekNavigationViewController: UIViewController, StoryboardLoadable {
                                                               options: nil)
 
         weekOverviewPageViewController.dataSource = weekOverviewPageViewDataSource
-
+        weekOverviewPageViewController.delegate = self
+        
         addChildViewController(weekOverviewPageViewController)
 //        weekOverviewPageViewController.view.frame = CGRect.zero
         weekOverviewContainerView.addSubview(weekOverviewPageViewController.view)
@@ -73,6 +75,8 @@ class WeekNavigationViewController: UIViewController, StoryboardLoadable {
         weekOverviewPageViewController.setViewControllers([initialWeekVC],
                                                           direction: .forward,
                                                           animated: false, completion: nil)
+
+        updateTitleFor(vc: initialWeekVC)
     }
 
     override func viewWillLayoutSubviews() {
@@ -92,7 +96,7 @@ class WeekNavigationViewController: UIViewController, StoryboardLoadable {
 
     private func setupNavigation() {
         let titleNib = UINib(nibName: "DayScheduleTitleView", bundle: nil)
-        let titleView = titleNib.instantiate(withOwner: nil, options: nil).first as! DayScheduleTitleView
+        titleView = titleNib.instantiate(withOwner: nil, options: nil).first as! DayScheduleTitleView
         titleView.subtitleLabel.text = ""
         titleView.titleLabel.text = "Dec 3 - Dec 9, 2017"
 
@@ -116,5 +120,17 @@ class WeekNavigationViewController: UIViewController, StoryboardLoadable {
 
     @objc private func didTapBackgroundView() {
         self.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension WeekNavigationViewController: UIPageViewControllerDelegate {
+    func pageViewController(_ pageViewController: UIPageViewController,
+                            didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        updateTitleFor(vc: pageViewController.viewControllers?.first as! WeekOverviewViewController)
+    }
+
+    fileprivate func updateTitleFor(vc: WeekOverviewViewController) {
+        titleView.titleLabel.text = vc.surface?.titleForWeek
+        titleView.setNeedsLayout()
     }
 }
