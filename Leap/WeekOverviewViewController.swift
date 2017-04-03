@@ -9,7 +9,17 @@
 import UIKit
 
 class WeekOverviewViewController: UIViewController, StoryboardLoadable {
-    
+
+    @IBOutlet var dayButtons: [UIButton]!
+
     var surface: WeekOverviewSurface?
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        for (index, button) in dayButtons.enumerated() {
+            let title = surface?.days[index].overviewDescription
+            button.setTitle(title, for: .normal)
+        }
+    }
 }

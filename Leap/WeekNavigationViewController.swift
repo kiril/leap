@@ -19,6 +19,7 @@ class WeekNavigationViewController: UIViewController, StoryboardLoadable {
     @IBOutlet weak var nextNavArrow: UILabel!
     @IBOutlet weak var weekOverviewContainerView: UIView!
 
+    var selectedDayId: String = String(Calendar.current.today.id)
 
     var weekOverviewPageViewController: UIPageViewController!
     private lazy var weekOverviewPageViewDataSource = WeekOverviewPageViewDataSource()
@@ -66,7 +67,7 @@ class WeekNavigationViewController: UIViewController, StoryboardLoadable {
         weekOverviewPageViewController.view.translatesAutoresizingMaskIntoConstraints = false // HELPS
         weekOverviewPageViewController.view.backgroundColor = UIColor.clear
 
-        let initialWeek = WeekOverviewSurface(id: "700")
+        let initialWeek = WeekOverviewSurface(containingDayId: selectedDayId)
         let initialWeekVC = WeekOverviewViewController.loadFromStoryboard()
         initialWeekVC.surface = initialWeek
         weekOverviewPageViewController.setViewControllers([initialWeekVC],

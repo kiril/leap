@@ -9,62 +9,88 @@
 import Foundation
 import UIKit
 
-class WeekOverviewSurface: Surface {
+protocol IntIdInitable {
+    init(intId: Int)
+    var intId: Int { get }
+}
+
+class WeekOverviewSurface: Surface, IntIdInitable {
     var delegate: ViewModelDelegate?
     let daysInAWeek = 7
 
+    convenience required init(intId: Int) {
+        self.init(id: String(intId))
+    }
+    var intId: Int { return Int(id!)! }
+
     // The id of a week points to the id of the first day of the week (which might be a Sunday or Monday, depending
     // on the preferences of the observing user. But this id is transient so that's okay
-    var intId: Int {
-        return Int(id!)!
-    }
 
     convenience init(containingDayId dayId: String) {
-        let beginningOfWeekId = dayId // should find the id of the beginning of the week i.e. Sunday
-        self.init(id: beginningOfWeekId)
+        let targetDay = DaySurface(id: dayId)
+
+        let beginningOfWeekId = targetDay.intId - targetDay.weekdayIndex
+
+        self.init(intId: beginningOfWeekId)
     }
 
     var weekAfter: WeekOverviewSurface {
-        return WeekOverviewSurface(id: String(intId + daysInAWeek))
+        return WeekOverviewSurface(intId: intId + daysInAWeek)
     }
 
     var weekBefore: WeekOverviewSurface {
-        return WeekOverviewSurface(id: String(intId - daysInAWeek))
+        return WeekOverviewSurface(intId: intId - daysInAWeek)
     }
 
     var days: [DaySurface] {
         var days = [DaySurface]()
 
         for i in 0...(daysInAWeek - 1) {
-            days.append(DaySurface(dayId: intId + i))
+            days.append(DaySurface(id: String(intId + i)))
         }
 
         return days
     }
 }
 
-class DaySurface {
+class DaySurface: Surface, IntIdInitable {
     // how is this different from a day schedule view model? Does the day schedule view model end up using this to display things like the day name, etc.?
 
-    init(dayId: Int) {
-        self.dayId = dayId
+    convenience required init(intId: Int) {
+        self.init(id: String(intId))
     }
-
-    var dayId: Int
+    var intId: Int { return Int(id!)! }
 
     var weekdayName: String {
         let weekdaySymbols = Calendar.current.standaloneWeekdaySymbols // force gregorian here but change the locale? Maybe... maybe.
-        let weekday = Calendar.current.dayOfTheWeek(for: GregorianDay(id: dayId))
-        return weekdaySymbols[weekday]
+        let weekdayIndex = Calendar.current.dayOfTheWeek(for: GregorianDay(id: intId)) - 1
+        return weekdaySymbols[weekdayIndex]
+    }
+
+    var weekdayInt: Int { // Sunday is 1 by default, index 1
+        return Calendar.current.dayOfTheWeek(for: GregorianDay(id: intId))
+    }
+
+    var weekdayIndex: Int { // Sunday is 0 by default, index 0
+        return weekdayInt - 1
+    }
+
+    var dayOfTheMonth: String {
+        let intDay = GregorianDay(id: intId).day
+        return String(intDay)
+    }
+
+    var overviewDescription: String {
+        return "\(dayOfTheMonth) \(weekdayName)"
     }
 
     var happensIn: TimePerspective {
         let today = Calendar.current.today
 
-        if dayId > today.id {
+        if intId > today.id {
             return .future
         }
-        else if dayId < today.id {
+        else if intId < today.id {
             return .past
         }
         else {
