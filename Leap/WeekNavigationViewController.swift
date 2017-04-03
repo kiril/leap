@@ -30,6 +30,25 @@ class WeekNavigationViewController: UIViewController, StoryboardLoadable {
         setupViews()
         setupNavigationBar()
         setupWeekOverviewPageViewController()
+        setupArrowNavigation()
+    }
+
+    private func setupArrowNavigation() {
+        setupArrow(label: nextNavArrow)
+        setupArrow(label: previousNavArrow)
+    }
+
+    private func setupArrow(label: UILabel) {
+        let tapGesture = UITapGestureRecognizer(target: self,
+                                                action: #selector(didTapArrow))
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(tapGesture)
+    }
+
+    @objc private func didTapArrow(sender: UITapGestureRecognizer) {
+        guard let arrow = sender.view else { return }
+        let direction: UIPageViewControllerNavigationDirection = (arrow == nextNavArrow) ? .forward : .reverse
+        weekOverviewPageViewController.turnPage(direction: direction)
     }
 
     private func setupViews() {
@@ -132,5 +151,35 @@ extension WeekNavigationViewController: UIPageViewControllerDelegate {
     fileprivate func updateTitleFor(vc: WeekOverviewViewController) {
         titleView.titleLabel.text = vc.surface?.titleForWeek
         titleView.setNeedsLayout()
+    }
+}
+
+extension UIPageViewController {
+    func turnPage(direction: UIPageViewControllerNavigationDirection = .forward,
+                  animated: Bool = true) {
+        guard   let previousViewControllers = viewControllers,
+                let currentPage = previousViewControllers.first else { return }
+
+        var nextVC: UIViewController?
+
+        switch direction {
+        case .forward:
+            nextVC = dataSource?.pageViewController(self, viewControllerAfter: currentPage)
+        case .reverse:
+            nextVC = dataSource?.pageViewController(self, viewControllerBefore: currentPage)
+        }
+
+        guard let next = nextVC else { return }
+
+        setViewControllers([next],
+                           direction: direction,
+                           animated: animated) { finished in
+
+            self.delegate?.pageViewController?(self, didFinishAnimating: finished,
+                                              previousViewControllers: previousViewControllers,
+                                              transitionCompleted: finished)
+        }
+
+
     }
 }
