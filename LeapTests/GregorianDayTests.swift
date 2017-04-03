@@ -21,7 +21,7 @@ class GregorianDayTests: XCTestCase {
         super.tearDown()
     }
     
-    func testInitFunctions() {
+    func testInitFunctionsEquivilant() {
         let inputDay = 2
         let inputMonth = 2
         let inputYear = 2016
@@ -31,6 +31,23 @@ class GregorianDayTests: XCTestCase {
         XCTAssertEqual(inputDay, day.day)
         XCTAssertEqual(inputMonth, day.month)
         XCTAssertEqual(inputYear, day.year)
+
+        let id = day.id
+        let idInitDay = GregorianDay(id: id)
+
+        XCTAssertEqual(inputDay, idInitDay.day)
+        XCTAssertEqual(inputMonth, idInitDay.month)
+        XCTAssertEqual(inputYear, idInitDay.year)
+    }
+
+    func testEpochIsDayOne() {
+        let epochById = GregorianDay(id: 1)
+        XCTAssertEqual(1, epochById.day)
+        XCTAssertEqual(1, epochById.month)
+        XCTAssertEqual(1970, epochById.year)
+
+        let epochByComponents = GregorianDay(day: 1, month: 1, year: 1970)!
+        XCTAssertEqual(1, epochByComponents.id)
     }
 
     func testPerformanceExample() {
