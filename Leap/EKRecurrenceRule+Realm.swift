@@ -65,11 +65,12 @@ extension EKRecurrenceRule {
         return RecurrenceDay.of(day: day, in: dow.weekNumber)
     }
 
-    func asRecurrence() -> Recurrence {
+    func asRecurrence(ofEvent event: Event) -> Recurrence {
         let recurrence = Recurrence(value: ["frequencyRaw": getFrequency().rawValue,
                                             "interval": interval,
                                             "weekStartRaw": weekStart().rawValue,
-                                            "endTime": recurrenceEnd?.endDate as Any?,
+                                            "startDate": event.startTime,
+                                            "endDate": recurrenceEnd?.endDate as Any?,
                                             "count": recurrenceEnd?.occurrenceCount ?? 0])
 
         if let weekdays = daysOfTheWeek {

@@ -86,11 +86,11 @@ class SurfaceBridge: BackingStore {
     }
 
     @discardableResult
-    func persist(_ surface: Surface) throws -> Bool {
+    func persist(_ surface: Surface) -> Bool {
         var mutated = false
         let realm = Realm.user()
 
-        try realm.write {
+        try! realm.write {
             for (key, (modelName, _, set)) in bindings {
                 if let value = surface.getValue(for: key), let model = dereference(modelName) {
                     set(model, value)

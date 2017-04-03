@@ -23,16 +23,3 @@ extension Fetchable where Self:LeapModel {
 
 extension LeapModel: Fetchable {
 }
-
-
-/*
-
-extension LeapModel {
-    static func by<Model:LeapModel>(id: String) -> Model? where Model:Fetchable {
-        let realm = Realm.user()
-        let query = realm.objects(Model.self)
-        return query.filter("id = %@", id).first
-    }
-}
-
- */
