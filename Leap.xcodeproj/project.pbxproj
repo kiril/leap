@@ -22,20 +22,10 @@
 		833617641E8C21E8009A97FF /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = 833617621E8C21E8009A97FF /* FontAwesome.otf */; };
 		833617651E8C21E8009A97FF /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = 833617621E8C21E8009A97FF /* FontAwesome.otf */; };
 		833617671E8C2538009A97FF /* NavigationToggleArrowView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 833617661E8C2538009A97FF /* NavigationToggleArrowView.xib */; };
-		833617681E8C2538009A97FF /* NavigationToggleArrowView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 833617661E8C2538009A97FF /* NavigationToggleArrowView.xib */; };
-		833617691E8C2538009A97FF /* NavigationToggleArrowView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 833617661E8C2538009A97FF /* NavigationToggleArrowView.xib */; };
 		8336176B1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8336176A1E8C277D009A97FF /* NavigationToggleArrowView.swift */; };
-		8336176C1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8336176A1E8C277D009A97FF /* NavigationToggleArrowView.swift */; };
-		8336176D1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8336176A1E8C277D009A97FF /* NavigationToggleArrowView.swift */; };
 		833617701E8C2C75009A97FF /* WeekNavigation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8336176F1E8C2C75009A97FF /* WeekNavigation.storyboard */; };
-		833617711E8C2C75009A97FF /* WeekNavigation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8336176F1E8C2C75009A97FF /* WeekNavigation.storyboard */; };
-		833617721E8C2C75009A97FF /* WeekNavigation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8336176F1E8C2C75009A97FF /* WeekNavigation.storyboard */; };
 		833617741E8C2C9B009A97FF /* WeekNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833617731E8C2C9B009A97FF /* WeekNavigationViewController.swift */; };
-		833617751E8C2C9B009A97FF /* WeekNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833617731E8C2C9B009A97FF /* WeekNavigationViewController.swift */; };
-		833617761E8C2C9B009A97FF /* WeekNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833617731E8C2C9B009A97FF /* WeekNavigationViewController.swift */; };
 		833617781E8C4756009A97FF /* StoryboardLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833617771E8C4756009A97FF /* StoryboardLoadable.swift */; };
-		833617791E8C4756009A97FF /* StoryboardLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833617771E8C4756009A97FF /* StoryboardLoadable.swift */; };
-		8336177A1E8C4756009A97FF /* StoryboardLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833617771E8C4756009A97FF /* StoryboardLoadable.swift */; };
 		8351BDC91E7C58FD001221AF /* OpenTimeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDC81E7C58FD001221AF /* OpenTimeViewModel.swift */; };
 		8351BDCD1E7C596C001221AF /* GregorianDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDCC1E7C596C001221AF /* GregorianDay.swift */; };
 		8351BDD11E807C4C001221AF /* WeekOverviewSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDD01E807C4C001221AF /* WeekOverviewSurface.swift */; };
@@ -869,14 +859,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				833617711E8C2C75009A97FF /* WeekNavigation.storyboard in Resources */,
-				83B5DBCD1E91DA2E00A0CA7E /* DayScheduleTitleView.xib in Resources */,
-				83B5DBBF1E91DA2900A0CA7E /* WeekOverview.storyboard in Resources */,
 				833617641E8C21E8009A97FF /* FontAwesome.otf in Resources */,
-				83B5DBCF1E91DA3300A0CA7E /* AuthFlow.storyboard in Resources */,
-				833617681E8C2538009A97FF /* NavigationToggleArrowView.xib in Resources */,
-				83B5DBC81E91DA2E00A0CA7E /* LocalCalendar.storyboard in Resources */,
-				83B5DBC91E91DA2E00A0CA7E /* EventViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -884,14 +867,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				833617721E8C2C75009A97FF /* WeekNavigation.storyboard in Resources */,
-				83B5DBC61E91DA2E00A0CA7E /* DayScheduleTitleView.xib in Resources */,
-				83B5DBBD1E91DA2900A0CA7E /* WeekOverview.storyboard in Resources */,
 				833617651E8C21E8009A97FF /* FontAwesome.otf in Resources */,
-				83B5DBD21E91DA3300A0CA7E /* AuthFlow.storyboard in Resources */,
-				833617691E8C2538009A97FF /* NavigationToggleArrowView.xib in Resources */,
-				83B5DBC11E91DA2E00A0CA7E /* LocalCalendar.storyboard in Resources */,
-				83B5DBC21E91DA2E00A0CA7E /* EventViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1144,13 +1120,6 @@
 				83B5DBE61E91DCA200A0CA7E /* EKEvent+Realm.swift in Sources */,
 				83B5DB9C1E91D99800A0CA7E /* Checklist.swift in Sources */,
 				FB8BB6231E89A76A00A30315 /* EventKitMigrationTests.swift in Sources */,
-				833617751E8C2C9B009A97FF /* WeekNavigationViewController.swift in Sources */,
-				83B5DBAF1E91D9A700A0CA7E /* Group.swift in Sources */,
-				83B5DB8A1E91D94F00A0CA7E /* Event.swift in Sources */,
-				83B5DB6E1E91D7F400A0CA7E /* Validation.swift in Sources */,
-				83B5DB671E91D78800A0CA7E /* WeekOverviewSurface.swift in Sources */,
-				83B5DB6D1E91D7F400A0CA7E /* Schema.swift in Sources */,
-				83B5DBB01E91D9A700A0CA7E /* Organization.swift in Sources */,
 				FBD1045F1E80717E00DDF65B /* ShellTests.swift in Sources */,
 				83B5DB8B1E91D94F00A0CA7E /* Reminder.swift in Sources */,
 				83B5DB8D1E91D94F00A0CA7E /* Alarm.swift in Sources */,
@@ -1191,6 +1160,8 @@
 				83B5DB811E91D90100A0CA7E /* Auditable.swift in Sources */,
 				83B5DBD51E91DA6400A0CA7E /* AppDelegate.swift in Sources */,
 				83B5DB9A1E91D99800A0CA7E /* Address.swift in Sources */,
+				83B5DBEE1E91E4CC00A0CA7E /* GregorianDayTests.swift in Sources */,
+				FBE0EFFC1DFBBB80007BD8DF /* LeapTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1266,6 +1237,7 @@
 				83B5DBEB1E91DCA300A0CA7E /* EKEvent+Realm.swift in Sources */,
 				83B5DBB41E91D9A700A0CA7E /* Organization.swift in Sources */,
 				83B5DB921E91D95000A0CA7E /* Event.swift in Sources */,
+				FBE0F0071DFBBB80007BD8DF /* LeapUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

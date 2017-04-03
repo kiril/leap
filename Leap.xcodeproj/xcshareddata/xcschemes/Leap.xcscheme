@@ -37,11 +37,6 @@
                BlueprintName = "LeapTests"
                ReferencedContainer = "container:Leap.xcodeproj">
             </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "EventKitMigrationTests">
-               </Test>
-            </SkippedTests>
          </TestableReference>
          <TestableReference
             skipped = "NO">
