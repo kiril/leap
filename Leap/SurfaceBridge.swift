@@ -8,7 +8,8 @@
 
 import Foundation
 
-typealias BridgeCalculation = (LeapModel) -> Any?
+typealias ModelLookup = (LeapModel) -> Any?
+typealias SurfaceLookup = (Surface) -> Any?
 
 class SurfaceBridge: BackingStore {
 
@@ -19,7 +20,7 @@ class SurfaceBridge: BackingStore {
     }
 
     fileprivate var references: [String:Any] = [:]
-    fileprivate var bindings: [String:(String,BridgeCalculation)] = [:]
+    fileprivate var bindings: [String: (String,ModelLookup,SurfaceLookup?)] = [:]
 
     func dereference(_ name: String) -> LeapModel? {
         if let reference = references[name] as? Reference,
@@ -37,21 +38,35 @@ class SurfaceBridge: BackingStore {
         references[reference.name] = reference
     }
 
-    func bind(_ property: Property, to name: String? = nil, on model: String? = nil) {
-        guard model != nil || references.count == 1 else {
-            fatalError("")
+    func bind(_ property: Property, to populationKey: String? = nil, on modelName: String? = nil) {
+        guard modelName != nil || references.count == 1 else {
+            fatalError("Need to specify model to do lookup on when more than one model bound")
         }
-        let keys = name?.components(separatedBy: ".") ?? [property.key]
-        let calculation = { (model:LeapModel) in
-            model.getValue(forKeysRecursively: keys)
+        let model = modelName ?? references.keys.first!
+        let keys = (populationKey ?? property.key).components(separatedBy: ".")
+        let fromModel = { (model:LeapModel) in
+            return model.getValue(forKeysRecursively: keys)
         }
-        let modelName = model ?? references.keys.first!
-        bind(property, on: modelName, with: calculation)
+        let fromSurface = { (surface:Surface) in
+            return surface.getValue(for: property.key)
+        }
+        _bind(property, populateWith: fromModel, on: model, returnWith: fromSurface)
     }
 
-    func bind(_ property: Property, on model: String? = nil, with calculation: @escaping BridgeCalculation) {
-        let modelName = model ?? references.keys.first!
-        bindings[property.key] = (modelName, calculation)
+    func _bind(_ property: Property, populateWith getFromModel: @escaping ModelLookup, on model: String, returnWith getFromSurface: SurfaceLookup? = nil) {
+        bindings[property.key] = (model, getFromModel, getFromSurface)
+    }
+
+    func readonlyBind(_ property: Property, to populate: @escaping ModelLookup, on model: String) {
+        _bind(property, populateWith: populate, on: model)
+    }
+
+    func readonlyBind(_ property: Property, to populate: @escaping ModelLookup) {
+        guard references.count == 1 else {
+            fatalError("Need to specify model to do lookup on when more than one model bound")
+        }
+        let model = references.keys.first!
+        _bind(property, populateWith: populate, on: model)
     }
 
     func bindAll(_ properties:Property...) {
@@ -60,9 +75,9 @@ class SurfaceBridge: BackingStore {
 
     func populate(_ surface: Surface) {
         var data: ModelData = [:]
-        for (key, (sourceName, calculation)) in bindings {
+        for (key, (sourceName, getFromModel, _)) in bindings {
             if let model = dereference(sourceName),
-                let value = calculation(model) {
+                let value = getFromModel(model) {
                 data[key] = value
             }
         }
