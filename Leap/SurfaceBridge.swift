@@ -9,7 +9,7 @@
 import Foundation
 
 typealias ModelGetter = (LeapModel) -> Any?
-typealias ModelSetter = (LeapModel, Any?) -> Any?
+typealias ModelSetter = (LeapModel, Any?) -> Void
 
 let setNothing = { (model:LeapModel, value:Any?) in return }
 
@@ -48,7 +48,7 @@ class SurfaceBridge: BackingStore {
         let finalModelKey = (modelKey ?? property.key)
         let keys = finalModelKey.components(separatedBy: ".")
         let get = { (model:LeapModel) in return model.getValue(forKeysRecursively: keys) }
-        let set = { (model:LeapModel, value:Any?) in return model.set(value: value, forKeyPath: finalModelKey) }
+        let set = { (model:LeapModel, value:Any?) in model.set(value: value, forKeyPath: finalModelKey); return }
         _bind(property, populateWith: get, on: model, persistWith: set)
     }
 
