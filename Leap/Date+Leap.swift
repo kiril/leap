@@ -9,14 +9,6 @@
 import Foundation
 
 extension Date {
-    static var millisecondsSinceReferenceDate: Int {
-        return Int(Date.timeIntervalSinceReferenceDate * 1000)
-    }
-
-    var millisecondsSinceReferenceDate: Int {
-        return Int(self.timeIntervalSinceReferenceDate * 1000)
-    }
-
     static var secondsSinceReferenceDate: Int {
         return Int(Date.timeIntervalSinceReferenceDate)
     }

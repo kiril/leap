@@ -71,7 +71,7 @@ extension EKRecurrenceRule {
                                             "interval": interval,
                                             "weekStartRaw": weekStart().rawValue,
                                             "startDate": event.startTime,
-                                            "endDate": recurrenceEnd?.endDate?.millisecondsSinceReferenceDate ?? 0,
+                                            "endDate": recurrenceEnd?.endDate?.secondsSinceReferenceDate ?? 0,
                                             "count": recurrenceEnd?.occurrenceCount ?? 0])
 
         if let weekdays = daysOfTheWeek {

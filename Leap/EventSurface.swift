@@ -110,7 +110,7 @@ class EventSurface: Surface {
                 fatalError("OMG wrong type or something \(model)")
             }
 
-            event.startTime = date.millisecondsSinceReferenceDate
+            event.startTime = date.secondsSinceReferenceDate
         }
         bridge.bind(surface.startTime, populateWith: getStartTime, on: "event", persistWith: setStartTime)
         bridge.bindAll(surface.title, surface.startTime, surface.endTime)

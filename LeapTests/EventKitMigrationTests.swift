@@ -26,7 +26,7 @@ class EventKitMigrationTests: XCTestCase {
     }
 
     func testRecurrence() {
-        let event = Event(value: ["id": "9999", "startDate": Date.millisecondsSinceReferenceDate, "endDate": Date.millisecondsSinceReferenceDate])
+        let event = Event(value: ["id": "9999", "startDate": Date.secondsSinceReferenceDate, "endDate": Date.secondsSinceReferenceDate])
         let ek1 = EKRecurrenceRule(recurrenceWith: EKRecurrenceFrequency.daily,
                                    interval: 1, end: EKRecurrenceEnd(occurrenceCount: 2))
         let r1: Recurrence = ek1.asRecurrence(ofEvent: event)
@@ -63,7 +63,7 @@ class EventKitMigrationTests: XCTestCase {
         XCTAssertEqual(r4.monthsOfYear.count, 2)
         XCTAssertEqual(r4.monthsOfYear[0].value, 1)
         XCTAssertEqual(r4.monthsOfYear[1].value, 2)
-        XCTAssertEqual(r4.endDate/1000, endDate.secondsSinceReferenceDate) // EKRecurrenceEnd only seems to store second-level resolution
+        XCTAssertEqual(r4.endDate, endDate.secondsSinceReferenceDate)
     }
 
     func testParticipants() {
