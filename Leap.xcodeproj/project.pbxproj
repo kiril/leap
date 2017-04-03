@@ -37,144 +37,10 @@
 		839362211E8FF5F200543CFC /* WeekOverviewPageViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839362201E8FF5F200543CFC /* WeekOverviewPageViewDataSource.swift */; };
 		83A72D741E82DAE0005EB213 /* TimePerspective.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A72D731E82DAE0005EB213 /* TimePerspective.swift */; };
 		83A72D771E82DF95005EB213 /* DayScheduleSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A72D761E82DF95005EB213 /* DayScheduleSurface.swift */; };
-		83B5DB631E91D70A00A0CA7E /* WeekOverviewPageViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839362201E8FF5F200543CFC /* WeekOverviewPageViewDataSource.swift */; };
-		83B5DB641E91D71F00A0CA7E /* UIColor+ProjectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835456171E8AFD7200A03B34 /* UIColor+ProjectExtensions.swift */; };
-		83B5DB651E91D72B00A0CA7E /* UIColor+ProjectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835456171E8AFD7200A03B34 /* UIColor+ProjectExtensions.swift */; };
-		83B5DB661E91D73B00A0CA7E /* WeekOverviewPageViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839362201E8FF5F200543CFC /* WeekOverviewPageViewDataSource.swift */; };
-		83B5DB671E91D78800A0CA7E /* WeekOverviewSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDD01E807C4C001221AF /* WeekOverviewSurface.swift */; };
-		83B5DB681E91D78800A0CA7E /* WeekOverviewSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDD01E807C4C001221AF /* WeekOverviewSurface.swift */; };
-		83B5DB691E91D7D700A0CA7E /* Surface.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F1F1E7E01DF0068CDEF /* Surface.swift */; };
-		83B5DB6A1E91D7D700A0CA7E /* Surface.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F1F1E7E01DF0068CDEF /* Surface.swift */; };
-		83B5DB6B1E91D7F400A0CA7E /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F231E7EDF670068CDEF /* Persistence.swift */; };
-		83B5DB6C1E91D7F400A0CA7E /* Lifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F251E7EDFA80068CDEF /* Lifecycle.swift */; };
-		83B5DB6D1E91D7F400A0CA7E /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD614551E7F38D4001F4050 /* Schema.swift */; };
-		83B5DB6E1E91D7F400A0CA7E /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD614571E7F57B0001F4050 /* Validation.swift */; };
-		83B5DB6F1E91D7F400A0CA7E /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD1045C1E80309300DDF65B /* Property.swift */; };
-		83B5DB701E91D7F400A0CA7E /* Bridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B591E8AC05300CB95EC /* Bridge.swift */; };
-		83B5DB711E91D7F400A0CA7E /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB4BFD71E8ACED1001679BF /* Operation.swift */; };
-		83B5DB721E91D7F400A0CA7E /* EventBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB4BFD91E8B1026001679BF /* EventBridge.swift */; };
-		83B5DB731E91D7F500A0CA7E /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F231E7EDF670068CDEF /* Persistence.swift */; };
-		83B5DB741E91D7F500A0CA7E /* Lifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F251E7EDFA80068CDEF /* Lifecycle.swift */; };
-		83B5DB751E91D7F500A0CA7E /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD614551E7F38D4001F4050 /* Schema.swift */; };
-		83B5DB761E91D7F500A0CA7E /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD614571E7F57B0001F4050 /* Validation.swift */; };
-		83B5DB771E91D7F500A0CA7E /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD1045C1E80309300DDF65B /* Property.swift */; };
-		83B5DB781E91D7F500A0CA7E /* Bridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B591E8AC05300CB95EC /* Bridge.swift */; };
-		83B5DB791E91D7F500A0CA7E /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB4BFD71E8ACED1001679BF /* Operation.swift */; };
-		83B5DB7A1E91D7F500A0CA7E /* EventBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB4BFD91E8B1026001679BF /* EventBridge.swift */; };
-		83B5DB7B1E91D81A00A0CA7E /* ViewModelUpdateable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444D11E7B472500A5EF06 /* ViewModelUpdateable.swift */; };
-		83B5DB7C1E91D81B00A0CA7E /* ViewModelUpdateable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444D11E7B472500A5EF06 /* ViewModelUpdateable.swift */; };
-		83B5DB7D1E91D8F600A0CA7E /* RealmUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B561E8ABE1C00CB95EC /* RealmUtil.swift */; };
-		83B5DB7E1E91D8F700A0CA7E /* RealmUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B561E8ABE1C00CB95EC /* RealmUtil.swift */; };
-		83B5DB7F1E91D8FC00A0CA7E /* LeapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046B31E82E7DD00F130C8 /* LeapModel.swift */; };
-		83B5DB801E91D8FC00A0CA7E /* LeapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046B31E82E7DD00F130C8 /* LeapModel.swift */; };
-		83B5DB811E91D90100A0CA7E /* Auditable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208481E8579D0007F4DBD /* Auditable.swift */; };
-		83B5DB821E91D90100A0CA7E /* Auditable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208481E8579D0007F4DBD /* Auditable.swift */; };
-		83B5DB831E91D90600A0CA7E /* TimeZone.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42085A1E85A650007F4DBD /* TimeZone.swift */; };
-		83B5DB841E91D90700A0CA7E /* TimeZone.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42085A1E85A650007F4DBD /* TimeZone.swift */; };
-		83B5DB851E91D91200A0CA7E /* Fetchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B5B1E8AC3CA00CB95EC /* Fetchable.swift */; };
-		83B5DB861E91D91300A0CA7E /* Fetchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B5B1E8AC3CA00CB95EC /* Fetchable.swift */; };
-		83B5DB871E91D91500A0CA7E /* ModelReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B5D1E8AC6DB00CB95EC /* ModelReference.swift */; };
-		83B5DB881E91D91500A0CA7E /* ModelReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B5D1E8AC6DB00CB95EC /* ModelReference.swift */; };
-		83B5DB891E91D94F00A0CA7E /* Temporality.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046B71E830E4600F130C8 /* Temporality.swift */; };
-		83B5DB8A1E91D94F00A0CA7E /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A21E82DA2200F130C8 /* Event.swift */; };
-		83B5DB8B1E91D94F00A0CA7E /* Reminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046B11E82E7BF00F130C8 /* Reminder.swift */; };
-		83B5DB8C1E91D94F00A0CA7E /* Recurrence.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208461E857984007F4DBD /* Recurrence.swift */; };
-		83B5DB8D1E91D94F00A0CA7E /* Alarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208541E859606007F4DBD /* Alarm.swift */; };
-		83B5DB8E1E91D94F00A0CA7E /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208521E85948A007F4DBD /* Channel.swift */; };
-		83B5DB8F1E91D94F00A0CA7E /* Series.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208651E8976B1007F4DBD /* Series.swift */; };
-		83B5DB901E91D94F00A0CA7E /* EventTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208671E897997007F4DBD /* EventTemplate.swift */; };
-		83B5DB911E91D95000A0CA7E /* Temporality.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046B71E830E4600F130C8 /* Temporality.swift */; };
-		83B5DB921E91D95000A0CA7E /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A21E82DA2200F130C8 /* Event.swift */; };
-		83B5DB931E91D95000A0CA7E /* Reminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046B11E82E7BF00F130C8 /* Reminder.swift */; };
-		83B5DB941E91D95000A0CA7E /* Recurrence.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208461E857984007F4DBD /* Recurrence.swift */; };
-		83B5DB951E91D95000A0CA7E /* Alarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208541E859606007F4DBD /* Alarm.swift */; };
-		83B5DB961E91D95000A0CA7E /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208521E85948A007F4DBD /* Channel.swift */; };
-		83B5DB971E91D95000A0CA7E /* Series.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208651E8976B1007F4DBD /* Series.swift */; };
-		83B5DB981E91D95000A0CA7E /* EventTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208671E897997007F4DBD /* EventTemplate.swift */; };
-		83B5DB991E91D99800A0CA7E /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBCA4D1D1E84490A003E7AB7 /* Location.swift */; };
-		83B5DB9A1E91D99800A0CA7E /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42084E1E8592E8007F4DBD /* Address.swift */; };
-		83B5DB9B1E91D99800A0CA7E /* GeoFence.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208561E85A168007F4DBD /* GeoFence.swift */; };
-		83B5DB9C1E91D99800A0CA7E /* Checklist.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208691E897A04007F4DBD /* Checklist.swift */; };
-		83B5DB9D1E91D99800A0CA7E /* ChecklistItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42086B1E897AD1007F4DBD /* ChecklistItem.swift */; };
-		83B5DB9E1E91D99800A0CA7E /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBCA4D1D1E84490A003E7AB7 /* Location.swift */; };
-		83B5DB9F1E91D99800A0CA7E /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42084E1E8592E8007F4DBD /* Address.swift */; };
-		83B5DBA01E91D99800A0CA7E /* GeoFence.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208561E85A168007F4DBD /* GeoFence.swift */; };
-		83B5DBA11E91D99800A0CA7E /* Checklist.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208691E897A04007F4DBD /* Checklist.swift */; };
-		83B5DBA21E91D99800A0CA7E /* ChecklistItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42086B1E897AD1007F4DBD /* ChecklistItem.swift */; };
-		83B5DBA31E91D99D00A0CA7E /* Realm+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208581E85A2DD007F4DBD /* Realm+Leap.swift */; };
-		83B5DBA41E91D99D00A0CA7E /* Realm+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208581E85A2DD007F4DBD /* Realm+Leap.swift */; };
-		83B5DBA51E91D9A100A0CA7E /* Venue.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208501E8593DA007F4DBD /* Venue.swift */; };
-		83B5DBA61E91D9A100A0CA7E /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42085C1E896847007F4DBD /* Resource.swift */; };
-		83B5DBA71E91D9A100A0CA7E /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBCA4D1F1E844924003E7AB7 /* Room.swift */; };
-		83B5DBA81E91D9A100A0CA7E /* Reservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42085E1E896C40007F4DBD /* Reservation.swift */; };
-		83B5DBA91E91D9A200A0CA7E /* Venue.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208501E8593DA007F4DBD /* Venue.swift */; };
-		83B5DBAA1E91D9A200A0CA7E /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42085C1E896847007F4DBD /* Resource.swift */; };
-		83B5DBAB1E91D9A200A0CA7E /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBCA4D1F1E844924003E7AB7 /* Room.swift */; };
-		83B5DBAC1E91D9A200A0CA7E /* Reservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42085E1E896C40007F4DBD /* Reservation.swift */; };
-		83B5DBAD1E91D9A700A0CA7E /* Participant.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42084A1E857DAF007F4DBD /* Participant.swift */; };
-		83B5DBAE1E91D9A700A0CA7E /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42084C1E857F7C007F4DBD /* Person.swift */; };
-		83B5DBAF1E91D9A700A0CA7E /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42086F1E89855D007F4DBD /* Group.swift */; };
-		83B5DBB01E91D9A700A0CA7E /* Organization.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208711E8985DC007F4DBD /* Organization.swift */; };
-		83B5DBB11E91D9A700A0CA7E /* Participant.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42084A1E857DAF007F4DBD /* Participant.swift */; };
-		83B5DBB21E91D9A700A0CA7E /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42084C1E857F7C007F4DBD /* Person.swift */; };
-		83B5DBB31E91D9A700A0CA7E /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42086F1E89855D007F4DBD /* Group.swift */; };
-		83B5DBB41E91D9A700A0CA7E /* Organization.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208711E8985DC007F4DBD /* Organization.swift */; };
-		83B5DBB51E91D9C300A0CA7E /* LegacyCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046AF1E82E7B000F130C8 /* LegacyCalendar.swift */; };
-		83B5DBB61E91D9C300A0CA7E /* LegacyCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046AF1E82E7B000F130C8 /* LegacyCalendar.swift */; };
-		83B5DBB71E91D9C600A0CA7E /* DeviceAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046B51E82E9B100F130C8 /* DeviceAccount.swift */; };
-		83B5DBB81E91D9C600A0CA7E /* DeviceAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046B51E82E9B100F130C8 /* DeviceAccount.swift */; };
-		83B5DBB91E91D9FB00A0CA7E /* GregorianDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDCC1E7C596C001221AF /* GregorianDay.swift */; };
-		83B5DBBA1E91D9FB00A0CA7E /* GregorianDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDCC1E7C596C001221AF /* GregorianDay.swift */; };
-		83B5DBBB1E91DA0E00A0CA7E /* TimePerspective.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A72D731E82DAE0005EB213 /* TimePerspective.swift */; };
-		83B5DBBC1E91DA0F00A0CA7E /* TimePerspective.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A72D731E82DAE0005EB213 /* TimePerspective.swift */; };
-		83B5DBBD1E91DA2900A0CA7E /* WeekOverview.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8393621C1E8FF51E00543CFC /* WeekOverview.storyboard */; };
-		83B5DBBE1E91DA2900A0CA7E /* WeekOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8393621E1E8FF53B00543CFC /* WeekOverviewViewController.swift */; };
-		83B5DBBF1E91DA2900A0CA7E /* WeekOverview.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8393621C1E8FF51E00543CFC /* WeekOverview.storyboard */; };
-		83B5DBC01E91DA2900A0CA7E /* WeekOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8393621E1E8FF53B00543CFC /* WeekOverviewViewController.swift */; };
-		83B5DBC11E91DA2E00A0CA7E /* LocalCalendar.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 831444C01E7AF77700A5EF06 /* LocalCalendar.storyboard */; };
-		83B5DBC21E91DA2E00A0CA7E /* EventViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 831444C71E7B034A00A5EF06 /* EventViewCell.xib */; };
-		83B5DBC31E91DA2E00A0CA7E /* EventViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444C91E7B072600A5EF06 /* EventViewCell.swift */; };
-		83B5DBC41E91DA2E00A0CA7E /* CalendarCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444C51E7B020700A5EF06 /* CalendarCollectionViewController.swift */; };
-		83B5DBC51E91DA2E00A0CA7E /* CalendarViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444CB1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift */; };
-		83B5DBC61E91DA2E00A0CA7E /* DayScheduleTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 835456191E8C09A100A03B34 /* DayScheduleTitleView.xib */; };
-		83B5DBC71E91DA2E00A0CA7E /* DayScheduleTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8336175F1E8C1D3A009A97FF /* DayScheduleTitleView.swift */; };
-		83B5DBC81E91DA2E00A0CA7E /* LocalCalendar.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 831444C01E7AF77700A5EF06 /* LocalCalendar.storyboard */; };
-		83B5DBC91E91DA2E00A0CA7E /* EventViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 831444C71E7B034A00A5EF06 /* EventViewCell.xib */; };
-		83B5DBCA1E91DA2E00A0CA7E /* EventViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444C91E7B072600A5EF06 /* EventViewCell.swift */; };
-		83B5DBCB1E91DA2E00A0CA7E /* CalendarCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444C51E7B020700A5EF06 /* CalendarCollectionViewController.swift */; };
-		83B5DBCC1E91DA2E00A0CA7E /* CalendarViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444CB1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift */; };
-		83B5DBCD1E91DA2E00A0CA7E /* DayScheduleTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 835456191E8C09A100A03B34 /* DayScheduleTitleView.xib */; };
-		83B5DBCE1E91DA2E00A0CA7E /* DayScheduleTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8336175F1E8C1D3A009A97FF /* DayScheduleTitleView.swift */; };
-		83B5DBCF1E91DA3300A0CA7E /* AuthFlow.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 831444BE1E7AF4E200A5EF06 /* AuthFlow.storyboard */; };
-		83B5DBD01E91DA3300A0CA7E /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0762DA1E142FBF0035EF8F /* ScheduleViewController.swift */; };
-		83B5DBD11E91DA3300A0CA7E /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE0EFE51DFBBB80007BD8DF /* AuthViewController.swift */; };
-		83B5DBD21E91DA3300A0CA7E /* AuthFlow.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 831444BE1E7AF4E200A5EF06 /* AuthFlow.storyboard */; };
-		83B5DBD31E91DA3300A0CA7E /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0762DA1E142FBF0035EF8F /* ScheduleViewController.swift */; };
-		83B5DBD41E91DA3300A0CA7E /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE0EFE51DFBBB80007BD8DF /* AuthViewController.swift */; };
-		83B5DBD51E91DA6400A0CA7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE0EFE31DFBBB80007BD8DF /* AppDelegate.swift */; };
-		83B5DBD61E91DA6400A0CA7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE0EFE31DFBBB80007BD8DF /* AppDelegate.swift */; };
-		83B5DBD71E91DA7000A0CA7E /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835456141E8AF9EA00A03B34 /* InitialViewController.swift */; };
-		83B5DBD81E91DA7100A0CA7E /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835456141E8AF9EA00A03B34 /* InitialViewController.swift */; };
-		83B5DBD91E91DA7E00A0CA7E /* OpenTimeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDC81E7C58FD001221AF /* OpenTimeViewModel.swift */; };
-		83B5DBDA1E91DA7E00A0CA7E /* OpenTimeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDC81E7C58FD001221AF /* OpenTimeViewModel.swift */; };
-		83B5DBDB1E91DA9F00A0CA7E /* EventSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD614531E7F3370001F4050 /* EventSurface.swift */; };
-		83B5DBDC1E91DA9F00A0CA7E /* DayScheduleSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A72D761E82DF95005EB213 /* DayScheduleSurface.swift */; };
-		83B5DBDD1E91DA9F00A0CA7E /* ScheduleEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F4B1601E7C383F000FCB8D /* ScheduleEntry.swift */; };
-		83B5DBDE1E91DA9F00A0CA7E /* EventSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD614531E7F3370001F4050 /* EventSurface.swift */; };
-		83B5DBDF1E91DA9F00A0CA7E /* DayScheduleSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A72D761E82DF95005EB213 /* DayScheduleSurface.swift */; };
-		83B5DBE01E91DA9F00A0CA7E /* ScheduleEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F4B1601E7C383F000FCB8D /* ScheduleEntry.swift */; };
-		83B5DBE11E91DC9700A0CA7E /* EKEventStore+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A51E82E20100F130C8 /* EKEventStore+Realm.swift */; };
-		83B5DBE21E91DC9700A0CA7E /* EKEventStore+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A51E82E20100F130C8 /* EKEventStore+Realm.swift */; };
-		83B5DBE31E91DCA200A0CA7E /* EKCalendar+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A71E82E28800F130C8 /* EKCalendar+Realm.swift */; };
-		83B5DBE41E91DCA200A0CA7E /* EKParticipant+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A91E82E74700F130C8 /* EKParticipant+Realm.swift */; };
-		83B5DBE51E91DCA200A0CA7E /* EKAlarm+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046AB1E82E76000F130C8 /* EKAlarm+Realm.swift */; };
-		83B5DBE61E91DCA200A0CA7E /* EKEvent+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046AD1E82E77C00F130C8 /* EKEvent+Realm.swift */; };
-		83B5DBE71E91DCA200A0CA7E /* EKRecurrenceRule+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42086D1E89816B007F4DBD /* EKRecurrenceRule+Realm.swift */; };
-		83B5DBE81E91DCA300A0CA7E /* EKCalendar+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A71E82E28800F130C8 /* EKCalendar+Realm.swift */; };
-		83B5DBE91E91DCA300A0CA7E /* EKParticipant+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A91E82E74700F130C8 /* EKParticipant+Realm.swift */; };
-		83B5DBEA1E91DCA300A0CA7E /* EKAlarm+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046AB1E82E76000F130C8 /* EKAlarm+Realm.swift */; };
-		83B5DBEB1E91DCA300A0CA7E /* EKEvent+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046AD1E82E77C00F130C8 /* EKEvent+Realm.swift */; };
-		83B5DBEC1E91DCA300A0CA7E /* EKRecurrenceRule+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42086D1E89816B007F4DBD /* EKRecurrenceRule+Realm.swift */; };
+		83B5DB701E91D7F400A0CA7E /* (null) in Sources */ = {isa = PBXBuildFile; };
+		83B5DB721E91D7F400A0CA7E /* (null) in Sources */ = {isa = PBXBuildFile; };
+		83B5DB781E91D7F500A0CA7E /* (null) in Sources */ = {isa = PBXBuildFile; };
+		83B5DB7A1E91D7F500A0CA7E /* (null) in Sources */ = {isa = PBXBuildFile; };
 		83B5DBEE1E91E4CC00A0CA7E /* GregorianDayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B5DBED1E91E4CC00A0CA7E /* GregorianDayTests.swift */; };
 		83F4B1611E7C383F000FCB8D /* ScheduleEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F4B1601E7C383F000FCB8D /* ScheduleEntry.swift */; };
 		DB41B30C348D9390E4320905 /* Pods_LeapUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 386ABDADBBC48EDACA0896BE /* Pods_LeapUITests.framework */; };
@@ -236,7 +102,6 @@
 		FBE0EFEC1DFBBB80007BD8DF /* Leap.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FBE0EFEA1DFBBB80007BD8DF /* Leap.xcdatamodeld */; };
 		FBE0EFEE1DFBBB80007BD8DF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FBE0EFED1DFBBB80007BD8DF /* Assets.xcassets */; };
 		FBE0EFFC1DFBBB80007BD8DF /* LeapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE0EFFB1DFBBB80007BD8DF /* LeapTests.swift */; };
-		FBE0F0071DFBBB80007BD8DF /* LeapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE0F0061DFBBB80007BD8DF /* LeapUITests.swift */; };
 		FBE4DEA31E6CB9F10062507B /* Auth0.plist in Resources */ = {isa = PBXBuildFile; fileRef = FBE4DEA21E6CB9F10062507B /* Auth0.plist */; };
 		FBE4DEAA1E6CBD8A0062507B /* Res in Resources */ = {isa = PBXBuildFile; fileRef = FBE4DEA91E6CBD8A0062507B /* Res */; };
 /* End PBXBuildFile section */
@@ -1093,73 +958,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB39ADAD1E8EC5A800B79A7B /* BridgeTest.swift in Sources */,
-				83B5DBDB1E91DA9F00A0CA7E /* EventSurface.swift in Sources */,
-				83B5DB8C1E91D94F00A0CA7E /* Recurrence.swift in Sources */,
-				83B5DBA51E91D9A100A0CA7E /* Venue.swift in Sources */,
-				83B5DBA71E91D9A100A0CA7E /* Room.swift in Sources */,
-				83B5DB9D1E91D99800A0CA7E /* ChecklistItem.swift in Sources */,
-				83B5DB851E91D91200A0CA7E /* Fetchable.swift in Sources */,
-				83B5DBE41E91DCA200A0CA7E /* EKParticipant+Realm.swift in Sources */,
-				83B5DBDA1E91DA7E00A0CA7E /* OpenTimeViewModel.swift in Sources */,
-				83B5DB6F1E91D7F400A0CA7E /* Property.swift in Sources */,
-				83B5DBD11E91DA3300A0CA7E /* AuthViewController.swift in Sources */,
-				83B5DB901E91D94F00A0CA7E /* EventTemplate.swift in Sources */,
-				83B5DBAD1E91D9A700A0CA7E /* Participant.swift in Sources */,
-				83B5DB891E91D94F00A0CA7E /* Temporality.swift in Sources */,
-				83B5DB6B1E91D7F400A0CA7E /* Persistence.swift in Sources */,
-				83B5DBE31E91DCA200A0CA7E /* EKCalendar+Realm.swift in Sources */,
-				83B5DBA81E91D9A100A0CA7E /* Reservation.swift in Sources */,
-				83B5DBB91E91D9FB00A0CA7E /* GregorianDay.swift in Sources */,
-				83B5DB631E91D70A00A0CA7E /* WeekOverviewPageViewDataSource.swift in Sources */,
-				83B5DB6C1E91D7F400A0CA7E /* Lifecycle.swift in Sources */,
-				83B5DBD71E91DA7000A0CA7E /* InitialViewController.swift in Sources */,
-				83B5DB701E91D7F400A0CA7E /* Bridge.swift in Sources */,
-				83B5DB641E91D71F00A0CA7E /* UIColor+ProjectExtensions.swift in Sources */,
-				83B5DBCB1E91DA2E00A0CA7E /* CalendarCollectionViewController.swift in Sources */,
-				83B5DBAE1E91D9A700A0CA7E /* Person.swift in Sources */,
-				83B5DBE61E91DCA200A0CA7E /* EKEvent+Realm.swift in Sources */,
-				83B5DB9C1E91D99800A0CA7E /* Checklist.swift in Sources */,
+				83B5DB701E91D7F400A0CA7E /* (null) in Sources */,
 				FB8BB6231E89A76A00A30315 /* EventKitMigrationTests.swift in Sources */,
-				FBD1045F1E80717E00DDF65B /* ShellTests.swift in Sources */,
-				83B5DB8B1E91D94F00A0CA7E /* Reminder.swift in Sources */,
-				83B5DB8D1E91D94F00A0CA7E /* Alarm.swift in Sources */,
-				83B5DBD01E91DA3300A0CA7E /* ScheduleViewController.swift in Sources */,
-				83B5DB8F1E91D94F00A0CA7E /* Series.swift in Sources */,
-				83B5DBC01E91DA2900A0CA7E /* WeekOverviewViewController.swift in Sources */,
-				83B5DB7C1E91D81B00A0CA7E /* ViewModelUpdateable.swift in Sources */,
-				83B5DBDC1E91DA9F00A0CA7E /* DayScheduleSurface.swift in Sources */,
-				83B5DBB51E91D9C300A0CA7E /* LegacyCalendar.swift in Sources */,
-				83B5DBE21E91DC9700A0CA7E /* EKEventStore+Realm.swift in Sources */,
-				83B5DB7D1E91D8F600A0CA7E /* RealmUtil.swift in Sources */,
-				83B5DB991E91D99800A0CA7E /* Location.swift in Sources */,
-				8336176C1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */,
-				83B5DBCE1E91DA2E00A0CA7E /* DayScheduleTitleView.swift in Sources */,
-				83B5DB711E91D7F400A0CA7E /* Operation.swift in Sources */,
-				83B5DBEE1E91E4CC00A0CA7E /* GregorianDayTests.swift in Sources */,
-				83B5DBDD1E91DA9F00A0CA7E /* ScheduleEntry.swift in Sources */,
-				83B5DB8E1E91D94F00A0CA7E /* Channel.swift in Sources */,
-				83B5DBBB1E91DA0E00A0CA7E /* TimePerspective.swift in Sources */,
-				83B5DBCA1E91DA2E00A0CA7E /* EventViewCell.swift in Sources */,
-				833617791E8C4756009A97FF /* StoryboardLoadable.swift in Sources */,
 				FBD1045F1E80717E00DDF65B /* SurfaceTests.swift in Sources */,
-				FBE0EFFC1DFBBB80007BD8DF /* LeapTests.swift in Sources */,
 				FB39ADAF1E8EC6B700B79A7B /* TestUtil.swift in Sources */,
-				83B5DB871E91D91500A0CA7E /* ModelReference.swift in Sources */,
-				83B5DB831E91D90600A0CA7E /* TimeZone.swift in Sources */,
-				83B5DBE51E91DCA200A0CA7E /* EKAlarm+Realm.swift in Sources */,
-				83B5DBA61E91D9A100A0CA7E /* Resource.swift in Sources */,
-				83B5DBA31E91D99D00A0CA7E /* Realm+Leap.swift in Sources */,
-				83B5DBCC1E91DA2E00A0CA7E /* CalendarViewFlowLayout.swift in Sources */,
-				83B5DB9B1E91D99800A0CA7E /* GeoFence.swift in Sources */,
-				83B5DBB71E91D9C600A0CA7E /* DeviceAccount.swift in Sources */,
-				83B5DB7F1E91D8FC00A0CA7E /* LeapModel.swift in Sources */,
-				FBE0EFFC1DFBBB80007BD8DF /* LeapTests.swift in Sources */,
-				83B5DB691E91D7D700A0CA7E /* Surface.swift in Sources */,
-				83B5DBE71E91DCA200A0CA7E /* EKRecurrenceRule+Realm.swift in Sources */,
-				83B5DB721E91D7F400A0CA7E /* EventBridge.swift in Sources */,
-				83B5DB811E91D90100A0CA7E /* Auditable.swift in Sources */,
-				83B5DBD51E91DA6400A0CA7E /* AppDelegate.swift in Sources */,
-				83B5DB9A1E91D99800A0CA7E /* Address.swift in Sources */,
+				83B5DB721E91D7F400A0CA7E /* (null) in Sources */,
 				83B5DBEE1E91E4CC00A0CA7E /* GregorianDayTests.swift in Sources */,
 				FBE0EFFC1DFBBB80007BD8DF /* LeapTests.swift in Sources */,
 			);
@@ -1169,75 +972,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				83B5DBDE1E91DA9F00A0CA7E /* EventSurface.swift in Sources */,
-				83B5DBAA1E91D9A200A0CA7E /* Resource.swift in Sources */,
-				83B5DB731E91D7F500A0CA7E /* Persistence.swift in Sources */,
-				83B5DB881E91D91500A0CA7E /* ModelReference.swift in Sources */,
-				83B5DBE11E91DC9700A0CA7E /* EKEventStore+Realm.swift in Sources */,
-				83B5DB9E1E91D99800A0CA7E /* Location.swift in Sources */,
-				8336177A1E8C4756009A97FF /* StoryboardLoadable.swift in Sources */,
-				83B5DB7B1E91D81A00A0CA7E /* ViewModelUpdateable.swift in Sources */,
-				83B5DBA41E91D99D00A0CA7E /* Realm+Leap.swift in Sources */,
-				83B5DB841E91D90700A0CA7E /* TimeZone.swift in Sources */,
-				83B5DB781E91D7F500A0CA7E /* Bridge.swift in Sources */,
-				83B5DBA21E91D99800A0CA7E /* ChecklistItem.swift in Sources */,
-				83B5DBC41E91DA2E00A0CA7E /* CalendarCollectionViewController.swift in Sources */,
-				83B5DB6A1E91D7D700A0CA7E /* Surface.swift in Sources */,
-				83B5DBB31E91D9A700A0CA7E /* Group.swift in Sources */,
-				83B5DBC71E91DA2E00A0CA7E /* DayScheduleTitleView.swift in Sources */,
-				8336176D1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */,
-				83B5DB9F1E91D99800A0CA7E /* Address.swift in Sources */,
-				83B5DBB21E91D9A700A0CA7E /* Person.swift in Sources */,
-				83B5DB751E91D7F500A0CA7E /* Schema.swift in Sources */,
-				83B5DB931E91D95000A0CA7E /* Reminder.swift in Sources */,
-				83B5DBD81E91DA7100A0CA7E /* InitialViewController.swift in Sources */,
-				83B5DB981E91D95000A0CA7E /* EventTemplate.swift in Sources */,
-				83B5DBD31E91DA3300A0CA7E /* ScheduleViewController.swift in Sources */,
-				83B5DBD61E91DA6400A0CA7E /* AppDelegate.swift in Sources */,
-				FBE0F0071DFBBB80007BD8DF /* LeapUITests.swift in Sources */,
-				83B5DBB11E91D9A700A0CA7E /* Participant.swift in Sources */,
-				83B5DB801E91D8FC00A0CA7E /* LeapModel.swift in Sources */,
-				83B5DB941E91D95000A0CA7E /* Recurrence.swift in Sources */,
-				83B5DBEC1E91DCA300A0CA7E /* EKRecurrenceRule+Realm.swift in Sources */,
-				83B5DBB81E91D9C600A0CA7E /* DeviceAccount.swift in Sources */,
-				83B5DB771E91D7F500A0CA7E /* Property.swift in Sources */,
-				83B5DB791E91D7F500A0CA7E /* Operation.swift in Sources */,
-				83B5DBBA1E91D9FB00A0CA7E /* GregorianDay.swift in Sources */,
-				833617761E8C2C9B009A97FF /* WeekNavigationViewController.swift in Sources */,
-				83B5DBA01E91D99800A0CA7E /* GeoFence.swift in Sources */,
-				83B5DBA11E91D99800A0CA7E /* Checklist.swift in Sources */,
-				83B5DBC51E91DA2E00A0CA7E /* CalendarViewFlowLayout.swift in Sources */,
-				83B5DBA91E91D9A200A0CA7E /* Venue.swift in Sources */,
-				83B5DBBC1E91DA0F00A0CA7E /* TimePerspective.swift in Sources */,
-				83B5DB961E91D95000A0CA7E /* Channel.swift in Sources */,
-				83B5DBE01E91DA9F00A0CA7E /* ScheduleEntry.swift in Sources */,
-				83B5DB911E91D95000A0CA7E /* Temporality.swift in Sources */,
-				83B5DBB61E91D9C300A0CA7E /* LegacyCalendar.swift in Sources */,
-				83B5DB651E91D72B00A0CA7E /* UIColor+ProjectExtensions.swift in Sources */,
-				83B5DBD91E91DA7E00A0CA7E /* OpenTimeViewModel.swift in Sources */,
-				83B5DB821E91D90100A0CA7E /* Auditable.swift in Sources */,
-				83B5DB951E91D95000A0CA7E /* Alarm.swift in Sources */,
-				83B5DB7A1E91D7F500A0CA7E /* EventBridge.swift in Sources */,
-				83B5DB861E91D91300A0CA7E /* Fetchable.swift in Sources */,
-				83B5DBAC1E91D9A200A0CA7E /* Reservation.swift in Sources */,
-				83B5DB681E91D78800A0CA7E /* WeekOverviewSurface.swift in Sources */,
-				83B5DBC31E91DA2E00A0CA7E /* EventViewCell.swift in Sources */,
-				83B5DB971E91D95000A0CA7E /* Series.swift in Sources */,
-				83B5DBBE1E91DA2900A0CA7E /* WeekOverviewViewController.swift in Sources */,
-				83B5DBAB1E91D9A200A0CA7E /* Room.swift in Sources */,
-				83B5DBE81E91DCA300A0CA7E /* EKCalendar+Realm.swift in Sources */,
-				83B5DB741E91D7F500A0CA7E /* Lifecycle.swift in Sources */,
-				83B5DBEA1E91DCA300A0CA7E /* EKAlarm+Realm.swift in Sources */,
-				83B5DB761E91D7F500A0CA7E /* Validation.swift in Sources */,
-				83B5DB661E91D73B00A0CA7E /* WeekOverviewPageViewDataSource.swift in Sources */,
-				83B5DBE91E91DCA300A0CA7E /* EKParticipant+Realm.swift in Sources */,
-				83B5DBDF1E91DA9F00A0CA7E /* DayScheduleSurface.swift in Sources */,
-				83B5DBD41E91DA3300A0CA7E /* AuthViewController.swift in Sources */,
-				83B5DB7E1E91D8F700A0CA7E /* RealmUtil.swift in Sources */,
-				83B5DBEB1E91DCA300A0CA7E /* EKEvent+Realm.swift in Sources */,
-				83B5DBB41E91D9A700A0CA7E /* Organization.swift in Sources */,
-				83B5DB921E91D95000A0CA7E /* Event.swift in Sources */,
-				FBE0F0071DFBBB80007BD8DF /* LeapUITests.swift in Sources */,
+				83B5DB781E91D7F500A0CA7E /* (null) in Sources */,
+				83B5DB7A1E91D7F500A0CA7E /* (null) in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
