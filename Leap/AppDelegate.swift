@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
-        let attemptSync = false
+        let attemptSync = true
         if attemptSync {
             attemptCalendarSync()
         }
@@ -32,26 +32,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func attemptCalendarSync() {
-        let realm = Realm.user()
         let eventStore = EKEventStore()
-        let calendars = eventStore.legacyCalendars()
-        for calendar in calendars {
-            try! realm.write {
-                realm.add(calendar)
-            }
-            eventStore.syncPastEvents(forCalendar: calendar)
-        }
+        eventStore.requestAccess(to: EKEntityType.event) { (accessGranted:Bool, error:Error?) in
+            if accessGranted {
+                let realm = Realm.user()
+                let calendars = eventStore.legacyCalendars()
+                for calendar in calendars {
+                    try! realm.write {
+                        realm.add(calendar)
+                    }
+                    eventStore.syncPastEvents(forCalendar: calendar)
+                }
 
-        let context = self.persistentContainer.viewContext
-        let credentialFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Credentials")
+                let context = self.persistentContainer.viewContext
+                let credentialFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Credentials")
 
-        do {
-            let credentials = try context.fetch(credentialFetch) as! [NSManagedObject]
-            if !credentials.isEmpty {
-                self.credentials = credentials[0]
+                do {
+                    let credentials = try context.fetch(credentialFetch) as! [NSManagedObject]
+                    if !credentials.isEmpty {
+                        self.credentials = credentials[0]
+                    }
+                } catch {
+                    print("Failed to get credentials \(error)")
+                }
             }
-        } catch {
-            print("Failed to get credentials \(error)")
         }
     }
 
