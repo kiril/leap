@@ -16,4 +16,12 @@ extension Date {
     var millisecondsSinceReferenceDate: Int {
         return Int(self.timeIntervalSinceReferenceDate * 1000)
     }
+
+    static var secondsSinceReferenceDate: Int {
+        return Int(Date.timeIntervalSinceReferenceDate)
+    }
+
+    var secondsSinceReferenceDate: Int {
+        return Int(self.timeIntervalSinceReferenceDate)
+    }
 }

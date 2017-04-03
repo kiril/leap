@@ -51,8 +51,8 @@ class RecurrenceDay: Object {
 // NOTE: can you indicate attendence to all future?
 // Can you make it such that editing doesn't by default even touch the recurrence?
 class Recurrence: LeapModel {
-    dynamic var startDate: Date?
-    dynamic var endDate: Date?
+    dynamic var startDate: Int = 0
+    dynamic var endDate: Int = 0
     dynamic var startHour: Int = 0
     dynamic var startMinute: Int = 0
     dynamic var durationMinutes: Int = 0
