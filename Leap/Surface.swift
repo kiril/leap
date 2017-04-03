@@ -33,12 +33,18 @@ internal class WeakObserver {
 open class Surface {
     let id: String?
 
-    internal var properties: [String:Property] = [String:Property]()
+    var type: String { fatalError("Must override type") }
 
-    internal var store: BackingStore?
-    internal var data: ModelData
-    internal var mockData: ModelData?
-    internal var operations = [Operation]()
+    public fileprivate (set) var keys: Set<String> = []
+    fileprivate var properties: [String:Property] = [:]
+
+    var store: BackingStore?
+    fileprivate var mockData: ModelData?
+    fileprivate var data: ModelData
+
+    fileprivate var operations: [Operation] = []
+
+    var isTransient: Bool { return store == nil }
 
     var dirtyFields: Set<String> {
         var set = Set<String>()
@@ -48,26 +54,21 @@ open class Surface {
         return set
     }
 
-    var type: String {
-        return "surface" // default to class name?
+    var isDirty: Bool {
+        return operations.count > 0
     }
 
-    var keys: Set<String> {
-        return Set<String>(properties.keys)
+    var isPersisted: Bool {
+        return !isTransient && !isDirty
     }
 
-    let isTransient: Bool = false // possible that we change this later
-    var isDirty: Bool = false
-    var isPersisted: Bool = false
+
     var lastModified: NSDate?
     var lastPersisted: NSDate?
 
     internal var observers = [String:WeakObserver]()
 
-    init(store: BackingStore? = nil,
-         id: String? = nil,
-         data: [String:Any] = [:]) {
-
+    init(store: BackingStore? = nil, id: String? = nil, data: ModelData = [:]) {
         self.store = store
         self.id = id
         self.data = data
@@ -85,9 +86,25 @@ open class Surface {
         for child in me.children {
             if var property = child.value as? Property {
                 property.surface = self
-                properties[child.label!] = property
+                if !property.hasKey {
+                    property.setKey(child.label!)
+                }
+                self.keys.update(with: property.key)
+                properties[property.key] = property
             }
         }
+    }
+
+    private func property(named name: String) -> Property? {
+        return properties[name]
+    }
+
+    func getValue(for key: String) -> Any? {
+        return data[key]
+    }
+
+    func mockValue<T>(for key: String) -> T? {
+        return mockData?[key] as? T
     }
 
     func setValue(_ value: Any, forKey key: String, via source: SourceIdentifiable) throws {
@@ -100,6 +117,10 @@ open class Surface {
 
     func asJSON() -> JSON {
         return JSON(self.data)
+    }
+
+    func populate() {
+        store!.populate(self)
     }
 }
 
@@ -145,10 +166,6 @@ extension Surface: Updateable {
         }
 
         if !(source is BackingStore) {
-            isDirty = true
-            if !isTransient {
-                isPersisted = false
-            }
             for (key, value) in data {
                 if value !~= data[key] {
                     operations.append(SetOperation(key, to: value, from: data[key]))
@@ -184,11 +201,6 @@ extension Surface: Updateable {
         }
 
         if !(source is BackingStore) {
-            isDirty = true
-            if !isTransient {
-                isPersisted = false
-            }
-
             operations.append(SetOperation(key, to: value, from: data[key]))
         }
 
@@ -210,10 +222,6 @@ extension Surface: Updateable {
     func remove(key: String, via source: SourceIdentifiable?, silently: Bool = false) {
 
         if !(source is BackingStore) {
-            isDirty = true
-            if !isTransient {
-                isPersisted = false
-            }
             operations.append(UnsetOperation(key, from: data[key]))
         }
 
@@ -255,6 +263,75 @@ extension Surface: Updateable {
     func removeSilently(key: String) {
         self.remove(key: key, via: nil, silently: true)
     }
+
+    // Convenience Classes for properties
+
+    class SurfaceString: WritableProperty<String> {
+        init(_ name: String? = nil, minLength: Int? = nil) {
+            let validator = minLength == nil ? alwaysValid : validIfAtLeast(characters: minLength!)
+            super.init(name, validatedBy: validator)
+        }
+    }
+
+    class SurfaceDate: WritableProperty<Date> {
+        init(_ name: String? = nil) {
+            super.init(name)
+        }
+    }
+
+    class SurfaceBool: WritableProperty<Bool> {
+        init(_ name: String? = nil) {
+            super.init(name)
+        }
+    }
+
+    class SurfaceInt: WritableProperty<Int> {
+        init(_ name: String? = nil) {
+            super.init(name)
+        }
+    }
+
+    class SurfaceFloat: WritableProperty<Float> {
+        init(_ name: String? = nil) {
+            super.init(name)
+        }
+    }
+
+    class ComputedSurfaceString<SType:Surface>: ComputedProperty<String,SType> {
+        init(_ name: String? = nil, by computation: @escaping Computation<String,SType>) {
+            super.init(name, computation, referencing: nil)
+        }
+    }
+
+    class ComputedSurfaceBool<SType:Surface>: ComputedProperty<Bool,SType> {
+        init(_ name: String? = nil, by computation: @escaping Computation<Bool,SType>) {
+            super.init(name, computation, referencing: nil)
+        }
+    }
+
+    class ComputedSurfaceFloat<SType:Surface>: ComputedProperty<Float,SType> {
+        init(_ name: String? = nil, by computation: @escaping Computation<Float,SType>) {
+            super.init(name, computation, referencing: nil)
+        }
+    }
+
+    class ComputedSurfaceInt<SType:Surface>: ComputedProperty<Int,SType> {
+        init(_ name: String? = nil, by computation: @escaping Computation<Int,SType>) {
+            super.init(name, computation, referencing: nil)
+        }
+    }
+
+    class ComputedSurfaceProperty<ReturnType,SurfaceType:Surface>: ComputedProperty<ReturnType, SurfaceType> {
+        init(_ name: String? = nil, by computation: @escaping Computation<ReturnType,SurfaceType>) {
+            super.init(name, computation, referencing: nil)
+        }
+    }
+
+    class SurfaceProperty<T>: WritableProperty<T> {
+        init(_ name: String? = nil) {
+            super.init(name)
+        }
+    }
 }
 
 /**
@@ -265,11 +342,11 @@ extension Surface: Updateable {
 extension Surface: Persistable {
 
     var isPersistable: Bool {
-        return self.id != nil // AND more stuff
+        return self.store != nil // AND more stuff
     }
 
     var nonPersistableKeys: [String] {
-        return [String]()
+        return []
     }
 
     func didPersist(into store: BackingStore) {
@@ -281,6 +358,7 @@ extension Surface: Persistable {
         }
     }
 
+    @discardableResult
     func flush() throws -> Bool {
         return try self.store?.persist(self) ?? false
     }

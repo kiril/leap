@@ -33,23 +33,28 @@ extension TimePerspective {
 class EventSurface: Surface {
     override var type: String { return "event" }
 
-    let title =                  WritableProperty<String>("title", validatedBy: validIfAtLeast(characters: 5))
-    let startTime =              WritableProperty<Date>("start_time")
-    let endTime =                WritableProperty<Date>("end_time")
-    let timeRange =              ComputedProperty<String,EventSurface>("time_range", EventSurface.eventTimeRange)
-    let userIgnored =            WritableProperty<Bool>("ignored", defaultingTo: false)
-    let userIsInvited =          ReadableProperty<Bool>("invited", defaultingTo: false)
-    let userInvitationResponse = WritableProperty<InvitationResponse>("response", defaultingTo: .none)
-    let isUnresolved =           ComputedProperty<Bool,EventSurface>("unresolved", {event in
+    // validation
+    // change detection!! (because need to know when fields are dirty)
+    // next: change this to NSObject, use KVO and 'public private (set) var xxx' for properties
+    let title                  = SurfaceString(minLength: 5)
+    let startTime              = SurfaceDate()
+    let endTime                = SurfaceDate()
+    let timeRange              = ComputedSurfaceString<EventSurface>(by: EventSurface.eventTimeRange)
+    let userIgnored            = SurfaceBool()
+    let userIsInvited          = SurfaceBool()
+    let userInvitationResponse = SurfaceProperty<InvitationResponse>()
+    let isUnresolved           = ComputedSurfaceBool<EventSurface>(by: EventSurface.computeIsUnresolved)
+    let perspective            = ComputedSurfaceProperty<TimePerspective,EventSurface>(by: TimePerspective.compute)
+    let percentElapsed         = ComputedSurfaceFloat<EventSurface>(by: EventSurface.computeElapsed)
+    let invitationSummary      = ComputedSurfaceString<EventSurface>(by: EventSurface.formatInvitationSummary)
+
+    static func computeIsUnresolved(event: EventSurface) -> Bool {
         if event.userIsInvited.value, event.userInvitationResponse.value == .none {
             return true
         } else {
             return false
         }
-    })
-    let perspective =            ComputedProperty<TimePerspective,EventSurface>("perspective", TimePerspective.compute)
-    let percentElapsed =         ComputedProperty<Float,EventSurface>("elapsed", EventSurface.computeElapsed)
-    let invitationSummary =      ComputedProperty<String,EventSurface>("invitation_summary", EventSurface.formatInvitationSummary)
+    }
 
 
     static func eventTimeRange(event: EventSurface) -> String {
@@ -63,15 +68,20 @@ class EventSurface: Surface {
     static func formatInvitationSummary(event: EventSurface) -> String {
         return "" // TODO: format Invitation Summary
     }
-}
 
-// var event = EventRepresentation.find(byId: "klsdhfgaoiusghdpoiuhy")
-// var event = EventRepresentation.new()
-// label.text = event.title.string
-// event.title.update(to: "New Title", via: self)
-//
-// "don't notify" is a thing, as might be "notify me of my own change"
-// don't include source if you're fine getting your own update
-// update(to: <T>)
-// updateSilently(to: <T>)
-// timeRange => a computed non-mutable ComputedField<T> property
+    static func load(eventId: String) -> EventSurface? {
+        guard let event:Event = Event.by(id: eventId) else {
+            return nil
+        }
+
+        let surface = EventSurface(id: event.id)
+        let bridge = SurfaceBridge(id: event.id)
+        bridge.reference(event, as: "event")
+        bridge.bindAll(surface.title, surface.startTime, surface.endTime) // these are all default-bound to identical fields in the model
+        bridge.bind(surface.userIgnored)
+        bridge.bind(surface.userIsInvited)
+        surface.store = bridge
+        surface.populate()
+        return surface
+    }
+}

@@ -10,13 +10,15 @@ import Foundation
 
 
 protocol Property {
-    var name: String { get }
+    var key: String { get }
+    var hasKey: Bool { get }
     var surface: Surface? { get set }
     var surfaceType: String { get }
     var stringValue: String { get }
 
     func copyReferencing(_ surface: Surface) -> Property
     func isValid(value: Any) -> Bool
+    func setKey(_ key: String)
 }
 
 
@@ -47,7 +49,7 @@ extension String {
 
 
 public class ReadableProperty<T>: TypedProperty {
-    let key: String
+    var _key: String?
     let validator: Validator<T>
     weak var surface: Surface?
 
@@ -79,30 +81,28 @@ public class ReadableProperty<T>: TypedProperty {
         }
     }
 
-    var name: String { return key }
-    var value: T { return surface!.data[self.key] as? T ?? defaultValue! }
-    var rawValue: T? { return surface!.data[self.key] as? T }
+    var key: String { return _key! }
+    var value: T {
+        return surface!.getValue(for: key) as? T ?? defaultValue!
+    }
+    var rawValue: T? { return surface!.getValue(for: key) as? T }
     var surfaceType: String { return surface!.type }
 
     var stringValue: String { return value as? String ?? "\(value)" }
 
-    init(_ key: String, validatedBy validator: @escaping Validator<T>, defaultingTo defaultValue: T?, referencing surface: Surface?) {
-        self.key = key
+    init(_ key: String?, validatedBy validator: @escaping Validator<T> = alwaysValid, defaultingTo defaultValue: T? = nil, referencing surface: Surface? = nil) {
+        _key = key
         self.validator = validator
         self.surface = surface
         self.defaultValue = defaultValue
     }
 
-    convenience init(_ key: String, validatedBy validator: @escaping Validator<T>) {
-        self.init(key, validatedBy: validator, defaultingTo: nil, referencing: nil)
+    func setKey(_ key: String) {
+        _key = key
     }
 
-    convenience init(_ key: String, defaultingTo defaultValue: T? = nil) {
-        self.init(key, validatedBy: alwaysValid, defaultingTo: defaultValue, referencing: nil)
-    }
-
-    convenience init(_ key: String, referencing surface: Surface) {
-        self.init(key, validatedBy: alwaysValid, defaultingTo: nil, referencing: surface)
+    var hasKey: Bool {
+        return _key != nil
     }
 
     func isValid(value: Any) -> Bool {
@@ -120,28 +120,20 @@ public class ReadableProperty<T>: TypedProperty {
 
 public class WritableProperty<T>: ReadableProperty<T>, WritableTypedProperty {
 
-    convenience init(_ key: String, validatedBy validator: @escaping Validator<T>) {
-        self.init(key, validatedBy: validator, defaultingTo: nil, referencing: nil)
-    }
-
-    convenience init(_ key: String, validatedBy validator: @escaping Validator<T>, referencing surface: Surface) {
-        self.init(key, validatedBy: validator, defaultingTo: nil, referencing: surface)
-    }
-
     func update(to value: T, via source: SourceIdentifiable?) throws {
-        try surface!.update(key: self.key, toValue: value, via: source)
+        try surface!.update(key: key, toValue: value, via: source)
     }
 
     func update(to value: T, silently: Bool = false) throws {
-        try surface!.update(key: self.key, toValue: value, via: nil, silently: silently)
+        try surface!.update(key: key, toValue: value, via: nil, silently: silently)
     }
 
     func clear(via source: SourceIdentifiable) throws {
-        surface!.remove(key: self.key, via: source)
+        surface!.remove(key: key, via: source)
     }
 
     func clear(silently: Bool = false) throws {
-        surface!.remove(key: self.key, via: nil, silently: silently)
+        surface!.remove(key: key, via: nil, silently: silently)
     }
 
     override func copyReferencing(_ surface: Surface) -> Property {
@@ -155,22 +147,19 @@ public class ComputedProperty<T,R:Surface>: ReadableProperty<T> {
     internal let getter: Computation<T,R>
 
     override var value: T {
-        if let mockValue = surface!.mockData?[key] as? T {
-            return mockValue
-        }
-        return getter(surface as! R)
+        return surface!.mockValue(for: key) ?? getter(surface as! R)
     }
 
     override func isValid(value: Any) -> Bool {
         return false
     }
 
-    init(_ key: String, _ getter: @escaping Computation<T,R>, referencing surface: Surface?) {
+    init(_ key: String?, _ getter: @escaping Computation<T,R>, referencing surface: Surface?) {
         self.getter = getter
         super.init(key, validatedBy: alwaysValid, defaultingTo: nil, referencing: surface)
     }
 
-    convenience init(_ key: String, _ getter: @escaping Computation<T,R> ) {
+    convenience init(_ key: String?, _ getter: @escaping Computation<T,R> ) {
         self.init(key, getter, referencing: nil)
     }
 

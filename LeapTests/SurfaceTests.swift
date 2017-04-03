@@ -10,11 +10,6 @@ import XCTest
 import Darwin
 @testable import Leap
 
-class TestSurface: Surface {
-    let title = WritableProperty<String>("title")
-    let count = WritableProperty<Int>("count")
-    let magic = ComputedProperty<Int,TestSurface>("magic", {repr in return 88})
-}
 
 class SurfaceTests: XCTestCase {
     var testSurface: TestSurface?

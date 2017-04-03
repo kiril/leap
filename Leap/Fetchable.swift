@@ -10,7 +10,22 @@ import Foundation
 import RealmSwift
 
 protocol Fetchable {
+    var id: String { get }
+    static func by(id: String) -> LeapModel?
 }
+
+
+extension Fetchable where Self:LeapModel {
+    static func by(id: String) -> Self? {
+        return Realm.user().objects(Self.self).filter("id = %@", id).first
+    }
+}
+
+extension LeapModel: Fetchable {
+}
+
+
+/*
 
 extension LeapModel {
     static func by<Model:LeapModel>(id: String) -> Model? where Model:Fetchable {
@@ -19,3 +34,5 @@ extension LeapModel {
         return query.filter("id = %@", id).first
     }
 }
+
+ */

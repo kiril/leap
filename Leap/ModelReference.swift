@@ -8,28 +8,31 @@
 
 import Foundation
 
-typealias ModelGetter<Model:LeapModel> = (String) -> Model? where Model:Fetchable
 
 protocol Reference {
-    associatedtype Model
     var name: String { get }
-    func resolve() -> Model?
+    var id: String { get }
+    func resolve() -> LeapModel?
 }
 
 func refer<Model:LeapModel>(to model: Model, as name: String) -> ModelReference<Model> where Model:Fetchable {
-    return ModelReference<Model>(model: model, name: name)
+    return ModelReference<Model>(to: model, as: name)
 }
 
 class ModelReference<Model:LeapModel>: Reference where Model:Fetchable {
     var id: String
     var name: String
 
-    init(model: Model, name: String) {
+    init(to model: Model, as name: String) {
         id = model.id
         self.name = name
     }
 
-    func resolve() -> Model? {
+    func resolve() -> LeapModel? {
+        return model()
+    }
+
+    func model() -> Model? {
         return Model.by(id: id)
     }
 }

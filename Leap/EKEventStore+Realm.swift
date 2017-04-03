@@ -12,9 +12,11 @@ import RealmSwift
 
 func syncEventSearchCallback(for calendar: LegacyCalendar) -> EKEventSearchCallback {
     let calendarId = calendar.id
-    func sync(ekEvent: EKEvent, stopBoolPointer: UnsafeMutablePointer<ObjCBool>) {        let realm = Realm.user()
+    func sync(ekEvent: EKEvent, stopBoolPointer: UnsafeMutablePointer<ObjCBool>) {
+        let realm = Realm.user()
         let calendar = LegacyCalendar.by(id: calendarId)
         let temporality = ekEvent.asTemporality()
+
         switch temporality {
         case let event as Event:
             event.calendar = calendar
@@ -39,6 +41,7 @@ extension EKEventStore {
         let eventCalendars = self.calendars(for: EKEntityType.event)
         let reminderCalendars = self.calendars(for: EKEntityType.reminder)
 
+        print("Fetching the calendars...")
         return eventCalendars.map { $0.asLegacyCalendar(eventStoreId: self.eventStoreIdentifier) } + reminderCalendars.map { $0.asLegacyCalendar(eventStoreId: self.eventStoreIdentifier) }
     }
 
@@ -47,6 +50,7 @@ extension EKEventStore {
         guard let ekCalendar = calendar.asEKCalendar() else {
             return false
         }
+        print("yay, syncing events!")
 
         let endOfToday = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: Date())!
         let minus4years = DateComponents(calendar: Calendar.current, year: -4)

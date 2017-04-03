@@ -48,7 +48,6 @@
 		DB41B30C348D9390E4320905 /* Pods_LeapUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 386ABDADBBC48EDACA0896BE /* Pods_LeapUITests.framework */; };
 		FB0762DB1E142FBF0035EF8F /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0762DA1E142FBF0035EF8F /* ScheduleViewController.swift */; };
 		FB166B571E8ABE1C00CB95EC /* RealmUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B561E8ABE1C00CB95EC /* RealmUtil.swift */; };
-		FB166B5A1E8AC05300CB95EC /* Bridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B591E8AC05300CB95EC /* Bridge.swift */; };
 		FB166B5C1E8AC3CA00CB95EC /* Fetchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B5B1E8AC3CA00CB95EC /* Fetchable.swift */; };
 		FB166B5E1E8AC6DB00CB95EC /* ModelReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B5D1E8AC6DB00CB95EC /* ModelReference.swift */; };
 		FB2046A31E82DA2200F130C8 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A21E82DA2200F130C8 /* Event.swift */; };
@@ -62,6 +61,10 @@
 		FB2046B41E82E7DD00F130C8 /* LeapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046B31E82E7DD00F130C8 /* LeapModel.swift */; };
 		FB2046B61E82E9B100F130C8 /* DeviceAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046B51E82E9B100F130C8 /* DeviceAccount.swift */; };
 		FB2046B81E830E4600F130C8 /* Temporality.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046B71E830E4600F130C8 /* Temporality.swift */; };
+		FB39ADA91E8C65AF00B79A7B /* Object+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADA81E8C65AF00B79A7B /* Object+Leap.swift */; };
+		FB39ADAB1E8C69BB00B79A7B /* SurfaceBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADAA1E8C69BB00B79A7B /* SurfaceBridge.swift */; };
+		FB39ADAD1E8EC5A800B79A7B /* BridgeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADAC1E8EC5A800B79A7B /* BridgeTest.swift */; };
+		FB39ADAF1E8EC6B700B79A7B /* TestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADAE1E8EC6B700B79A7B /* TestUtil.swift */; };
 		FB4208471E857984007F4DBD /* Recurrence.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208461E857984007F4DBD /* Recurrence.swift */; };
 		FB4208491E8579D0007F4DBD /* Auditable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208481E8579D0007F4DBD /* Auditable.swift */; };
 		FB42084B1E857DAF007F4DBD /* Participant.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42084A1E857DAF007F4DBD /* Participant.swift */; };
@@ -89,11 +92,10 @@
 		FB934F241E7EDF670068CDEF /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F231E7EDF670068CDEF /* Persistence.swift */; };
 		FB934F261E7EDFA80068CDEF /* Lifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F251E7EDFA80068CDEF /* Lifecycle.swift */; };
 		FBB4BFD81E8ACED1001679BF /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB4BFD71E8ACED1001679BF /* Operation.swift */; };
-		FBB4BFDA1E8B1026001679BF /* EventBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB4BFD91E8B1026001679BF /* EventBridge.swift */; };
 		FBCA4D1E1E84490A003E7AB7 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBCA4D1D1E84490A003E7AB7 /* Location.swift */; };
 		FBCA4D201E844924003E7AB7 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBCA4D1F1E844924003E7AB7 /* Room.swift */; };
 		FBD1045D1E80309300DDF65B /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD1045C1E80309300DDF65B /* Property.swift */; };
-		FBD1045F1E80717E00DDF65B /* ShellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD1045E1E80717E00DDF65B /* ShellTests.swift */; };
+		FBD1045F1E80717E00DDF65B /* SurfaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD1045E1E80717E00DDF65B /* SurfaceTests.swift */; };
 		FBD614541E7F3370001F4050 /* EventSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD614531E7F3370001F4050 /* EventSurface.swift */; };
 		FBD614561E7F38D4001F4050 /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD614551E7F38D4001F4050 /* Schema.swift */; };
 		FBD614581E7F57B0001F4050 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD614571E7F57B0001F4050 /* Validation.swift */; };
@@ -161,7 +163,6 @@
 		FB0762DA1E142FBF0035EF8F /* ScheduleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		FB0762DC1E1430A60035EF8F /* Leap.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Leap.entitlements; sourceTree = "<group>"; };
 		FB166B561E8ABE1C00CB95EC /* RealmUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmUtil.swift; sourceTree = "<group>"; };
-		FB166B591E8AC05300CB95EC /* Bridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bridge.swift; sourceTree = "<group>"; };
 		FB166B5B1E8AC3CA00CB95EC /* Fetchable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fetchable.swift; sourceTree = "<group>"; };
 		FB166B5D1E8AC6DB00CB95EC /* ModelReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelReference.swift; sourceTree = "<group>"; };
 		FB2046A21E82DA2200F130C8 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
@@ -175,6 +176,10 @@
 		FB2046B31E82E7DD00F130C8 /* LeapModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeapModel.swift; sourceTree = "<group>"; };
 		FB2046B51E82E9B100F130C8 /* DeviceAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceAccount.swift; sourceTree = "<group>"; };
 		FB2046B71E830E4600F130C8 /* Temporality.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Temporality.swift; sourceTree = "<group>"; };
+		FB39ADA81E8C65AF00B79A7B /* Object+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Object+Leap.swift"; sourceTree = "<group>"; };
+		FB39ADAA1E8C69BB00B79A7B /* SurfaceBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurfaceBridge.swift; sourceTree = "<group>"; };
+		FB39ADAC1E8EC5A800B79A7B /* BridgeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BridgeTest.swift; sourceTree = "<group>"; };
+		FB39ADAE1E8EC6B700B79A7B /* TestUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestUtil.swift; sourceTree = "<group>"; };
 		FB4208461E857984007F4DBD /* Recurrence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recurrence.swift; sourceTree = "<group>"; };
 		FB4208481E8579D0007F4DBD /* Auditable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auditable.swift; sourceTree = "<group>"; };
 		FB42084A1E857DAF007F4DBD /* Participant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Participant.swift; sourceTree = "<group>"; };
@@ -202,11 +207,10 @@
 		FB934F231E7EDF670068CDEF /* Persistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		FB934F251E7EDFA80068CDEF /* Lifecycle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lifecycle.swift; sourceTree = "<group>"; };
 		FBB4BFD71E8ACED1001679BF /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
-		FBB4BFD91E8B1026001679BF /* EventBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventBridge.swift; sourceTree = "<group>"; };
 		FBCA4D1D1E84490A003E7AB7 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		FBCA4D1F1E844924003E7AB7 /* Room.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		FBD1045C1E80309300DDF65B /* Property.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Property.swift; sourceTree = "<group>"; };
-		FBD1045E1E80717E00DDF65B /* ShellTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShellTests.swift; sourceTree = "<group>"; };
+		FBD1045E1E80717E00DDF65B /* SurfaceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurfaceTests.swift; sourceTree = "<group>"; };
 		FBD614531E7F3370001F4050 /* EventSurface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventSurface.swift; sourceTree = "<group>"; };
 		FBD614551E7F38D4001F4050 /* Schema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Schema.swift; sourceTree = "<group>"; };
 		FBD614571E7F57B0001F4050 /* Validation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
@@ -461,12 +465,14 @@
 			isa = PBXGroup;
 			children = (
 				FB4208581E85A2DD007F4DBD /* Realm+Leap.swift */,
+				FB39ADA81E8C65AF00B79A7B /* Object+Leap.swift */,
+				FB166B5D1E8AC6DB00CB95EC /* ModelReference.swift */,
+				FB166B5B1E8AC3CA00CB95EC /* Fetchable.swift */,
+				FB39ADAA1E8C69BB00B79A7B /* SurfaceBridge.swift */,
 				FB2046B31E82E7DD00F130C8 /* LeapModel.swift */,
 				FB4208481E8579D0007F4DBD /* Auditable.swift */,
 				FB42085A1E85A650007F4DBD /* TimeZone.swift */,
 				FB166B561E8ABE1C00CB95EC /* RealmUtil.swift */,
-				FB166B5B1E8AC3CA00CB95EC /* Fetchable.swift */,
-				FB166B5D1E8AC6DB00CB95EC /* ModelReference.swift */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -492,9 +498,7 @@
 				FBD614551E7F38D4001F4050 /* Schema.swift */,
 				FBD614571E7F57B0001F4050 /* Validation.swift */,
 				FBD1045C1E80309300DDF65B /* Property.swift */,
-				FB166B591E8AC05300CB95EC /* Bridge.swift */,
 				FBB4BFD71E8ACED1001679BF /* Operation.swift */,
-				FBB4BFD91E8B1026001679BF /* EventBridge.swift */,
 			);
 			name = Surface;
 			sourceTree = "<group>";
@@ -554,8 +558,10 @@
 			children = (
 				FBE0EFFB1DFBBB80007BD8DF /* LeapTests.swift */,
 				FBE0EFFD1DFBBB80007BD8DF /* Info.plist */,
-				FBD1045E1E80717E00DDF65B /* ShellTests.swift */,
+				FBD1045E1E80717E00DDF65B /* SurfaceTests.swift */,
 				FB8BB6221E89A76A00A30315 /* EventKitMigrationTests.swift */,
+				FB39ADAC1E8EC5A800B79A7B /* BridgeTest.swift */,
+				FB39ADAE1E8EC6B700B79A7B /* TestUtil.swift */,
 			);
 			path = LeapTests;
 			sourceTree = "<group>";
@@ -889,7 +895,6 @@
 				FB42084D1E857F7C007F4DBD /* Person.swift in Sources */,
 				FB4208681E897997007F4DBD /* EventTemplate.swift in Sources */,
 				FB4208571E85A168007F4DBD /* GeoFence.swift in Sources */,
-				FB166B5A1E8AC05300CB95EC /* Bridge.swift in Sources */,
 				FB166B5C1E8AC3CA00CB95EC /* Fetchable.swift in Sources */,
 				FB166B5E1E8AC6DB00CB95EC /* ModelReference.swift in Sources */,
 				833617781E8C4756009A97FF /* StoryboardLoadable.swift in Sources */,
@@ -898,6 +903,7 @@
 				FB934F261E7EDFA80068CDEF /* Lifecycle.swift in Sources */,
 				FB42084B1E857DAF007F4DBD /* Participant.swift in Sources */,
 				FB934F201E7E01DF0068CDEF /* Surface.swift in Sources */,
+				FB39ADAB1E8C69BB00B79A7B /* SurfaceBridge.swift in Sources */,
 				FBB4BFD81E8ACED1001679BF /* Operation.swift in Sources */,
 				8351BDD11E807C4C001221AF /* WeekOverviewViewModel.swift in Sources */,
 				831444CC1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift in Sources */,
@@ -922,8 +928,8 @@
 				835456151E8AF9EA00A03B34 /* InitialViewController.swift in Sources */,
 				831444CF1E7B46A200A5EF06 /* EventStoreExampleCode.swift in Sources */,
 				FB2046A61E82E20100F130C8 /* EKEventStore+Realm.swift in Sources */,
-				FBB4BFDA1E8B1026001679BF /* EventBridge.swift in Sources */,
 				FB2046B41E82E7DD00F130C8 /* LeapModel.swift in Sources */,
+				FB39ADA91E8C65AF00B79A7B /* Object+Leap.swift in Sources */,
 				FB166B571E8ABE1C00CB95EC /* RealmUtil.swift in Sources */,
 				FBD614561E7F38D4001F4050 /* Schema.swift in Sources */,
 				8336176B1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */,
@@ -947,12 +953,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB39ADAD1E8EC5A800B79A7B /* BridgeTest.swift in Sources */,
 				FB8BB6231E89A76A00A30315 /* EventKitMigrationTests.swift in Sources */,
 				833617751E8C2C9B009A97FF /* WeekOverviewViewController.swift in Sources */,
-				FBD1045F1E80717E00DDF65B /* ShellTests.swift in Sources */,
 				8336176C1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */,
 				833617791E8C4756009A97FF /* StoryboardLoadable.swift in Sources */,
+				FBD1045F1E80717E00DDF65B /* SurfaceTests.swift in Sources */,
 				FBE0EFFC1DFBBB80007BD8DF /* LeapTests.swift in Sources */,
+				FB39ADAF1E8EC6B700B79A7B /* TestUtil.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
