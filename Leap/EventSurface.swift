@@ -98,6 +98,21 @@ class EventSurface: Surface {
         let surface = EventSurface(id: eventId)
         let bridge = SurfaceBridge(id: eventId)
         bridge.reference(event, as: "event")
+        bridge.bind(surface.title)
+        func getStartTime(model:LeapModel) -> Any? {
+            guard let event = model as? Event else {
+                fatalError("OMG wrong type or something \(model)")
+            }
+            return event.startDate
+        }
+        func setStartTime(model:LeapModel, value: Any?) {
+            guard let event = model as? Event, let date = value as? Date else {
+                fatalError("OMG wrong type or something \(model)")
+            }
+
+            event.startTime = date.millisecondsSinceReferenceDate
+        }
+        bridge.bind(surface.startTime, populateWith: getStartTime, on: "event", persistWith: setStartTime)
         bridge.bindAll(surface.title, surface.startTime, surface.endTime)
         bridge.readonlyBind(surface.userIgnored) { (model:LeapModel) in
             guard let thing = model as? Temporality, let me = thing.me else {
