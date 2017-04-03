@@ -22,28 +22,26 @@
 		833617641E8C21E8009A97FF /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = 833617621E8C21E8009A97FF /* FontAwesome.otf */; };
 		833617651E8C21E8009A97FF /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = 833617621E8C21E8009A97FF /* FontAwesome.otf */; };
 		833617671E8C2538009A97FF /* NavigationToggleArrowView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 833617661E8C2538009A97FF /* NavigationToggleArrowView.xib */; };
-		833617681E8C2538009A97FF /* NavigationToggleArrowView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 833617661E8C2538009A97FF /* NavigationToggleArrowView.xib */; };
-		833617691E8C2538009A97FF /* NavigationToggleArrowView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 833617661E8C2538009A97FF /* NavigationToggleArrowView.xib */; };
 		8336176B1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8336176A1E8C277D009A97FF /* NavigationToggleArrowView.swift */; };
-		8336176C1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8336176A1E8C277D009A97FF /* NavigationToggleArrowView.swift */; };
-		8336176D1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8336176A1E8C277D009A97FF /* NavigationToggleArrowView.swift */; };
-		833617701E8C2C75009A97FF /* WeekOverview.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8336176F1E8C2C75009A97FF /* WeekOverview.storyboard */; };
-		833617711E8C2C75009A97FF /* WeekOverview.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8336176F1E8C2C75009A97FF /* WeekOverview.storyboard */; };
-		833617721E8C2C75009A97FF /* WeekOverview.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8336176F1E8C2C75009A97FF /* WeekOverview.storyboard */; };
-		833617741E8C2C9B009A97FF /* WeekOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833617731E8C2C9B009A97FF /* WeekOverviewViewController.swift */; };
-		833617751E8C2C9B009A97FF /* WeekOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833617731E8C2C9B009A97FF /* WeekOverviewViewController.swift */; };
-		833617761E8C2C9B009A97FF /* WeekOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833617731E8C2C9B009A97FF /* WeekOverviewViewController.swift */; };
+		833617701E8C2C75009A97FF /* WeekNavigation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8336176F1E8C2C75009A97FF /* WeekNavigation.storyboard */; };
+		833617741E8C2C9B009A97FF /* WeekNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833617731E8C2C9B009A97FF /* WeekNavigationViewController.swift */; };
 		833617781E8C4756009A97FF /* StoryboardLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833617771E8C4756009A97FF /* StoryboardLoadable.swift */; };
-		833617791E8C4756009A97FF /* StoryboardLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833617771E8C4756009A97FF /* StoryboardLoadable.swift */; };
-		8336177A1E8C4756009A97FF /* StoryboardLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833617771E8C4756009A97FF /* StoryboardLoadable.swift */; };
 		8351BDC91E7C58FD001221AF /* OpenTimeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDC81E7C58FD001221AF /* OpenTimeViewModel.swift */; };
 		8351BDCD1E7C596C001221AF /* GregorianDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDCC1E7C596C001221AF /* GregorianDay.swift */; };
-		8351BDD11E807C4C001221AF /* WeekOverviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDD01E807C4C001221AF /* WeekOverviewViewModel.swift */; };
+		8351BDD11E807C4C001221AF /* WeekOverviewSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDD01E807C4C001221AF /* WeekOverviewSurface.swift */; };
 		835456151E8AF9EA00A03B34 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835456141E8AF9EA00A03B34 /* InitialViewController.swift */; };
 		835456181E8AFD7200A03B34 /* UIColor+ProjectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835456171E8AFD7200A03B34 /* UIColor+ProjectExtensions.swift */; };
 		8354561A1E8C09A100A03B34 /* DayScheduleTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 835456191E8C09A100A03B34 /* DayScheduleTitleView.xib */; };
+		8393621D1E8FF51E00543CFC /* WeekOverview.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8393621C1E8FF51E00543CFC /* WeekOverview.storyboard */; };
+		8393621F1E8FF53B00543CFC /* WeekOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8393621E1E8FF53B00543CFC /* WeekOverviewViewController.swift */; };
+		839362211E8FF5F200543CFC /* WeekOverviewPageViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839362201E8FF5F200543CFC /* WeekOverviewPageViewDataSource.swift */; };
 		83A72D741E82DAE0005EB213 /* TimePerspective.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A72D731E82DAE0005EB213 /* TimePerspective.swift */; };
 		83A72D771E82DF95005EB213 /* DayScheduleSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A72D761E82DF95005EB213 /* DayScheduleSurface.swift */; };
+		83B5DB701E91D7F400A0CA7E /* (null) in Sources */ = {isa = PBXBuildFile; };
+		83B5DB721E91D7F400A0CA7E /* (null) in Sources */ = {isa = PBXBuildFile; };
+		83B5DB781E91D7F500A0CA7E /* (null) in Sources */ = {isa = PBXBuildFile; };
+		83B5DB7A1E91D7F500A0CA7E /* (null) in Sources */ = {isa = PBXBuildFile; };
+		83B5DBEE1E91E4CC00A0CA7E /* GregorianDayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B5DBED1E91E4CC00A0CA7E /* GregorianDayTests.swift */; };
 		83F4B1611E7C383F000FCB8D /* ScheduleEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F4B1601E7C383F000FCB8D /* ScheduleEntry.swift */; };
 		DB41B30C348D9390E4320905 /* Pods_LeapUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 386ABDADBBC48EDACA0896BE /* Pods_LeapUITests.framework */; };
 		FB0762DB1E142FBF0035EF8F /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0762DA1E142FBF0035EF8F /* ScheduleViewController.swift */; };
@@ -104,7 +102,6 @@
 		FBE0EFEC1DFBBB80007BD8DF /* Leap.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FBE0EFEA1DFBBB80007BD8DF /* Leap.xcdatamodeld */; };
 		FBE0EFEE1DFBBB80007BD8DF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FBE0EFED1DFBBB80007BD8DF /* Assets.xcassets */; };
 		FBE0EFFC1DFBBB80007BD8DF /* LeapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE0EFFB1DFBBB80007BD8DF /* LeapTests.swift */; };
-		FBE0F0071DFBBB80007BD8DF /* LeapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE0F0061DFBBB80007BD8DF /* LeapUITests.swift */; };
 		FBE4DEA31E6CB9F10062507B /* Auth0.plist in Resources */ = {isa = PBXBuildFile; fileRef = FBE4DEA21E6CB9F10062507B /* Auth0.plist */; };
 		FBE4DEAA1E6CBD8A0062507B /* Res in Resources */ = {isa = PBXBuildFile; fileRef = FBE4DEA91E6CBD8A0062507B /* Res */; };
 /* End PBXBuildFile section */
@@ -145,17 +142,21 @@
 		833617621E8C21E8009A97FF /* FontAwesome.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.otf; sourceTree = "<group>"; };
 		833617661E8C2538009A97FF /* NavigationToggleArrowView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NavigationToggleArrowView.xib; sourceTree = "<group>"; };
 		8336176A1E8C277D009A97FF /* NavigationToggleArrowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationToggleArrowView.swift; sourceTree = "<group>"; };
-		8336176F1E8C2C75009A97FF /* WeekOverview.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WeekOverview.storyboard; sourceTree = "<group>"; };
-		833617731E8C2C9B009A97FF /* WeekOverviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekOverviewViewController.swift; sourceTree = "<group>"; };
+		8336176F1E8C2C75009A97FF /* WeekNavigation.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WeekNavigation.storyboard; sourceTree = "<group>"; };
+		833617731E8C2C9B009A97FF /* WeekNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekNavigationViewController.swift; sourceTree = "<group>"; };
 		833617771E8C4756009A97FF /* StoryboardLoadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardLoadable.swift; sourceTree = "<group>"; };
 		8351BDC81E7C58FD001221AF /* OpenTimeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenTimeViewModel.swift; sourceTree = "<group>"; };
 		8351BDCC1E7C596C001221AF /* GregorianDay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GregorianDay.swift; sourceTree = "<group>"; };
-		8351BDD01E807C4C001221AF /* WeekOverviewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekOverviewViewModel.swift; sourceTree = "<group>"; };
+		8351BDD01E807C4C001221AF /* WeekOverviewSurface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekOverviewSurface.swift; sourceTree = "<group>"; };
 		835456141E8AF9EA00A03B34 /* InitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
 		835456171E8AFD7200A03B34 /* UIColor+ProjectExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+ProjectExtensions.swift"; sourceTree = "<group>"; };
 		835456191E8C09A100A03B34 /* DayScheduleTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DayScheduleTitleView.xib; sourceTree = "<group>"; };
+		8393621C1E8FF51E00543CFC /* WeekOverview.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WeekOverview.storyboard; sourceTree = "<group>"; };
+		8393621E1E8FF53B00543CFC /* WeekOverviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekOverviewViewController.swift; sourceTree = "<group>"; };
+		839362201E8FF5F200543CFC /* WeekOverviewPageViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekOverviewPageViewDataSource.swift; sourceTree = "<group>"; };
 		83A72D731E82DAE0005EB213 /* TimePerspective.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimePerspective.swift; sourceTree = "<group>"; };
 		83A72D761E82DF95005EB213 /* DayScheduleSurface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayScheduleSurface.swift; sourceTree = "<group>"; };
+		83B5DBED1E91E4CC00A0CA7E /* GregorianDayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GregorianDayTests.swift; sourceTree = "<group>"; };
 		83F4B1601E7C383F000FCB8D /* ScheduleEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleEntry.swift; sourceTree = "<group>"; };
 		8EED8FB993394DE5707CFED0 /* Pods-LeapUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LeapUITests/Pods-LeapUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		EFE6A6E5DCCA6A604F469F66 /* Pods-Leap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Leap/Pods-Leap.debug.xcconfig"; sourceTree = "<group>"; };
@@ -302,7 +303,6 @@
 			isa = PBXGroup;
 			children = (
 				8351BDC81E7C58FD001221AF /* OpenTimeViewModel.swift */,
-				8351BDD01E807C4C001221AF /* WeekOverviewViewModel.swift */,
 			);
 			name = ViewModels;
 			sourceTree = "<group>";
@@ -327,8 +327,11 @@
 		8336176E1E8C2C1F009A97FF /* WeekNavigation */ = {
 			isa = PBXGroup;
 			children = (
-				8336176F1E8C2C75009A97FF /* WeekOverview.storyboard */,
-				833617731E8C2C9B009A97FF /* WeekOverviewViewController.swift */,
+				8336176F1E8C2C75009A97FF /* WeekNavigation.storyboard */,
+				833617731E8C2C9B009A97FF /* WeekNavigationViewController.swift */,
+				8393621C1E8FF51E00543CFC /* WeekOverview.storyboard */,
+				8393621E1E8FF53B00543CFC /* WeekOverviewViewController.swift */,
+				839362201E8FF5F200543CFC /* WeekOverviewPageViewDataSource.swift */,
 			);
 			name = WeekNavigation;
 			sourceTree = "<group>";
@@ -404,6 +407,7 @@
 		FB166B581E8ABE9D00CB95EC /* Surfaces */ = {
 			isa = PBXGroup;
 			children = (
+				8351BDD01E807C4C001221AF /* WeekOverviewSurface.swift */,
 				FBD614531E7F3370001F4050 /* EventSurface.swift */,
 				83A72D761E82DF95005EB213 /* DayScheduleSurface.swift */,
 				83F4B1601E7C383F000FCB8D /* ScheduleEntry.swift */,
@@ -556,6 +560,7 @@
 		FBE0EFFA1DFBBB80007BD8DF /* LeapTests */ = {
 			isa = PBXGroup;
 			children = (
+				83B5DBED1E91E4CC00A0CA7E /* GregorianDayTests.swift */,
 				FBE0EFFB1DFBBB80007BD8DF /* LeapTests.swift */,
 				FBE0EFFD1DFBBB80007BD8DF /* Info.plist */,
 				FBD1045E1E80717E00DDF65B /* SurfaceTests.swift */,
@@ -652,7 +657,7 @@
 				TargetAttributes = {
 					FBE0EFDF1DFBBB80007BD8DF = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = HNRVQL94Y9;
+						DevelopmentTeam = W8PY5MD3RJ;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Push = {
@@ -699,13 +704,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				833617701E8C2C75009A97FF /* WeekOverview.storyboard in Resources */,
+				833617701E8C2C75009A97FF /* WeekNavigation.storyboard in Resources */,
 				FBE4DEA31E6CB9F10062507B /* Auth0.plist in Resources */,
 				831444C11E7AF77700A5EF06 /* LocalCalendar.storyboard in Resources */,
 				FB4E11A71E79B1F500687702 /* Main.storyboard in Resources */,
 				FBE4DEAA1E6CBD8A0062507B /* Res in Resources */,
 				FBE0EFEE1DFBBB80007BD8DF /* Assets.xcassets in Resources */,
 				8354561A1E8C09A100A03B34 /* DayScheduleTitleView.xib in Resources */,
+				8393621D1E8FF51E00543CFC /* WeekOverview.storyboard in Resources */,
 				833617631E8C21E8009A97FF /* FontAwesome.otf in Resources */,
 				833617671E8C2538009A97FF /* NavigationToggleArrowView.xib in Resources */,
 				831444BF1E7AF4E200A5EF06 /* AuthFlow.storyboard in Resources */,
@@ -718,9 +724,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				833617711E8C2C75009A97FF /* WeekOverview.storyboard in Resources */,
 				833617641E8C21E8009A97FF /* FontAwesome.otf in Resources */,
-				833617681E8C2538009A97FF /* NavigationToggleArrowView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -728,9 +732,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				833617721E8C2C75009A97FF /* WeekOverview.storyboard in Resources */,
 				833617651E8C21E8009A97FF /* FontAwesome.otf in Resources */,
-				833617691E8C2538009A97FF /* NavigationToggleArrowView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -905,14 +907,14 @@
 				FB934F201E7E01DF0068CDEF /* Surface.swift in Sources */,
 				FB39ADAB1E8C69BB00B79A7B /* SurfaceBridge.swift in Sources */,
 				FBB4BFD81E8ACED1001679BF /* Operation.swift in Sources */,
-				8351BDD11E807C4C001221AF /* WeekOverviewViewModel.swift in Sources */,
+				8351BDD11E807C4C001221AF /* WeekOverviewSurface.swift in Sources */,
 				831444CC1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift in Sources */,
 				FB4208701E89855D007F4DBD /* Group.swift in Sources */,
 				FB2046A81E82E28800F130C8 /* EKCalendar+Realm.swift in Sources */,
 				833617601E8C1D3A009A97FF /* DayScheduleTitleView.swift in Sources */,
 				FB42085D1E896847007F4DBD /* Resource.swift in Sources */,
 				FB2046AA1E82E74700F130C8 /* EKParticipant+Realm.swift in Sources */,
-				833617741E8C2C9B009A97FF /* WeekOverviewViewController.swift in Sources */,
+				833617741E8C2C9B009A97FF /* WeekNavigationViewController.swift in Sources */,
 				FB2046B01E82E7B000F130C8 /* LegacyCalendar.swift in Sources */,
 				FB4208551E859606007F4DBD /* Alarm.swift in Sources */,
 				831444C61E7B020700A5EF06 /* CalendarCollectionViewController.swift in Sources */,
@@ -920,6 +922,7 @@
 				FB2046B21E82E7BF00F130C8 /* Reminder.swift in Sources */,
 				FB42086E1E89816B007F4DBD /* EKRecurrenceRule+Realm.swift in Sources */,
 				FB4208471E857984007F4DBD /* Recurrence.swift in Sources */,
+				839362211E8FF5F200543CFC /* WeekOverviewPageViewDataSource.swift in Sources */,
 				831444CA1E7B072600A5EF06 /* EventViewCell.swift in Sources */,
 				FB42084F1E8592E8007F4DBD /* Address.swift in Sources */,
 				FB4208591E85A2DD007F4DBD /* Realm+Leap.swift in Sources */,
@@ -933,6 +936,7 @@
 				FB166B571E8ABE1C00CB95EC /* RealmUtil.swift in Sources */,
 				FBD614561E7F38D4001F4050 /* Schema.swift in Sources */,
 				8336176B1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */,
+				8393621F1E8FF53B00543CFC /* WeekOverviewViewController.swift in Sources */,
 				FB2046B81E830E4600F130C8 /* Temporality.swift in Sources */,
 				FB42085F1E896C40007F4DBD /* Reservation.swift in Sources */,
 				FB42086C1E897AD1007F4DBD /* ChecklistItem.swift in Sources */,
@@ -954,13 +958,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB39ADAD1E8EC5A800B79A7B /* BridgeTest.swift in Sources */,
+				83B5DB701E91D7F400A0CA7E /* (null) in Sources */,
 				FB8BB6231E89A76A00A30315 /* EventKitMigrationTests.swift in Sources */,
-				833617751E8C2C9B009A97FF /* WeekOverviewViewController.swift in Sources */,
-				8336176C1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */,
-				833617791E8C4756009A97FF /* StoryboardLoadable.swift in Sources */,
 				FBD1045F1E80717E00DDF65B /* SurfaceTests.swift in Sources */,
-				FBE0EFFC1DFBBB80007BD8DF /* LeapTests.swift in Sources */,
 				FB39ADAF1E8EC6B700B79A7B /* TestUtil.swift in Sources */,
+				83B5DB721E91D7F400A0CA7E /* (null) in Sources */,
+				83B5DBEE1E91E4CC00A0CA7E /* GregorianDayTests.swift in Sources */,
+				FBE0EFFC1DFBBB80007BD8DF /* LeapTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -968,10 +972,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8336177A1E8C4756009A97FF /* StoryboardLoadable.swift in Sources */,
-				8336176D1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */,
-				FBE0F0071DFBBB80007BD8DF /* LeapUITests.swift in Sources */,
-				833617761E8C2C9B009A97FF /* WeekOverviewViewController.swift in Sources */,
+				83B5DB781E91D7F500A0CA7E /* (null) in Sources */,
+				83B5DB7A1E91D7F500A0CA7E /* (null) in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1103,11 +1105,13 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Leap/Leap.entitlements;
-				DEVELOPMENT_TEAM = HNRVQL94Y9;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = W8PY5MD3RJ;
 				INFOPLIST_FILE = Leap/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.singleleap.Leap;
+				PRODUCT_BUNDLE_IDENTIFIER = com.singleleap.LeapChris;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Leap-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
@@ -1120,11 +1124,13 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Leap/Leap.entitlements;
-				DEVELOPMENT_TEAM = HNRVQL94Y9;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = W8PY5MD3RJ;
 				INFOPLIST_FILE = Leap/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.singleleap.Leap;
+				PRODUCT_BUNDLE_IDENTIFIER = com.singleleap.LeapChris;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Leap-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
@@ -1137,6 +1143,20 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = LeapTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-framework",
+					"\"Auth0\"",
+					"-framework",
+					"\"Lock\"",
+					"-framework",
+					"\"Realm\"",
+					"-framework",
+					"\"RealmSwift\"",
+					"-framework",
+					"\"SwiftyJSON\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.singleleap.LeapTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
@@ -1151,6 +1171,20 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = LeapTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-framework",
+					"\"Auth0\"",
+					"-framework",
+					"\"Lock\"",
+					"-framework",
+					"\"Realm\"",
+					"-framework",
+					"\"RealmSwift\"",
+					"-framework",
+					"\"SwiftyJSON\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.singleleap.LeapTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
@@ -1164,6 +1198,20 @@
 			buildSettings = {
 				INFOPLIST_FILE = LeapUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-framework",
+					"\"Auth0\"",
+					"-framework",
+					"\"Lock\"",
+					"-framework",
+					"\"Realm\"",
+					"-framework",
+					"\"RealmSwift\"",
+					"-framework",
+					"\"SwiftyJSON\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.singleleap.LeapUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
@@ -1177,6 +1225,20 @@
 			buildSettings = {
 				INFOPLIST_FILE = LeapUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-framework",
+					"\"Auth0\"",
+					"-framework",
+					"\"Lock\"",
+					"-framework",
+					"\"Realm\"",
+					"-framework",
+					"\"RealmSwift\"",
+					"-framework",
+					"\"SwiftyJSON\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.singleleap.LeapUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;

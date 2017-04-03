@@ -11,8 +11,12 @@ import Foundation
 struct GregorianDay {
     // does this need to be gregorian? Do day ids need to e independent of a calendar view? (i.e. are they stored / transmitted at all?
 
-    let secondsInADay : Double = 86400
-    let calendar = Calendar(identifier: .gregorian)
+    private let secondsInADay : Double = 86400
+    let calendar: Calendar = {
+        var cal = Calendar(identifier: .gregorian)
+        cal.timeZone = Foundation.TimeZone(abbreviation: "GMT")!
+        return cal
+    }()
 
     private let daysSinceEpoch: Int
     var id : Int {
@@ -40,7 +44,9 @@ struct GregorianDay {
     init(id: Int) {
         daysSinceEpoch = id - 1 // treating epoch day as index 1 for the moment
 
-        let dayDate = Date(timeIntervalSince1970: Double(daysSinceEpoch) * secondsInADay)
+        let seconds: TimeInterval = (Double(daysSinceEpoch) * secondsInADay)
+
+        let dayDate = Date(timeIntervalSince1970: seconds)
         let components = calendar.dateComponents([.day, .month, .year], from: dayDate)
 
         day = components.day!
@@ -77,15 +83,22 @@ extension Calendar {
         return component(.weekday, from: date)
     }
 
+    func month(for day: GregorianDay) -> Int {
+        let date = self.date(from: day.components)!
+        return component(.month, from: date)
+    }
+
     var today: GregorianDay {
         var gregorianTimeAdjustedCalendar = Calendar(identifier: .gregorian)
         gregorianTimeAdjustedCalendar.timeZone = self.timeZone
 
         let components = dateComponents([.day, .month, .year], from: Date())
 
-        return GregorianDay(day: components.day!,
-                            month: components.month!,
-                            year: components.year!)!
+        let day = GregorianDay(day: components.day!,
+                               month: components.month!,
+                               year: components.year!)!
+
+        return day
     }
 
     var tomorrow: GregorianDay {

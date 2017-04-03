@@ -41,7 +41,7 @@ class EventKitMigrationTests: XCTestCase {
         XCTAssertEqual(r2.frequency, Frequency.weekly)
 
         let ek3 = EKRecurrenceRule(recurrenceWith: EKRecurrenceFrequency.yearly, interval: 2, daysOfTheWeek: [EKRecurrenceDayOfWeek(EKWeekday.tuesday)], daysOfTheMonth: nil, monthsOfTheYear: nil, weeksOfTheYear: [1 as NSNumber, -2 as NSNumber], daysOfTheYear: nil, setPositions: nil, end: nil)
-        let r3 = ek3.asRecurrence()
+        let r3: Recurrence = ek3.asRecurrence()
 
         XCTAssertEqual(r3.count, 0)
         XCTAssertEqual(r3.interval, 2)
@@ -51,7 +51,7 @@ class EventKitMigrationTests: XCTestCase {
 
         let endDate = Calendar.current.date(byAdding: DateComponents(year: 1), to: Date())!
         let ek4 = EKRecurrenceRule(recurrenceWith: EKRecurrenceFrequency.weekly, interval: 1, daysOfTheWeek: [EKRecurrenceDayOfWeek(EKWeekday.tuesday), EKRecurrenceDayOfWeek(EKWeekday.thursday)], daysOfTheMonth: nil, monthsOfTheYear: [1 as NSNumber, 2 as NSNumber], weeksOfTheYear: nil, daysOfTheYear: nil, setPositions: nil, end: EKRecurrenceEnd(end: endDate))
-        let r4 = ek4.asRecurrence()
+        let r4: Recurrence = ek4.asRecurrence()
 
         XCTAssertEqual(r4.count, 0)
         XCTAssertEqual(r4.interval, 1)

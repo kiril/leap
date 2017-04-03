@@ -59,7 +59,7 @@ class CalendarCollectionViewController: UICollectionViewController, StoryboardLo
     }
 
     @objc private func didTapNavigation() {
-        let (navVC, _) = WeekOverviewViewController.loadFromStoryboardWithNavController()
+        let (navVC, _) = WeekNavigationViewController.loadFromStoryboardWithNavController()
 
         navVC.modalPresentationStyle = .overCurrentContext
         navVC.modalTransitionStyle = .crossDissolve

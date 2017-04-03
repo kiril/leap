@@ -54,10 +54,10 @@ extension StoryboardLoadable where Self: UIViewController {
     private static func findViewController() -> Self? {
         let storyboard = UIStoryboard(name: storyboardName, bundle: nil)
 
-        if let vc = storyboard.instantiateViewController(withIdentifier: storyboardIdentifier) as? Self {
+        if let vc = storyboard.instantiateInitialViewController() as? Self {
             return vc
         }
-        else if let vc = storyboard.instantiateInitialViewController() as? Self {
+        else if let vc = storyboard.instantiateViewController(withIdentifier: storyboardIdentifier) as? Self {
             return vc
         }
         return nil
