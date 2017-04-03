@@ -22,8 +22,8 @@ enum EventModality: String {
  * Here's our core!
  */
 class Event: _TemporalBase, Temporality {
-    dynamic var startTime: TimeInterval = 0.0
-    dynamic var endTime: TimeInterval = 0.0
+    dynamic var startTime: Int = 0
+    dynamic var endTime: Int = 0
     dynamic var locationString: String? = nil
     dynamic var legacyTimeZone: TimeZone?
     dynamic var modalityString: String = EventModality.unknown.rawValue
@@ -45,16 +45,16 @@ class Event: _TemporalBase, Temporality {
         set { modalityString = newValue.rawValue }
     }
 
-    var date: Date? { return Date(timeIntervalSinceReferenceDate: self.startTime) }
-    var startDate: Date { return Date(timeIntervalSinceReferenceDate: self.startTime) }
-    var endDate: Date { return Date(timeIntervalSinceReferenceDate: self.endTime) }
+    var date: Date? { return Date(timeIntervalSinceReferenceDate: Double(self.startTime)/1000.0) }
+    var startDate: Date { return Date(timeIntervalSinceReferenceDate: Double(self.startTime)/1000.0) }
+    var endDate: Date { return Date(timeIntervalSinceReferenceDate: Double(self.endTime)/1000.0) }
 
     override static func indexedProperties() -> [String] {
         return ["venue", "room", "startTime", "participants"]
     }
 
     var duration: TimeInterval {
-        return self.endTime - self.startTime
+        return Double(self.endTime - self.startTime)/1000.0
     }
 
     static func range(starting: Date, before: Date) -> Results<Event> {
