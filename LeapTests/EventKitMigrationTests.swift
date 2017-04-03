@@ -26,7 +26,7 @@ class EventKitMigrationTests: XCTestCase {
     }
 
     func testRecurrence() {
-        let event = Event(value: ["id": "9999", "startDate": Date(), "endDate": Date()])
+        let event = Event(value: ["id": "9999", "startDate": Date.millisecondsSinceReferenceDate, "endDate": Date.millisecondsSinceReferenceDate])
         let ek1 = EKRecurrenceRule(recurrenceWith: EKRecurrenceFrequency.daily,
                                    interval: 1, end: EKRecurrenceEnd(occurrenceCount: 2))
         let r1: Recurrence = ek1.asRecurrence(ofEvent: event)
