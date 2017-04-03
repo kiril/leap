@@ -358,6 +358,7 @@ extension Surface: Persistable {
         }
     }
 
+    @discardableResult
     func flush() throws -> Bool {
         return try self.store?.persist(self) ?? false
     }

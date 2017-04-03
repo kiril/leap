@@ -34,6 +34,13 @@ class BridgeTest: XCTestCase {
         XCTAssertEqual(surface!.count.value, model!.count)
         XCTAssertEqual(surface!.title.value, model!.title)
     }
+
+    func testPersistence() {
+        try! surface!.title.update(to: "New Title")
+        XCTAssertNotEqual(surface!.title.value, model!.title)
+        try! surface!.flush()
+        XCTAssertEqual(surface!.title.value, model!.title)
+    }
     
     func testExample() {
         // This is an example of a functional test case.
