@@ -51,6 +51,33 @@ class WeekOverviewSurface: Surface, IntIdInitable {
         return "\(firstDayString) - \(lastDayString)"
     }
 
+    var weekRelativeDescription: String {
+        let today = Calendar.current.today
+        let thisWeek = WeekOverviewSurface(containingDayId: String(today.id))
+
+        let weeksApart = ((intId - thisWeek.intId) / daysInAWeek)
+
+        switch weeksApart {
+        case 0:
+            return "This Week"
+
+        case 1:
+            return "Next Week"
+
+        case -1:
+            return "Last Week"
+
+        case let weeksApart where weeksApart > 1:
+            return "\(weeksApart) Weeks Away"
+
+        case let weeksApart where weeksApart < -1:
+            return "\(abs(weeksApart)) Weeks Ago"
+
+        default:
+            return ""
+        }
+    }
+
     var days: [DaySurface] {
         var days = [DaySurface]()
 
@@ -127,5 +154,13 @@ class DaySurface: Surface, IntIdInitable {
 
     var isToday: Bool {
         return happensIn == .current
+    }
+
+    var dayAfter: DaySurface {
+        return DaySurface(intId: intId + 1)
+    }
+
+    var dayBefore: DaySurface {
+        return DaySurface(intId: intId - 1)
     }
 }
