@@ -11,13 +11,11 @@ import EventKit
 
 class DayScheduleSurface: Surface {
 
-    override var type: String { return "dayScheduleSurface" }
+    override var type: String { return "daySchedule" }
 
-    private let eventStore = EKEventStore() // should do this once per app load instead... somewhere?
+    let entries = ComputedSurfaceProperty<[ScheduleEntry],DayScheduleSurface>(by: DayScheduleSurface.scheduleEntries)
 
-    let entries = ComputedProperty<[ScheduleEntry], DayScheduleSurface>("entries", DayScheduleSurface.scheduleEntries)
-
-    let day = ComputedProperty<DaySurface, DayScheduleSurface>("day", DayScheduleSurface.daySurface)
+    let day = ComputedSurfaceProperty<DaySurface,DayScheduleSurface>(by: DayScheduleSurface.daySurface)
 
     var numberOfEntries: Int {
         return entries.value.count
@@ -46,8 +44,4 @@ class DayScheduleSurface: Surface {
         if day.intId == today.id - 1 { return "Yesterday (\(weekday))" }
         return weekday
     }
-//
-//    var subtitle: String {
-//
-//    }
 }
