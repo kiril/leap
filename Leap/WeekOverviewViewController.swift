@@ -22,13 +22,26 @@ class WeekOverviewViewController: UIViewController, StoryboardLoadable {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setupDays()
+    }
 
+    private func setupDays() {
         for (index, button) in dayButtons.enumerated() {
-            let title = surface?.days[index].overviewDescription
+            guard let day = surface?.days[index] else { continue }
+            let title = day.overviewDescription
             button.setTitle(title, for: .normal)
             button.addTarget(self,
                              action: #selector(didTapButton(sender:)),
                              for: .touchUpInside)
+
+            switch day.happensIn {
+            case .current:
+                break
+            case .future:
+                button.setTitleColor(UIColor.black, for: .normal)
+            case .past:
+                button.setTitleColor(UIColor.gray, for: .normal)
+            }
         }
     }
 
