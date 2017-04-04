@@ -102,7 +102,15 @@ class EventSurface: Surface {
     }
 
     static func computeElapsed(event: EventSurface) -> Float {
-        return 0.0 // TODO: calcualte elapsed time
+        let now = Date()
+
+        if Calendar.current.isDate(now, after: event.endTime.value) {
+            return 1.0
+        } else if Calendar.current.isDate(now, before: event.startTime.value) {
+            return 0.0
+        } else {
+            return Float(now.seconds(since: event.startTime.value))/Float(event.endTime.value.seconds(since: event.startTime.value))
+        }
     }
 
     static func formatInvitationSummary(event: EventSurface) -> String {

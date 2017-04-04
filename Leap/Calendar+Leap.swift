@@ -58,4 +58,22 @@ extension Calendar {
         }
         return self.date(from: components)!
     }
+
+    func isDate(_ a: Date, before b: Date) -> Bool {
+        switch compare(a, to: b, toGranularity: .minute) {
+        case .orderedAscending:
+            return true
+        default:
+            return false
+        }
+    }
+
+    func isDate(_ a: Date, after b: Date) -> Bool {
+        switch compare(a, to: b, toGranularity: .minute) {
+        case .orderedDescending:
+            return true
+        default:
+            return false
+        }
+    }
 }

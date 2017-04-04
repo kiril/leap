@@ -38,6 +38,25 @@ class CalendarTests: XCTestCase {
         XCTAssertEqual(calendar.formatDisplayTime(from: date, needsAMPM: false), "9:05")
         XCTAssertEqual(calendar.formatDisplayTime(from: date, needsAMPM: true), "9:05pm")
     }
+
+    func testConvenientComparison() {
+        let a = Calendar.current.todayAt(hour: 9, minute: 0)
+        let b = Calendar.current.todayAt(hour: 10, minute: 0)
+        XCTAssertTrue(Calendar.current.isDate(a, before: b))
+        XCTAssertTrue(Calendar.current.isDate(b, after: a))
+
+
+        let c = Calendar.current.todayAt(hour: 9, minute: 0)
+        let d = Calendar.current.todayAt(hour: 9, minute: 0)
+        XCTAssertFalse(Calendar.current.isDate(c, before: d))
+        XCTAssertFalse(Calendar.current.isDate(c, after: d))
+
+
+        let e = Calendar.current.todayAt(hour: 9, minute: 0)
+        let f = Calendar.current.todayAt(hour: 9, minute: 1)
+        XCTAssertTrue(Calendar.current.isDate(e, before: f))
+        XCTAssertTrue(Calendar.current.isDate(f, after: e))
+    }
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
