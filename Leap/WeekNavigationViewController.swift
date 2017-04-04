@@ -122,7 +122,7 @@ class WeekNavigationViewController: UIViewController, StoryboardLoadable {
     private func setupNavigation() {
         let titleNib = UINib(nibName: "DayScheduleTitleView", bundle: nil)
         titleView = titleNib.instantiate(withOwner: nil, options: nil).first as! DayScheduleTitleView
-        titleView.subtitleLabel.text = "Hello"
+        titleView.subtitleLabel.text = "This Week"
         titleView.titleLabel.text = "Dec 3 - Dec 9, 2017"
 
         let arrowNib = UINib(nibName: "NavigationToggleArrowView", bundle: nil)
