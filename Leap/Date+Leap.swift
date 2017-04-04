@@ -16,4 +16,8 @@ extension Date {
     var secondsSinceReferenceDate: Int {
         return Int(self.timeIntervalSinceReferenceDate)
     }
+
+    func seconds(since date: Date) -> Int {
+        return secondsSinceReferenceDate - date.secondsSinceReferenceDate
+    }
 }

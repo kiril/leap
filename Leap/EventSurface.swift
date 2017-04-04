@@ -79,11 +79,38 @@ class EventSurface: Surface {
     }
 
     static func eventTimeRange(event: EventSurface) -> String {
-        return "10am-2pm" // TODO: actually do this
+        let start = event.startTime.value
+        let end = event.endTime.value
+
+        let calendar = Calendar.current
+        let startHour = calendar.component(.hour, from: start)
+        let endHour = calendar.component(.hour, from: end)
+
+        let spansDays = calendar.areOnDifferentDays(start, end)
+        let crossesNoon = spansDays || ( startHour < 12 && endHour >= 12 )
+
+        let from = calendar.formatDisplayTime(from: start, needsAMPM: crossesNoon)
+        let to = calendar.formatDisplayTime(from: end, needsAMPM: true)
+        var more = ""
+        if spansDays {
+            let days = calendar.daysBetween(start, and: end)
+            let ess = days == 1 ? "" : "s"
+            more = " \(days) day\(ess) later"
+        }
+
+        return "\(from)-\(to)\(more)"
     }
 
     static func computeElapsed(event: EventSurface) -> Float {
-        return 0.0 // TODO: calcualte elapsed time
+        let now = Date()
+
+        if Calendar.current.isDate(now, after: event.endTime.value) {
+            return 1.0
+        } else if Calendar.current.isDate(now, before: event.startTime.value) {
+            return 0.0
+        } else {
+            return Float(now.seconds(since: event.startTime.value))/Float(event.endTime.value.seconds(since: event.startTime.value))
+        }
     }
 
     static func formatInvitationSummary(event: EventSurface) -> String {

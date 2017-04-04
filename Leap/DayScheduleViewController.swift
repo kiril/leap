@@ -80,7 +80,7 @@ extension DayScheduleViewController {
         var tmpEvent: EventSurface!
 
         tmpEvent = EventSurface(mockData: [
-            "time_range": "8 - 9am",
+            "timeRange": "8 - 9am",
             "title": "Breakfast with John",
             "perspective": TimePerspective.past,
             "unresolved": false
@@ -88,7 +88,7 @@ extension DayScheduleViewController {
         entries.append(ScheduleEntry.from(event: tmpEvent))
 
         tmpEvent = EventSurface(mockData: [
-            "time_range": "10:30am - 12:30am",
+            "timeRange": "10:30am - 12:30am",
             "title": "Important Meeting",
             "perspective": TimePerspective.current,
             "invitation_summary": "Eric Skiff ➝ You and 3 others",
@@ -98,7 +98,7 @@ extension DayScheduleViewController {
         entries.append(ScheduleEntry.from(event: tmpEvent))
 
         tmpEvent = EventSurface(mockData: [
-            "time_range": "3 - 4:30pm",
+            "timeRange": "3 - 4:30pm",
             "title": "Afternoon Meeting with a very long title this is a long title how big is it?! SO BIG",
             "perspective": TimePerspective.future,
             "unresolved": false
@@ -107,7 +107,7 @@ extension DayScheduleViewController {
 
 
         tmpEvent = EventSurface(mockData: [
-            "time_range": "7 - 11:30pm",
+            "timeRange": "7 - 11:30pm",
             "title": "PARTY TIME 🎉",
             "perspective": TimePerspective.future,
             "invitation_summary": "Elizabeth Ricca ➝ You and 23 others",

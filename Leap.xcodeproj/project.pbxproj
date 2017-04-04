@@ -68,6 +68,10 @@
 		FB39ADAF1E8EC6B700B79A7B /* TestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADAE1E8EC6B700B79A7B /* TestUtil.swift */; };
 		FB39ADB11E92B9F400B79A7B /* Ignorance.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADB01E92B9F400B79A7B /* Ignorance.swift */; };
 		FB39ADB31E92D40800B79A7B /* Date+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADB21E92D40800B79A7B /* Date+Leap.swift */; };
+		FB39ADB51E93EF2D00B79A7B /* Calendar+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADB41E93EF2D00B79A7B /* Calendar+Leap.swift */; };
+		FB39ADB71E93F1EA00B79A7B /* CalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADB61E93F1EA00B79A7B /* CalendarTests.swift */; };
+		FB39ADB91E94067200B79A7B /* EventSurfaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADB81E94067200B79A7B /* EventSurfaceTests.swift */; };
+		FB39ADBB1E9407FF00B79A7B /* Int+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADBA1E9407FF00B79A7B /* Int+Leap.swift */; };
 		FB4208471E857984007F4DBD /* Recurrence.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208461E857984007F4DBD /* Recurrence.swift */; };
 		FB4208491E8579D0007F4DBD /* Auditable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208481E8579D0007F4DBD /* Auditable.swift */; };
 		FB42084B1E857DAF007F4DBD /* Participant.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42084A1E857DAF007F4DBD /* Participant.swift */; };
@@ -191,6 +195,10 @@
 		FB39ADAE1E8EC6B700B79A7B /* TestUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestUtil.swift; sourceTree = "<group>"; };
 		FB39ADB01E92B9F400B79A7B /* Ignorance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ignorance.swift; sourceTree = "<group>"; };
 		FB39ADB21E92D40800B79A7B /* Date+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Leap.swift"; sourceTree = "<group>"; };
+		FB39ADB41E93EF2D00B79A7B /* Calendar+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Calendar+Leap.swift"; sourceTree = "<group>"; };
+		FB39ADB61E93F1EA00B79A7B /* CalendarTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarTests.swift; sourceTree = "<group>"; };
+		FB39ADB81E94067200B79A7B /* EventSurfaceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventSurfaceTests.swift; sourceTree = "<group>"; };
+		FB39ADBA1E9407FF00B79A7B /* Int+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+Leap.swift"; sourceTree = "<group>"; };
 		FB4208461E857984007F4DBD /* Recurrence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recurrence.swift; sourceTree = "<group>"; };
 		FB4208481E8579D0007F4DBD /* Auditable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auditable.swift; sourceTree = "<group>"; };
 		FB42084A1E857DAF007F4DBD /* Participant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Participant.swift; sourceTree = "<group>"; };
@@ -368,6 +376,8 @@
 				8351BDCC1E7C596C001221AF /* GregorianDay.swift */,
 				83A72D731E82DAE0005EB213 /* TimePerspective.swift */,
 				FB39ADB21E92D40800B79A7B /* Date+Leap.swift */,
+				FB39ADB41E93EF2D00B79A7B /* Calendar+Leap.swift */,
+				FB39ADBA1E9407FF00B79A7B /* Int+Leap.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -582,6 +592,8 @@
 				FB8BB6221E89A76A00A30315 /* EventKitMigrationTests.swift */,
 				FB39ADAC1E8EC5A800B79A7B /* BridgeTest.swift */,
 				FB39ADAE1E8EC6B700B79A7B /* TestUtil.swift */,
+				FB39ADB61E93F1EA00B79A7B /* CalendarTests.swift */,
+				FB39ADB81E94067200B79A7B /* EventSurfaceTests.swift */,
 			);
 			path = LeapTests;
 			sourceTree = "<group>";
@@ -914,6 +926,7 @@
 				FB42084D1E857F7C007F4DBD /* Person.swift in Sources */,
 				FB4208681E897997007F4DBD /* EventTemplate.swift in Sources */,
 				FB4208571E85A168007F4DBD /* GeoFence.swift in Sources */,
+				FB39ADBB1E9407FF00B79A7B /* Int+Leap.swift in Sources */,
 				FB166B5C1E8AC3CA00CB95EC /* Fetchable.swift in Sources */,
 				FB166B5E1E8AC6DB00CB95EC /* ModelReference.swift in Sources */,
 				833617781E8C4756009A97FF /* StoryboardLoadable.swift in Sources */,
@@ -926,6 +939,7 @@
 				FBB4BFD81E8ACED1001679BF /* Operation.swift in Sources */,
 				8351BDD11E807C4C001221AF /* WeekOverviewSurface.swift in Sources */,
 				831444CC1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift in Sources */,
+				FB39ADB51E93EF2D00B79A7B /* Calendar+Leap.swift in Sources */,
 				FB4208701E89855D007F4DBD /* Group.swift in Sources */,
 				FB39ADB31E92D40800B79A7B /* Date+Leap.swift in Sources */,
 				FB2046A81E82E28800F130C8 /* EKCalendar+Realm.swift in Sources */,
@@ -981,6 +995,8 @@
 				83B5DB701E91D7F400A0CA7E /* (null) in Sources */,
 				FB8BB6231E89A76A00A30315 /* EventKitMigrationTests.swift in Sources */,
 				FBD1045F1E80717E00DDF65B /* SurfaceTests.swift in Sources */,
+				FB39ADB91E94067200B79A7B /* EventSurfaceTests.swift in Sources */,
+				FB39ADB71E93F1EA00B79A7B /* CalendarTests.swift in Sources */,
 				FB39ADAF1E8EC6B700B79A7B /* TestUtil.swift in Sources */,
 				83B5DB721E91D7F400A0CA7E /* (null) in Sources */,
 				83B5DBEE1E91E4CC00A0CA7E /* GregorianDayTests.swift in Sources */,
