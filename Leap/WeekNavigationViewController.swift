@@ -8,9 +8,14 @@
 
 import UIKit
 
+protocol WeekNavigationViewControllerDelegate: class {
+    func didSelectDay(dayId: String, on: WeekNavigationViewController)
+}
+
 class WeekNavigationViewController: UIViewController, StoryboardLoadable {
 
     var titleView: DayScheduleTitleView!
+    weak var delegate: WeekNavigationViewControllerDelegate?
 
     @IBOutlet weak var weekNavContainerView: UIView!
     @IBOutlet weak var navigationBarUnderlay: UIView!
@@ -23,7 +28,7 @@ class WeekNavigationViewController: UIViewController, StoryboardLoadable {
     var selectedDayId: String = String(Calendar.current.today.id)
 
     var weekOverviewPageViewController: UIPageViewController!
-    private lazy var weekOverviewPageViewDataSource = WeekOverviewPageViewDataSource()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -68,10 +73,10 @@ class WeekNavigationViewController: UIViewController, StoryboardLoadable {
 
     private func setupWeekOverviewPageViewController() {
         weekOverviewPageViewController = UIPageViewController(transitionStyle: .scroll,
-                                                              navigationOrientation: .horizontal,
+                                                              navigationOrientation: .vertical,
                                                               options: nil)
 
-        weekOverviewPageViewController.dataSource = weekOverviewPageViewDataSource
+        weekOverviewPageViewController.dataSource = self
         weekOverviewPageViewController.delegate = self
         
         addChildViewController(weekOverviewPageViewController)
@@ -91,6 +96,7 @@ class WeekNavigationViewController: UIViewController, StoryboardLoadable {
         let initialWeek = WeekOverviewSurface(containingDayId: selectedDayId)
         let initialWeekVC = WeekOverviewViewController.loadFromStoryboard()
         initialWeekVC.surface = initialWeek
+        initialWeekVC.delegate = self
         weekOverviewPageViewController.setViewControllers([initialWeekVC],
                                                           direction: .forward,
                                                           animated: false, completion: nil)
@@ -116,7 +122,7 @@ class WeekNavigationViewController: UIViewController, StoryboardLoadable {
     private func setupNavigation() {
         let titleNib = UINib(nibName: "DayScheduleTitleView", bundle: nil)
         titleView = titleNib.instantiate(withOwner: nil, options: nil).first as! DayScheduleTitleView
-        titleView.subtitleLabel.text = ""
+        titleView.subtitleLabel.text = "Hello"
         titleView.titleLabel.text = "Dec 3 - Dec 9, 2017"
 
         let arrowNib = UINib(nibName: "NavigationToggleArrowView", bundle: nil)
@@ -144,42 +150,44 @@ class WeekNavigationViewController: UIViewController, StoryboardLoadable {
 
 extension WeekNavigationViewController: UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController,
-                            didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+                            didFinishAnimating finished: Bool,
+                            previousViewControllers: [UIViewController],
+                            transitionCompleted completed: Bool) {
         updateTitleFor(vc: pageViewController.viewControllers?.first as! WeekOverviewViewController)
     }
 
     fileprivate func updateTitleFor(vc: WeekOverviewViewController) {
         titleView.titleLabel.text = vc.surface?.titleForWeek
+        titleView.subtitleLabel.text = vc.surface?.weekRelativeDescription
         titleView.setNeedsLayout()
     }
 }
 
-extension UIPageViewController {
-    func turnPage(direction: UIPageViewControllerNavigationDirection = .forward,
-                  animated: Bool = true) {
-        guard   let previousViewControllers = viewControllers,
-                let currentPage = previousViewControllers.first else { return }
+extension WeekNavigationViewController: UIPageViewControllerDataSource {
+    func pageViewController(_ pageViewController: UIPageViewController,
+                            viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        let indexVC = viewController as! WeekOverviewViewController
+        return viewControllerFor(surface: indexVC.surface?.weekAfter)
+    }
 
-        var nextVC: UIViewController?
+    func pageViewController(_ pageViewController: UIPageViewController,
+                            viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        let indexVC = viewController as! WeekOverviewViewController
+        return viewControllerFor(surface: indexVC.surface?.weekBefore)
+    }
 
-        switch direction {
-        case .forward:
-            nextVC = dataSource?.pageViewController(self, viewControllerAfter: currentPage)
-        case .reverse:
-            nextVC = dataSource?.pageViewController(self, viewControllerBefore: currentPage)
-        }
+    private func viewControllerFor(surface: WeekOverviewSurface?) -> UIViewController? {
+        guard let surface = surface else { return nil }
+        let vc = WeekOverviewViewController.loadFromStoryboard()
+        vc.surface = surface
+        vc.delegate = self
+        return vc
+    }
+}
 
-        guard let next = nextVC else { return }
-
-        setViewControllers([next],
-                           direction: direction,
-                           animated: animated) { finished in
-
-            self.delegate?.pageViewController?(self, didFinishAnimating: finished,
-                                              previousViewControllers: previousViewControllers,
-                                              transitionCompleted: finished)
-        }
-
-
+extension WeekNavigationViewController: WeekOverviewViewControllerDelegate {
+    func didSelectDay(dayId: String, on: WeekOverviewViewController) {
+        delegate?.didSelectDay(dayId: dayId,
+                               on: self)
     }
 }

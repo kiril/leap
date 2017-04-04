@@ -25,7 +25,7 @@ class InitialViewController: UIViewController {
     }
 
     private func presentCalendarViewController() {
-        let (navVC,_) = CalendarCollectionViewController.loadFromStoryboardWithNavController()
+        let (navVC,_) = DayNavigationViewController.loadFromStoryboardWithNavController()
 
         self.present(navVC,
                      animated: true,

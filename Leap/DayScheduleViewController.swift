@@ -12,19 +12,14 @@ import EventKit
 
 private let reuseIdentifier = "EventViewCell"
 
-class CalendarCollectionViewController: UICollectionViewController, StoryboardLoadable {
+class DayScheduleViewController: UICollectionViewController, StoryboardLoadable {
 
-    static var storyboardName: String {
-        return "LocalCalendar"
-    }
-
-    let scheduleViewModel = CalendarCollectionViewController.mockedEntries()
+    var surface: DayScheduleSurface!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupCollectionView()
-        setupNavigation()
     }
 
     private func setupCollectionView() {
@@ -37,36 +32,6 @@ class CalendarCollectionViewController: UICollectionViewController, StoryboardLo
         self.collectionView!.alwaysBounceVertical = true
     }
 
-    private func setupNavigation() {
-        let titleNib = UINib(nibName: "DayScheduleTitleView", bundle: nil)
-        let titleView = titleNib.instantiate(withOwner: nil, options: nil).first as! UIView
-
-        let arrowNib = UINib(nibName: "NavigationToggleArrowView", bundle: nil)
-        let arrowView = arrowNib.instantiate(withOwner: nil, options: nil).first as! UIView
-
-        navigationItem.leftBarButtonItems = [
-            barButtonItemFor(navView: arrowView),
-            barButtonItemFor(navView: titleView)
-        ]
-    }
-
-    private func barButtonItemFor(navView view: UIView) -> UIBarButtonItem {
-        view.translatesAutoresizingMaskIntoConstraints = false
-        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapNavigation))
-        view.addGestureRecognizer(tap)
-
-        return UIBarButtonItem(customView: view)
-    }
-
-    @objc private func didTapNavigation() {
-        let (navVC, _) = WeekNavigationViewController.loadFromStoryboardWithNavController()
-
-        navVC.modalPresentationStyle = .overCurrentContext
-        navVC.modalTransitionStyle = .crossDissolve
-
-        present(navVC, animated: true, completion: nil)
-    }
-
     // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -74,7 +39,7 @@ class CalendarCollectionViewController: UICollectionViewController, StoryboardLo
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return scheduleViewModel.entries.value.count
+        return surface.entries.value.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -83,7 +48,7 @@ class CalendarCollectionViewController: UICollectionViewController, StoryboardLo
 
         // Configure the cell
 
-        let entry = scheduleViewModel.entries.value[indexPath.row]
+        let entry = surface.entries.value[indexPath.row]
 
         switch entry {
         case .event(let event):
@@ -107,8 +72,8 @@ class CalendarCollectionViewController: UICollectionViewController, StoryboardLo
 
 }
 
-extension CalendarCollectionViewController {
-    static func mockedEntries() -> DayScheduleSurface {
+extension DayScheduleViewController {
+    static func mockedEntriesFor(dayId: String) -> DayScheduleSurface {
         // mocking out entries
 
         var entries = [ScheduleEntry]()
@@ -150,13 +115,8 @@ extension CalendarCollectionViewController {
         ])
         entries.append(ScheduleEntry.from(event: tmpEvent))
 
-
-        return DayScheduleSurface(mockData: ["entries": entries])
+        let daySurface = DaySurface(id: dayId)
+        return DayScheduleSurface(mockData: ["entries": entries,
+                                             "day":daySurface])
     }
-}
-
-extension CalendarCollectionViewController: UICollectionViewDelegateFlowLayout {
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-//        return UIEdgeInsets(top: 0.0, left: 15.0, bottom: 0.0, right: 15.0)
-//    }
 }
