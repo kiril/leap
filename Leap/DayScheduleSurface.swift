@@ -22,7 +22,10 @@ class DayScheduleSurface: Surface {
     }
 
     private static func scheduleEntries(schedule: DayScheduleSurface) -> [ScheduleEntry] {
-        return [ScheduleEntry]()
+        let start = Calendar.current.startOfDay(for: schedule.day.value.gregorianDay)
+        let end = Calendar.current.startOfDay(for: schedule.day.value.gregorianDay.dayAfter)
+        let events = Event.between(start, and: end)
+        return events.map { event in return ScheduleEntry.from(eventId: event.id) }
     }
 
     private static func daySurface(schedule: DayScheduleSurface) -> DaySurface {

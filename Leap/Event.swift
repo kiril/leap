@@ -57,8 +57,8 @@ class Event: _TemporalBase, Temporality {
         return Double(self.endTime - self.startTime)/1000.0
     }
 
-    static func range(starting: Date, before: Date) -> Results<Event> {
-        let predicate = NSPredicate(format: "startTime >= %@ AND startTime < %@", starting as NSDate, before as NSDate)
+    static func between(_ starting: Date, and before: Date) -> Results<Event> {
+        let predicate = NSPredicate(format: "startTime >= %d AND startTime < %d", starting.secondsSinceReferenceDate, before.secondsSinceReferenceDate)
         return Realm.user().objects(Event.self).filter(predicate)
     }
 }
