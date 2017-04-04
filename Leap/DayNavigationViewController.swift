@@ -120,9 +120,9 @@ extension DayNavigationViewController: WeekNavigationViewControllerDelegate {
 
         daySchedulePageViewController.setViewControllers([dayVC],
                                                          direction: direction,
-                                                         animated: true) { (finished) in
-            self.updateTitleFor(vc: dayVC)
-        }
+                                                         animated: true)
+        updateTitleFor(vc: dayVC)
+
         dismiss(animated: true)
     }
 }
