@@ -33,4 +33,29 @@ extension Calendar {
 
         return ay != by || am != bm || ad != bd
     }
+
+    func daysBetween(_ a: Date, and b: Date) -> Int {
+        let aYear = component(Calendar.Component.year, from: a)
+        let aDayOfYear = ordinality(of: Calendar.Component.day, in: Calendar.Component.year, for: a)!
+
+        let bYear = component(Calendar.Component.year, from: b)
+        let bDayOfYear = ordinality(of: Calendar.Component.day, in: Calendar.Component.year, for: b)!
+
+        return ((bYear - aYear) * 365) + (bDayOfYear - aDayOfYear)
+    }
+
+    func todayAt(hour: Int, minute: Int) -> Date {
+        return self.date(bySettingHour: hour, minute: minute, second: 0, of: Date())!
+    }
+
+    func todayAtRandom(after: Date? = nil) -> Date {
+        var components: DateComponents!
+        if let after = after {
+            let atLeastHour = self.component(Calendar.Component.hour, from: after)
+            components = DateComponents(hour: atLeastHour+Int.random(24-atLeastHour-1)+1, minute: Int.random(60))
+        } else {
+            components = DateComponents(hour: Int.random(24), minute: Int.random(60))
+        }
+        return self.date(from: components)!
+    }
 }
