@@ -76,16 +76,16 @@ extension EKParticipant {
         if self.isCurrentUser {
             person = Person.me()
             if person == nil {
-                let data: [String:Any?] = ["isMe": true, "url": self.url]
+                let data: [String:Any?] = ["isMe": true, "url": self.url.absoluteString]
                 person = Person(value: data)
                 person!.setNameComponents(from: self.name)
             }
         } else {
-            person = realm.objects(Person.self).filter("url = '\(self.url)'").first
+            person = realm.objects(Person.self).filter("url = '\(self.url.absoluteString)'").first
         }
 
         if person == nil {
-            let data: [String:Any?] = ["url": self.url]
+            let data: [String:Any?] = ["url": self.url.absoluteString]
             person = Person(value: data)
             person!.setNameComponents(from: self.name)
         }

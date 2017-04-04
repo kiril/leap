@@ -21,12 +21,12 @@ func syncEventSearchCallback(for calendar: LegacyCalendar) -> EKEventSearchCallb
         case let event as Event:
             event.calendar = calendar
             try! realm.write {
-                realm.add(event)
+                realm.add(event, update: true)
             }
         case let reminder as Reminder:
             reminder.calendar = calendar
             try! realm.write {
-                realm.add(reminder)
+                realm.add(reminder, update: true)
             }   
         default:
             return
