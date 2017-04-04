@@ -65,6 +65,8 @@ class WeekNavigationViewController: UIViewController, StoryboardLoadable {
 
         previousNavArrow.textColor = UIColor.projectDarkerGray
         nextNavArrow.textColor = UIColor.projectDarkerGray
+
+        applyShadow()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -73,7 +75,7 @@ class WeekNavigationViewController: UIViewController, StoryboardLoadable {
 
     private func setupWeekOverviewPageViewController() {
         weekOverviewPageViewController = UIPageViewController(transitionStyle: .scroll,
-                                                              navigationOrientation: .vertical,
+                                                              navigationOrientation: .horizontal,
                                                               options: nil)
 
         weekOverviewPageViewController.dataSource = self
@@ -140,6 +142,16 @@ class WeekNavigationViewController: UIViewController, StoryboardLoadable {
                                             action: #selector(goToToday))
 
         navigationItem.rightBarButtonItem = goToTodayItem
+    }
+
+    private func applyShadow() {
+        let shadowPath = UIBezierPath(rect: weekNavContainerView.bounds)
+        weekNavContainerView.layer.masksToBounds = false;
+        weekNavContainerView.layer.shadowColor = UIColor.black.cgColor
+        weekNavContainerView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        weekNavContainerView.layer.shadowPath = shadowPath.cgPath
+        weekNavContainerView.layer.shadowOpacity = 0.3
+        weekNavContainerView.layer.shadowRadius = 3
     }
 
     @objc private func goToToday() {
