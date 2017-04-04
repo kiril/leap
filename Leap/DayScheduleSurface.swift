@@ -47,4 +47,10 @@ class DayScheduleSurface: Surface {
         if day.intId == today.id - 1 { return "Yesterday (\(weekday))" }
         return weekday
     }
+
+    static func load(dayId: Int) -> DayScheduleSurface {
+        let surface = DayScheduleSurface(id: String(dayId))
+        //let bridge = SurfaceQueryBridge(query)
+        return surface
+    }
 }

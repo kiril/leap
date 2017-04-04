@@ -52,7 +52,7 @@ class EventSurface: Surface {
      * Actually ignores on the underlying event, which should propagate back up.
      */
     func ignore() {
-        guard let bridge = self.store as? SurfaceBridge,
+        guard let bridge = self.store as? SurfaceModelBridge,
             let event = bridge.dereference("event") as? Event else {
             fatalError("No backing bridge")
         }
@@ -62,7 +62,7 @@ class EventSurface: Surface {
     }
 
     func stopIgnoring() {
-        if let bridge = self.store as? SurfaceBridge,
+        if let bridge = self.store as? SurfaceModelBridge,
             let event = bridge.dereference("event") as? Event,
             let ignorance = Ignorance.of(event, by: event.me!.person!) {
             ignorance.delete()
@@ -123,7 +123,7 @@ class EventSurface: Surface {
         }
 
         let surface = EventSurface(id: eventId)
-        let bridge = SurfaceBridge(id: eventId)
+        let bridge = SurfaceModelBridge(id: eventId)
         bridge.reference(event, as: "event")
         bridge.bind(surface.title)
         func getStartTime(model:LeapModel) -> Any? {

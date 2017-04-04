@@ -1,5 +1,5 @@
 //
-//  SurfaceBridge.swift
+//  SurfaceModelBridge.swift
 //  Leap
 //
 //  Created by Kiril Savino on 3/29/17.
@@ -15,7 +15,7 @@ typealias ModelSetter = (LeapModel, Any?) -> Void
 
 let setNothing = { (model:LeapModel, value:Any?) in return }
 
-class SurfaceBridge: BackingStore {
+class SurfaceModelBridge: BackingStore {
 
     let sourceId: String
 
@@ -34,8 +34,19 @@ class SurfaceBridge: BackingStore {
         return nil
     }
 
+    func dereference(_ name: String, index: Int) -> LeapModel? {
+        if let query = references[name] as? Results {
+            return query[index] as? LeapModel
+        }
+        return nil
+    }
+
     func reference<Model:LeapModel>(_ model: Model, as name: String) where Model:Fetchable {
         references[name] = refer(to: model, as: name)
+    }
+
+    func reference<Model>(_ query: Results<Model>, as name: String) {
+        references[name] = query
     }
 
     func addReferenceDirectly(_ reference: Reference) {
@@ -55,6 +66,9 @@ class SurfaceBridge: BackingStore {
     }
 
     func bind(_ property: Property, populateWith get: @escaping ModelGetter, on model: String, persistWith set: @escaping ModelSetter) {
+        guard references[model] is Reference else {
+            fatalError("Can't bind a Reference-type value to \(String(describing:references[model])) type '\(model)'")
+        }
         bindings[property.key] = (model, get, set)
     }
 
@@ -77,9 +91,14 @@ class SurfaceBridge: BackingStore {
     func populate(_ surface: Surface) {
         var data: ModelData = [:]
         for (key, (sourceName, getFromModel, _)) in bindings {
-            if let model = dereference(sourceName),
-                let value = getFromModel(model) {
-                data[key] = value
+            let source = references[sourceName]
+            if source is Reference {
+            } else if source is Results {
+            }
+            if let model = dereference(sourceName) {
+                if let value = getFromModel(model) {
+                    data[key] = value
+                }
             }
         }
         try! surface.update(data: data, via: self)
@@ -100,5 +119,28 @@ class SurfaceBridge: BackingStore {
             }
         }
         return mutated
+    }
+}
+
+
+protocol ModelLoadable {
+    static func load(fromModel: LeapModel) -> Self
+    static func load(byId id: String) -> Self
+}
+
+
+class QueryBridge<Model:LeapModel,SomeSurface:Surface> where SomeSurface:ModelLoadable  {
+    let query: Results<Model>
+
+    init(_ query: Results<Model>) {
+        self.query = query
+    }
+
+    var all: [SomeSurface] {
+        var results: [SomeSurface] = []
+        for object:Model in query {
+            results.append(SomeSurface.load(fromModel: object))
+        }
+        return results
     }
 }
