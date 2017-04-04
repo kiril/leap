@@ -22,8 +22,8 @@ enum EventModality: String {
  * Here's our core!
  */
 class Event: _TemporalBase, Temporality {
-    dynamic var startTime: Date? = nil
-    dynamic var endTime: Date? = nil
+    dynamic var startTime: Int = 0
+    dynamic var endTime: Int = 0
     dynamic var locationString: String? = nil
     dynamic var legacyTimeZone: TimeZone?
     dynamic var modalityString: String = EventModality.unknown.rawValue
@@ -45,35 +45,20 @@ class Event: _TemporalBase, Temporality {
         set { modalityString = newValue.rawValue }
     }
 
-    var date: Date? { return self.startTime }
+    var date: Date? { return Date(timeIntervalSinceReferenceDate: Double(self.startTime)/1000.0) }
+    var startDate: Date { return Date(timeIntervalSinceReferenceDate: Double(self.startTime)/1000.0) }
+    var endDate: Date { return Date(timeIntervalSinceReferenceDate: Double(self.endTime)/1000.0) }
 
     override static func indexedProperties() -> [String] {
         return ["venue", "room", "startTime", "participants"]
     }
 
     var duration: TimeInterval {
-        guard let end = endTime, let start = startTime else {
-            return 0.0
-        }
-        return end.timeIntervalSince(start)
+        return Double(self.endTime - self.startTime)/1000.0
     }
-
-    /*
-    static func by(id: String) -> Self? {
-        return Realm.user().objects(Event.self).filter("id = %@", id).first
-    }
- */
 
     static func range(starting: Date, before: Date) -> Results<Event> {
         let predicate = NSPredicate(format: "startTime >= %@ AND startTime < %@", starting as NSDate, before as NSDate)
         return Realm.user().objects(Event.self).filter(predicate)
     }
 }
-
-/*
-extension Fetchable where Self:Event {
-    static func by(id: String) -> Event? {
-        return fetch(id: id)
-    }
-}
- */

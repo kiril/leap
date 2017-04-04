@@ -31,8 +31,8 @@ extension EKEvent {
             "externalId": self.calendarItemExternalIdentifier,
             "title": self.title,
             "detail": self.notes,
-            "startTime": self.startDate,
-            "endTime": self.endDate,
+            "startTime": self.startDate.secondsSinceReferenceDate,
+            "endTime": self.endDate.secondsSinceReferenceDate,
             "locationString": self.location,
             "remoteCreated": self.creationDate,
             "remoteModified": self.lastModifiedDate,
@@ -86,7 +86,7 @@ extension EKEvent {
                                                    "locationString": event.locationString,
                                                    "modalityString": event.modalityString]
                 series!.template = EventTemplate(value: templateData)
-                series!.recurrence = rule.asRecurrence()
+                series!.recurrence = rule.asRecurrence(ofEvent: event)
             }
 
             if let series = series {

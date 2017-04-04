@@ -51,15 +51,15 @@ class SurfaceBridge: BackingStore {
         let keys = finalModelKey.components(separatedBy: ".")
         let get = { (model:LeapModel) in return model.getValue(forKeysRecursively: keys) }
         let set = { (model:LeapModel, value:Any?) in model.set(value: value, forKeyPath: finalModelKey); return }
-        _bind(property, populateWith: get, on: model, persistWith: set)
+        bind(property, populateWith: get, on: model, persistWith: set)
     }
 
-    func _bind(_ property: Property, populateWith get: @escaping ModelGetter, on model: String, persistWith set: @escaping ModelSetter) {
+    func bind(_ property: Property, populateWith get: @escaping ModelGetter, on model: String, persistWith set: @escaping ModelSetter) {
         bindings[property.key] = (model, get, set)
     }
 
     func readonlyBind(_ property: Property, to populate: @escaping ModelGetter, on model: String) {
-        _bind(property, populateWith: populate, on: model, persistWith: setNothing)
+        bind(property, populateWith: populate, on: model, persistWith: setNothing)
     }
 
     func readonlyBind(_ property: Property, to populate: @escaping ModelGetter) {
@@ -67,7 +67,7 @@ class SurfaceBridge: BackingStore {
             fatalError("Need to specify model to do lookup on when more than one model bound")
         }
         let model = references.keys.first!
-        _bind(property, populateWith: populate, on: model, persistWith: setNothing)
+        bind(property, populateWith: populate, on: model, persistWith: setNothing)
     }
 
     func bindAll(_ properties:Property...) {
@@ -86,11 +86,11 @@ class SurfaceBridge: BackingStore {
     }
 
     @discardableResult
-    func persist(_ surface: Surface) throws -> Bool {
+    func persist(_ surface: Surface) -> Bool {
         var mutated = false
         let realm = Realm.user()
 
-        try realm.write {
+        try! realm.write {
             for (key, (modelName, _, set)) in bindings {
                 if let value = surface.getValue(for: key), let model = dereference(modelName) {
                     set(model, value)

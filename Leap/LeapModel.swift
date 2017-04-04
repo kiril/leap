@@ -25,6 +25,27 @@ class LeapModel: Object, Auditable {
         set { statusString = newValue.rawValue }
     }
 
+    func delete() {
+        let realm = Realm.user()
+        try! realm.write {
+            realm.delete(self)
+        }
+    }
+
+    func insert() {
+        let realm = Realm.user()
+        try! realm.write {
+            realm.add(self)
+        }
+    }
+
+    func update() {
+        let realm = Realm.user()
+        try! realm.write {
+            realm.add(self, update: true)
+        }
+    }
+
     static func fetch<ModelType:Object>(id: String) -> ModelType? {
         return Realm.user().objects(ModelType.self).filter("id = %@", id).first
     }

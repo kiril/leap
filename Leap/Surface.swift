@@ -207,15 +207,7 @@ extension Surface: Updateable {
         data[key] = value
 
         if !silently {
-            self.purgeObservers()
-            for (observerSourceId, ref) in self.observers {
-                if let observer = ref.observer {
-                    if let source = source {
-                        guard observerSourceId != source.sourceId else { continue } // don't loop change notifications
-                    }
-                    observer.surfaceDidChange(self)
-                }
-            }
+            self.notifyObserversOfChange(via: source)
         }
     }
 
@@ -228,14 +220,18 @@ extension Surface: Updateable {
         data[key] = nil
 
         if !silently {
-            self.purgeObservers()
-            for(observerSourceId, ref) in self.observers {
-                if let observer = ref.observer {
-                    if let source = source {
-                        guard observerSourceId != source.sourceId else { continue }
-                    }
-                    observer.surfaceDidChange(self)
+            self.notifyObserversOfChange(via: source)
+        }
+    }
+
+    func notifyObserversOfChange(via source: SourceIdentifiable? = nil) {
+        self.purgeObservers()
+        for(observerSourceId, ref) in self.observers {
+            if let observer = ref.observer {
+                if let source = source {
+                    guard observerSourceId != source.sourceId else { continue }
                 }
+                observer.surfaceDidChange(self)
             }
         }
     }

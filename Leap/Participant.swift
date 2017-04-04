@@ -10,8 +10,6 @@ import Foundation
 import RealmSwift
 
 
-// TODO: what of resources? rooms?
-
 
 /**
  * How is this even on my radar?

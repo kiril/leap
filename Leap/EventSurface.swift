@@ -48,6 +48,28 @@ class EventSurface: Surface {
     let percentElapsed         = ComputedSurfaceFloat<EventSurface>(by: EventSurface.computeElapsed)
     let invitationSummary      = ComputedSurfaceString<EventSurface>(by: EventSurface.formatInvitationSummary)
 
+    /**
+     * Actually ignores on the underlying event, which should propagate back up.
+     */
+    func ignore() {
+        guard let bridge = self.store as? SurfaceBridge,
+            let event = bridge.dereference("event") as? Event else {
+            fatalError("No backing bridge")
+        }
+        if Ignorance.ignore(event, for: event.me!.person!) {
+            self.notifyObserversOfChange() // because the Ignorance model isn't referenced
+        }
+    }
+
+    func stopIgnoring() {
+        if let bridge = self.store as? SurfaceBridge,
+            let event = bridge.dereference("event") as? Event,
+            let ignorance = Ignorance.of(event, by: event.me!.person!) {
+            ignorance.delete()
+            self.notifyObserversOfChange()
+        }
+    }
+
     static func computeIsUnresolved(event: EventSurface) -> Bool {
         if event.userIsInvited.value, event.userInvitationResponse.value == .none {
             return true
@@ -55,7 +77,6 @@ class EventSurface: Surface {
             return false
         }
     }
-
 
     static func eventTimeRange(event: EventSurface) -> String {
         return "10am-2pm" // TODO: actually do this
@@ -74,12 +95,40 @@ class EventSurface: Surface {
             return nil
         }
 
-        let surface = EventSurface(id: event.id)
-        let bridge = SurfaceBridge(id: event.id)
+        let surface = EventSurface(id: eventId)
+        let bridge = SurfaceBridge(id: eventId)
         bridge.reference(event, as: "event")
-        bridge.bindAll(surface.title, surface.startTime, surface.endTime) // these are all default-bound to identical fields in the model
-        bridge.bind(surface.userIgnored)
-        bridge.bind(surface.userIsInvited)
+        bridge.bind(surface.title)
+        func getStartTime(model:LeapModel) -> Any? {
+            guard let event = model as? Event else {
+                fatalError("OMG wrong type or something \(model)")
+            }
+            return event.startDate
+        }
+        func setStartTime(model:LeapModel, value: Any?) {
+            guard let event = model as? Event, let date = value as? Date else {
+                fatalError("OMG wrong type or something \(model)")
+            }
+
+            event.startTime = date.secondsSinceReferenceDate
+        }
+        bridge.bind(surface.startTime, populateWith: getStartTime, on: "event", persistWith: setStartTime)
+        bridge.bindAll(surface.title, surface.startTime, surface.endTime)
+        bridge.readonlyBind(surface.userIgnored) { (model:LeapModel) in
+            guard let thing = model as? Temporality, let me = thing.me else {
+                return false
+            }
+            if let _ = Ignorance.of(thing, by: me.person!) {
+                return true
+            }
+            return false
+        }
+        bridge.readonlyBind(surface.userIsInvited) { (model:LeapModel) in
+            guard let thing = model as? Temporality, let me = thing.me else {
+                return false
+            }
+            return me.ownership == .invitee
+        }
         surface.store = bridge
         surface.populate()
         return surface
