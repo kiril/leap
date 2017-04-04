@@ -39,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let calendars = eventStore.legacyCalendars()
                 for calendar in calendars {
                     try! realm.write {
-                        realm.add(calendar)
+                        realm.add(calendar, update: true)
                     }
                     eventStore.syncPastEvents(forCalendar: calendar)
                 }
