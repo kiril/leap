@@ -133,6 +133,19 @@ class WeekNavigationViewController: UIViewController, StoryboardLoadable {
             barButtonItemFor(navView: arrowView),
             barButtonItemFor(navView: titleView)
         ]
+
+        let goToTodayItem = UIBarButtonItem(title: "Go to Today",
+                                            style: .done,
+                                            target: self,
+                                            action: #selector(goToToday))
+
+        navigationItem.rightBarButtonItem = goToTodayItem
+    }
+
+    @objc private func goToToday() {
+        delegate?.didSelectDay(dayId: String(Calendar.current.today.id),
+                               on: self)
+
     }
 
     private func barButtonItemFor(navView view: UIView) -> UIBarButtonItem {
