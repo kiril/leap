@@ -23,13 +23,13 @@ extension Calendar {
     }
 
     func areOnDifferentDays(_ a: Date, _ b: Date) -> Bool {
-        let ay = component(Calendar.Component.year, from: a)
-        let am = component(Calendar.Component.month, from: a)
-        let ad = component(Calendar.Component.day, from: a)
+        let ay = component(.year, from: a)
+        let am = component(.month, from: a)
+        let ad = component(.day, from: a)
 
-        let by = component(Calendar.Component.year, from: b)
-        let bm = component(Calendar.Component.month, from: b)
-        let bd = component(Calendar.Component.day, from: b)
+        let by = component(.year, from: b)
+        let bm = component(.month, from: b)
+        let bd = component(.day, from: b)
 
         return ay != by || am != bm || ad != bd
     }

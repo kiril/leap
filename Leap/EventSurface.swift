@@ -83,8 +83,8 @@ class EventSurface: Surface {
         let end = event.endTime.value
 
         let calendar = Calendar.current
-        let startHour = calendar.component(Calendar.Component.hour, from: start)
-        let endHour = calendar.component(Calendar.Component.hour, from: end)
+        let startHour = calendar.component(.hour, from: start)
+        let endHour = calendar.component(.hour, from: end)
 
         let spansDays = calendar.areOnDifferentDays(start, end)
         let crossesNoon = spansDays || ( startHour < 12 && endHour >= 12 )
@@ -93,7 +93,7 @@ class EventSurface: Surface {
         let to = calendar.formatDisplayTime(from: end, needsAMPM: true)
         var more = ""
         if spansDays {
-            let days = Calendar.current.daysBetween(start, and: end)
+            let days = calendar.daysBetween(start, and: end)
             let ess = days == 1 ? "" : "s"
             more = " \(days) day\(ess) later"
         }
