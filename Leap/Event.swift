@@ -58,7 +58,8 @@ class Event: _TemporalBase, Temporality {
     }
 
     static func between(_ starting: Date, and before: Date) -> Results<Event> {
-        let predicate = NSPredicate(format: "startTime >= %d AND startTime < %d", starting.secondsSinceReferenceDate, before.secondsSinceReferenceDate)
+        let predicate = NSPredicate(format: "(startTime >= %d AND startTime < %d) OR (endTime >= %d AND endTime <= %d)", starting.secondsSinceReferenceDate, before.secondsSinceReferenceDate, starting.secondsSinceReferenceDate, before.secondsSinceReferenceDate)
         return Realm.user().objects(Event.self).filter(predicate)
+        // TODO: also spanning this range??? (notes???)
     }
 }
