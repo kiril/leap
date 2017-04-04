@@ -667,7 +667,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0810;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Single Leap, Inc";
 				TargetAttributes = {
 					FBE0EFDF1DFBBB80007BD8DF = {
