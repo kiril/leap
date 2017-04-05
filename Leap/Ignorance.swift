@@ -19,9 +19,9 @@ class Ignorance: LeapModel {
         let query = realm.objects(Ignorance.self)
         switch thing {
         case let event as Event:
-            return query.filter("person = %@, event = %@", person, event).first
+            return query.filter("person = %@ AND event = %@", person, event).first
         case let reminder as Reminder:
-            return query.filter("person = %@, reminder = %@", person, reminder).first
+            return query.filter("person = %@ AND reminder = %@", person, reminder).first
         default:
             return nil
         }

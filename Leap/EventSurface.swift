@@ -129,7 +129,9 @@ class EventSurface: Surface, ModelLoadable {
         let surface = EventSurface(id: eventId)
         let bridge = SurfaceModelBridge(id: eventId)
         bridge.reference(event, as: "event")
+
         bridge.bind(surface.title)
+
         func getStartTime(model:LeapModel) -> Any? {
             guard let event = model as? Event else {
                 fatalError("OMG wrong type or something \(model)")
@@ -144,6 +146,7 @@ class EventSurface: Surface, ModelLoadable {
             event.startTime = date.secondsSinceReferenceDate
         }
         bridge.bind(surface.startTime, populateWith: getStartTime, on: "event", persistWith: setStartTime)
+
         func getEndTime(model:LeapModel) -> Any? {
             guard let event = model as? Event else {
                 fatalError("OMG wrong type or something \(model)")
@@ -158,7 +161,7 @@ class EventSurface: Surface, ModelLoadable {
             event.endTime = date.secondsSinceReferenceDate
         }
         bridge.bind(surface.endTime, populateWith: getEndTime, on: "event", persistWith: setEndTime)
-        bridge.bindAll(surface.title)
+
         bridge.readonlyBind(surface.userIgnored) { (model:LeapModel) in
             guard let thing = model as? Temporality, let me = thing.me else {
                 return false
@@ -168,12 +171,30 @@ class EventSurface: Surface, ModelLoadable {
             }
             return false
         }
+
         bridge.readonlyBind(surface.userIsInvited) { (model:LeapModel) in
             guard let thing = model as? Temporality, let me = thing.me else {
                 return false
             }
             return me.ownership == .invitee
         }
+
+        bridge.readonlyBind(surface.userInvitationResponse) { (model:LeapModel) in
+            guard let thing = model as? Temporality, let me = thing.me else {
+                return .none
+            }
+            switch me.engagement {
+            case .undecided, .none:
+                return InvitationResponse.none
+            case .engaged:
+                return InvitationResponse.yes
+            case .disengaged:
+                return InvitationResponse.no
+            case .tracking:
+                return InvitationResponse.maybe
+            }
+        }
+
         surface.store = bridge
         surface.populate()
         return surface

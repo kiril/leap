@@ -10,7 +10,7 @@ import Foundation
 
 class Reservation: LeapModel {
     dynamic var resource: Resource?
-    dynamic var startTime: Date?
-    dynamic var endTime: Date?
+    dynamic var startTime: Int = 0
+    dynamic var endTime: Int = 0
     dynamic var units: Int = 1
 }
