@@ -115,21 +115,21 @@ class SurfaceModelBridge: BackingStore {
         for (key, binding) in bindings {
 
             switch binding {
-            case .readwrite(let name, let get, let _):
+            case let .readwrite(name, get, _):
                 if let reference = references[name] as? Reference,
                     let model = reference.resolve(),
                 let value = get(model) {
                     data[key] = value
                 }
 
-            case .read(let name, let get):
+            case let .read(name, get):
                 if let reference = references[name] as? Reference,
                     let model = reference.resolve(),
                     let value = get(model) {
                     data[key] = value
                 }
 
-            case .array(let name):
+            case let .array(name):
                 if let query = references[name] as? ArrayMaterializable {
                     data[key] = query.materialize()
                 }
@@ -147,7 +147,7 @@ class SurfaceModelBridge: BackingStore {
         try! realm.write {
             for (key, binding) in bindings {
                 switch binding {
-                case .readwrite(let name, let _, let set):
+                case let .readwrite(name, _, set):
                     if let value = surface.getValue(for: key),
                         let model = dereference(name) {
                         set(model, value)
