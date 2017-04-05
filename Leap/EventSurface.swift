@@ -30,7 +30,7 @@ extension TimePerspective {
     }
 }
 
-class EventSurface: Surface {
+class EventSurface: Surface, ModelLoadable {
     override var type: String { return "event" }
 
     // validation
@@ -117,7 +117,11 @@ class EventSurface: Surface {
         return "" // TODO: format Invitation Summary
     }
 
-    static func load(eventId: String) -> EventSurface? {
+    static func load(fromModel event: LeapModel) -> Surface? {
+        return load(byId: event.id)
+    }
+
+    static func load(byId eventId: String) -> EventSurface? {
         guard let event:Event = Event.by(id: eventId) else {
             return nil
         }

@@ -18,7 +18,7 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
         guard let day = daySchedulePageViewController.viewControllers?.first as? DayScheduleViewController else {
             return nil
         }
-        return day.surface.day.value
+        return day.surface.day
     }
 
     var daySchedulePageViewController: UIPageViewController!
@@ -131,13 +131,13 @@ class DaySchedulePageViewDataSource: NSObject, UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController,
                             viewControllerAfter viewController: UIViewController) -> UIViewController? {
         let indexVC = viewController as! DayScheduleViewController
-        return viewControllerFor(surface: indexVC.surface.day.value.dayAfter)
+        return viewControllerFor(surface: indexVC.surface.day.dayAfter)
     }
 
     func pageViewController(_ pageViewController: UIPageViewController,
                             viewControllerBefore viewController: UIViewController) -> UIViewController? {
         let indexVC = viewController as! DayScheduleViewController
-        return viewControllerFor(surface: indexVC.surface.day.value.dayBefore)
+        return viewControllerFor(surface: indexVC.surface.day.dayBefore)
     }
 
     private func viewControllerFor(surface: DaySurface) -> UIViewController? {

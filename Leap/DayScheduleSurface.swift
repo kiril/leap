@@ -13,19 +13,14 @@ class DayScheduleSurface: Surface {
 
     override var type: String { return "daySchedule" }
 
-    let entries = ComputedSurfaceProperty<[ScheduleEntry],DayScheduleSurface>(by: DayScheduleSurface.scheduleEntries)
-
-    let day = ComputedSurfaceProperty<DaySurface,DayScheduleSurface>(by: DayScheduleSurface.daySurface)
-
-    var numberOfEntries: Int {
-        return entries.value.count
+    let events = SurfaceProperty<[EventSurface]>("events")
+    var day: DaySurface { return DaySurface(id: self.id) }
+    var entries: [ScheduleEntry] {
+        return events.value.map { event in ScheduleEntry.from(event: event) }
     }
 
-    private static func scheduleEntries(schedule: DayScheduleSurface) -> [ScheduleEntry] {
-        let start = Calendar.current.startOfDay(for: schedule.day.value.gregorianDay)
-        let end = Calendar.current.startOfDay(for: schedule.day.value.gregorianDay.dayAfter)
-        let events = Event.between(start, and: end)
-        return events.map { event in return ScheduleEntry.from(eventId: event.id) }
+    var numberOfEntries: Int {
+        return events.value.count
     }
 
     private static func daySurface(schedule: DayScheduleSurface) -> DaySurface {
@@ -33,12 +28,10 @@ class DayScheduleSurface: Surface {
     }
 
     var dateDescription: String {
-        let day = self.day.value
         return "\(day.monthNameShort) \(day.dayOfTheMonth), \(day.year)"
     }
 
     var weekdayDescription: String {
-        let day = self.day.value
         let weekday = day.weekdayName
 
         let today = Calendar.current.today
@@ -49,8 +42,13 @@ class DayScheduleSurface: Surface {
     }
 
     static func load(dayId: Int) -> DayScheduleSurface {
-        let surface = DayScheduleSurface(id: String(dayId))
-        //let bridge = SurfaceQueryBridge(query)
-        return surface
+        let schedule = DayScheduleSurface(id: String(dayId))
+        let bridge = SurfaceModelBridge(id: String(dayId))
+        let start = Calendar.current.startOfDay(for: schedule.day.gregorianDay)
+        let end = Calendar.current.startOfDay(for: schedule.day.gregorianDay.dayAfter)
+        let events = Event.between(start, and: end)
+        bridge.reference(events, using: EventSurface.self, as: "events")
+        schedule.store = bridge
+        return schedule
     }
 }

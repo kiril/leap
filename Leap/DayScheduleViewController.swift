@@ -39,7 +39,7 @@ class DayScheduleViewController: UICollectionViewController, StoryboardLoadable 
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return surface.entries.value.count
+        return surface.numberOfEntries
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -48,7 +48,7 @@ class DayScheduleViewController: UICollectionViewController, StoryboardLoadable 
 
         // Configure the cell
 
-        let entry = surface.entries.value[indexPath.row]
+        let entry = surface.entries[indexPath.row]
 
         switch entry {
         case .event(let event):

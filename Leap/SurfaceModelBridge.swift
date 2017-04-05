@@ -14,6 +14,7 @@ typealias ModelGetter = (LeapModel) -> Any?
 typealias ModelSetter = (LeapModel, Any?) -> Void
 
 let setNothing = { (model:LeapModel, value:Any?) in return }
+let getNothing = { (model:LeapModel) in return nil as Any? }
 
 class SurfaceModelBridge: BackingStore {
 
@@ -49,6 +50,10 @@ class SurfaceModelBridge: BackingStore {
         references[name] = query
     }
 
+    func reference<M:LeapModel,S:Surface>(_ query: Results<M>, using: S.Type, as name: String) where S:ModelLoadable {
+        references[name] = QueryBridge<M,S>(query)
+    }
+
     func addReferenceDirectly(_ reference: Reference) {
         references[reference.name] = reference
     }
@@ -72,33 +77,45 @@ class SurfaceModelBridge: BackingStore {
         bindings[property.key] = (model, get, set)
     }
 
-    func readonlyBind(_ property: Property, to populate: @escaping ModelGetter, on model: String) {
-        bind(property, populateWith: populate, on: model, persistWith: setNothing)
+    func bindAll(_ properties:Property...) {
+        properties.forEach { property in bind(property) }
     }
 
-    func readonlyBind(_ property: Property, to populate: @escaping ModelGetter) {
+    func readonlyBind(_ property: Property, populateWith get: @escaping ModelGetter, on model: String) {
+        bind(property, populateWith: get, on: model, persistWith: setNothing)
+    }
+
+    // this is separate from above, as opposed to using an optional arg,
+    // because then you can use the final closure syntax in this common case
+    func readonlyBind(_ property: Property, populateWith get: @escaping ModelGetter) {
         guard references.count == 1 else {
             fatalError("Need to specify model to do lookup on when more than one model bound")
         }
         let model = references.keys.first!
-        bind(property, populateWith: populate, on: model, persistWith: setNothing)
+        bind(property, populateWith: get, on: model, persistWith: setNothing)
     }
 
-    func bindAll(_ properties:Property...) {
-        properties.forEach { property in bind(property) }
+    func bindArray(_ property: Property, to name: String) {
+        guard references[name] is ArrayMaterializable else {
+            fatalError("Can't bind a Array-type value to \(String(describing:references[name])) type '\(name)'")
+        }
+        bind(property, populateWith: getNothing, on: name, persistWith: setNothing)
     }
 
     func populate(_ surface: Surface) {
         var data: ModelData = [:]
         for (key, (sourceName, getFromModel, _)) in bindings {
             let source = references[sourceName]
-            if source is Reference {
-            } else if source is Results {
-            }
-            if let model = dereference(sourceName) {
-                if let value = getFromModel(model) {
+            switch source {
+            case let reference as Reference:
+                if let model = reference.resolve(),
+                    let value = getFromModel(model) {
                     data[key] = value
                 }
+            case let query as ArrayMaterializable:
+                data[key] = query.materialize()
+            default:
+                break
             }
         }
         try! surface.update(data: data, via: self)
@@ -124,10 +141,12 @@ class SurfaceModelBridge: BackingStore {
 
 
 protocol ModelLoadable {
-    static func load(fromModel: LeapModel) -> Self
-    static func load(byId id: String) -> Self
+    static func load(fromModel: LeapModel) -> Surface?
 }
 
+protocol ArrayMaterializable {
+    func materialize() -> [Surface]
+}
 
 class QueryBridge<Model:LeapModel,SomeSurface:Surface> where SomeSurface:ModelLoadable  {
     let query: Results<Model>
@@ -136,10 +155,12 @@ class QueryBridge<Model:LeapModel,SomeSurface:Surface> where SomeSurface:ModelLo
         self.query = query
     }
 
-    var all: [SomeSurface] {
-        var results: [SomeSurface] = []
+    func materialize() -> [Surface] {
+        var results: [Surface] = []
         for object:Model in query {
-            results.append(SomeSurface.load(fromModel: object))
+            if let s = SomeSurface.load(fromModel: object) {
+                results.append(s)
+            }
         }
         return results
     }
