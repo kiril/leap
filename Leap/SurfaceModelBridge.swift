@@ -10,8 +10,16 @@ import Foundation
 import RealmSwift
 
 
+
 typealias ModelGetter = (LeapModel) -> Any?
 typealias ModelSetter = (LeapModel, Any?) -> Void
+
+
+private enum Binding {
+    case array(name: String)
+    case read(name: String, getter: ModelGetter)
+    case readwrite(name: String, getter: ModelGetter, setter: ModelSetter)
+}
 
 let setNothing = { (model:LeapModel, value:Any?) in return }
 let getNothing = { (model:LeapModel) in return nil as Any? }
@@ -24,8 +32,8 @@ class SurfaceModelBridge: BackingStore {
         sourceId = id
     }
 
-    fileprivate var references: [String:Any] = [:]
-    fileprivate var bindings: [String: (String,ModelGetter,ModelSetter)] = [:]
+    fileprivate var references: [String: Any] = [:]
+    fileprivate var bindings: [String: Binding] = [:]
 
     func dereference(_ name: String) -> LeapModel? {
         if let reference = references[name] as? Reference,
@@ -59,18 +67,18 @@ class SurfaceModelBridge: BackingStore {
             fatalError("Need to specify model to do lookup on when more than one model bound")
         }
         let model = modelName ?? references.keys.first!
+        guard references[model] is Reference else {
+            fatalError("Can't bind a Reference-type value to \(String(describing:references[model])) type '\(model)'")
+        }
         let finalModelKey = (modelKey ?? property.key)
         let keys = finalModelKey.components(separatedBy: ".")
         let get = { (model:LeapModel) in return model.getValue(forKeysRecursively: keys) }
         let set = { (model:LeapModel, value:Any?) in model.set(value: value, forKeyPath: finalModelKey); return }
-        bind(property, populateWith: get, on: model, persistWith: set)
+        bindings[property.key] = .readwrite(name: model, getter: get, setter: set)
     }
 
     func bind(_ property: Property, populateWith get: @escaping ModelGetter, on model: String, persistWith set: @escaping ModelSetter) {
-        guard references[model] is Reference else {
-            fatalError("Can't bind a Reference-type value to \(String(describing:references[model])) type '\(model)'")
-        }
-        bindings[property.key] = (model, get, set)
+        bindings[property.key] = .readwrite(name: model, getter: get, setter: set)
     }
 
     func bindAll(_ properties:Property...) {
@@ -78,7 +86,10 @@ class SurfaceModelBridge: BackingStore {
     }
 
     func readonlyBind(_ property: Property, populateWith get: @escaping ModelGetter, on model: String) {
-        bind(property, populateWith: get, on: model, persistWith: setNothing)
+        guard references[model] is Reference else {
+            fatalError("Can't bind a Reference-type value to \(String(describing:references[model])) type '\(model)'")
+        }
+        bindings[property.key] = .read(name: model, getter: get)
     }
 
     // this is separate from above, as opposed to using an optional arg,
@@ -88,7 +99,7 @@ class SurfaceModelBridge: BackingStore {
             fatalError("Need to specify model to do lookup on when more than one model bound")
         }
         let model = references.keys.first!
-        bind(property, populateWith: get, on: model, persistWith: setNothing)
+        readonlyBind(property, populateWith: get, on: model)
     }
 
     func bindArray(_ property: Property, to name: String? = nil) {
@@ -96,23 +107,33 @@ class SurfaceModelBridge: BackingStore {
         guard references[key] is ArrayMaterializable else {
             fatalError("Can't bind a Array-type value to \(String(describing:references[key])) type '\(key)'")
         }
-        bind(property, populateWith: getNothing, on: key, persistWith: setNothing)
+        bindings[property.key] = .array(name: key)
     }
 
     func populate(_ surface: Surface) {
         var data: ModelData = [:]
-        for (key, (sourceName, getFromModel, _)) in bindings {
-            let source = references[sourceName]
-            switch source {
-            case let reference as Reference:
-                if let model = reference.resolve(),
-                    let value = getFromModel(model) {
+        for (key, binding) in bindings {
+
+            switch binding {
+            case .readwrite(let name, let get, let _):
+                if let reference = references[name] as? Reference,
+                    let model = reference.resolve(),
+                let value = get(model) {
                     data[key] = value
                 }
-            case let query as ArrayMaterializable:
-                data[key] = query.materialize()
-            default:
-                fatalError("It's not OK not to have a source referred to in a binding \(key)")
+
+            case .read(let name, let get):
+                if let reference = references[name] as? Reference,
+                    let model = reference.resolve(),
+                    let value = get(model) {
+                    data[key] = value
+                }
+
+            case .array(let name):
+                if let query = references[name] as? ArrayMaterializable {
+                    data[key] = query.materialize()
+                }
+                break
             }
         }
         try! surface.update(data: data, via: self)
@@ -124,11 +145,19 @@ class SurfaceModelBridge: BackingStore {
         let realm = Realm.user()
 
         try! realm.write {
-            for (key, (modelName, _, set)) in bindings {
-                if let value = surface.getValue(for: key), let model = dereference(modelName) {
-                    set(model, value)
-                    mutated = true
-                    realm.add(model, update: true)
+            for (key, binding) in bindings {
+                switch binding {
+                case .readwrite(let name, let _, let set):
+                    if let value = surface.getValue(for: key),
+                        let model = dereference(name) {
+                        set(model, value)
+                        realm.add(model, update: true)
+                        mutated = true
+                    }
+                    break
+
+                default:
+                    break
                 }
             }
         }
@@ -145,7 +174,7 @@ protocol ArrayMaterializable {
     func materialize() -> [Surface]
 }
 
-class QueryBridge<Model:LeapModel,SomeSurface:Surface> where SomeSurface:ModelLoadable  {
+class QueryBridge<Model:LeapModel,SomeSurface:Surface>: ArrayMaterializable where SomeSurface:ModelLoadable  {
     let query: Results<Model>
 
     init(_ query: Results<Model>) {

@@ -45,7 +45,8 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
         daySchedulePageViewController.view.translatesAutoresizingMaskIntoConstraints = false // HELPS
         daySchedulePageViewController.view.backgroundColor = UIColor.white
 
-        let initialDay = DayScheduleViewController.mockedEntriesFor(dayId: String(Calendar.current.today.id))
+        //let initialDay = DayScheduleViewController.mockedEntriesFor(dayId: String(Calendar.current.today.id))
+        let initialDay = DayScheduleSurface.load(dayId: Calendar.current.today.id)
         let initialDayVC = DayScheduleViewController.loadFromStoryboard()
         initialDayVC.surface = initialDay
         daySchedulePageViewController.setViewControllers([initialDayVC],
