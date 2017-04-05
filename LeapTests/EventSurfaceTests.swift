@@ -29,6 +29,13 @@ class EventSurfaceTests: XCTestCase {
         XCTAssertEqual(surface.timeRange.value, "9:30am-1pm")
     }
 
+    func testTimeRangeToNoon() {
+        let start = Calendar.current.todayAt(hour: 9, minute: 30)
+        let end = Calendar.current.todayAt(hour: 12, minute: 0)
+        let surface = EventSurface(mockData: ["startTime": start, "endTime": end])
+        XCTAssertEqual(surface.timeRange.value, "9:30am-12pm")
+    }
+
     func testTimeRangeMorning() {
         let start = Calendar.current.todayAt(hour: 9, minute: 30)
         let end = Calendar.current.todayAt(hour: 10, minute: 0)
