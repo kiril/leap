@@ -76,8 +76,8 @@ open class Surface {
         associateProperties()
     }
 
-    convenience init(mockData data: ModelData) {
-        self.init(store: nil, id: nil, data: data)
+    convenience init(mockData data: ModelData, id: String? = nil) {
+        self.init(store: nil, id: id, data: data)
         self.mockData = data
     }
 

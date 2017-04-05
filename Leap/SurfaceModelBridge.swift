@@ -112,7 +112,7 @@ class SurfaceModelBridge: BackingStore {
             case let query as ArrayMaterializable:
                 data[key] = query.materialize()
             default:
-                break
+                fatalError("It's not OK not to have a source referred to in a binding \(key)")
             }
         }
         try! surface.update(data: data, via: self)

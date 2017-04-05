@@ -13,7 +13,7 @@ class DayScheduleSurface: Surface {
 
     override var type: String { return "daySchedule" }
 
-    let events = SurfaceProperty<[EventSurface]>("events")
+    let events = SurfaceProperty<[EventSurface]>()
     var day: DaySurface { return DaySurface(id: self.id) }
     var entries: [ScheduleEntry] {
         return events.value.map { event in ScheduleEntry.from(event: event) }
@@ -50,6 +50,7 @@ class DayScheduleSurface: Surface {
         bridge.referenceArray(events, using: EventSurface.self, as: "events")
         bridge.bindArray(schedule.events)
         schedule.store = bridge
+        schedule.populate()
         return schedule
     }
 }
