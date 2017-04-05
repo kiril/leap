@@ -19,10 +19,19 @@ class DayScheduleSurface: Surface {
         return hackyDeduped(events.value).map { event in ScheduleEntry.from(event: event) }
     }
 
+    func hackyHash(_ event: EventSurface) -> String {
+        return "\(event.title.value)_\(event.startTime.value)_\(event.endTime.value)"
+    }
+
     func hackyDeduped(_ events: [EventSurface]) -> [EventSurface] {
         var deduped: [EventSurface] = []
+        var seenHashes: Set<String> = []
         for event in events {
-            deduped.append(event)
+            let eventHash = hackyHash(event)
+            if !seenHashes.contains(eventHash) {
+                seenHashes.update(with: eventHash)
+                deduped.append(event)
+            }
         }
         return deduped
     }
