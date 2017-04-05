@@ -117,6 +117,7 @@ extension DayNavigationViewController: WeekNavigationViewControllerDelegate {
         let dayVC = DayScheduleViewController.loadFromStoryboard()
         let surface = DayScheduleSurface.load(dayId: dayId)
         dayVC.surface = surface
+        surface.register(observer: dayVC)
 
         daySchedulePageViewController.setViewControllers([dayVC],
                                                          direction: direction,

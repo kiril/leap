@@ -105,3 +105,13 @@ extension DayScheduleViewController {
         return DayScheduleSurface(mockData: ["events": events], id: dayId)
     }
 }
+
+extension DayScheduleViewController: SourceIdentifiable {
+    var sourceId: String { return "DayScheduleVC" }
+}
+
+extension DayScheduleViewController: SurfaceObserver {
+    func surfaceDidChange(_ surface: Surface) {
+        self.collectionView?.reloadData()
+    }
+}
