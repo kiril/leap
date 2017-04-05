@@ -18,7 +18,7 @@
         <scene sceneID="Asw-VK-Epc">
             <objects>
                 <navigationController autoresizesArchivedViewToFullSize="NO" id="MrE-9g-1Qo" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" clipsSubviews="YES" contentMode="scaleToFill" id="aTc-zM-Tmm">
+                    <navigationBar key="navigationBar" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" id="aTc-zM-Tmm">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -126,7 +126,7 @@
                                         <rect key="frame" x="0.0" y="129" width="375" height="1"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="1" id="h8y-Nw-kkw"/>
+                                            <constraint firstAttribute="height" constant="0.5" id="h8y-Nw-kkw"/>
                                         </constraints>
                                     </view>
                                 </subviews>

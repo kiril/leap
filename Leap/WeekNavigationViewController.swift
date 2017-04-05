@@ -25,9 +25,13 @@ class WeekNavigationViewController: UIViewController, StoryboardLoadable {
     @IBOutlet weak var nextNavArrow: UILabel!
     @IBOutlet weak var weekOverviewContainerView: UIView!
 
-    var selectedDayId: String = String(Calendar.current.today.id)
+    var selectedDayId: String = String(Calendar.current.today.id) {
+        didSet { updateGoToTodayButton() }
+    }
 
     var weekOverviewPageViewController: UIPageViewController!
+
+    private var goToTodayItem: UIBarButtonItem?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,6 +75,8 @@ class WeekNavigationViewController: UIViewController, StoryboardLoadable {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        updateGoToTodayButton()
     }
 
     private func setupWeekOverviewPageViewController() {
@@ -138,12 +144,21 @@ class WeekNavigationViewController: UIViewController, StoryboardLoadable {
             barButtonItemFor(navView: titleView)
         ]
 
-        let goToTodayItem = UIBarButtonItem(title: "Go to Today",
-                                            style: .done,
-                                            target: self,
-                                            action: #selector(goToToday))
+        goToTodayItem = UIBarButtonItem(title: "Go to Today",
+                                        style: .done,
+                                        target: self,
+                                        action: #selector(goToToday))
 
         navigationItem.rightBarButtonItem = goToTodayItem
+    }
+
+    private func updateGoToTodayButton() {
+        let looksEnabled = !DaySurface(id: selectedDayId).isToday
+        if  looksEnabled {
+            goToTodayItem?.tintColor = UIColor.projectBlue
+        } else {
+            goToTodayItem?.tintColor = UIColor.projectLightGray
+        }
     }
 
     private func applyShadow() {
