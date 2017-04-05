@@ -16,7 +16,9 @@ extension Calendar {
         let hour = component(Calendar.Component.hour, from: date)
         let minute = component(Calendar.Component.minute, from: date)
 
-        let hourString = String(format: "%d", (hour % 12))
+        let nonMilitaryHour = hour == 12 ? 12 : hour % 12
+
+        let hourString = String(format: "%d", nonMilitaryHour)
         let minuteString = minute > 0 ? String(format: ":%02d", minute) : ""
         let ampmString = needsAMPM ? (hour < 12 ? "am" : "pm") : ""
         return hourString + minuteString + ampmString
