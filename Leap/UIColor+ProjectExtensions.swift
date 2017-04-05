@@ -33,6 +33,12 @@ extension UIColor {
                        b: 189)
     }
 
+    public static var projectLighterGray: UIColor {
+        return UIColor(r: 232,
+                       g: 232,
+                       b: 232)
+    }
+
     public static var projectDarkGray: UIColor {
         return UIColor(r: 112,
                        g: 112,
@@ -49,5 +55,11 @@ extension UIColor {
         return UIColor(r: 178,
                        g: 178,
                        b: 178)
+    }
+
+    public static var projectBlue: UIColor {
+        return UIColor(r: 89,
+                       g: 173,
+                       b: 223)
     }
 }

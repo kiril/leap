@@ -9,7 +9,7 @@
 import UIKit
 
 protocol WeekNavigationViewControllerDelegate: class {
-    func didSelectDay(dayId: String, on: WeekNavigationViewController)
+    func didSelectDay(dayId: String, on viewController: WeekNavigationViewController)
 }
 
 class WeekNavigationViewController: UIViewController, StoryboardLoadable {
@@ -99,6 +99,8 @@ class WeekNavigationViewController: UIViewController, StoryboardLoadable {
         let initialWeekVC = WeekOverviewViewController.loadFromStoryboard()
         initialWeekVC.surface = initialWeek
         initialWeekVC.delegate = self
+        initialWeekVC.selectedDayId = selectedDayId
+
         weekOverviewPageViewController.setViewControllers([initialWeekVC],
                                                           direction: .forward,
                                                           animated: false, completion: nil)
@@ -150,7 +152,7 @@ class WeekNavigationViewController: UIViewController, StoryboardLoadable {
         weekNavContainerView.layer.shadowColor = UIColor.black.cgColor
         weekNavContainerView.layer.shadowOffset = CGSize(width: 0, height: 2)
         weekNavContainerView.layer.shadowPath = shadowPath.cgPath
-        weekNavContainerView.layer.shadowOpacity = 0.3
+        weekNavContainerView.layer.shadowOpacity = 0.2
         weekNavContainerView.layer.shadowRadius = 3
     }
 
@@ -206,12 +208,13 @@ extension WeekNavigationViewController: UIPageViewControllerDataSource {
         let vc = WeekOverviewViewController.loadFromStoryboard()
         vc.surface = surface
         vc.delegate = self
+        vc.selectedDayId = selectedDayId
         return vc
     }
 }
 
 extension WeekNavigationViewController: WeekOverviewViewControllerDelegate {
-    func didSelectDay(dayId: String, on: WeekOverviewViewController) {
+    func didSelectDay(dayId: String, on viewController: WeekOverviewViewController) {
         delegate?.didSelectDay(dayId: dayId,
                                on: self)
     }
