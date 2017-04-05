@@ -46,8 +46,8 @@ class Event: _TemporalBase, Temporality {
     }
 
     var date: Date? { return Date(timeIntervalSinceReferenceDate: Double(self.startTime)/1000.0) }
-    var startDate: Date { return Date(timeIntervalSinceReferenceDate: Double(self.startTime)/1000.0) }
-    var endDate: Date { return Date(timeIntervalSinceReferenceDate: Double(self.endTime)/1000.0) }
+    var startDate: Date { return Date(timeIntervalSinceReferenceDate: Double(self.startTime)) }
+    var endDate: Date { return Date(timeIntervalSinceReferenceDate: Double(self.endTime)) }
 
     override static func indexedProperties() -> [String] {
         return ["venue", "room", "startTime", "participants"]
