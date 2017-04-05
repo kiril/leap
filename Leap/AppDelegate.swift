@@ -42,6 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         realm.add(calendar, update: true)
                     }
                     eventStore.syncPastEvents(forCalendar: calendar)
+                    eventStore.syncFutureEvents(forCalendar: calendar)
                 }
 
                 let context = self.persistentContainer.viewContext

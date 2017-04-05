@@ -64,7 +64,7 @@ extension EKEventStore {
     }
 
     @discardableResult
-    func syncFutureEvents(forCalendar calendar: LegacyCalendar, in realm: Realm) -> Bool {
+    func syncFutureEvents(forCalendar calendar: LegacyCalendar) -> Bool {
         guard let ekCalendar = calendar.asEKCalendar() else {
             return false
         }
