@@ -26,7 +26,7 @@ class TestSurface: Surface {
     static func load(byId id: String) -> TestSurface? {
         let model = TestModel.by(id: id)!
         let surface = TestSurface(id: id)
-        let bridge = SurfaceBridge(id: id)
+        let bridge = SurfaceModelBridge(id: id)
         bridge.addReferenceDirectly(ModelReference(to: model, as: "test"))
         bridge.bindAll(surface.title, surface.count)
         surface.store = bridge

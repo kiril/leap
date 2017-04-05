@@ -66,7 +66,7 @@
 		FB2046B61E82E9B100F130C8 /* DeviceAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046B51E82E9B100F130C8 /* DeviceAccount.swift */; };
 		FB2046B81E830E4600F130C8 /* Temporality.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046B71E830E4600F130C8 /* Temporality.swift */; };
 		FB39ADA91E8C65AF00B79A7B /* Object+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADA81E8C65AF00B79A7B /* Object+Leap.swift */; };
-		FB39ADAB1E8C69BB00B79A7B /* SurfaceBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADAA1E8C69BB00B79A7B /* SurfaceBridge.swift */; };
+		FB39ADAB1E8C69BB00B79A7B /* SurfaceModelBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADAA1E8C69BB00B79A7B /* SurfaceModelBridge.swift */; };
 		FB39ADAD1E8EC5A800B79A7B /* BridgeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADAC1E8EC5A800B79A7B /* BridgeTest.swift */; };
 		FB39ADAF1E8EC6B700B79A7B /* TestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADAE1E8EC6B700B79A7B /* TestUtil.swift */; };
 		FB39ADB11E92B9F400B79A7B /* Ignorance.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADB01E92B9F400B79A7B /* Ignorance.swift */; };
@@ -75,6 +75,7 @@
 		FB39ADB71E93F1EA00B79A7B /* CalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADB61E93F1EA00B79A7B /* CalendarTests.swift */; };
 		FB39ADB91E94067200B79A7B /* EventSurfaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADB81E94067200B79A7B /* EventSurfaceTests.swift */; };
 		FB39ADBB1E9407FF00B79A7B /* Int+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADBA1E9407FF00B79A7B /* Int+Leap.swift */; };
+		FB39ADBD1E94154A00B79A7B /* DaySurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADBC1E94154A00B79A7B /* DaySurface.swift */; };
 		FB4208471E857984007F4DBD /* Recurrence.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208461E857984007F4DBD /* Recurrence.swift */; };
 		FB4208491E8579D0007F4DBD /* Auditable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208481E8579D0007F4DBD /* Auditable.swift */; };
 		FB42084B1E857DAF007F4DBD /* Participant.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42084A1E857DAF007F4DBD /* Participant.swift */; };
@@ -196,7 +197,7 @@
 		FB2046B51E82E9B100F130C8 /* DeviceAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceAccount.swift; sourceTree = "<group>"; };
 		FB2046B71E830E4600F130C8 /* Temporality.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Temporality.swift; sourceTree = "<group>"; };
 		FB39ADA81E8C65AF00B79A7B /* Object+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Object+Leap.swift"; sourceTree = "<group>"; };
-		FB39ADAA1E8C69BB00B79A7B /* SurfaceBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurfaceBridge.swift; sourceTree = "<group>"; };
+		FB39ADAA1E8C69BB00B79A7B /* SurfaceModelBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurfaceModelBridge.swift; sourceTree = "<group>"; };
 		FB39ADAC1E8EC5A800B79A7B /* BridgeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BridgeTest.swift; sourceTree = "<group>"; };
 		FB39ADAE1E8EC6B700B79A7B /* TestUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestUtil.swift; sourceTree = "<group>"; };
 		FB39ADB01E92B9F400B79A7B /* Ignorance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ignorance.swift; sourceTree = "<group>"; };
@@ -205,6 +206,7 @@
 		FB39ADB61E93F1EA00B79A7B /* CalendarTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarTests.swift; sourceTree = "<group>"; };
 		FB39ADB81E94067200B79A7B /* EventSurfaceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventSurfaceTests.swift; sourceTree = "<group>"; };
 		FB39ADBA1E9407FF00B79A7B /* Int+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+Leap.swift"; sourceTree = "<group>"; };
+		FB39ADBC1E94154A00B79A7B /* DaySurface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DaySurface.swift; sourceTree = "<group>"; };
 		FB4208461E857984007F4DBD /* Recurrence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recurrence.swift; sourceTree = "<group>"; };
 		FB4208481E8579D0007F4DBD /* Auditable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auditable.swift; sourceTree = "<group>"; };
 		FB42084A1E857DAF007F4DBD /* Participant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Participant.swift; sourceTree = "<group>"; };
@@ -444,6 +446,7 @@
 				FBD614531E7F3370001F4050 /* EventSurface.swift */,
 				83A72D761E82DF95005EB213 /* DayScheduleSurface.swift */,
 				83F4B1601E7C383F000FCB8D /* ScheduleEntry.swift */,
+				FB39ADBC1E94154A00B79A7B /* DaySurface.swift */,
 			);
 			name = Surfaces;
 			sourceTree = "<group>";
@@ -506,7 +509,7 @@
 				FB39ADA81E8C65AF00B79A7B /* Object+Leap.swift */,
 				FB166B5D1E8AC6DB00CB95EC /* ModelReference.swift */,
 				FB166B5B1E8AC3CA00CB95EC /* Fetchable.swift */,
-				FB39ADAA1E8C69BB00B79A7B /* SurfaceBridge.swift */,
+				FB39ADAA1E8C69BB00B79A7B /* SurfaceModelBridge.swift */,
 				FB2046B31E82E7DD00F130C8 /* LeapModel.swift */,
 				FB4208481E8579D0007F4DBD /* Auditable.swift */,
 				FB42085A1E85A650007F4DBD /* TimeZone.swift */,
@@ -946,7 +949,7 @@
 				FB934F261E7EDFA80068CDEF /* Lifecycle.swift in Sources */,
 				FB42084B1E857DAF007F4DBD /* Participant.swift in Sources */,
 				FB934F201E7E01DF0068CDEF /* Surface.swift in Sources */,
-				FB39ADAB1E8C69BB00B79A7B /* SurfaceBridge.swift in Sources */,
+				FB39ADAB1E8C69BB00B79A7B /* SurfaceModelBridge.swift in Sources */,
 				FBB4BFD81E8ACED1001679BF /* Operation.swift in Sources */,
 				8351BDD11E807C4C001221AF /* WeekOverviewSurface.swift in Sources */,
 				831444CC1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift in Sources */,
@@ -962,6 +965,7 @@
 				FB4208551E859606007F4DBD /* Alarm.swift in Sources */,
 				831444C61E7B020700A5EF06 /* DayScheduleViewController.swift in Sources */,
 				FB39ADB11E92B9F400B79A7B /* Ignorance.swift in Sources */,
+				FB39ADBD1E94154A00B79A7B /* DaySurface.swift in Sources */,
 				FBD614581E7F57B0001F4050 /* Validation.swift in Sources */,
 				FB2046B21E82E7BF00F130C8 /* Reminder.swift in Sources */,
 				FB42086E1E89816B007F4DBD /* EKRecurrenceRule+Realm.swift in Sources */,

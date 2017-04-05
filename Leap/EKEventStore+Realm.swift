@@ -41,7 +41,6 @@ extension EKEventStore {
         let eventCalendars = self.calendars(for: EKEntityType.event)
         let reminderCalendars = self.calendars(for: EKEntityType.reminder)
 
-        print("Fetching the calendars...")
         return eventCalendars.map { $0.asLegacyCalendar(eventStoreId: self.eventStoreIdentifier) } + reminderCalendars.map { $0.asLegacyCalendar(eventStoreId: self.eventStoreIdentifier) }
     }
 
@@ -50,7 +49,6 @@ extension EKEventStore {
         guard let ekCalendar = calendar.asEKCalendar() else {
             return false
         }
-        print("yay, syncing events!")
 
         let endOfToday = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: Date())!
         let minus4years = DateComponents(calendar: Calendar.current, year: -4)

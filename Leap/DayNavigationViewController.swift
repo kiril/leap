@@ -18,7 +18,7 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
         guard let day = daySchedulePageViewController.viewControllers?.first as? DayScheduleViewController else {
             return nil
         }
-        return day.surface.day.value
+        return day.surface.day
     }
 
     var daySchedulePageViewController: UIPageViewController!
@@ -45,7 +45,7 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
         daySchedulePageViewController.view.translatesAutoresizingMaskIntoConstraints = false // HELPS
         daySchedulePageViewController.view.backgroundColor = UIColor.white
 
-        let initialDay = DayScheduleViewController.mockedEntriesFor(dayId: String(Calendar.current.today.id))
+        let initialDay = DayScheduleSurface.load(dayId: Calendar.current.today.id)
         let initialDayVC = DayScheduleViewController.loadFromStoryboard()
         initialDayVC.surface = initialDay
         daySchedulePageViewController.setViewControllers([initialDayVC],
@@ -115,7 +115,7 @@ extension DayNavigationViewController: WeekNavigationViewControllerDelegate {
         let direction: UIPageViewControllerNavigationDirection = (Int(dayId)! > currentId) ? .forward : .reverse
 
         let dayVC = DayScheduleViewController.loadFromStoryboard()
-        let surface = DayScheduleViewController.mockedEntriesFor(dayId: dayId)
+        let surface = DayScheduleSurface.load(dayId: dayId)
         dayVC.surface = surface
 
         daySchedulePageViewController.setViewControllers([dayVC],
@@ -131,13 +131,13 @@ class DaySchedulePageViewDataSource: NSObject, UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController,
                             viewControllerAfter viewController: UIViewController) -> UIViewController? {
         let indexVC = viewController as! DayScheduleViewController
-        return viewControllerFor(surface: indexVC.surface.day.value.dayAfter)
+        return viewControllerFor(surface: indexVC.surface.day.dayAfter)
     }
 
     func pageViewController(_ pageViewController: UIPageViewController,
                             viewControllerBefore viewController: UIViewController) -> UIViewController? {
         let indexVC = viewController as! DayScheduleViewController
-        return viewControllerFor(surface: indexVC.surface.day.value.dayBefore)
+        return viewControllerFor(surface: indexVC.surface.day.dayBefore)
     }
 
     private func viewControllerFor(surface: DaySurface) -> UIViewController? {

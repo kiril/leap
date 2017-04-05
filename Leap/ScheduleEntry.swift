@@ -13,7 +13,7 @@ enum ScheduleEntry {
     case openTime(entry: OpenTimeViewModel)
 
     static func from(eventId: String) -> ScheduleEntry {
-        return from(event: EventSurface(id: eventId, data:[:])) // find?
+        return from(event: EventSurface.load(byId: eventId)!)
     }
 
     static func from(event: EventSurface) -> ScheduleEntry {

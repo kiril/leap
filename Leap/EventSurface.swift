@@ -30,13 +30,13 @@ extension TimePerspective {
     }
 }
 
-class EventSurface: Surface {
+class EventSurface: Surface, ModelLoadable {
     override var type: String { return "event" }
 
     // validation
     // change detection!! (because need to know when fields are dirty)
     // next: change this to NSObject, use KVO and 'public private (set) var xxx' for properties
-    let title                  = SurfaceString(minLength: 5)
+    let title                  = SurfaceString(minLength: 1)
     let startTime              = SurfaceDate()
     let endTime                = SurfaceDate()
     let timeRange              = ComputedSurfaceString<EventSurface>(by: EventSurface.eventTimeRange)
@@ -52,7 +52,7 @@ class EventSurface: Surface {
      * Actually ignores on the underlying event, which should propagate back up.
      */
     func ignore() {
-        guard let bridge = self.store as? SurfaceBridge,
+        guard let bridge = self.store as? SurfaceModelBridge,
             let event = bridge.dereference("event") as? Event else {
             fatalError("No backing bridge")
         }
@@ -62,7 +62,7 @@ class EventSurface: Surface {
     }
 
     func stopIgnoring() {
-        if let bridge = self.store as? SurfaceBridge,
+        if let bridge = self.store as? SurfaceModelBridge,
             let event = bridge.dereference("event") as? Event,
             let ignorance = Ignorance.of(event, by: event.me!.person!) {
             ignorance.delete()
@@ -117,13 +117,17 @@ class EventSurface: Surface {
         return "" // TODO: format Invitation Summary
     }
 
-    static func load(eventId: String) -> EventSurface? {
+    static func load(fromModel event: LeapModel) -> Surface? {
+        return load(byId: event.id)
+    }
+
+    static func load(byId eventId: String) -> EventSurface? {
         guard let event:Event = Event.by(id: eventId) else {
             return nil
         }
 
         let surface = EventSurface(id: eventId)
-        let bridge = SurfaceBridge(id: eventId)
+        let bridge = SurfaceModelBridge(id: eventId)
         bridge.reference(event, as: "event")
         bridge.bind(surface.title)
         func getStartTime(model:LeapModel) -> Any? {
@@ -140,7 +144,21 @@ class EventSurface: Surface {
             event.startTime = date.secondsSinceReferenceDate
         }
         bridge.bind(surface.startTime, populateWith: getStartTime, on: "event", persistWith: setStartTime)
-        bridge.bindAll(surface.title, surface.startTime, surface.endTime)
+        func getEndTime(model:LeapModel) -> Any? {
+            guard let event = model as? Event else {
+                fatalError("OMG wrong type or something \(model)")
+            }
+            return event.endDate
+        }
+        func setEndTime(model:LeapModel, value: Any?) {
+            guard let event = model as? Event, let date = value as? Date else {
+                fatalError("OMG wrong type or something \(model)")
+            }
+
+            event.endTime = date.secondsSinceReferenceDate
+        }
+        bridge.bind(surface.endTime, populateWith: getEndTime, on: "event", persistWith: setEndTime)
+        bridge.bindAll(surface.title)
         bridge.readonlyBind(surface.userIgnored) { (model:LeapModel) in
             guard let thing = model as? Temporality, let me = thing.me else {
                 return false
