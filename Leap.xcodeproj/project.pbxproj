@@ -45,6 +45,9 @@
 		83B6C6B31E92B850002DCDA2 /* UIPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B6C6B21E92B850002DCDA2 /* UIPageViewController.swift */; };
 		83B6C6B51E92BC6E002DCDA2 /* DayNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B6C6B41E92BC6E002DCDA2 /* DayNavigationViewController.swift */; };
 		83B6C6B71E92BC7A002DCDA2 /* DayNavigation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83B6C6B61E92BC7A002DCDA2 /* DayNavigation.storyboard */; };
+		83D5B85D1E94415A00D5F1C6 /* WeekOverviewDayListingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D5B85C1E94415A00D5F1C6 /* WeekOverviewDayListingView.swift */; };
+		83D5B85F1E9441A600D5F1C6 /* WeekOverviewDayListingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83D5B85E1E9441A600D5F1C6 /* WeekOverviewDayListingView.xib */; };
+		83D5B8611E9444C400D5F1C6 /* NibLoadableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D5B8601E9444C400D5F1C6 /* NibLoadableView.swift */; };
 		83F4B1611E7C383F000FCB8D /* ScheduleEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F4B1601E7C383F000FCB8D /* ScheduleEntry.swift */; };
 		DB41B30C348D9390E4320905 /* Pods_LeapUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 386ABDADBBC48EDACA0896BE /* Pods_LeapUITests.framework */; };
 		FB0762DB1E142FBF0035EF8F /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0762DA1E142FBF0035EF8F /* ScheduleViewController.swift */; };
@@ -169,6 +172,9 @@
 		83B6C6B21E92B850002DCDA2 /* UIPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIPageViewController.swift; sourceTree = "<group>"; };
 		83B6C6B41E92BC6E002DCDA2 /* DayNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayNavigationViewController.swift; sourceTree = "<group>"; };
 		83B6C6B61E92BC7A002DCDA2 /* DayNavigation.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DayNavigation.storyboard; sourceTree = "<group>"; };
+		83D5B85C1E94415A00D5F1C6 /* WeekOverviewDayListingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekOverviewDayListingView.swift; sourceTree = "<group>"; };
+		83D5B85E1E9441A600D5F1C6 /* WeekOverviewDayListingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WeekOverviewDayListingView.xib; sourceTree = "<group>"; };
+		83D5B8601E9444C400D5F1C6 /* NibLoadableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NibLoadableView.swift; sourceTree = "<group>"; };
 		83F4B1601E7C383F000FCB8D /* ScheduleEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleEntry.swift; sourceTree = "<group>"; };
 		8EED8FB993394DE5707CFED0 /* Pods-LeapUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LeapUITests/Pods-LeapUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		EFE6A6E5DCCA6A604F469F66 /* Pods-Leap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Leap/Pods-Leap.debug.xcconfig"; sourceTree = "<group>"; };
@@ -332,6 +338,7 @@
 			children = (
 				831444D11E7B472500A5EF06 /* ViewModelUpdateable.swift */,
 				833617771E8C4756009A97FF /* StoryboardLoadable.swift */,
+				83D5B8601E9444C400D5F1C6 /* NibLoadableView.swift */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -352,6 +359,8 @@
 				8393621C1E8FF51E00543CFC /* WeekOverview.storyboard */,
 				8393621E1E8FF53B00543CFC /* WeekOverviewViewController.swift */,
 				839362201E8FF5F200543CFC /* WeekOverviewPageViewDataSource.swift */,
+				83D5B85C1E94415A00D5F1C6 /* WeekOverviewDayListingView.swift */,
+				83D5B85E1E9441A600D5F1C6 /* WeekOverviewDayListingView.xib */,
 			);
 			name = WeekNavigation;
 			sourceTree = "<group>";
@@ -733,6 +742,7 @@
 			files = (
 				833617701E8C2C75009A97FF /* WeekNavigation.storyboard in Resources */,
 				FBE4DEA31E6CB9F10062507B /* Auth0.plist in Resources */,
+				83D5B85F1E9441A600D5F1C6 /* WeekOverviewDayListingView.xib in Resources */,
 				831444C11E7AF77700A5EF06 /* DaySchedule.storyboard in Resources */,
 				FB4E11A71E79B1F500687702 /* Main.storyboard in Resources */,
 				FBE4DEAA1E6CBD8A0062507B /* Res in Resources */,
@@ -915,6 +925,7 @@
 				FB934F241E7EDF670068CDEF /* Persistence.swift in Sources */,
 				83B6C6B51E92BC6E002DCDA2 /* DayNavigationViewController.swift in Sources */,
 				FB42085B1E85A650007F4DBD /* TimeZone.swift in Sources */,
+				83D5B85D1E94415A00D5F1C6 /* WeekOverviewDayListingView.swift in Sources */,
 				835456181E8AFD7200A03B34 /* UIColor+ProjectExtensions.swift in Sources */,
 				FBE0EFEC1DFBBB80007BD8DF /* Leap.xcdatamodeld in Sources */,
 				FB2046AC1E82E76000F130C8 /* EKAlarm+Realm.swift in Sources */,
@@ -961,6 +972,7 @@
 				FB4208591E85A2DD007F4DBD /* Realm+Leap.swift in Sources */,
 				831444D21E7B472500A5EF06 /* ViewModelUpdateable.swift in Sources */,
 				83F4B1611E7C383F000FCB8D /* ScheduleEntry.swift in Sources */,
+				83D5B8611E9444C400D5F1C6 /* NibLoadableView.swift in Sources */,
 				835456151E8AF9EA00A03B34 /* InitialViewController.swift in Sources */,
 				831444CF1E7B46A200A5EF06 /* EventStoreExampleCode.swift in Sources */,
 				FB2046A61E82E20100F130C8 /* EKEventStore+Realm.swift in Sources */,

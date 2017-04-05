@@ -9,14 +9,14 @@
 import UIKit
 
 protocol WeekOverviewViewControllerDelegate: class {
-    func didSelectDay(dayId: String, on: WeekOverviewViewController)
+    func didSelectDay(dayId: String, on viewController: WeekOverviewViewController)
 }
 
 class WeekOverviewViewController: UIViewController, StoryboardLoadable {
 
     weak var delegate: WeekOverviewViewControllerDelegate?
 
-    @IBOutlet var dayButtons: [UIButton]!
+    @IBOutlet var dayListingViews: [WeekOverviewDayListingView]!
 
     var surface: WeekOverviewSurface?
 
@@ -25,30 +25,51 @@ class WeekOverviewViewController: UIViewController, StoryboardLoadable {
         setupDays()
     }
 
+    var selectedDayId: String? {
+        didSet { updateSelected() }
+    }
+
     private func setupDays() {
-        for (index, button) in dayButtons.enumerated() {
+        for (index, dayView) in dayListingViews.enumerated() {
             guard let day = surface?.days[index] else { continue }
-            let title = day.overviewDescription
-            button.setTitle(title, for: .normal)
-            button.addTarget(self,
-                             action: #selector(didTapButton(sender:)),
-                             for: .touchUpInside)
+
+            dayView.isUserInteractionEnabled = true
+            dayView.dayNameLabel.text = day.weekdayNameShort
+            dayView.dayNumberLabel.text = day.dayOfTheMonth
+
+            let tapGesture = UITapGestureRecognizer(target: self,
+                                                    action: #selector(didTapButton(sender:)))
+            dayView.addGestureRecognizer(tapGesture)
+
 
             switch day.happensIn {
             case .current:
-                break
+                dayView.labelColor = UIColor.projectBlue
+                dayView.isBold = true
             case .future:
-                button.setTitleColor(UIColor.black, for: .normal)
+                dayView.labelColor = UIColor.projectDarkerGray
             case .past:
-                button.setTitleColor(UIColor.gray, for: .normal)
+                dayView.labelColor = UIColor.projectLightGray
             }
+        }
+
+        updateSelected()
+    }
+
+    private func updateSelected() {
+        guard dayListingViews != nil else { return }
+        for (index, dayView) in dayListingViews.enumerated() {
+            guard let day = surface?.days[index] else { continue }
+            dayView.isSelected = (day.id == selectedDayId)
         }
     }
 
-    @objc func didTapButton(sender: UIButton) {
-        for (index, button) in dayButtons.enumerated() {
-            if sender == button {
+    @objc func didTapButton(sender: UITapGestureRecognizer) {
+        guard let tappedView = sender.view else { return }
+        for (index, view) in dayListingViews.enumerated() {
+            if tappedView == view {
                 guard let id = surface?.days[index].id else { return }
+                selectedDayId = id
                 delegate?.didSelectDay(dayId: id, on: self)
                 return
             }

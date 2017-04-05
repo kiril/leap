@@ -104,7 +104,7 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
 }
 
 extension DayNavigationViewController: WeekNavigationViewControllerDelegate {
-    func didSelectDay(dayId: String, on: WeekNavigationViewController) {
+    func didSelectDay(dayId: String, on viewController: WeekNavigationViewController) {
         guard let currentId = currentlySelectedDay?.intId else { return }
 
         guard dayId != String(currentId) else {

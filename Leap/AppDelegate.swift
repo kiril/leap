@@ -133,6 +133,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let attributes = [NSForegroundColorAttributeName: UIColor.projectDarkerGray]
         UISegmentedControl.appearance().setTitleTextAttributes(attributes, for: .normal)
+
+        self.window?.tintColor = UIColor.projectBlue
     }
 
     // MARK: - Core Data stack
