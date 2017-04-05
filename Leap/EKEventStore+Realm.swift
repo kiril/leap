@@ -46,7 +46,8 @@ extension EKEventStore {
 
     @discardableResult
     func syncPastEvents(forCalendar calendar: LegacyCalendar) -> Bool {
-        guard let ekCalendar = calendar.asEKCalendar() else {
+        guard let ekCalendar = calendar.asEKCalendar(eventStore: self) else {
+            print("Failed to sync past events for a calefndar")
             return false
         }
 
@@ -65,7 +66,8 @@ extension EKEventStore {
 
     @discardableResult
     func syncFutureEvents(forCalendar calendar: LegacyCalendar) -> Bool {
-        guard let ekCalendar = calendar.asEKCalendar() else {
+        guard let ekCalendar = calendar.asEKCalendar(eventStore: self) else {
+            print("Failed to sync past events for a calefndar")
             return false
         }
 
@@ -79,5 +81,23 @@ extension EKEventStore {
 
         self.enumerateEvents(matching: predicate, using: syncEventSearchCallback(for: calendar))
         return true
+    }
+
+    // because there's something wonky about shared calendars and the normal
+    // EKEventStore.calendar(withIdentifier:) function (see: The Internet, error 1014)
+    func findCalendarGently(withIdentifier id: String) -> EKCalendar? {
+        let eventCalendars = self.calendars(for: EKEntityType.event)
+        for calendar in eventCalendars {
+            if calendar.calendarIdentifier == id {
+                return calendar
+            }
+        }
+        let reminderCalendars = self.calendars(for: EKEntityType.reminder)
+        for calendar in reminderCalendars {
+            if calendar.calendarIdentifier == id {
+                return calendar
+            }
+        }
+        fatalError("Couldn't find calendar \(id) anywhere!!!")
     }
 }

@@ -53,9 +53,10 @@ extension EKCalendar {
 }
 
 extension LegacyCalendar {
-    func asEKCalendar() -> EKCalendar? {
-        let eventStore = EKEventStore()
-        return eventStore.calendar(withIdentifier: self.id)
+    func asEKCalendar(eventStore: EKEventStore? = nil) -> EKCalendar? {
+        let store = eventStore ?? EKEventStore()
+        return store.findCalendarGently(withIdentifier: self.id)
+        //return store.calendar(withIdentifier: self.id)
     }
 }
 
