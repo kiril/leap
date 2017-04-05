@@ -10,6 +10,17 @@ import Foundation
 import SwiftyJSON
 
 
+
+protocol KeyConvertible {
+}
+
+extension String: KeyConvertible {
+}
+
+extension Int: KeyConvertible {
+}
+
+
 /**
  * In order to tread SurfaceObserver objects as weak references,
  * and have multiple of them stored for a given Surface,

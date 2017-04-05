@@ -9,15 +9,6 @@
 import Foundation
 import EventKit
 
-protocol KeyConvertible {
-}
-
-extension String: KeyConvertible {
-}
-
-extension Int: KeyConvertible {
-}
-
 class DayScheduleSurface: Surface {
 
     override var type: String { return "daySchedule" }
@@ -26,6 +17,9 @@ class DayScheduleSurface: Surface {
     var day: DaySurface { return DaySurface(id: self.id) }
     var entries: [ScheduleEntry] {
         return events.value.map { event in ScheduleEntry.from(event: event) }
+    }
+
+    func hackyDedupe() {
     }
 
     var numberOfEntries: Int {
