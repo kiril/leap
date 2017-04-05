@@ -143,7 +143,7 @@ class DaySchedulePageViewDataSource: NSObject, UIPageViewControllerDataSource {
     private func viewControllerFor(surface: DaySurface) -> UIViewController? {
         guard let id = surface.id else { return nil }
         let vc = DayScheduleViewController.loadFromStoryboard()
-        vc.surface = DayScheduleViewController.mockedEntriesFor(dayId: id)
+        vc.surface = DayScheduleSurface.load(dayId: id)
         return vc
     }
 }
