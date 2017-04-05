@@ -77,7 +77,7 @@ class DayScheduleSurface: Surface {
         bridge.referenceArray(events, using: EventSurface.self, as: "events")
         bridge.bindArray(schedule.events)
         schedule.store = bridge
-        schedule.populate()
+        bridge.populate(schedule)
         return schedule
     }
 }

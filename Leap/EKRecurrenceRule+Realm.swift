@@ -66,7 +66,6 @@ extension EKRecurrenceRule {
     }
 
     func asRecurrence(ofEvent event: Event) -> Recurrence {
-        print("Going to use event's startTime of \(event.startTime)")
         let recurrence = Recurrence(value: ["frequencyRaw": getFrequency().rawValue,
                                             "interval": interval,
                                             "weekStartRaw": weekStart().rawValue,

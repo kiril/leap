@@ -48,6 +48,7 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
         let initialDay = DayScheduleSurface.load(dayId: Calendar.current.today.id)
         let initialDayVC = DayScheduleViewController.loadFromStoryboard()
         initialDayVC.surface = initialDay
+        initialDay.register(observer: initialDayVC)
         daySchedulePageViewController.setViewControllers([initialDayVC],
                                                           direction: .forward,
                                                           animated: false, completion: nil)
@@ -117,6 +118,7 @@ extension DayNavigationViewController: WeekNavigationViewControllerDelegate {
         let dayVC = DayScheduleViewController.loadFromStoryboard()
         let surface = DayScheduleSurface.load(dayId: dayId)
         dayVC.surface = surface
+        surface.register(observer: dayVC)
 
         daySchedulePageViewController.setViewControllers([dayVC],
                                                          direction: direction,
@@ -143,7 +145,9 @@ class DaySchedulePageViewDataSource: NSObject, UIPageViewControllerDataSource {
     private func viewControllerFor(surface: DaySurface) -> UIViewController? {
         guard let id = surface.id else { return nil }
         let vc = DayScheduleViewController.loadFromStoryboard()
-        vc.surface = DayScheduleSurface.load(dayId: id)
+        let scheduleSurface = DayScheduleSurface.load(dayId: id)
+        vc.surface = scheduleSurface
+        scheduleSurface.register(observer: vc)
         return vc
     }
 }
