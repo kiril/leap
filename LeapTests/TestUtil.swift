@@ -30,7 +30,7 @@ class TestSurface: Surface {
         bridge.addReferenceDirectly(ModelReference(to: model, as: "test"))
         bridge.bindAll(surface.title, surface.count)
         surface.store = bridge
-        surface.populate()
+        bridge.populate(surface)
         return surface
     }
 }
