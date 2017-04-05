@@ -36,7 +36,7 @@ class EventSurface: Surface, ModelLoadable {
     // validation
     // change detection!! (because need to know when fields are dirty)
     // next: change this to NSObject, use KVO and 'public private (set) var xxx' for properties
-    let title                  = SurfaceString(minLength: 5)
+    let title                  = SurfaceString(minLength: 1)
     let startTime              = SurfaceDate()
     let endTime                = SurfaceDate()
     let timeRange              = ComputedSurfaceString<EventSurface>(by: EventSurface.eventTimeRange)
@@ -144,7 +144,21 @@ class EventSurface: Surface, ModelLoadable {
             event.startTime = date.secondsSinceReferenceDate
         }
         bridge.bind(surface.startTime, populateWith: getStartTime, on: "event", persistWith: setStartTime)
-        bridge.bindAll(surface.title, surface.startTime, surface.endTime)
+        func getEndTime(model:LeapModel) -> Any? {
+            guard let event = model as? Event else {
+                fatalError("OMG wrong type or something \(model)")
+            }
+            return event.endDate
+        }
+        func setEndTime(model:LeapModel, value: Any?) {
+            guard let event = model as? Event, let date = value as? Date else {
+                fatalError("OMG wrong type or something \(model)")
+            }
+
+            event.endTime = date.secondsSinceReferenceDate
+        }
+        bridge.bind(surface.endTime, populateWith: getEndTime, on: "event", persistWith: setEndTime)
+        bridge.bindAll(surface.title)
         bridge.readonlyBind(surface.userIgnored) { (model:LeapModel) in
             guard let thing = model as? Temporality, let me = thing.me else {
                 return false

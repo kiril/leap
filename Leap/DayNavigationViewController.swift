@@ -45,7 +45,6 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
         daySchedulePageViewController.view.translatesAutoresizingMaskIntoConstraints = false // HELPS
         daySchedulePageViewController.view.backgroundColor = UIColor.white
 
-        //let initialDay = DayScheduleViewController.mockedEntriesFor(dayId: String(Calendar.current.today.id))
         let initialDay = DayScheduleSurface.load(dayId: Calendar.current.today.id)
         let initialDayVC = DayScheduleViewController.loadFromStoryboard()
         initialDayVC.surface = initialDay
@@ -116,7 +115,7 @@ extension DayNavigationViewController: WeekNavigationViewControllerDelegate {
         let direction: UIPageViewControllerNavigationDirection = (Int(dayId)! > currentId) ? .forward : .reverse
 
         let dayVC = DayScheduleViewController.loadFromStoryboard()
-        let surface = DayScheduleViewController.mockedEntriesFor(dayId: dayId)
+        let surface = DayScheduleSurface.load(dayId: dayId)
         dayVC.surface = surface
 
         daySchedulePageViewController.setViewControllers([dayVC],

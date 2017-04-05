@@ -118,7 +118,7 @@ class SurfaceModelBridge: BackingStore {
             case let .readwrite(name, get, _):
                 if let reference = references[name] as? Reference,
                     let model = reference.resolve(),
-                let value = get(model) {
+                    let value = get(model) {
                     data[key] = value
                 }
 

@@ -9,6 +9,15 @@
 import Foundation
 import EventKit
 
+protocol KeyConvertible {
+}
+
+extension String: KeyConvertible {
+}
+
+extension Int: KeyConvertible {
+}
+
 class DayScheduleSurface: Surface {
 
     override var type: String { return "daySchedule" }
@@ -41,7 +50,17 @@ class DayScheduleSurface: Surface {
         return weekday
     }
 
-    static func load(dayId: Int) -> DayScheduleSurface {
+    static func load<K:KeyConvertible>(dayId genericKey: K) -> DayScheduleSurface {
+        var dayId: String
+        switch genericKey {
+        case let s as String:
+            dayId = s
+        case let i as Int:
+            dayId = String(i)
+        default:
+            fatalError("This is impossible")
+        }
+
         let schedule = DayScheduleSurface(id: String(dayId))
         let bridge = SurfaceModelBridge(id: String(dayId))
         let start = Calendar.current.startOfDay(for: schedule.day.gregorianDay)
