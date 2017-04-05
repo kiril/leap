@@ -47,7 +47,7 @@ extension EKEventStore {
     @discardableResult
     func syncPastEvents(forCalendar calendar: LegacyCalendar) -> Bool {
         guard let ekCalendar = calendar.asEKCalendar(eventStore: self) else {
-            print("Failed to sync past events for a calefndar")
+            print("Failed to sync past events for a calendar")
             return false
         }
 

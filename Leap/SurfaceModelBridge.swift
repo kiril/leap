@@ -75,7 +75,9 @@ class SurfaceModelBridge: BackingStore {
     }
 
     private func updateReceived(forSource name: String) {
+        print("Query notification received!!!")
         guard let surface = self.surface else {
+            print("Oh shit, I don't have the surface...")
             return
         }
         self.populateOnly(surface, restrictTo: name)
@@ -134,6 +136,7 @@ class SurfaceModelBridge: BackingStore {
     }
 
     private func populateOnly(_ surface: Surface, restrictTo onlyName: String) {
+        print("Yeah, that's right, propagating that change, baby...")
         _populate(surface, restrictTo: onlyName)
     }
 
@@ -145,6 +148,7 @@ class SurfaceModelBridge: BackingStore {
             switch binding {
             case let .readwrite(name, get, _):
                 if let onlyName = onlyName, onlyName != name {
+                    print("Skipping update of \(name) because it's not \(onlyName)")
                     break
                 }
                 if let reference = references[name] as? Reference,
@@ -155,6 +159,7 @@ class SurfaceModelBridge: BackingStore {
 
             case let .read(name, get):
                 if let onlyName = onlyName, onlyName != name {
+                    print("Skipping update of \(name) because it's not \(onlyName)")
                     break
                 }
                 if let reference = references[name] as? Reference,
@@ -165,8 +170,10 @@ class SurfaceModelBridge: BackingStore {
 
             case let .array(name):
                 if let onlyName = onlyName, onlyName != name {
+                    print("Skipping update of \(name) because it's not \(onlyName)")
                     break
                 }
+                print("populating array value \(name)")
                 if let query = references[name] as? ArrayMaterializable {
                     data[key] = query.materialize()
                 }

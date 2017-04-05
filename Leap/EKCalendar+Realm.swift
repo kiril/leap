@@ -41,7 +41,6 @@ extension EKSource {
 
 extension EKCalendar {
     func asLegacyCalendar(eventStoreId: String) -> LegacyCalendar {
-        print("Woo! Incoming Legacy Calendar!")
         return LegacyCalendar(value: ["id": self.calendarIdentifier,
                                       "eventStoreId": eventStoreId,
                                       "account": self.source.asDeviceAccount(),
