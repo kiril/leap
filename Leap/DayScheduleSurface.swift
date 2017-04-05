@@ -47,7 +47,8 @@ class DayScheduleSurface: Surface {
         let start = Calendar.current.startOfDay(for: schedule.day.gregorianDay)
         let end = Calendar.current.startOfDay(for: schedule.day.gregorianDay.dayAfter)
         let events = Event.between(start, and: end)
-        bridge.reference(events, using: EventSurface.self, as: "events")
+        bridge.referenceArray(events, using: EventSurface.self, as: "events")
+        bridge.bindArray(schedule.events)
         schedule.store = bridge
         return schedule
     }

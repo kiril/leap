@@ -46,11 +46,7 @@ class SurfaceModelBridge: BackingStore {
         references[name] = refer(to: model, as: name)
     }
 
-    func reference<Model>(_ query: Results<Model>, as name: String) {
-        references[name] = query
-    }
-
-    func reference<M:LeapModel,S:Surface>(_ query: Results<M>, using: S.Type, as name: String) where S:ModelLoadable {
+    func referenceArray<M:LeapModel,S:Surface>(_ query: Results<M>, using: S.Type, as name: String) where S:ModelLoadable {
         references[name] = QueryBridge<M,S>(query)
     }
 
@@ -95,11 +91,12 @@ class SurfaceModelBridge: BackingStore {
         bind(property, populateWith: get, on: model, persistWith: setNothing)
     }
 
-    func bindArray(_ property: Property, to name: String) {
-        guard references[name] is ArrayMaterializable else {
-            fatalError("Can't bind a Array-type value to \(String(describing:references[name])) type '\(name)'")
+    func bindArray(_ property: Property, to name: String? = nil) {
+        let key = name ?? property.key
+        guard references[key] is ArrayMaterializable else {
+            fatalError("Can't bind a Array-type value to \(String(describing:references[key])) type '\(key)'")
         }
-        bind(property, populateWith: getNothing, on: name, persistWith: setNothing)
+        bind(property, populateWith: getNothing, on: key, persistWith: setNothing)
     }
 
     func populate(_ surface: Surface) {
