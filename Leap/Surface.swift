@@ -129,10 +129,6 @@ open class Surface {
     func asJSON() -> JSON {
         return JSON(self.data)
     }
-
-    func populate() {
-        store!.populate(self)
-    }
 }
 
 /**

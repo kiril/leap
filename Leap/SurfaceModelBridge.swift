@@ -27,9 +27,15 @@ let getNothing = { (model:LeapModel) in return nil as Any? }
 class SurfaceModelBridge: BackingStore {
 
     let sourceId: String
+    weak var surface: Surface?
+    private var notificationTokens: [NotificationToken] = []
 
     init(id: String) {
         sourceId = id
+    }
+
+    deinit {
+        notificationTokens.forEach { token in token.stop() }
     }
 
     fileprivate var references: [String: Any] = [:]
@@ -56,10 +62,23 @@ class SurfaceModelBridge: BackingStore {
 
     func referenceArray<M:LeapModel,S:Surface>(_ query: Results<M>, using: S.Type, as name: String) where S:ModelLoadable {
         references[name] = QueryBridge<M,S>(query)
+        let token = query.addNotificationBlock { [weak self] (_: RealmCollectionChange<Results<M>>) in
+            if let bridge = self {
+                bridge.updateReceived(forSource: name)
+            }
+        }
+        notificationTokens.append(token)
     }
 
     func addReferenceDirectly(_ reference: Reference) {
         references[reference.name] = reference
+    }
+
+    private func updateReceived(forSource name: String) {
+        guard let surface = self.surface else {
+            return
+        }
+        self.populateOnly(surface, restrictTo: name)
     }
 
     func bind(_ property: Property, to modelKey: String? = nil, on modelName: String? = nil) {
@@ -111,11 +130,23 @@ class SurfaceModelBridge: BackingStore {
     }
 
     func populate(_ surface: Surface) {
+        _populate(surface)
+    }
+
+    private func populateOnly(_ surface: Surface, restrictTo onlyName: String) {
+        _populate(surface, restrictTo: onlyName)
+    }
+
+    func _populate(_ surface: Surface, restrictTo onlyName: String? = nil) {
+        self.surface = surface
         var data: ModelData = [:]
         for (key, binding) in bindings {
 
             switch binding {
             case let .readwrite(name, get, _):
+                if let onlyName = onlyName, onlyName != name {
+                    break
+                }
                 if let reference = references[name] as? Reference,
                     let model = reference.resolve(),
                     let value = get(model) {
@@ -123,6 +154,9 @@ class SurfaceModelBridge: BackingStore {
                 }
 
             case let .read(name, get):
+                if let onlyName = onlyName, onlyName != name {
+                    break
+                }
                 if let reference = references[name] as? Reference,
                     let model = reference.resolve(),
                     let value = get(model) {
@@ -130,6 +164,9 @@ class SurfaceModelBridge: BackingStore {
                 }
 
             case let .array(name):
+                if let onlyName = onlyName, onlyName != name {
+                    break
+                }
                 if let query = references[name] as? ArrayMaterializable {
                     data[key] = query.materialize()
                 }

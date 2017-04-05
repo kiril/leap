@@ -196,7 +196,7 @@ class EventSurface: Surface, ModelLoadable {
         }
 
         surface.store = bridge
-        surface.populate()
+        bridge.populate(surface)
         return surface
     }
 }
