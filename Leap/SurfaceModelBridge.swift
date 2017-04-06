@@ -24,14 +24,15 @@ private enum Binding {
 let setNothing = { (model:LeapModel, value:Any?) in return }
 let getNothing = { (model:LeapModel) in return nil as Any? }
 
-class SurfaceModelBridge: BackingStore {
+class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
 
     let sourceId: String
-    weak var surface: Surface?
+    weak var surface: SomeSurface?
     private var notificationTokens: [NotificationToken] = []
 
-    init(id: String) {
+    required init(id: String) {
         sourceId = id
+        surface = SomeSurface(store: self, id: id)
     }
 
     deinit {
@@ -132,16 +133,15 @@ class SurfaceModelBridge: BackingStore {
     }
 
     func populate(_ surface: Surface) {
-        _populate(surface)
+        _populate(surface as! SomeSurface)
     }
 
-    private func populateOnly(_ surface: Surface, restrictTo onlyName: String) {
+    private func populateOnly(_ surface: SomeSurface, restrictTo onlyName: String) {
         print("Yeah, that's right, propagating that change, baby...")
         _populate(surface, restrictTo: onlyName)
     }
 
-    func _populate(_ surface: Surface, restrictTo onlyName: String? = nil) {
-        self.surface = surface
+    func _populate(_ surface: SomeSurface, restrictTo onlyName: String? = nil) {
         var data: ModelData = [:]
         for (key, binding) in bindings {
 

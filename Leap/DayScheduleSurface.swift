@@ -59,18 +59,9 @@ class DayScheduleSurface: Surface {
     }
 
     static func load<K:KeyConvertible>(dayId genericKey: K) -> DayScheduleSurface {
-        var dayId: String
-        switch genericKey {
-        case let s as String:
-            dayId = s
-        case let i as Int:
-            dayId = String(i)
-        default:
-            fatalError("This is impossible")
-        }
+        let bridge = SurfaceModelBridge<DayScheduleSurface>(id: genericKey.toKey())
+        let schedule = bridge.surface!
 
-        let schedule = DayScheduleSurface(id: String(dayId))
-        let bridge = SurfaceModelBridge(id: String(dayId))
         let start = Calendar.current.startOfDay(for: schedule.day.gregorianDay)
         let end = Calendar.current.startOfDay(for: schedule.day.gregorianDay.dayAfter)
         let events = Event.between(start, and: end)

@@ -12,13 +12,22 @@ import SwiftyJSON
 
 
 protocol KeyConvertible {
+    func toKey() -> String
 }
 
 extension String: KeyConvertible {
+    func toKey() -> String {
+        return self
+    }
 }
 
 extension Int: KeyConvertible {
+    func toKey() -> String {
+        return String(self)
+    }
 }
+
+public typealias SurfaceData = [String:Any]
 
 
 /**
@@ -42,22 +51,22 @@ internal class WeakObserver {
  * to the data this Surface holds.
  */
 open class Surface {
-    let id: String?
+    public let id: String!
 
-    var type: String { fatalError("Must override type") }
+    public var type: String { fatalError("Must override type") }
 
     public fileprivate (set) var keys: Set<String> = []
     fileprivate var properties: [String:Property] = [:]
 
     var store: BackingStore?
-    fileprivate var mockData: ModelData?
-    fileprivate var data: ModelData
+    fileprivate var mockData: SurfaceData?
+    fileprivate var data: SurfaceData
 
     fileprivate var operations: [Operation] = []
 
-    var isTransient: Bool { return store == nil }
+    public var isTransient: Bool { return store == nil }
 
-    var dirtyFields: Set<String> {
+    public var dirtyFields: Set<String> {
         var set = Set<String>()
         for operation in operations {
             set.insert(operation.field)
@@ -65,21 +74,21 @@ open class Surface {
         return set
     }
 
-    var isDirty: Bool {
+    public var isDirty: Bool {
         return operations.count > 0
     }
 
-    var isPersisted: Bool {
+    public var isPersisted: Bool {
         return !isTransient && !isDirty
     }
 
 
-    var lastModified: NSDate?
-    var lastPersisted: NSDate?
+    public var lastModified: NSDate?
+    public var lastPersisted: NSDate?
 
     internal var observers = [String:WeakObserver]()
 
-    init(store: BackingStore? = nil, id: String? = nil, data: ModelData = [:]) {
+    required public init(store: BackingStore? = nil, id: String? = nil, data: SurfaceData = [:]) {
         self.store = store
         self.id = id
         self.data = data
@@ -87,7 +96,7 @@ open class Surface {
         associateProperties()
     }
 
-    convenience init(mockData data: ModelData, id: String? = nil) {
+    convenience init(mockData data: SurfaceData, id: String? = nil) {
         self.init(store: nil, id: id, data: data)
         self.mockData = data
     }
@@ -140,11 +149,11 @@ open class Surface {
  * A fundamental thing about Surface is that you can observe changes to them.
  */
 extension Surface: Observable {
-    func register(observer: SurfaceObserver) {
+    public func register(observer: SurfaceObserver) {
         self.observers[observer.sourceId] = WeakObserver(observer)
     }
 
-    func deregister(observer: SurfaceObserver) {
+    public func deregister(observer: SurfaceObserver) {
         self.observers.removeValue(forKey: observer.sourceId)
     }
 }
@@ -159,7 +168,7 @@ extension Surface: Observable {
  * change originated, and not notifying the originating Source.
  */
 extension Surface: Updateable {
-    func update(data: [String:Any], via source: SourceIdentifiable?, silently: Bool = false) throws {
+    public func update(data: [String:Any], via source: SourceIdentifiable?, silently: Bool = false) throws {
         for (key, value) in data {
             guard let property = properties[key] else {
                 throw SchemaError.noSuch(type: self.type, property: key)
@@ -195,7 +204,7 @@ extension Surface: Updateable {
         }
     }
 
-    func update(key: String, toValue value: Any, via source: SourceIdentifiable?, silently: Bool = false) throws {
+    public func update(key: String, toValue value: Any, via source: SourceIdentifiable?, silently: Bool = false) throws {
         guard let property = properties[key] else {
             throw SchemaError.noSuch(type: self.type, property: key)
         }
@@ -218,7 +227,7 @@ extension Surface: Updateable {
         }
     }
 
-    func remove(key: String, via source: SourceIdentifiable?, silently: Bool = false) {
+    public func remove(key: String, via source: SourceIdentifiable?, silently: Bool = false) {
 
         if !(source is BackingStore) {
             operations.append(UnsetOperation(key, from: data[key]))
@@ -243,52 +252,52 @@ extension Surface: Updateable {
         }
     }
 
-    func update(data: [String:Any]) throws {
+    public func update(data: [String:Any]) throws {
         try self.update(data: data, via: nil)
     }
 
-    func update(key: String, toValue value: Any) throws {
+    public func update(key: String, toValue value: Any) throws {
         try self.update(key: key, toValue: value, via: nil)
     }
 
-    func remove(key: String) {
+    public func remove(key: String) {
         self.remove(key: key, via: nil)
     }
     
-    func updateSilently(data: [String:Any]) throws {
+    public func updateSilently(data: [String:Any]) throws {
         try self.update(data: data, via: nil, silently: true)
     }
 
-    func updateSilently(key: String, toValue value: Any) throws {
+    public func updateSilently(key: String, toValue value: Any) throws {
         try self.update(key: key, toValue: value, via: nil, silently: true)
     }
 
-    func removeSilently(key: String) {
+    public func removeSilently(key: String) {
         self.remove(key: key, via: nil, silently: true)
     }
 
     // Convenience Classes for properties
 
-    class SurfaceString: WritableProperty<String> {
+    public class SurfaceString: WritableProperty<String> {
         init(_ name: String? = nil, minLength: Int? = nil) {
             let validator = minLength == nil ? alwaysValid : validIfAtLeast(characters: minLength!)
             super.init(name, validatedBy: validator)
         }
     }
 
-    class SurfaceDate: WritableProperty<Date> {
+    public class SurfaceDate: WritableProperty<Date> {
         init(_ name: String? = nil) {
             super.init(name)
         }
     }
 
-    class SurfaceBool: WritableProperty<Bool> {
+    public class SurfaceBool: WritableProperty<Bool> {
         init(_ name: String? = nil) {
             super.init(name)
         }
     }
 
-    class SurfaceInt: WritableProperty<Int> {
+    public class SurfaceInt: WritableProperty<Int> {
         init(_ name: String? = nil) {
             super.init(name)
         }
@@ -344,15 +353,15 @@ extension Surface: Updateable {
  */
 extension Surface: Persistable {
 
-    var isPersistable: Bool {
+    public var isPersistable: Bool {
         return self.store != nil // AND more stuff
     }
 
-    var nonPersistableKeys: [String] {
+    public var nonPersistableKeys: [String] {
         return []
     }
 
-    func didPersist(into store: BackingStore) {
+    public func didPersist(into store: BackingStore) {
         self.purgeObservers()
         for (_, ref) in self.observers {
             if let observer:LifecycleObserver = ref.observer as? LifecycleObserver {
@@ -362,7 +371,7 @@ extension Surface: Persistable {
     }
 
     @discardableResult
-    func flush() throws -> Bool {
+    public func flush() throws -> Bool {
         return try self.store?.persist(self) ?? false
     }
 }
