@@ -10,7 +10,7 @@ import Foundation
 import EventKit
 import RealmSwift
 
-func mergeTemporalities<T:Temporality>(existing: T?, new: T) -> T {
+func mergeTemporalities<T:Temporality>(existing: T?, new: T, isDetached: Bool) -> T {
     // ok, so... how do I update events this way??
     // * check if this has been modified more recently than what I have
     // * if it hasn't, just make sure this calendar is linked
@@ -21,6 +21,16 @@ func mergeTemporalities<T:Temporality>(existing: T?, new: T) -> T {
         return new
     }
 
+    // for recurring events, we want the earliest instance
+    if existing.isRecurring, !isDetached {
+        if Calendar.current.isDate(new.date!, after: existing.date!) {
+            return existing // this is just a new instance of the same old one
+        } else if Calendar.current.isDate(new.date!, before: existing.date!) {
+            return new // the new one is in fact earlier and should override as the actual original
+        }
+    }
+
+    // now let's figure out if we just don't have a change
     var hasChanged = false
     let existingLastModified = existing.remoteLastModified
     let newLastModified = new.remoteLastModified
@@ -33,11 +43,11 @@ func mergeTemporalities<T:Temporality>(existing: T?, new: T) -> T {
     }
 
     if hasChanged {
-        // copy over the links from the old event
         for link in existing.links {
             new.linkTo(link: link)
         }
-        return new
+        // TODO: actually figure out change sets
+        return new // cool, this is an updated version
 
     } else {
         return existing // just use the old event
@@ -53,24 +63,29 @@ func syncEventSearchCallback(for calendar: LegacyCalendar) -> EKEventSearchCallb
 
         switch temporality {
         case var event as Event:
-            event = mergeTemporalities(existing: Event.by(id: event.id), new: event)
+            let existing = Event.by(id: event.id)
+            let original = event
+            event = mergeTemporalities(existing: existing, new: event, isDetached: ekEvent.isDetached)
+            let isDuplicate = event != original
 
             event.linkTo(calendar: calendar,
                          itemId: ekEvent.calendarItemIdentifier,
                          externalItemId: ekEvent.calendarItemExternalIdentifier)
-            try! realm.write {
-                print(" + Event \(event.title) @ \(calendar.title)")
-                realm.add(event, update: true)
 
+            try! realm.write {
+                if !isDuplicate {
+                    print(" + Event \(event.title) @ \(calendar.title)")
+                }
+                realm.add(event, update: true)
             }
         case var reminder as Reminder:
-            reminder = mergeTemporalities(existing: Reminder.by(id: reminder.id), new: reminder)
+            reminder = mergeTemporalities(existing: Reminder.by(id: reminder.id), new: reminder, isDetached: ekEvent.isDetached)
 
             reminder.linkTo(calendar: calendar,
                             itemId: ekEvent.calendarItemIdentifier,
                             externalItemId: ekEvent.calendarItemExternalIdentifier)
             try! realm.write {
-                print(" + Reminder \(reminder.title) @ \(calendar.title)")
+                //print(" + Reminder \(reminder.title) @ \(calendar.title)")
                 realm.add(reminder, update: true)
             }   
         default:

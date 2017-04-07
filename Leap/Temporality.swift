@@ -15,7 +15,6 @@ protocol Temporality {
     var externalId: String? { get }
     var date: Date? { get }
     var isRecurring: Bool { get }
-    var recurrence: Recurrence? { get set }
     var participants: List<Participant> { get }
     var me: Participant? { get }
     var externalURL: String? { get set }
@@ -24,6 +23,8 @@ protocol Temporality {
     var links: List<CalendarLink> { get }
     var remoteCreated: Date? { get }
     var remoteLastModified: Date? { get }
+    var series: Series? { get }
+    var seriesEventNumber: RealmOptional<Int> { get }
 }
 
 extension Temporality {
@@ -62,16 +63,21 @@ class _TemporalBase: LeapModel {
     dynamic var externalId: String? = nil
     dynamic var title: String = ""
     dynamic var detail: String? = nil
-    dynamic var recurrence: Recurrence?
     dynamic var externalURL: String?
     dynamic var remoteCreated: Date? = nil
     dynamic var remoteLastModified: Date? = nil
+    dynamic var series: Series? = nil
+
+    let seriesEventNumber = RealmOptional<Int>()
+
     let alarms = List<Alarm>()
     let participants = List<Participant>()
     let sourceCalendars = List<LegacyCalendar>()
     let links = List<CalendarLink>()
 
-    var isRecurring: Bool { return recurrence != nil }
+
+
+    var isRecurring: Bool { return series != nil }
 }
 
 

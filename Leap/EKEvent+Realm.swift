@@ -28,8 +28,6 @@ extension EKEvent {
     func asEvent() -> Event {
         let data: [String:Any?] = [
             "id": self.eventIdentifier,
-            "localId": self.calendarItemIdentifier,
-            "externalId": self.calendarItemExternalIdentifier,
             "title": self.title,
             "detail": self.notes,
             "startTime": self.startDate.secondsSinceReferenceDate,
@@ -39,10 +37,8 @@ extension EKEvent {
             "remoteModified": self.lastModifiedDate,
             "legacyTimeZone": TimeZone.from(self.timeZone),
             "modalityString": EventModality.inPerson.rawValue,
-            "externalURL": self.url?.absoluteString
+            "externalURL": self.url?.absoluteString,
         ]
-
-        // TODO: Ownership needs to be adjusted for shared calendar data (not for the owner, but for the consumer who's not an 'invitee' in that case)
 
         let event = Event(value: data)
 

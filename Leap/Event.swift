@@ -30,9 +30,6 @@ class Event: _TemporalBase, Temporality {
     dynamic var organizer: Person? = nil
     dynamic var agenda: Checklist? = nil
     dynamic var template: EventTemplate? = nil
-    dynamic var series: Series? = nil
-
-    let seriesEventNumber = RealmOptional<Int>()
 
     let channels = List<Channel>()
     let venues = List<Venue>()
