@@ -30,9 +30,9 @@ class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
     weak var surface: SomeSurface?
     private var notificationTokens: [NotificationToken] = []
 
-    required init(id: String) {
+    required init(id: String, surface: SomeSurface) {
         sourceId = id
-        surface = SomeSurface(store: self, id: id)
+        self.surface = surface
     }
 
     deinit {
@@ -76,9 +76,8 @@ class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
     }
 
     private func updateReceived(forSource name: String) {
-        print("Query notification received!!!")
         guard let surface = self.surface else {
-            print("Oh shit, I don't have the surface...")
+            print("No surface, discarding source update")
             return
         }
         self.populateOnly(surface, restrictTo: name)

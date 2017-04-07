@@ -59,8 +59,8 @@ class DayScheduleSurface: Surface {
     }
 
     static func load<K:KeyConvertible>(dayId genericKey: K) -> DayScheduleSurface {
-        let bridge = SurfaceModelBridge<DayScheduleSurface>(id: genericKey.toKey())
-        let schedule = bridge.surface!
+        let schedule = DayScheduleSurface(id: genericKey.toKey())
+        let bridge = SurfaceModelBridge<DayScheduleSurface>(id: genericKey.toKey(), surface: schedule)
 
         let start = Calendar.current.startOfDay(for: schedule.day.gregorianDay)
         let end = Calendar.current.startOfDay(for: schedule.day.gregorianDay.dayAfter)
