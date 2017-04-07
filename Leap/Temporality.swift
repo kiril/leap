@@ -15,6 +15,7 @@ protocol Temporality {
     var externalId: String? { get }
     var date: Date? { get }
     var isRecurring: Bool { get }
+    var wasDetached: Bool { get }
     var participants: List<Participant> { get }
     var me: Participant? { get }
     var externalURL: String? { get set }
@@ -25,6 +26,8 @@ protocol Temporality {
     var remoteLastModified: Date? { get }
     var series: Series? { get }
     var seriesEventNumber: RealmOptional<Int> { get }
+
+    func isUpdatedVersionOf(_ other: Temporality) -> Bool
 }
 
 extension Temporality {
@@ -57,6 +60,37 @@ extension Temporality {
         }
         links.append(newLink)
     }
+
+    func isUpdatedVersionOf(_ old: Temporality) -> Bool {
+
+        // for recurring events, we want the earliest instance
+        if old.isRecurring, !wasDetached {
+            if Calendar.current.isDate(self.date!, after: old.date!) {
+                return false // this is just a new instance of the same old one
+            } else if Calendar.current.isDate(self.date!, before: old.date!) {
+                return true // the new one is in fact earlier and should override as the actual original
+            }
+        }
+
+        // now let's figure out if we just don't have a change
+        var hasChanged = false
+        let oldLastModified = old.remoteLastModified
+        let newLastModified = remoteLastModified
+        if newLastModified != nil, oldLastModified == nil {
+            hasChanged = true
+        } else if let olm = oldLastModified,
+            let nlm = newLastModified,
+            Calendar.current.isDate(nlm, after: olm) {
+            hasChanged = true
+        }
+
+        if hasChanged {
+            return true // cool, this is an updated version
+
+        } else {
+            return false // just use the old one
+        }
+    }
 }
 
 class _TemporalBase: LeapModel {
@@ -67,6 +101,7 @@ class _TemporalBase: LeapModel {
     dynamic var remoteCreated: Date? = nil
     dynamic var remoteLastModified: Date? = nil
     dynamic var series: Series? = nil
+    dynamic var wasDetached: Bool = false
 
     let seriesEventNumber = RealmOptional<Int>()
 

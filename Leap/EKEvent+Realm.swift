@@ -38,6 +38,7 @@ extension EKEvent {
             "legacyTimeZone": TimeZone.from(self.timeZone),
             "modalityString": EventModality.inPerson.rawValue,
             "externalURL": self.url?.absoluteString,
+            "wasDetached": self.isDetached,
         ]
 
         let event = Event(value: data)

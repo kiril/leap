@@ -10,48 +10,14 @@ import Foundation
 import EventKit
 import RealmSwift
 
-func mergeTemporalities<T:Temporality>(existing: T?, new: T, isDetached: Bool) -> T {
-    // ok, so... how do I update events this way??
-    // * check if this has been modified more recently than what I have
-    // * if it hasn't, just make sure this calendar is linked
-    // * if it has, both update this event, and make sure the calendar is linked
-    // * FUTURE: be much smarter about what changed when. :(
-    //   this _is_ the argument for keeping an OpLog even here, isn't it...
-    guard let existing = existing else {
-        return new
-    }
 
-    // for recurring events, we want the earliest instance
-    if existing.isRecurring, !isDetached {
-        if Calendar.current.isDate(new.date!, after: existing.date!) {
-            return existing // this is just a new instance of the same old one
-        } else if Calendar.current.isDate(new.date!, before: existing.date!) {
-            return new // the new one is in fact earlier and should override as the actual original
-        }
-    }
 
-    // now let's figure out if we just don't have a change
-    var hasChanged = false
-    let existingLastModified = existing.remoteLastModified
-    let newLastModified = new.remoteLastModified
-    if newLastModified != nil, existingLastModified == nil {
-        hasChanged = true
-    } else if let elm = existingLastModified,
-        let nlm = newLastModified,
-        Calendar.current.isDate(nlm, after: elm) {
-        hasChanged = true
-    }
+func isFuzzyDuplicate(event: Event) -> Bool {
+    return false
+}
 
-    if hasChanged {
-        for link in existing.links {
-            new.linkTo(link: link)
-        }
-        // TODO: actually figure out change sets
-        return new // cool, this is an updated version
-
-    } else {
-        return existing // just use the old event
-    }
+func isFuzzyDuplicate(reminder: Reminder) -> Bool {
+    return false
 }
 
 func syncEventSearchCallback(for calendar: LegacyCalendar) -> EKEventSearchCallback {
@@ -64,28 +30,49 @@ func syncEventSearchCallback(for calendar: LegacyCalendar) -> EKEventSearchCallb
         switch temporality {
         case var event as Event:
             let existing = Event.by(id: event.id)
-            let original = event
-            event = mergeTemporalities(existing: existing, new: event, isDetached: ekEvent.isDetached)
-            let isDuplicate = event != original
+
+            if let existing = existing {
+                if event.isUpdatedVersionOf(existing) {
+                    // keep any calendar links we might have
+                    for link in existing.links {
+                        event.linkTo(link: link)
+                    }
+                    // TODO: actually figure out change sets
+                } else {
+                    event = existing
+                }
+            }
 
             event.linkTo(calendar: calendar,
                          itemId: ekEvent.calendarItemIdentifier,
                          externalItemId: ekEvent.calendarItemExternalIdentifier)
 
             try! realm.write {
-                if !isDuplicate {
-                    print(" + Event \(event.title) @ \(calendar.title)")
+                if existing == nil {
+                    print(" + Event \(event.title)")
                 }
                 realm.add(event, update: true)
             }
+
         case var reminder as Reminder:
-            reminder = mergeTemporalities(existing: Reminder.by(id: reminder.id), new: reminder, isDetached: ekEvent.isDetached)
+            let existing = Reminder.by(id: reminder.id)
+            if let existing = existing {
+                if reminder.isUpdatedVersionOf(existing) {
+                    for link in existing.links {
+                        reminder.linkTo(link: link)
+                    }
+                } else {
+                    reminder = existing
+                }
+            }
 
             reminder.linkTo(calendar: calendar,
                             itemId: ekEvent.calendarItemIdentifier,
                             externalItemId: ekEvent.calendarItemExternalIdentifier)
             try! realm.write {
-                //print(" + Reminder \(reminder.title) @ \(calendar.title)")
+                if existing == nil {
+                    print(" + Reminder \(reminder.title)")
+                }
                 realm.add(reminder, update: true)
             }   
         default:
