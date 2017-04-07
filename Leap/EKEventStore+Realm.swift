@@ -10,22 +10,67 @@ import Foundation
 import EventKit
 import RealmSwift
 
+func mergeTemporalities<T:Temporality>(existing: T?, new: T) -> T {
+    // ok, so... how do I update events this way??
+    // * check if this has been modified more recently than what I have
+    // * if it hasn't, just make sure this calendar is linked
+    // * if it has, both update this event, and make sure the calendar is linked
+    // * FUTURE: be much smarter about what changed when. :(
+    //   this _is_ the argument for keeping an OpLog even here, isn't it...
+    guard let existing = existing else {
+        return new
+    }
+
+    var hasChanged = false
+    let existingLastModified = existing.remoteLastModified
+    let newLastModified = new.remoteLastModified
+    if newLastModified != nil, existingLastModified == nil {
+        hasChanged = true
+    } else if let elm = existingLastModified,
+        let nlm = newLastModified,
+        Calendar.current.isDate(nlm, after: elm) {
+        hasChanged = true
+    }
+
+    if hasChanged {
+        // copy over the links from the old event
+        for link in existing.links {
+            new.linkTo(link: link)
+        }
+        return new
+
+    } else {
+        return existing // just use the old event
+    }
+}
+
 func syncEventSearchCallback(for calendar: LegacyCalendar) -> EKEventSearchCallback {
     let calendarId = calendar.id
     func sync(ekEvent: EKEvent, stopBoolPointer: UnsafeMutablePointer<ObjCBool>) {
         let realm = Realm.user()
-        let calendar = LegacyCalendar.by(id: calendarId)
+        let calendar = LegacyCalendar.by(id: calendarId)! // deliberate re-fetch cuz threads
         let temporality = ekEvent.asTemporality()
 
         switch temporality {
-        case let event as Event:
-            event.calendar = calendar
+        case var event as Event:
+            event = mergeTemporalities(existing: Event.by(id: event.id), new: event)
+
+            event.linkTo(calendar: calendar,
+                         itemId: ekEvent.calendarItemIdentifier,
+                         externalItemId: ekEvent.calendarItemExternalIdentifier)
             try! realm.write {
+                print(" + Event \(event.title) @ \(calendar.title)")
                 realm.add(event, update: true)
+
             }
-        case let reminder as Reminder:
-            reminder.calendar = calendar
+        case var reminder as Reminder:
+            reminder = mergeTemporalities(existing: Reminder.by(id: reminder.id), new: reminder)
+
+            reminder.linkTo(calendar: calendar,
+                            itemId: ekEvent.calendarItemIdentifier,
+                            externalItemId: ekEvent.calendarItemExternalIdentifier)
             try! realm.write {
+                print(" + Reminder \(reminder.title) @ \(calendar.title)")
                 realm.add(reminder, update: true)
             }   
         default:

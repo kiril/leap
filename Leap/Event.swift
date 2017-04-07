@@ -27,8 +27,6 @@ class Event: _TemporalBase, Temporality {
     dynamic var locationString: String? = nil
     dynamic var legacyTimeZone: TimeZone?
     dynamic var modalityString: String = EventModality.unknown.rawValue
-    dynamic var remoteCreated: Date? = nil
-    dynamic var remoteLastModified: Date? = nil
     dynamic var organizer: Person? = nil
     dynamic var agenda: Checklist? = nil
     dynamic var template: EventTemplate? = nil

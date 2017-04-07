@@ -27,7 +27,8 @@ extension EKEvent {
 
     func asEvent() -> Event {
         let data: [String:Any?] = [
-            "id": self.calendarItemIdentifier,
+            "id": self.eventIdentifier,
+            "localId": self.calendarItemIdentifier,
             "externalId": self.calendarItemExternalIdentifier,
             "title": self.title,
             "detail": self.notes,

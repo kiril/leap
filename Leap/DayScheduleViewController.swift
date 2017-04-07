@@ -113,5 +113,6 @@ extension DayScheduleViewController: SourceIdentifiable {
 extension DayScheduleViewController: SurfaceObserver {
     func surfaceDidChange(_ surface: Surface) {
         self.collectionView?.reloadData()
+        self.collectionView?.collectionViewLayout.invalidateLayout()
     }
 }

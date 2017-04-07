@@ -16,6 +16,7 @@ enum CalendarRelationship: String {
 
 class LegacyCalendar: LeapModel {
     dynamic var userId: String = ""
+    dynamic var title: String = ""
     dynamic var eventStoreId: String = ""
     dynamic var writable: Bool = false
     dynamic var editable: Bool = false

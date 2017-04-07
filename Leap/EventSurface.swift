@@ -126,7 +126,7 @@ class EventSurface: Surface, ModelLoadable {
             return nil
         }
 
-        let surface = EventSurface.load(byId: eventId)!
+        let surface = EventSurface(id: eventId)
         let bridge = SurfaceModelBridge(id: eventId, surface: surface)
 
         bridge.reference(event, as: "event")
