@@ -28,6 +28,7 @@ protocol Temporality {
     var seriesEventNumber: RealmOptional<Int> { get }
 
     func isUpdatedVersionOf(_ other: Temporality) -> Bool
+    func isDuplicateOfExisting() -> Bool
 }
 
 extension Temporality {
@@ -109,8 +110,6 @@ class _TemporalBase: LeapModel {
     let participants = List<Participant>()
     let sourceCalendars = List<LegacyCalendar>()
     let links = List<CalendarLink>()
-
-
 
     var isRecurring: Bool { return series != nil }
 }

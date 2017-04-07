@@ -52,6 +52,14 @@ class Event: _TemporalBase, Temporality {
         return Double(self.endTime - self.startTime)
     }
 
+    func isDuplicateOfExisting() -> Bool {
+        let query = Realm.user().objects(Event.self).filter("title = %@ AND startTime = %d", title, startTime)
+        guard let _ = query.first else {
+            return false
+        }
+        return true
+    }
+
     static func between(_ starting: Date, and before: Date) -> Results<Event> {
         let predicate = NSPredicate(format: "(startTime >= %d AND startTime < %d) OR (endTime >= %d AND endTime <= %d)", starting.secondsSinceReferenceDate, before.secondsSinceReferenceDate, starting.secondsSinceReferenceDate, before.secondsSinceReferenceDate)
         return Realm.user().objects(Event.self).filter(predicate).sorted(byKeyPath: "startTime")

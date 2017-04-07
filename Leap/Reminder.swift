@@ -38,4 +38,15 @@ class Reminder: _TemporalBase, Temporality {
         let predicate = NSPredicate(format: "startTime >= %@ AND startTime < %@", starting as NSDate, before as NSDate)
         return Realm.user().objects(Reminder.self).filter(predicate)
     }
+
+    func isDuplicateOfExisting() -> Bool {
+        guard let date = startDate else {
+            return false
+        }
+        let query = Realm.user().objects(Event.self).filter("title = %@ AND startDate = %@", title, date)
+        guard let _ = query.first else {
+            return false
+        }
+        return true
+    }
 }

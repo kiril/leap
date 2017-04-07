@@ -11,15 +11,6 @@ import EventKit
 import RealmSwift
 
 
-
-func isFuzzyDuplicate(event: Event) -> Bool {
-    return false
-}
-
-func isFuzzyDuplicate(reminder: Reminder) -> Bool {
-    return false
-}
-
 func syncEventSearchCallback(for calendar: LegacyCalendar) -> EKEventSearchCallback {
     let calendarId = calendar.id
     func sync(ekEvent: EKEvent, stopBoolPointer: UnsafeMutablePointer<ObjCBool>) {
@@ -41,6 +32,10 @@ func syncEventSearchCallback(for calendar: LegacyCalendar) -> EKEventSearchCallb
                 } else {
                     event = existing
                 }
+            } else if event.isDuplicateOfExisting() {
+                // TODO: should I record this somehow? is it a calendar thing?
+                print("DUPLICATE \(event.title)")
+                break
             }
 
             event.linkTo(calendar: calendar,
@@ -64,7 +59,12 @@ func syncEventSearchCallback(for calendar: LegacyCalendar) -> EKEventSearchCallb
                 } else {
                     reminder = existing
                 }
+            } else if reminder.isDuplicateOfExisting() {
+                // TODO: should I record this somehow? is it a calendar thing?
+                print("DUPLICATE \(reminder.title)")
+                break
             }
+
 
             reminder.linkTo(calendar: calendar,
                             itemId: ekEvent.calendarItemIdentifier,
