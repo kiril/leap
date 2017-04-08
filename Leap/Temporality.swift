@@ -12,20 +12,33 @@ import RealmSwift
 
 
 protocol Temporality {
+    var id: String { get }
+    var title: String { get }
+    var detail: String? { get }
     var externalId: String? { get }
+
     var date: Date? { get }
-    var isRecurring: Bool { get }
-    var wasDetached: Bool { get }
-    var participants: List<Participant> { get }
-    var me: Participant? { get }
-    var externalURL: String? { get set }
-    var alarms: List<Alarm> { get }
+    var time: TimeInterval { get }
     var duration: TimeInterval { get }
-    var links: List<CalendarLink> { get }
+
+    var locationString: String? { get }
+    var legacyTimeZone: TimeZone? { get }
     var remoteCreated: Date? { get }
     var remoteLastModified: Date? { get }
-    var series: Series? { get }
+
+    var isRecurring: Bool { get }
+    var wasDetached: Bool { get }
+
+    var participants: List<Participant> { get }
+    var me: Participant? { get }
+
+    var externalURL: String? { get set }
+    var alarms: List<Alarm> { get }
+    var links: List<CalendarLink> { get }
+
+    var series: Series? { get set }
     var seriesEventNumber: RealmOptional<Int> { get }
+    var template: EventTemplate? { get set }
 
     func isUpdatedVersionOf(_ other: Temporality) -> Bool
     func isDuplicateOfExisting() -> Bool
@@ -103,6 +116,9 @@ class _TemporalBase: LeapModel {
     dynamic var remoteLastModified: Date? = nil
     dynamic var series: Series? = nil
     dynamic var wasDetached: Bool = false
+    dynamic var locationString: String? = nil
+    dynamic var legacyTimeZone: TimeZone?
+    dynamic var template: EventTemplate?
 
     let seriesEventNumber = RealmOptional<Int>()
 

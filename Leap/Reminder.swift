@@ -13,40 +13,34 @@ class Reminder: _TemporalBase, Temporality {
     dynamic var event: Event?
     dynamic var location: Location?
     dynamic var geoFence: GeoFence?
-    dynamic var startDate: Date?
-    dynamic var endDate: Date?
+    dynamic var startTime: Int = 0
+    dynamic var endTime: Int = 0
     dynamic var timeUTC: Int = 0
 
-    var date: Date? { return startDate }
+    var date: Date? { return Date(timeIntervalSinceReferenceDate: Double(startTime)/1000.0) }
+    var time: TimeInterval { return Double(startTime) }
 
     override static func indexedProperties() -> [String] {
         return ["location.id", "startDate", "participants"]
     }
 
     var duration: TimeInterval {
-        guard let end = endDate, let start = startDate else {
+        guard startTime != 0, endTime != 0 else {
             return 0.0
         }
-        return end.timeIntervalSince(start)
-    }
-
-    static func by(id: String) -> Reminder? {
-        return fetch(id: id)
+        return Double(endTime - startTime)
     }
 
     static func range(starting: Date, before: Date) -> Results<Reminder> {
-        let predicate = NSPredicate(format: "startTime >= %@ AND startTime < %@", starting as NSDate, before as NSDate)
+        let predicate = NSPredicate(format: "startTime >= %d AND startTime < %d", starting.secondsSinceReferenceDate, before.secondsSinceReferenceDate)
         return Realm.user().objects(Reminder.self).filter(predicate)
     }
 
     func isDuplicateOfExisting() -> Bool {
-        guard let date = startDate else {
+        guard startTime != 0 else {
             return false
         }
-        let query = Realm.user().objects(Event.self).filter("title = %@ AND startDate = %@", title, date)
-        guard let _ = query.first else {
-            return false
-        }
-        return true
+        let query = Realm.user().objects(Reminder.self).filter("title = %@ AND startTime = %d", title, startTime)
+        return query.first != nil
     }
 }
