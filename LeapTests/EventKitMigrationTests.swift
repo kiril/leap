@@ -29,20 +29,20 @@ class EventKitMigrationTests: XCTestCase {
         let event = Event(value: ["id": "9999", "startDate": Date.secondsSinceReferenceDate, "endDate": Date.secondsSinceReferenceDate])
         let ek1 = EKRecurrenceRule(recurrenceWith: EKRecurrenceFrequency.daily,
                                    interval: 1, end: EKRecurrenceEnd(occurrenceCount: 2))
-        let r1: Recurrence = ek1.asRecurrence(ofEvent: event)
+        let r1: Recurrence = ek1.asRecurrence(ofTemporality: event)
         XCTAssertEqual(r1.count, 2)
         XCTAssertEqual(r1.interval, 1)
         XCTAssertEqual(r1.frequency, Frequency.daily)
 
         let ek2 = EKRecurrenceRule(recurrenceWith: EKRecurrenceFrequency.weekly,
                                    interval: 2, end: EKRecurrenceEnd(occurrenceCount: 1))
-        let r2: Recurrence = ek2.asRecurrence(ofEvent: event)
+        let r2: Recurrence = ek2.asRecurrence(ofTemporality: event)
         XCTAssertEqual(r2.count, 1)
         XCTAssertEqual(r2.interval, 2)
         XCTAssertEqual(r2.frequency, Frequency.weekly)
 
         let ek3 = EKRecurrenceRule(recurrenceWith: EKRecurrenceFrequency.yearly, interval: 2, daysOfTheWeek: [EKRecurrenceDayOfWeek(EKWeekday.tuesday)], daysOfTheMonth: nil, monthsOfTheYear: nil, weeksOfTheYear: [1 as NSNumber, -2 as NSNumber], daysOfTheYear: nil, setPositions: nil, end: nil)
-        let r3: Recurrence = ek3.asRecurrence(ofEvent: event)
+        let r3: Recurrence = ek3.asRecurrence(ofTemporality: event)
 
         XCTAssertEqual(r3.count, 0)
         XCTAssertEqual(r3.interval, 2)
@@ -52,7 +52,7 @@ class EventKitMigrationTests: XCTestCase {
 
         let endDate = Calendar.current.date(byAdding: DateComponents(year: 1), to: Date())!
         let ek4 = EKRecurrenceRule(recurrenceWith: EKRecurrenceFrequency.weekly, interval: 1, daysOfTheWeek: [EKRecurrenceDayOfWeek(EKWeekday.tuesday), EKRecurrenceDayOfWeek(EKWeekday.thursday)], daysOfTheMonth: nil, monthsOfTheYear: [1 as NSNumber, 2 as NSNumber], weeksOfTheYear: nil, daysOfTheYear: nil, setPositions: nil, end: EKRecurrenceEnd(end: endDate))
-        let r4: Recurrence = ek4.asRecurrence(ofEvent: event)
+        let r4: Recurrence = ek4.asRecurrence(ofTemporality: event)
 
         XCTAssertEqual(r4.count, 0)
         XCTAssertEqual(r4.interval, 1)
@@ -63,7 +63,7 @@ class EventKitMigrationTests: XCTestCase {
         XCTAssertEqual(r4.monthsOfYear.count, 2)
         XCTAssertEqual(r4.monthsOfYear[0].value, 1)
         XCTAssertEqual(r4.monthsOfYear[1].value, 2)
-        XCTAssertEqual(r4.endDate, endDate.secondsSinceReferenceDate)
+        XCTAssertEqual(r4.endTime, endDate.secondsSinceReferenceDate)
     }
 
     func testParticipants() {

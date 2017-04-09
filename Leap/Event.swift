@@ -24,17 +24,9 @@ enum EventModality: String {
 class Event: _TemporalBase, Temporality {
     dynamic var startTime: Int = 0
     dynamic var endTime: Int = 0
-    dynamic var locationString: String? = nil
-    dynamic var legacyTimeZone: TimeZone?
     dynamic var modalityString: String = EventModality.unknown.rawValue
-    dynamic var remoteCreated: Date? = nil
-    dynamic var remoteLastModified: Date? = nil
     dynamic var organizer: Person? = nil
     dynamic var agenda: Checklist? = nil
-    dynamic var template: EventTemplate? = nil
-    dynamic var series: Series? = nil
-
-    let seriesEventNumber = RealmOptional<Int>()
 
     let channels = List<Channel>()
     let venues = List<Venue>()
@@ -45,16 +37,22 @@ class Event: _TemporalBase, Temporality {
         set { modalityString = newValue.rawValue }
     }
 
-    var date: Date? { return Date(timeIntervalSinceReferenceDate: Double(self.startTime)/1000.0) }
-    var startDate: Date { return Date(timeIntervalSinceReferenceDate: Double(self.startTime)) }
-    var endDate: Date { return Date(timeIntervalSinceReferenceDate: Double(self.endTime)) }
+    var date: Date? { return Date(timeIntervalSinceReferenceDate: Double(startTime)/1000.0) }
+    var startDate: Date { return Date(timeIntervalSinceReferenceDate: Double(startTime)) }
+    var endDate: Date { return Date(timeIntervalSinceReferenceDate: Double(endTime)) }
+    var time: TimeInterval { return Double(startTime) }
 
     override static func indexedProperties() -> [String] {
-        return ["venue", "room", "startTime", "participants"]
+        return ["venue", "room", "startTime", "endTime", "participants"]
     }
 
     var duration: TimeInterval {
         return Double(self.endTime - self.startTime)
+    }
+
+    func isDuplicateOfExisting() -> Bool {
+        let query = Realm.user().objects(Event.self).filter("title = %@ AND startTime = %d", title, startTime)
+        return query.first != nil
     }
 
     static func between(_ starting: Date, and before: Date) -> Results<Event> {

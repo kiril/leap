@@ -42,6 +42,7 @@ extension EKSource {
 extension EKCalendar {
     func asLegacyCalendar(eventStoreId: String) -> LegacyCalendar {
         return LegacyCalendar(value: ["id": self.calendarIdentifier,
+                                      "title": self.title,
                                       "eventStoreId": eventStoreId,
                                       "account": self.source.asDeviceAccount(),
                                       "color": hexString(from: self.cgColor),

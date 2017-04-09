@@ -10,22 +10,69 @@ import Foundation
 import EventKit
 import RealmSwift
 
+
 func syncEventSearchCallback(for calendar: LegacyCalendar) -> EKEventSearchCallback {
     let calendarId = calendar.id
     func sync(ekEvent: EKEvent, stopBoolPointer: UnsafeMutablePointer<ObjCBool>) {
         let realm = Realm.user()
-        let calendar = LegacyCalendar.by(id: calendarId)
+        let calendar = LegacyCalendar.by(id: calendarId)! // deliberate re-fetch cuz threads
         let temporality = ekEvent.asTemporality()
 
         switch temporality {
-        case let event as Event:
-            event.calendar = calendar
+        case var event as Event:
+            let existing = Event.by(id: event.id)
+
+            if let existing = existing {
+                if event.isUpdatedVersionOf(existing) {
+                    // keep any calendar links we might have
+                    for link in existing.links {
+                        event.linkTo(link: link)
+                    }
+                    // TODO: actually figure out change sets
+                } else {
+                    event = existing
+                }
+            } else if event.isDuplicateOfExisting() {
+                // TODO: should I record this somehow? is it a calendar thing?
+                print("DUPLICATE \(event.title)")
+                break
+            }
+
+            event.linkTo(calendar: calendar,
+                         itemId: ekEvent.calendarItemIdentifier,
+                         externalItemId: ekEvent.calendarItemExternalIdentifier)
+
             try! realm.write {
+                if existing == nil {
+                    print(" + Event \(event.title)")
+                }
                 realm.add(event, update: true)
             }
-        case let reminder as Reminder:
-            reminder.calendar = calendar
+
+        case var reminder as Reminder:
+            let existing = Reminder.by(id: reminder.id)
+            if let existing = existing {
+                if reminder.isUpdatedVersionOf(existing) {
+                    for link in existing.links {
+                        reminder.linkTo(link: link)
+                    }
+                } else {
+                    reminder = existing
+                }
+            } else if reminder.isDuplicateOfExisting() {
+                // TODO: should I record this somehow? is it a calendar thing?
+                print("DUPLICATE \(reminder.title)")
+                break
+            }
+
+
+            reminder.linkTo(calendar: calendar,
+                            itemId: ekEvent.calendarItemIdentifier,
+                            externalItemId: ekEvent.calendarItemExternalIdentifier)
             try! realm.write {
+                if existing == nil {
+                    print(" + Reminder \(reminder.title)")
+                }
                 realm.add(reminder, update: true)
             }   
         default:

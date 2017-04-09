@@ -12,9 +12,9 @@ import Foundation
  * A protocol defining an object that can be persisted to a backing store,
  * and the state that it should expose and manage.
  */
-protocol Persistable {
+public protocol Persistable {
     var type: String { get }
-    var id: String? { get }
+    var id: String! { get }
 
     var isTransient: Bool { get }
     var isDirty: Bool { get }
@@ -32,17 +32,17 @@ protocol Persistable {
 }
 
 
-protocol Retrievable {
+public protocol Retrievable {
     associatedtype ConcreteSurface
 
     static func find(byId id: String) throws -> ConcreteSurface
 }
 
 
-protocol Queryable {
+public protocol Queryable {
 }
 
-protocol Query {
+public protocol Query {
     associatedtype ConcreteSurface
 
     func all() throws -> [ConcreteSurface]
@@ -57,7 +57,7 @@ protocol Query {
  * which houses the underlying model(s) that the Surface is standing
  * in for.
  */
-protocol BackingStore: SourceIdentifiable {
+public protocol BackingStore: SourceIdentifiable {
     func persist(_ surface : Surface) throws -> Bool
     func populate(_ surface: Surface)
 }

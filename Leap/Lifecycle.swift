@@ -9,7 +9,7 @@
 /**
  * Something that we can identify with a String id.
  */
-protocol SourceIdentifiable {
+public protocol SourceIdentifiable {
     var sourceId: String { get }
 }
 
@@ -17,7 +17,7 @@ protocol SourceIdentifiable {
 /**
  * Something that can have its data updated.
  */
-protocol Updateable {
+public protocol Updateable {
     func update(data: [String:Any], via source: SourceIdentifiable?, silently: Bool) throws
     func update(key: String, toValue value: Any, via source: SourceIdentifiable?, silently: Bool) throws
     func remove(key: String, via source: SourceIdentifiable?, silently: Bool)
@@ -35,7 +35,7 @@ protocol Updateable {
  * allows Observers to register themselves for updates about
  * the Surface's state.
  */
-protocol Observable {
+public protocol Observable {
     func register(observer: SurfaceObserver)
     func deregister(observer: SurfaceObserver)
 }
@@ -48,7 +48,7 @@ protocol Observable {
  * All they get is an update when anything about the Surface's
  * underlying data changes.
  */
-protocol SurfaceObserver: AnyObject, SourceIdentifiable {
+public protocol SurfaceObserver: AnyObject, SourceIdentifiable {
     func surfaceDidChange(_ surface: Surface)
 }
 
@@ -58,7 +58,7 @@ protocol SurfaceObserver: AnyObject, SourceIdentifiable {
  * also get updates about what happens to the storage state of the underlying
  * Surface.
  */
-protocol LifecycleObserver: SurfaceObserver {
+public protocol LifecycleObserver: SurfaceObserver {
     func surfaceDidPersist(_ surface: Surface)
     func surfaceWasDeleted(_ surface: Surface)
 }
