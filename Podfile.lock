@@ -1,5 +1,8 @@
 PODS:
   - Auth0 (1.2.0)
+  - Crashlytics (3.8.4):
+    - Fabric (~> 1.6.3)
+  - Fabric (1.6.11)
   - Lock (2.0.0):
     - Auth0 (~> 1.2)
     - Lock/Classic (= 2.0.0)
@@ -14,17 +17,21 @@ PODS:
 
 DEPENDENCIES:
   - Auth0 (~> 1.2)
+  - Crashlytics
+  - Fabric
   - Lock (~> 2.0)
   - RealmSwift
   - SwiftyJSON
 
 SPEC CHECKSUMS:
   Auth0: c5719a587c4f5fd78d8c16a26a6f0976f1718add
+  Crashlytics: 79e236942ca1e7fc641df1feb9a275360a78ab6a
+  Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
   Lock: b98cef67f5e6d1fc5222a59c6d97e9d73a8a9365
   Realm: e08d60b0048ccccd3949c8c28a92c4db5712d7e9
   RealmSwift: 30d49739ccb3385d201242736ca4dda56aec9dfc
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: d875b263b285af2709ccce955b431276a9db1cfc
+PODFILE CHECKSUM: 2602d50c16679f220349d9625fcc936ac3685032
 
 COCOAPODS: 1.1.1
