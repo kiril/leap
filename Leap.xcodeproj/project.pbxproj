@@ -139,8 +139,10 @@
 /* Begin PBXFileReference section */
 		133F156348C32E90817CAF77 /* Pods-LeapUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LeapUITests/Pods-LeapUITests.release.xcconfig"; sourceTree = "<group>"; };
 		254C125F10676E959A998B76 /* Pods-LeapTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LeapTests/Pods-LeapTests.debug.xcconfig"; sourceTree = "<group>"; };
+		274B7F58648B6E4512CDCCA3 /* Pods-LeapUITests.internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapUITests.internal.xcconfig"; path = "Pods/Target Support Files/Pods-LeapUITests/Pods-LeapUITests.internal.xcconfig"; sourceTree = "<group>"; };
 		2A6B5D6A4DA6E20A7F42B13F /* Pods-Leap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leap.release.xcconfig"; path = "Pods/Target Support Files/Pods-Leap/Pods-Leap.release.xcconfig"; sourceTree = "<group>"; };
 		386ABDADBBC48EDACA0896BE /* Pods_LeapUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeapUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A18F5F3F7D9C4C8FBFD38A6 /* Pods-Leap.internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leap.internal.xcconfig"; path = "Pods/Target Support Files/Pods-Leap/Pods-Leap.internal.xcconfig"; sourceTree = "<group>"; };
 		60E8617E6FAACB8E29AA34F7 /* Pods_Leap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Leap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		726DA31B7DBD3655C83BFA3D /* Pods_LeapTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeapTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		831444BE1E7AF4E200A5EF06 /* AuthFlow.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AuthFlow.storyboard; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 		83D5B8601E9444C400D5F1C6 /* NibLoadableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NibLoadableView.swift; sourceTree = "<group>"; };
 		83F4B1601E7C383F000FCB8D /* ScheduleEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleEntry.swift; sourceTree = "<group>"; };
 		8EED8FB993394DE5707CFED0 /* Pods-LeapUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LeapUITests/Pods-LeapUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		A45CD1F1585C39E38E93EEDC /* Pods-LeapTests.internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapTests.internal.xcconfig"; path = "Pods/Target Support Files/Pods-LeapTests/Pods-LeapTests.internal.xcconfig"; sourceTree = "<group>"; };
 		EFE6A6E5DCCA6A604F469F66 /* Pods-Leap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Leap/Pods-Leap.debug.xcconfig"; sourceTree = "<group>"; };
 		F7F894F8D14B57D7372FF854 /* Pods-LeapTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LeapTests/Pods-LeapTests.release.xcconfig"; sourceTree = "<group>"; };
 		FB0762DA1E142FBF0035EF8F /* ScheduleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
@@ -295,6 +298,9 @@
 				F7F894F8D14B57D7372FF854 /* Pods-LeapTests.release.xcconfig */,
 				8EED8FB993394DE5707CFED0 /* Pods-LeapUITests.debug.xcconfig */,
 				133F156348C32E90817CAF77 /* Pods-LeapUITests.release.xcconfig */,
+				3A18F5F3F7D9C4C8FBFD38A6 /* Pods-Leap.internal.xcconfig */,
+				A45CD1F1585C39E38E93EEDC /* Pods-LeapTests.internal.xcconfig */,
+				274B7F58648B6E4512CDCCA3 /* Pods-LeapUITests.internal.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -632,6 +638,7 @@
 				FBE0EFDE1DFBBB80007BD8DF /* Resources */,
 				904E71DE40C8BC6F4FF277C2 /* [CP] Embed Pods Frameworks */,
 				C10AEB44ADEFFB6AB4313BB8 /* [CP] Copy Pods Resources */,
+				837A938C1E9BFEC50015406D /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -697,10 +704,10 @@
 					FBE0EFDF1DFBBB80007BD8DF = {
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = W8PY5MD3RJ;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Push = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -824,6 +831,19 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
+		};
+		837A938C1E9BFEC50015406D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" 72463fd43b03cfe73fd4fbc6b7d827ca39b333bc d676cd1889e1cafba97f1d01b18e196e796ef34a79bc4e5eeaf87ebdb859f33e";
 		};
 		904E71DE40C8BC6F4FF277C2 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1045,6 +1065,139 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		837A93881E9BE7930015406D /* Internal */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = HNRVQL94Y9;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(inherited)";
+			};
+			name = Internal;
+		};
+		837A93891E9BE7930015406D /* Internal */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3A18F5F3F7D9C4C8FBFD38A6 /* Pods-Leap.internal.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Internal";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CONFIG_BUNDLE_IDENTIFIER = "com.chrisricca.singleleap.leap-internal";
+				CONFIG_DISPLAY_NAME = "Leap Internal";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = W8PY5MD3RJ;
+				INFOPLIST_FILE = Leap/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "$(CONFIG_BUNDLE_IDENTIFIER)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "9c435fef-fcc6-466d-81de-adaa104b61e1";
+				PROVISIONING_PROFILE_SPECIFIER = "Temporary Leap Internal (Chris Account)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Leap-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Internal;
+		};
+		837A938A1E9BE7930015406D /* Internal */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A45CD1F1585C39E38E93EEDC /* Pods-LeapTests.internal.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = LeapTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-framework",
+					"\"Auth0\"",
+					"-framework",
+					"\"Lock\"",
+					"-framework",
+					"\"Realm\"",
+					"-framework",
+					"\"RealmSwift\"",
+					"-framework",
+					"\"SwiftyJSON\"",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.singleleap.LeapTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Leap.app/Leap";
+			};
+			name = Internal;
+		};
+		837A938B1E9BE7930015406D /* Internal */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 274B7F58648B6E4512CDCCA3 /* Pods-LeapUITests.internal.xcconfig */;
+			buildSettings = {
+				INFOPLIST_FILE = LeapUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-framework",
+					"\"Auth0\"",
+					"-framework",
+					"\"Lock\"",
+					"-framework",
+					"\"Realm\"",
+					"-framework",
+					"\"RealmSwift\"",
+					"-framework",
+					"\"SwiftyJSON\"",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.singleleap.LeapUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = Leap;
+			};
+			name = Internal;
+		};
 		FBE0F0091DFBBB80007BD8DF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1155,15 +1308,17 @@
 			baseConfigurationReference = EFE6A6E5DCCA6A604F469F66 /* Pods-Leap.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Leap/Leap.entitlements;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Debug";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CONFIG_BUNDLE_IDENTIFIER = com.singleleap.LeapChris;
+				CONFIG_DISPLAY_NAME = "Leap Debug";
 				DEVELOPMENT_TEAM = W8PY5MD3RJ;
 				INFOPLIST_FILE = Leap/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.singleleap.LeapChris;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(CONFIG_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "0d3f265a-e14b-4980-9de4-8b678b8ba7dd";
+				PROVISIONING_PROFILE_SPECIFIER = "Leap Temp Development Profile";
 				SWIFT_OBJC_BRIDGING_HEADER = "Leap-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
@@ -1175,12 +1330,13 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Leap/Leap.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = W8PY5MD3RJ;
+				CONFIG_BUNDLE_IDENTIFIER = "";
+				CONFIG_DISPLAY_NAME = "";
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Leap/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.singleleap.LeapChris;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(CONFIG_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Leap-Bridging-Header.h";
@@ -1305,6 +1461,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FBE0F0091DFBBB80007BD8DF /* Debug */,
+				837A93881E9BE7930015406D /* Internal */,
 				FBE0F00A1DFBBB80007BD8DF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1314,6 +1471,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FBE0F00C1DFBBB80007BD8DF /* Debug */,
+				837A93891E9BE7930015406D /* Internal */,
 				FBE0F00D1DFBBB80007BD8DF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1323,6 +1481,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FBE0F00F1DFBBB80007BD8DF /* Debug */,
+				837A938A1E9BE7930015406D /* Internal */,
 				FBE0F0101DFBBB80007BD8DF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1332,6 +1491,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FBE0F0121DFBBB80007BD8DF /* Debug */,
+				837A938B1E9BE7930015406D /* Internal */,
 				FBE0F0131DFBBB80007BD8DF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;

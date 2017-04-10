@@ -12,6 +12,9 @@ target 'Leap' do
   pod 'Auth0', '~> 1.2'
   pod 'SwiftyJSON'
   pod 'RealmSwift'
+  
+  pod 'Fabric'
+  pod 'Crashlytics'
 
   target 'LeapTests' do
     inherit! :search_paths

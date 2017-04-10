@@ -62,4 +62,10 @@ extension UIColor {
                        g: 173,
                        b: 223)
     }
+
+    public static var projectPurple: UIColor {
+        return UIColor(r: 169,
+                       g: 113,
+                       b: 219)
+    }
 }

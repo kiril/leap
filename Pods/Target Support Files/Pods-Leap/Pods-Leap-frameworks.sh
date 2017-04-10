@@ -90,6 +90,13 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/RealmSwift/RealmSwift.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SwiftyJSON/SwiftyJSON.framework"
 fi
+if [[ "$CONFIGURATION" == "Internal" ]]; then
+  install_framework "$BUILT_PRODUCTS_DIR/Auth0/Auth0.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Lock/Lock.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Realm/Realm.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/RealmSwift/RealmSwift.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/SwiftyJSON/SwiftyJSON.framework"
+fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/Auth0/Auth0.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Lock/Lock.framework"

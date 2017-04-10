@@ -155,7 +155,7 @@ class WeekNavigationViewController: UIViewController, StoryboardLoadable {
     private func updateGoToTodayButton() {
         let looksEnabled = !DaySurface(id: selectedDayId).isToday
         if  looksEnabled {
-            goToTodayItem?.tintColor = UIColor.projectBlue
+            goToTodayItem?.tintColor = UIColor.projectPurple
         } else {
             goToTodayItem?.tintColor = UIColor.projectLightGray
         }
