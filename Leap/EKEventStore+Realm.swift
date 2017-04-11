@@ -23,8 +23,9 @@ func syncEventSearchCallback(for calendar: LegacyCalendar) -> EKEventSearchCallb
             case var event as Event:
                 let existing = Event.by(id: event.id)
 
-
                 if let existing = existing {
+                    print("EXISTING \(event.title)")
+
                     if event.isUpdatedVersionOf(existing) {
                         // keep any calendar links we might have
                         for link in existing.links {
@@ -88,6 +89,74 @@ extension EKEventStore {
         let reminderCalendars = self.calendars(for: EKEntityType.reminder)
 
         return eventCalendars.map { $0.asLegacyCalendar(eventStoreId: self.eventStoreIdentifier) } + reminderCalendars.map { $0.asLegacyCalendar(eventStoreId: self.eventStoreIdentifier) }
+    }
+
+    @discardableResult
+    func syncThisWeekEvents(forCalendar calendar: LegacyCalendar) -> Bool {
+        guard let ekCalendar = calendar.asEKCalendar(eventStore: self) else {
+            print("Failed to sync past events for a calendar")
+            return false
+        }
+
+        let startOfToday = Calendar.current.startOfDay(for: Calendar.current.today)
+        let endOfToday = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: Date())!
+
+        let minus7days = DateComponents(calendar: Calendar.current, day: -7)
+        let plus7days = DateComponents(calendar: Calendar.current, day: 7)
+
+        let startOfWeek = Calendar.current.date(byAdding: minus7days, to: startOfToday, wrappingComponents: true)!
+        let endOfWeek = Calendar.current.date(byAdding: plus7days, to: endOfToday, wrappingComponents: true)!
+
+        let predicate: NSPredicate = predicateForEvents(withStart: startOfWeek,
+                                                        end: endOfWeek,
+                                                        calendars: [ekCalendar])
+
+
+        self.enumerateEvents(matching: predicate, using: syncEventSearchCallback(for: calendar))
+        return true
+    }
+
+    @discardableResult
+    func syncDayEvents(forCalendar calendar: LegacyCalendar, withDayOffset offset: Int) -> Bool {
+        guard let ekCalendar = calendar.asEKCalendar(eventStore: self) else {
+            print("Failed to sync past events for a calendar")
+            return false
+        }
+
+        let startOfToday = Calendar.current.startOfDay(for: Calendar.current.today)
+        let endOfToday = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: Date())!
+
+        let offset = DateComponents(calendar: Calendar.current, day: offset)
+
+        let startOfDay = Calendar.current.date(byAdding: offset, to: startOfToday, wrappingComponents: true)!
+        let endOfDay = Calendar.current.date(byAdding: offset, to: endOfToday, wrappingComponents: true)!
+
+        let predicate: NSPredicate = predicateForEvents(withStart: startOfDay,
+                                                        end: endOfDay,
+                                                        calendars: [ekCalendar])
+
+
+        self.enumerateEvents(matching: predicate, using: syncEventSearchCallback(for: calendar))
+        return true
+    }
+
+    @discardableResult
+    func syncTodayEvents(forCalendar calendar: LegacyCalendar) -> Bool {
+        guard let ekCalendar = calendar.asEKCalendar(eventStore: self) else {
+            print("Failed to sync past events for a calendar")
+            return false
+        }
+
+        let startOfToday = Calendar.current.startOfDay(for: Calendar.current.today)
+        let endOfToday = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: Date())!
+
+        let predicate: NSPredicate = predicateForEvents(withStart: startOfToday,
+                                                        end: endOfToday,
+                                                        calendars: [ekCalendar])
+
+
+        self.enumerateEvents(matching: predicate, using: syncEventSearchCallback(for: calendar))
+        return true
     }
 
     @discardableResult

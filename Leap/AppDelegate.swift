@@ -44,9 +44,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     try! realm.write {
                         realm.add(calendar, update: true)
                     }
-                    eventStore.syncPastEvents(forCalendar: calendar)
-                    eventStore.syncFutureEvents(forCalendar: calendar)
+                    eventStore.syncTodayEvents(forCalendar: calendar)
                 }
+                for calendar in calendars {
+                    eventStore.syncThisWeekEvents(forCalendar: calendar)
+                }
+//                for calendar in calendars {
+//                    eventStore.syncFutureEvents(forCalendar: calendar)
+//                    eventStore.syncPastEvents(forCalendar: calendar)
+//                }
 
                 let context = self.persistentContainer.viewContext
                 let credentialFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Credentials")

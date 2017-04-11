@@ -84,7 +84,7 @@ extension EKEvent {
 
     func asEvent() -> Event {
         let data: [String:Any?] = [
-            "id": self.eventIdentifier,
+            "id": self.eventIdentifier + hackyRecurranceIdSuffix,
             "title": self.title,
             "detail": self.notes,
             "startTime": self.startDate.secondsSinceReferenceDate,
@@ -99,6 +99,15 @@ extension EKEvent {
         ]
 
         return Event(value: data)
+    }
+
+    var hackyRecurranceIdSuffix: String {
+        // The purpose of this is to force duplicate any EKEvents that are returned with recurrances,
+        // to force them to display until we get recurrence-based queries up and running.
+        if self.hasRecurrenceRules {
+            return "+hacky_recurrance_id_\(self.startDate.secondsSinceReferenceDate)"
+        }
+        return ""
     }
 
     func asReminder() -> Reminder {

@@ -15,7 +15,6 @@
 		831444C81E7B034A00A5EF06 /* EventViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 831444C71E7B034A00A5EF06 /* EventViewCell.xib */; };
 		831444CA1E7B072600A5EF06 /* EventViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444C91E7B072600A5EF06 /* EventViewCell.swift */; };
 		831444CC1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444CB1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift */; };
-		831444CF1E7B46A200A5EF06 /* EventStoreExampleCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444CE1E7B46A200A5EF06 /* EventStoreExampleCode.swift */; };
 		831444D21E7B472500A5EF06 /* ViewModelUpdateable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831444D11E7B472500A5EF06 /* ViewModelUpdateable.swift */; };
 		833617601E8C1D3A009A97FF /* DayScheduleTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8336175F1E8C1D3A009A97FF /* DayScheduleTitleView.swift */; };
 		833617631E8C21E8009A97FF /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = 833617621E8C21E8009A97FF /* FontAwesome.otf */; };
@@ -151,7 +150,6 @@
 		831444C71E7B034A00A5EF06 /* EventViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventViewCell.xib; sourceTree = "<group>"; };
 		831444C91E7B072600A5EF06 /* EventViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventViewCell.swift; sourceTree = "<group>"; };
 		831444CB1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewFlowLayout.swift; sourceTree = "<group>"; };
-		831444CE1E7B46A200A5EF06 /* EventStoreExampleCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventStoreExampleCode.swift; sourceTree = "<group>"; };
 		831444D11E7B472500A5EF06 /* ViewModelUpdateable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelUpdateable.swift; sourceTree = "<group>"; };
 		8336175F1E8C1D3A009A97FF /* DayScheduleTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayScheduleTitleView.swift; sourceTree = "<group>"; };
 		833617621E8C21E8009A97FF /* FontAwesome.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.otf; sourceTree = "<group>"; };
@@ -437,14 +435,6 @@
 			name = Extensions;
 			sourceTree = "<group>";
 		};
-		83A72D751E82DBE7005EB213 /* Temporary (seriously) example code */ = {
-			isa = PBXGroup;
-			children = (
-				831444CE1E7B46A200A5EF06 /* EventStoreExampleCode.swift */,
-			);
-			name = "Temporary (seriously) example code";
-			sourceTree = "<group>";
-		};
 		FB166B581E8ABE9D00CB95EC /* Surfaces */ = {
 			isa = PBXGroup;
 			children = (
@@ -589,7 +579,6 @@
 				831444D01E7B46AB00A5EF06 /* Protocols */,
 				835456161E8AFD5500A03B34 /* Extensions */,
 				8351BDCA1E7C5932001221AF /* Models */,
-				83A72D751E82DBE7005EB213 /* Temporary (seriously) example code */,
 				8351BDCB1E7C593C001221AF /* Utilities */,
 				833617611E8C21B1009A97FF /* Fonts */,
 				FB4E11A41E79ABB400687702 /* LaunchScreen.storyboard */,
@@ -998,7 +987,6 @@
 				83F4B1611E7C383F000FCB8D /* ScheduleEntry.swift in Sources */,
 				83D5B8611E9444C400D5F1C6 /* NibLoadableView.swift in Sources */,
 				835456151E8AF9EA00A03B34 /* InitialViewController.swift in Sources */,
-				831444CF1E7B46A200A5EF06 /* EventStoreExampleCode.swift in Sources */,
 				FB2046A61E82E20100F130C8 /* EKEventStore+Realm.swift in Sources */,
 				83B6C6B31E92B850002DCDA2 /* UIPageViewController.swift in Sources */,
 				FB2046B41E82E7DD00F130C8 /* LeapModel.swift in Sources */,
