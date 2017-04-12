@@ -16,28 +16,11 @@ class DayScheduleSurface: Surface {
     let events = SurfaceProperty<[EventSurface]>()
     var day: DaySurface { return DaySurface(id: self.id) }
     var entries: [ScheduleEntry] {
-        return hackyDeduped(events.value).map { event in ScheduleEntry.from(event: event) }
-    }
-
-    func hackyHash(_ event: EventSurface) -> String {
-        return "\(event.title.value)_\(event.startTime.value)_\(event.endTime.value)"
-    }
-
-    func hackyDeduped(_ events: [EventSurface]) -> [EventSurface] {
-        var deduped: [EventSurface] = []
-        var seenHashes: Set<String> = []
-        for event in events {
-            let eventHash = hackyHash(event)
-            if !seenHashes.contains(eventHash) {
-                seenHashes.update(with: eventHash)
-                deduped.append(event)
-            }
-        }
-        return deduped
+        return events.value.map { event in ScheduleEntry.from(event: event) }
     }
 
     var numberOfEntries: Int {
-        return hackyDeduped(events.value).count
+        return entries.count
     }
 
     private static func daySurface(schedule: DayScheduleSurface) -> DaySurface {

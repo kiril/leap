@@ -51,8 +51,6 @@ class RecurrenceDay: Object {
 // NOTE: can you indicate attendence to all future?
 // Can you make it such that editing doesn't by default even touch the recurrence?
 class Recurrence: LeapModel {
-    dynamic var startTime: Int = 0
-    dynamic var endTime: Int = 0
     dynamic var startHour: Int = 0
     dynamic var startMinute: Int = 0
     dynamic var durationMinutes: Int = 0
@@ -79,5 +77,10 @@ class Recurrence: LeapModel {
     var frequency: Frequency {
         get { return Frequency(rawValue: frequencyRaw)! }
         set { frequencyRaw = newValue.rawValue }
+    }
+
+    func recursBetween(_ startDate: Date, and endDate: Date) -> Bool {
+        // 
+        return false
     }
 }
