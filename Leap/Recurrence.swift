@@ -24,6 +24,10 @@ enum DayOfWeek: Int {
     case wednesday = 4
     case thursday  = 5
     case friday    = 6
+
+    static func from(date: Date) -> DayOfWeek {
+        return .sunday
+    }
 }
 
 class RecurrenceDay: Object {
@@ -79,8 +83,36 @@ class Recurrence: LeapModel {
         set { frequencyRaw = newValue.rawValue }
     }
 
-    func recursBetween(_ startDate: Date, and endDate: Date) -> Bool {
-        // 
+    /**
+     * Note: this is fuzzy, and intended to be liberal.
+     * The general usage should be:
+     *   if series.recurrence.recurseBetween(...), let tm = series.stub(on: date) {
+     *       ...
+     *   }
+     */
+    func recursOn(date: Date) -> Bool {
+        // start with frequency, and then you know how to qualify to begin with, and what to test
+        // use the interval to further narrow
+        // look at all of the dates in the range to see if we're in a range we exist
+        // count the # of recurrences according to the pattern
+        // check the actual constraints (day of X, setPositions)
+
+        switch frequency {
+        case .daily:
+            // check the interval
+            // check any specific days of year
+            // check setPositions
+            let daysSinceStart = 1
+            break
+        case .weekly:
+            break
+        case .monthly:
+            break
+        case .yearly:
+            break
+        case .unknown:
+            break
+        }
         return false
     }
 }

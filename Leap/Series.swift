@@ -23,6 +23,22 @@ class Series: LeapModel {
         return fetch(id: id)
     }
 
+
+    func recursBetween(_ startDate: Date, and endDate: Date) -> Bool {
+        guard startTime <= endDate.secondsSinceReferenceDate,
+            endTime > startDate.secondsSinceReferenceDate else {
+            return false
+        }
+        var date:Date? = startDate
+        while let d = date, d.secondsSinceReferenceDate <= endDate.secondsSinceReferenceDate {
+            if recurrence!.recursOn(date: d) {
+                return true
+            }
+            date = Calendar.current.date(byAdding: DateComponents(day: 1), to: d)
+        }
+        return false
+    }
+
     static func on(_ day: GregorianDay) -> [Series] {
         let start = Calendar.current.startOfDay(for: day)
         let end = Calendar.current.startOfDay(for: day.dayAfter)
@@ -34,7 +50,7 @@ class Series: LeapModel {
         query = query.filter("startTime < %d AND endTime > %d", before.secondsSinceReferenceDate, starting.secondsSinceReferenceDate)
         var matches: [Series] = []
         for series in query {
-            if series.recurrence!.recursBetween(starting, and: before) {
+            if series.recursBetween(starting, and: before) {
                 matches.append(series)
             }
         }
