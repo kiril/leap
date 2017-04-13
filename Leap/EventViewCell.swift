@@ -148,8 +148,6 @@ class EventViewCell: UICollectionViewCell {
         invitationActionContainer.isHidden = !showResponseActions
 
         updateActionButtons(forEvent: event)
-
-        self.layoutIfNeeded()
     }
 
     private func updateActionButtons(forEvent event: EventSurface) {

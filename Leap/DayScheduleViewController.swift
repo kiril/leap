@@ -155,8 +155,6 @@ extension DayScheduleViewController: UICollectionViewDelegateFlowLayout {
         case .event(let event):
             configureCellWidth(prototypeEventCell)
             prototypeEventCell.configure(with: event)
-            prototypeEventCell.setNeedsLayout()
-            prototypeEventCell.layoutIfNeeded()
             return prototypeEventCell.systemLayoutSizeFitting(targetSize,
                                                               withHorizontalFittingPriority: 1000,
                                                               verticalFittingPriority: 1)
