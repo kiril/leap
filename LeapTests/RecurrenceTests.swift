@@ -54,5 +54,9 @@ class RecurrenceTests: XCTestCase {
         XCTAssertTrue(rec.recursOn(date: monday, for: series))
         let tuesday = calendar.dayAfter(monday)
         XCTAssertFalse(rec.recursOn(date: tuesday, for: series))
+        let wednesday = calendar.dayAfter(tuesday)
+        XCTAssertFalse(rec.recursOn(date: wednesday, for: series))
+        let thursday = calendar.dayAfter(wednesday)
+        XCTAssertFalse(rec.recursOn(date: thursday, for: series))
     }
 }

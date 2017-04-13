@@ -138,7 +138,6 @@ class Recurrence: LeapModel {
             }
             */
         }
-        print("Ok, didn't fail on the DoW check...")
 
         if daysOfMonth.count > 0, !daysOfMonth.contains(IntWrapper.of(day)) {
             return false
