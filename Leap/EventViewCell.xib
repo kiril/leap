@@ -27,7 +27,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Y9n-0L-JzR">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="18"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="747" text="10:00pm-11:00pm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rSm-Ad-vKa">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10:00pm-11:00pm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rSm-Ad-vKa">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="18"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                 <nil key="textColor"/>
@@ -89,7 +89,7 @@
                             <constraint firstItem="xj8-ev-Gzs" firstAttribute="top" secondItem="XPV-t1-ljT" secondAttribute="top" constant="10" id="2s9-LX-usk"/>
                             <constraint firstItem="xj8-ev-Gzs" firstAttribute="leading" secondItem="XPV-t1-ljT" secondAttribute="leading" constant="10" id="FSy-0S-js2"/>
                             <constraint firstAttribute="bottom" secondItem="xj8-ev-Gzs" secondAttribute="bottom" constant="10" id="SPu-y5-VCC"/>
-                            <constraint firstAttribute="trailing" secondItem="xj8-ev-Gzs" secondAttribute="trailing" priority="999" constant="10" id="bTP-Yu-g3q"/>
+                            <constraint firstAttribute="trailing" secondItem="xj8-ev-Gzs" secondAttribute="trailing" constant="10" id="bTP-Yu-g3q"/>
                         </constraints>
                     </view>
                 </subviews>

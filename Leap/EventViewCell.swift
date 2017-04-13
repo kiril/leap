@@ -61,6 +61,7 @@ class EventViewCell: UICollectionViewCell {
         setupButtons()
 
         self.contentView.translatesAutoresizingMaskIntoConstraints = false
+        self.translatesAutoresizingMaskIntoConstraints = false
     }
 
     private func updateFonts() {
@@ -206,6 +207,7 @@ class EventViewCell: UICollectionViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+
         updateShadow()
     }
 }

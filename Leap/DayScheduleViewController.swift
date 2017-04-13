@@ -70,8 +70,11 @@ class DayScheduleViewController: UICollectionViewController, StoryboardLoadable 
 
 
     func configureCellWidth(_ cell: EventViewCell) {
-        let targetWidth = collectionView!.bounds.size.width - 30
-        cell.contentView.widthAnchor.constraint(equalToConstant: targetWidth).isActive = true
+        cell.contentView.widthAnchor.constraint(equalToConstant: targetCellWidth).isActive = true
+    }
+
+    fileprivate var targetCellWidth: CGFloat {
+        return collectionView!.bounds.size.width - 30
     }
 
     // MARK: UICollectionViewDelegate
@@ -148,16 +151,14 @@ extension DayScheduleViewController: UICollectionViewDelegateFlowLayout {
 
         let entry = surface.entries[indexPath.row]
 
-        let targetWidth = collectionView.bounds.size.width - 30
-        let targetSize = CGSize(width: targetWidth, height: 100000000)
+        let targetSize = CGSize(width: targetCellWidth, height: 100000000)
 
         switch entry {
         case .event(let event):
             configureCellWidth(prototypeEventCell)
             prototypeEventCell.configure(with: event)
-            return prototypeEventCell.systemLayoutSizeFitting(targetSize,
-                                                              withHorizontalFittingPriority: 1000,
-                                                              verticalFittingPriority: 1)
+            let size = prototypeEventCell.systemLayoutSizeFitting(targetSize)
+            return size
 
         case .openTime:
             return CGSize(width: 0, height: 0)
