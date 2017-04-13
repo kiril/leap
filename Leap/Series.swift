@@ -50,7 +50,7 @@ class Series: LeapModel {
         }
         var date:Date? = startDate
         while let d = date, d.secondsSinceReferenceDate <= endDate.secondsSinceReferenceDate {
-            if recurrence!.recursOn(date: d, for: self) {
+            if recurrence!.recursOn(d, for: self) {
                 return true
             }
             date = Calendar.current.date(byAdding: DateComponents(day: 1), to: d)

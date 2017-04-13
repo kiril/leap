@@ -109,7 +109,7 @@ class Recurrence: LeapModel {
         return Recurrence(value: data)
     }
 
-    func recursOn(date: Date, for series: Series) -> Bool {
+    func recursOn(_ date: Date, for series: Series) -> Bool {
         // start with frequency, and then you know how to qualify to begin with, and what to test
         // use the interval to further narrow
         // look at all of the dates in the range to see if we're in a range we exist
@@ -175,18 +175,6 @@ class Recurrence: LeapModel {
             if interval != 0 {
                 if monthsSinceStart % interval != 0 {
                     return false
-                }
-            }
-
-            if daysOfWeek.count > 0 {
-                let weekInMonth = calendar.ordinality(of: .weekOfMonth, in: .month, for: date)!
-                let weekdayInWeek = RecurrenceDay.of(day: DayOfWeek.from(date: date), in: weekInMonth)
-                let anyWeekday = RecurrenceDay.of(day: DayOfWeek.from(date: date))
-                if !daysOfWeek.contains(weekdayInWeek) && !daysOfWeek.contains(anyWeekday) {
-                    return false
-                }
-
-                if setPositions.count > 0 {
                 }
             }
             // TODO: recurrence count/end time?
