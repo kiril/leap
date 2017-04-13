@@ -49,5 +49,10 @@ class RecurrenceTests: XCTestCase {
         while calendar.component(.weekday, from: date) != GregorianMonday {
             date = calendar.date(byAdding: DateComponents(day: 1), to: date)!
         }
+
+        let monday = date
+        XCTAssertTrue(rec.recursOn(date: monday, for: series))
+        let tuesday = calendar.dayAfter(monday)
+        XCTAssertFalse(rec.recursOn(date: tuesday, for: series))
     }
 }

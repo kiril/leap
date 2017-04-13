@@ -123,4 +123,8 @@ extension Calendar {
             return false
         }
     }
+
+    func dayAfter(_ d: Date) -> Date {
+        return date(byAdding: DateComponents(day: 1), to: d)!
+    }
 }

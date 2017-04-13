@@ -51,6 +51,14 @@ class RecurrenceDay: Object {
                                      "dayOfWeekRaw": day.rawValue,
                                      "week": week])
     }
+
+    override var hashValue: Int {
+        return id
+    }
+
+    static func == (lhs: RecurrenceDay, rhs: RecurrenceDay) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
 
 
@@ -106,6 +114,31 @@ class Recurrence: LeapModel {
         let month = calendar.component(.month, from: date)
         let day = calendar.component(.day, from: date)
         let week = calendar.component(.weekOfYear, from: date)
+        let weekInMonth = calendar.ordinality(of: .weekOfMonth, in: .month, for: date)!
+
+        if daysOfWeek.count > 0 {
+            let dow = DayOfWeek.from(date: date)
+            let exact = RecurrenceDay.of(day: dow, in: weekInMonth)
+            let fuzzy = RecurrenceDay.of(day: dow)
+            var found = false
+            for day in daysOfWeek {
+                if day == exact || day == fuzzy {
+                    found = true
+                    break
+                }
+            }
+
+            guard found else {
+                return false
+            }
+
+            /*
+            if !daysOfWeek.contains(exact), !daysOfWeek.contains(fuzzy) {
+                return false
+            }
+            */
+        }
+        print("Ok, didn't fail on the DoW check...")
 
         if daysOfMonth.count > 0, !daysOfMonth.contains(IntWrapper.of(day)) {
             return false
