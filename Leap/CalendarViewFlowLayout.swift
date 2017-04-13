@@ -22,11 +22,9 @@ class CalendarViewFlowLayout: UICollectionViewFlowLayout {
     }
 
     private func setupLayout() {
-        estimatedItemSize = CGSize(width: 200,
-                                   height: 200) // can't be wider than (collectionView - insets)
-
         minimumLineSpacing = 15
 
         scrollDirection = .vertical
     }
+
 }

@@ -163,7 +163,7 @@ class EventSurface: Surface, ModelLoadable {
         }
         bridge.bind(surface.endTime, populateWith: getEndTime, on: "event", persistWith: setEndTime)
 
-        bridge.readonlyBind(surface.userIgnored) { (model:LeapModel) in
+        func getUserIgnored(model:LeapModel) -> Any? {
             guard let thing = model as? Temporality, let me = thing.me else {
                 return false
             }
@@ -172,6 +172,20 @@ class EventSurface: Surface, ModelLoadable {
             }
             return false
         }
+        func setUserIgnored(model:LeapModel, value: Any?) {
+            guard   let thing = model as? Temporality,
+                    let me = thing.me,
+                    let ignore = value as? Bool else {
+                fatalError("OMG wrong type or something \(model)")
+            }
+
+            if ignore {
+                Ignorance.ignore(thing, for: me.person!)
+            } else {
+                Ignorance.unignore(thing, for: me.person!)
+            }
+        }
+        bridge.bind(surface.userIgnored, populateWith: getUserIgnored, on: "event", persistWith: setUserIgnored)
 
         bridge.readonlyBind(surface.userIsInvited) { (model:LeapModel) in
             guard let thing = model as? Temporality, let me = thing.me else {
@@ -180,9 +194,9 @@ class EventSurface: Surface, ModelLoadable {
             return me.ownership == .invitee
         }
 
-        bridge.readonlyBind(surface.userInvitationResponse) { (model:LeapModel) in
+        func getInvitationResponse(model:LeapModel) -> Any? {
             guard let thing = model as? Temporality, let me = thing.me else {
-                return .none
+                return InvitationResponse.none
             }
             switch me.engagement {
             case .undecided, .none:
@@ -195,6 +209,29 @@ class EventSurface: Surface, ModelLoadable {
                 return InvitationResponse.maybe
             }
         }
+        func setInvitationResponse(model:LeapModel, value: Any?) {
+            guard   let thing = model as? Temporality,
+                    let me = thing.me,
+                    let response = value as? InvitationResponse else {
+                fatalError("OMG wrong type or something \(model)")
+                // could this happen just because you are no longer invited?
+            }
+
+            switch response {
+            case .none:
+                me.engagement = .undecided
+            case .yes:
+                me.engagement = .engaged
+            case .no:
+                me.engagement = .disengaged
+            case .maybe:
+                me.engagement = .tracking
+            }
+        }
+        bridge.bind(surface.userInvitationResponse,
+                    populateWith: getInvitationResponse,
+                    on: "event",
+                    persistWith: setInvitationResponse)
 
         surface.store = bridge
         bridge.populate(surface)

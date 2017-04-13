@@ -34,7 +34,8 @@ class Ignorance: LeapModel {
         }
         let realm = Realm.user()
         var wrote: Bool = false
-        try! realm.write {
+
+        try! realm.safeWrite {
             switch thing {
             case let event as Event:
                 realm.add(Ignorance(value: ["person": person, "event": event]))
@@ -46,6 +47,16 @@ class Ignorance: LeapModel {
                 break
             }
         }
+
         return wrote
+    }
+
+    @discardableResult
+    static func unignore(_ thing: Temporality, for person: Person) -> Bool {
+        guard   let ignorance = of(thing, by: person) else {
+            return false
+        }
+        ignorance.delete()
+        return true
     }
 }

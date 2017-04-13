@@ -15,6 +15,9 @@ private let reuseIdentifier = "EventViewCell"
 class DayScheduleViewController: UICollectionViewController, StoryboardLoadable {
 
     var surface: DayScheduleSurface!
+    fileprivate lazy var prototypeEventCell: EventViewCell = {
+        return Bundle.main.loadNibNamed("EventViewCell", owner: nil, options: nil)?.first as! EventViewCell
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +31,10 @@ class DayScheduleViewController: UICollectionViewController, StoryboardLoadable 
         let layout = CalendarViewFlowLayout()
 
         self.collectionView!.collectionViewLayout = layout
-        self.collectionView!.contentInset = UIEdgeInsets(top: 15.0, left: 15.0, bottom: 0.0, right: 15.0)
+        self.collectionView!.contentInset = UIEdgeInsets(top:    15.0,
+                                                         left:   15.0,
+                                                         bottom: 15.0,
+                                                         right:  15.0)
         self.collectionView!.alwaysBounceVertical = true
     }
 
@@ -53,6 +59,7 @@ class DayScheduleViewController: UICollectionViewController, StoryboardLoadable 
         switch entry {
         case .event(let event):
             cell.configure(with: event)
+            cell.delegate = self
         case .openTime:
             // for now, just hack in a new event view model since we don't have an open time view to display
             self.configureCellWidth(cell)
@@ -110,9 +117,52 @@ extension DayScheduleViewController: SourceIdentifiable {
     var sourceId: String { return "DayScheduleVC" }
 }
 
+
 extension DayScheduleViewController: SurfaceObserver {
     func surfaceDidChange(_ surface: Surface) {
         self.collectionView?.reloadData()
         self.collectionView?.collectionViewLayout.invalidateLayout()
+    }
+}
+
+extension DayScheduleViewController: EventViewCellDelegate {
+    func didChoose(response: InvitationResponse,
+                   ignored: Bool,
+                   forEventId eventId: String,
+                   on eventViewCell: EventViewCell) {
+
+        guard let event = EventSurface.load(byId: eventId) else { return }
+        event.userInvitationResponse.update(to: response)
+        event.userIgnored.update(to: ignored)
+
+        try! event.flush()
+
+        eventViewCell.configure(with: event)
+    }
+}
+
+extension DayScheduleViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+
+        let entry = surface.entries[indexPath.row]
+
+        let targetWidth = collectionView.bounds.size.width - 30
+        let targetSize = CGSize(width: targetWidth, height: 100000000)
+
+        switch entry {
+        case .event(let event):
+            configureCellWidth(prototypeEventCell)
+            prototypeEventCell.configure(with: event)
+            prototypeEventCell.setNeedsLayout()
+            prototypeEventCell.layoutIfNeeded()
+            return prototypeEventCell.systemLayoutSizeFitting(targetSize,
+                                                              withHorizontalFittingPriority: 1000,
+                                                              verticalFittingPriority: 1)
+
+        case .openTime:
+            return CGSize(width: 0, height: 0)
+        }
     }
 }
