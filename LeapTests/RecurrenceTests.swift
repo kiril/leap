@@ -60,7 +60,7 @@ class RecurrenceTests: XCTestCase {
         XCTAssertFalse(rec.recursOn(date: thursday, for: series))
     }
 
-    func testMultipleDayOfWeek() {
+    func testMultipleDaysOfWeek() {
         let rec = Recurrence.every(.daily, at: 30, past: 2)
         rec.daysOfWeek.append(RecurrenceDay.of(day: .monday))
         rec.daysOfWeek.append(RecurrenceDay.of(day: .tuesday))
@@ -81,5 +81,29 @@ class RecurrenceTests: XCTestCase {
         XCTAssertFalse(rec.recursOn(date: thursday, for: series))
         let friday = calendar.dayAfter(thursday)
         XCTAssertFalse(rec.recursOn(date: friday, for: series))
+    }
+
+    func testTrivialMonthly() {
+        let rec = Recurrence.every(.monthly, at: 0, past: 9, on: 8)
+        // need to make sure I get a real date, when not all days are valid in all months...
+        let date = Calendar.current.date(byAdding: DateComponents(day: -1*(Calendar.current.component(.day, from: now)-1)), to: now)!
+        XCTAssertTrue(rec.recursOn(date: date, for: series))
+        let nextMonth = Calendar.current.date(byAdding: DateComponents(month: 1), to: date)!
+        XCTAssertTrue(rec.recursOn(date: nextMonth, for: series))
+        let nextNextMonth = Calendar.current.date(byAdding: DateComponents(month: 1), to: nextMonth)!
+        XCTAssertTrue(rec.recursOn(date: nextNextMonth, for: series))
+    }
+
+    func testEveryOtherMonth() {
+        let rec = Recurrence.every(.monthly, at: 0, past: 9, interval: 2, on: 8)
+        // need to make sure I get a real date, when not all days are valid in all months...
+        let date = Calendar.current.date(byAdding: DateComponents(day: -1*(Calendar.current.component(.day, from: now)-1)), to: now)!
+        XCTAssertTrue(rec.recursOn(date: date, for: series))
+        let nextMonth = Calendar.current.date(byAdding: DateComponents(month: 1), to: date)!
+        XCTAssertFalse(rec.recursOn(date: nextMonth, for: series))
+        let nextNextMonth = Calendar.current.date(byAdding: DateComponents(month: 1), to: nextMonth)!
+        XCTAssertTrue(rec.recursOn(date: nextNextMonth, for: series))
+        let tripleNextMonth = Calendar.current.date(byAdding: DateComponents(month: 1), to: nextNextMonth)!
+        XCTAssertFalse(rec.recursOn(date: tripleNextMonth, for: series))
     }
 }

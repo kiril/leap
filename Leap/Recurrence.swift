@@ -93,7 +93,7 @@ class Recurrence: LeapModel {
         set { frequencyRaw = newValue.rawValue }
     }
 
-    public static func every(_ frequency: Frequency, at minute: Int = 0, past hour: Int = 0, max count: Int = 0, interval: Int = 0) -> Recurrence {
+    public static func every(_ frequency: Frequency, at minute: Int = 0, past hour: Int = 0, max count: Int = 0, interval: Int = 0, on dayOfMonth: Int = 0) -> Recurrence {
         let data: ModelInitData = ["startHour": hour,
                                    "startMinute": minute,
                                    "frequencyRaw": frequency.rawValue,
@@ -120,6 +120,7 @@ class Recurrence: LeapModel {
             let dow = DayOfWeek.from(date: date)
             let exact = RecurrenceDay.of(day: dow, in: weekInMonth)
             let fuzzy = RecurrenceDay.of(day: dow)
+
             var found = false
             for day in daysOfWeek {
                 if day == exact || day == fuzzy {
@@ -133,7 +134,7 @@ class Recurrence: LeapModel {
             }
 
             /*
-            if !daysOfWeek.contains(exact), !daysOfWeek.contains(fuzzy) {
+            if !daysOfWeek.contains(exact) && !daysOfWeek.contains(fuzzy) {
                 return false
             }
             */
