@@ -40,7 +40,7 @@ class RecurrenceTests: XCTestCase {
         XCTAssertTrue(rec.recursOn(date: now, for: series))
     }
 
-    func testDaysOfWeek() {
+    func testOneDayOfWeek() {
         let rec = Recurrence.every(.daily, at: 30, past: 2)
         rec.daysOfWeek.append(RecurrenceDay.of(day: .monday))
 
@@ -58,5 +58,28 @@ class RecurrenceTests: XCTestCase {
         XCTAssertFalse(rec.recursOn(date: wednesday, for: series))
         let thursday = calendar.dayAfter(wednesday)
         XCTAssertFalse(rec.recursOn(date: thursday, for: series))
+    }
+
+    func testMultipleDayOfWeek() {
+        let rec = Recurrence.every(.daily, at: 30, past: 2)
+        rec.daysOfWeek.append(RecurrenceDay.of(day: .monday))
+        rec.daysOfWeek.append(RecurrenceDay.of(day: .tuesday))
+
+        let calendar = Calendar(identifier: .gregorian)
+        var date = Date()
+        while calendar.component(.weekday, from: date) != GregorianMonday {
+            date = calendar.date(byAdding: DateComponents(day: 1), to: date)!
+        }
+
+        let monday = date
+        XCTAssertTrue(rec.recursOn(date: monday, for: series))
+        let tuesday = calendar.dayAfter(monday)
+        XCTAssertTrue(rec.recursOn(date: tuesday, for: series))
+        let wednesday = calendar.dayAfter(tuesday)
+        XCTAssertFalse(rec.recursOn(date: wednesday, for: series))
+        let thursday = calendar.dayAfter(wednesday)
+        XCTAssertFalse(rec.recursOn(date: thursday, for: series))
+        let friday = calendar.dayAfter(thursday)
+        XCTAssertFalse(rec.recursOn(date: friday, for: series))
     }
 }
