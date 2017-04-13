@@ -8,6 +8,14 @@
 
 import Foundation
 
+let GregorianSunday = 1
+let GregorianMonday = 2
+let GregorianTuesday = 3
+let GregorianWednesday = 4
+let GregorianThursday = 5
+let GregorianFriday = 6
+let GregorianSaturday = 7
+
 extension Calendar {
 
     func formatDisplayTime(from date: Date, needsAMPM: Bool) -> String {

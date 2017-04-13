@@ -31,6 +31,12 @@ class Series: LeapModel {
         return self.endTime > 0 ? Date(timeIntervalSinceReferenceDate: TimeInterval(self.endTime)) : nil
     }
 
+    public static func series(_ title: String, startingOn startDate: Date, endingOn endDate: Date? = nil) -> Series {
+        return Series(value: ["title": title,
+                              "startTime": startDate.secondsSinceReferenceDate,
+                              "endTime": endDate?.secondsSinceReferenceDate ?? 0])
+    }
+
     /**
      * Note: The general usage should be:
      *   if series.recursBetween(...), let tm = series.stub(on: date) {

@@ -85,6 +85,15 @@ class Recurrence: LeapModel {
         set { frequencyRaw = newValue.rawValue }
     }
 
+    public static func every(_ frequency: Frequency, at minute: Int = 0, past hour: Int = 0, max count: Int = 0, interval: Int = 0) -> Recurrence {
+        let data: ModelInitData = ["startHour": hour,
+                                   "startMinute": minute,
+                                   "frequencyRaw": frequency.rawValue,
+                                   "count": count,
+                                   "interval": interval]
+        return Recurrence(value: data)
+    }
+
     func recursOn(date: Date, for series: Series) -> Bool {
         // start with frequency, and then you know how to qualify to begin with, and what to test
         // use the interval to further narrow
@@ -94,7 +103,6 @@ class Recurrence: LeapModel {
 
         let calendar = Calendar.current
 
-        let year = calendar.component(.year, from: date)
         let month = calendar.component(.month, from: date)
         let day = calendar.component(.day, from: date)
         let week = calendar.component(.weekOfYear, from: date)

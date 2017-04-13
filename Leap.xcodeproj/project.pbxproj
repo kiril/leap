@@ -53,6 +53,7 @@
 		FB166B571E8ABE1C00CB95EC /* RealmUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B561E8ABE1C00CB95EC /* RealmUtil.swift */; };
 		FB166B5C1E8AC3CA00CB95EC /* Fetchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B5B1E8AC3CA00CB95EC /* Fetchable.swift */; };
 		FB166B5E1E8AC6DB00CB95EC /* ModelReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B5D1E8AC6DB00CB95EC /* ModelReference.swift */; };
+		FB1869D41E9FF88A007642F4 /* RecurrenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1869D31E9FF88A007642F4 /* RecurrenceTests.swift */; };
 		FB2046A31E82DA2200F130C8 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A21E82DA2200F130C8 /* Event.swift */; };
 		FB2046A61E82E20100F130C8 /* EKEventStore+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A51E82E20100F130C8 /* EKEventStore+Realm.swift */; };
 		FB2046A81E82E28800F130C8 /* EKCalendar+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A71E82E28800F130C8 /* EKCalendar+Realm.swift */; };
@@ -186,6 +187,7 @@
 		FB166B561E8ABE1C00CB95EC /* RealmUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmUtil.swift; sourceTree = "<group>"; };
 		FB166B5B1E8AC3CA00CB95EC /* Fetchable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fetchable.swift; sourceTree = "<group>"; };
 		FB166B5D1E8AC6DB00CB95EC /* ModelReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelReference.swift; sourceTree = "<group>"; };
+		FB1869D31E9FF88A007642F4 /* RecurrenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecurrenceTests.swift; sourceTree = "<group>"; };
 		FB2046A21E82DA2200F130C8 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		FB2046A51E82E20100F130C8 /* EKEventStore+Realm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EKEventStore+Realm.swift"; sourceTree = "<group>"; };
 		FB2046A71E82E28800F130C8 /* EKCalendar+Realm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EKCalendar+Realm.swift"; sourceTree = "<group>"; };
@@ -601,6 +603,7 @@
 				FB39ADAE1E8EC6B700B79A7B /* TestUtil.swift */,
 				FB39ADB61E93F1EA00B79A7B /* CalendarTests.swift */,
 				FB39ADB81E94067200B79A7B /* EventSurfaceTests.swift */,
+				FB1869D31E9FF88A007642F4 /* RecurrenceTests.swift */,
 			);
 			path = LeapTests;
 			sourceTree = "<group>";
@@ -1020,6 +1023,7 @@
 				FB8BB6231E89A76A00A30315 /* EventKitMigrationTests.swift in Sources */,
 				FBD1045F1E80717E00DDF65B /* SurfaceTests.swift in Sources */,
 				FB39ADB91E94067200B79A7B /* EventSurfaceTests.swift in Sources */,
+				FB1869D41E9FF88A007642F4 /* RecurrenceTests.swift in Sources */,
 				FB39ADB71E93F1EA00B79A7B /* CalendarTests.swift in Sources */,
 				FB39ADAF1E8EC6B700B79A7B /* TestUtil.swift in Sources */,
 				83B5DB721E91D7F400A0CA7E /* (null) in Sources */,
