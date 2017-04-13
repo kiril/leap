@@ -27,21 +27,21 @@ class LeapModel: Object, Auditable {
 
     func delete() {
         let realm = Realm.user()
-        try! realm.write {
+        try! realm.safeWrite {
             realm.delete(self)
         }
     }
 
     func insert() {
         let realm = Realm.user()
-        try! realm.write {
+        try! realm.safeWrite {
             realm.add(self)
         }
     }
 
     func update() {
         let realm = Realm.user()
-        try! realm.write {
+        try! realm.safeWrite {
             realm.add(self, update: true)
         }
     }

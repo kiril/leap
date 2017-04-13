@@ -120,12 +120,12 @@ public class ReadableProperty<T>: TypedProperty {
 
 public class WritableProperty<T>: ReadableProperty<T>, WritableTypedProperty {
 
-    func update(to value: T, via source: SourceIdentifiable?) throws {
-        try surface!.update(key: key, toValue: value, via: source)
+    func update(to value: T, via source: SourceIdentifiable?) {
+        try! surface!.update(key: key, toValue: value, via: source)
     }
 
-    func update(to value: T, silently: Bool = false) throws {
-        try surface!.update(key: key, toValue: value, via: nil, silently: silently)
+    func update(to value: T, silently: Bool = false) {
+        try! surface!.update(key: key, toValue: value, via: nil, silently: silently)
     }
 
     func clear(via source: SourceIdentifiable) throws {

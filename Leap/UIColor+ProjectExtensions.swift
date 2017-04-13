@@ -68,4 +68,11 @@ extension UIColor {
                        g: 113,
                        b: 219)
     }
+
+    public static var projectRed: UIColor {
+        return UIColor(r: 234,
+                       g: 69,
+                       b: 66)
+    }
+
 }

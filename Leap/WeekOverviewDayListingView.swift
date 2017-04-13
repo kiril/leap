@@ -59,12 +59,6 @@ class WeekOverviewDayListingView: UIView, NibLoadableView {
     }
 
     private func update(label: UILabel, toBold bold: Bool) {
-        let currentSize = label.font.pointSize
-
-        if bold {
-            label.font = UIFont.boldSystemFont(ofSize: currentSize)
-        } else {
-            label.font = UIFont.systemFont(ofSize: currentSize)
-        }
+        label.font = label.font.toSystemVersion(withBold: bold)
     }
 }
