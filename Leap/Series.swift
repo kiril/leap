@@ -12,7 +12,7 @@ import RealmSwift
 class Series: LeapModel {
     dynamic var creator: Person?
     dynamic var title: String = ""
-    dynamic var template: EventTemplate?
+    dynamic var template: Template?
     dynamic var recurrence: Recurrence?
     dynamic var startTime: Int = 0
     dynamic var endTime: Int = 0
@@ -23,7 +23,20 @@ class Series: LeapModel {
         return fetch(id: id)
     }
 
+    var startDate: Date {
+        return Date(timeIntervalSinceReferenceDate: TimeInterval(self.startTime))
+    }
 
+    var endDate: Date? {
+        return self.endTime > 0 ? Date(timeIntervalSinceReferenceDate: TimeInterval(self.endTime)) : nil
+    }
+
+    /**
+     * Note: The general usage should be:
+     *   if series.recursBetween(...), let tm = series.stub(on: date) {
+     *       ...
+     *   }
+     */
     func recursBetween(_ startDate: Date, and endDate: Date) -> Bool {
         guard startTime <= endDate.secondsSinceReferenceDate,
             endTime > startDate.secondsSinceReferenceDate else {
@@ -31,7 +44,7 @@ class Series: LeapModel {
         }
         var date:Date? = startDate
         while let d = date, d.secondsSinceReferenceDate <= endDate.secondsSinceReferenceDate {
-            if recurrence!.recursOn(date: d) {
+            if recurrence!.recursOn(date: d, for: self) {
                 return true
             }
             date = Calendar.current.date(byAdding: DateComponents(day: 1), to: d)

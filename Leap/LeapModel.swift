@@ -9,6 +9,8 @@
 import Foundation
 import RealmSwift
 
+typealias ModelInitData = [String:Any?]
+
 class LeapModel: Object, Auditable {
     dynamic var id: String = UUID().uuidString
     dynamic var created: Date?

@@ -1,5 +1,5 @@
 //
-//  EventTemplate.swift
+//  Template.swift
 //  Leap
 //
 //  Created by Kiril Savino on 3/27/17.
@@ -9,9 +9,8 @@
 import Foundation
 import RealmSwift
 
-class EventTemplate: LeapModel {
+class Template: LeapModel {
     dynamic var title: String = ""
-    dynamic var duration: Double = 0.0
     dynamic var detail: String?
     dynamic var locationString: String?
     dynamic var agenda: Checklist?

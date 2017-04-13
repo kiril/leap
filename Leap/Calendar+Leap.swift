@@ -37,13 +37,50 @@ extension Calendar {
     }
 
     func daysBetween(_ a: Date, and b: Date) -> Int {
-        let aYear = component(Calendar.Component.year, from: a)
-        let aDayOfYear = ordinality(of: Calendar.Component.day, in: Calendar.Component.year, for: a)!
+        let aYear = component(.year, from: a)
+        let aDayOfYear = ordinality(of: .day, in: .year, for: a)!
 
-        let bYear = component(Calendar.Component.year, from: b)
-        let bDayOfYear = ordinality(of: Calendar.Component.day, in: Calendar.Component.year, for: b)!
+        let bYear = component(.year, from: b)
+        let bDayOfYear = ordinality(of: .day, in: .year, for: b)!
 
-        return ((bYear - aYear) * 365) + (bDayOfYear - aDayOfYear)
+        var interveningDays = 0
+        var year = min(aYear, bYear)
+        let endYear = max(aYear, bYear)
+        while year < endYear {
+            let lastDay = Calendar.current.date(from: DateComponents(year: year, month: 12, day: 31))!
+            let daysInYear = Calendar.current.ordinality(of: .day, in: .year, for: lastDay)!
+            interveningDays += daysInYear
+            year += 1
+        }
+
+        if bYear < aYear {
+            interveningDays *= -1
+        }
+
+        return interveningDays + (bDayOfYear - aDayOfYear)
+    }
+
+    func weeksBetween(_ a: Date, and b: Date) -> Int {
+        let days = daysBetween(a, and: b)
+        var weeks = days % 7
+        if weeks * 7 < days {
+            weeks += 1
+        }
+        return weeks
+    }
+
+    func monthsBetween(_ a: Date, and b: Date) -> Int {
+        let aYear = component(.year, from: a)
+        let aMonthOfYear = ordinality(of: .month, in: .year, for: a)!
+
+        let bYear = component(.year, from: b)
+        let bMonthOfYear = ordinality(of: .month, in: .year, for: b)!
+
+        return (bYear - aYear) * 12 + (bMonthOfYear - aMonthOfYear)
+    }
+
+    func yearsBetween(_ a: Date, and b: Date) -> Int {
+        return component(.year, from: b) - component(.year, from: a)
     }
 
     func todayAt(hour: Int, minute: Int) -> Date {

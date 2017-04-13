@@ -24,9 +24,11 @@ enum DayOfWeek: Int {
     case wednesday = 4
     case thursday  = 5
     case friday    = 6
+    case saturday  = 7
 
     static func from(date: Date) -> DayOfWeek {
-        return .sunday
+        let components = Calendar.current.dateComponents([Calendar.Component.weekday], from: date)
+        return DayOfWeek(rawValue: components.weekday!)!
     }
 }
 
@@ -44,7 +46,7 @@ class RecurrenceDay: Object {
         return "id"
     }
 
-    static func of(day: DayOfWeek, in week: Int) -> RecurrenceDay {
+    static func of(day: DayOfWeek, in week: Int = 0) -> RecurrenceDay {
         return RecurrenceDay(value: ["id": week*1000 + day.rawValue,
                                      "dayOfWeekRaw": day.rawValue,
                                      "week": week])
@@ -83,36 +85,103 @@ class Recurrence: LeapModel {
         set { frequencyRaw = newValue.rawValue }
     }
 
-    /**
-     * Note: this is fuzzy, and intended to be liberal.
-     * The general usage should be:
-     *   if series.recurrence.recurseBetween(...), let tm = series.stub(on: date) {
-     *       ...
-     *   }
-     */
-    func recursOn(date: Date) -> Bool {
+    func recursOn(date: Date, for series: Series) -> Bool {
         // start with frequency, and then you know how to qualify to begin with, and what to test
         // use the interval to further narrow
         // look at all of the dates in the range to see if we're in a range we exist
         // count the # of recurrences according to the pattern
         // check the actual constraints (day of X, setPositions)
 
+        let calendar = Calendar.current
+
+        let year = calendar.component(.year, from: date)
+        let month = calendar.component(.month, from: date)
+        let day = calendar.component(.day, from: date)
+        let week = calendar.component(.weekOfYear, from: date)
+
+        if daysOfMonth.count > 0, !daysOfMonth.contains(IntWrapper.of(day)) {
+            return false
+        }
+
+        if daysOfYear.count > 0, !daysOfYear.contains(IntWrapper.of(calendar.ordinality(of: .day, in: .year, for: date)!)) {
+            return false
+        }
+
+        if weeksOfYear.count > 0, !weeksOfYear.contains(IntWrapper.of(week)) {
+            return false
+        }
+
+        if monthsOfYear.count > 0, !monthsOfYear.contains(IntWrapper.of(month)) {
+            return false
+        }
+
         switch frequency {
         case .daily:
-            // check the interval
-            // check any specific days of year
-            // check setPositions
-            let daysSinceStart = 1
-            break
+            if interval != 0 {
+                let daysSinceStart = calendar.daysBetween(series.startDate, and: date)
+                if daysSinceStart % interval != 0 {
+                    return false
+                }
+            }
+            // TODO: recurrence count/end time?
+            return true
+
         case .weekly:
-            break
+            let weeksSinceStart = calendar.weeksBetween(series.startDate, and: date)
+            if interval != 0 {
+                if weeksSinceStart % interval != 0 {
+                    return false
+                }
+            }
+            // TODO: recurrence count/end time?
+            return true
+
         case .monthly:
-            break
+            let monthsSinceStart = calendar.monthsBetween(series.startDate, and: date)
+            if interval != 0 {
+                if monthsSinceStart % interval != 0 {
+                    return false
+                }
+            }
+
+            if daysOfWeek.count > 0 {
+                let weekInMonth = calendar.ordinality(of: .weekOfMonth, in: .month, for: date)!
+                let weekdayInWeek = RecurrenceDay.of(day: DayOfWeek.from(date: date), in: weekInMonth)
+                let anyWeekday = RecurrenceDay.of(day: DayOfWeek.from(date: date))
+                if !daysOfWeek.contains(weekdayInWeek), !daysOfWeek.contains(anyWeekday) {
+                    return false
+                }
+
+                if setPositions.count > 0 {
+                }
+            }
+            // TODO: recurrence count/end time?
+            return true
+
         case .yearly:
-            break
+            let yearsSinceStart = calendar.yearsBetween(series.startDate, and: date)
+            if interval != 0 {
+                if yearsSinceStart % interval != 0 {
+                    return false
+                }
+            }
+
+            if monthsOfYear.count > 0, !monthsOfYear.contains(IntWrapper.of(month)) {
+                return false
+            }
+
+            if weeksOfYear.count > 0, !weeksOfYear.contains(IntWrapper.of(week)) {
+                return false
+            }
+
+            if daysOfYear.count > 0, !daysOfYear.contains(IntWrapper.of(calendar.ordinality(of: .day, in: .year, for: date)!)) {
+                return false
+            }
+
+            return true
+
         case .unknown:
-            break
+            return false
         }
-        return false
     }
 }

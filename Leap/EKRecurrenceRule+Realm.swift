@@ -68,18 +68,19 @@ extension EKRecurrenceRule {
 
 
     func asSeries(_ tm: Temporality) -> Series {
-        let series = Series(value: ["id": tm.id, "title": tm.title])
+        var data: ModelInitData = ["id": tm.id,
+                                   "title": tm.title,
+                                   "startTime": Int(tm.time),
+                                   "endTime": recurrenceEnd?.endDate?.secondsSinceReferenceDate ?? 0]
+        if let event = tm as? Event {
+            data["modalityString"] = event.modalityString
+        }
+        let series = Series(value: data)
 
-        var templateData: [String:Any?] = ["title": tm.title,
-                                           "duration": tm.duration,
-                                           "startTime": Int(tm.time),
-                                           "endTime": recurrenceEnd?.endDate?.secondsSinceReferenceDate ?? 0,
+        let templateData: ModelInitData = ["title": tm.title,
                                            "detail": tm.detail,
                                            "locationString": tm.locationString]
-        if let event = tm as? Event {
-            templateData["modalityString"] = event.modalityString
-        }
-        series.template = EventTemplate(value: templateData)
+        series.template = Template(value: templateData)
         series.recurrence = asRecurrence()
         return series
     }

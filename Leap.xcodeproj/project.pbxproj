@@ -89,7 +89,7 @@
 		FB42085D1E896847007F4DBD /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42085C1E896847007F4DBD /* Resource.swift */; };
 		FB42085F1E896C40007F4DBD /* Reservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42085E1E896C40007F4DBD /* Reservation.swift */; };
 		FB4208661E8976B1007F4DBD /* Series.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208651E8976B1007F4DBD /* Series.swift */; };
-		FB4208681E897997007F4DBD /* EventTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208671E897997007F4DBD /* EventTemplate.swift */; };
+		FB4208681E897997007F4DBD /* Template.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208671E897997007F4DBD /* Template.swift */; };
 		FB42086A1E897A04007F4DBD /* Checklist.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208691E897A04007F4DBD /* Checklist.swift */; };
 		FB42086C1E897AD1007F4DBD /* ChecklistItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42086B1E897AD1007F4DBD /* ChecklistItem.swift */; };
 		FB42086E1E89816B007F4DBD /* EKRecurrenceRule+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42086D1E89816B007F4DBD /* EKRecurrenceRule+Realm.swift */; };
@@ -222,7 +222,7 @@
 		FB42085C1E896847007F4DBD /* Resource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 		FB42085E1E896C40007F4DBD /* Reservation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reservation.swift; sourceTree = "<group>"; };
 		FB4208651E8976B1007F4DBD /* Series.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Series.swift; sourceTree = "<group>"; };
-		FB4208671E897997007F4DBD /* EventTemplate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventTemplate.swift; sourceTree = "<group>"; };
+		FB4208671E897997007F4DBD /* Template.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Template.swift; sourceTree = "<group>"; };
 		FB4208691E897A04007F4DBD /* Checklist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Checklist.swift; sourceTree = "<group>"; };
 		FB42086B1E897AD1007F4DBD /* ChecklistItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChecklistItem.swift; sourceTree = "<group>"; };
 		FB42086D1E89816B007F4DBD /* EKRecurrenceRule+Realm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EKRecurrenceRule+Realm.swift"; sourceTree = "<group>"; };
@@ -466,11 +466,11 @@
 				FB2046B71E830E4600F130C8 /* Temporality.swift */,
 				FB2046A21E82DA2200F130C8 /* Event.swift */,
 				FB2046B11E82E7BF00F130C8 /* Reminder.swift */,
-				FB4208461E857984007F4DBD /* Recurrence.swift */,
 				FB4208541E859606007F4DBD /* Alarm.swift */,
 				FB4208521E85948A007F4DBD /* Channel.swift */,
 				FB4208651E8976B1007F4DBD /* Series.swift */,
-				FB4208671E897997007F4DBD /* EventTemplate.swift */,
+				FB4208461E857984007F4DBD /* Recurrence.swift */,
+				FB4208671E897997007F4DBD /* Template.swift */,
 				FB39ADB01E92B9F400B79A7B /* Ignorance.swift */,
 			);
 			name = Events;
@@ -947,7 +947,7 @@
 				FB2046B61E82E9B100F130C8 /* DeviceAccount.swift in Sources */,
 				FB4208491E8579D0007F4DBD /* Auditable.swift in Sources */,
 				FB42084D1E857F7C007F4DBD /* Person.swift in Sources */,
-				FB4208681E897997007F4DBD /* EventTemplate.swift in Sources */,
+				FB4208681E897997007F4DBD /* Template.swift in Sources */,
 				FB4208571E85A168007F4DBD /* GeoFence.swift in Sources */,
 				FB39ADBB1E9407FF00B79A7B /* Int+Leap.swift in Sources */,
 				FB166B5C1E8AC3CA00CB95EC /* Fetchable.swift in Sources */,
