@@ -127,4 +127,16 @@ extension Calendar {
     func dayAfter(_ d: Date) -> Date {
         return date(byAdding: DateComponents(day: 1), to: d)!
     }
+
+    func theNext(weekday: Int, onOrAfter date: Date) -> Date {
+        var d = date
+        while component(.weekday, from: d) != weekday {
+            d = dayAfter(d)
+        }
+        return d
+    }
+
+    func startOfMonth(onOrAfter d: Date) -> Date {
+        return date(bySetting: .day, value: 1, of: d)!
+    }
 }

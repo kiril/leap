@@ -45,12 +45,8 @@ class RecurrenceTests: XCTestCase {
         rec.daysOfWeek.append(RecurrenceDay.of(day: .monday))
 
         let calendar = Calendar(identifier: .gregorian)
-        var date = Date()
-        while calendar.component(.weekday, from: date) != GregorianMonday {
-            date = calendar.date(byAdding: DateComponents(day: 1), to: date)!
-        }
+        let monday = calendar.theNext(weekday: GregorianMonday, onOrAfter: now)
 
-        let monday = date
         XCTAssertTrue(rec.recursOn(date: monday, for: series))
         let tuesday = calendar.dayAfter(monday)
         XCTAssertFalse(rec.recursOn(date: tuesday, for: series))
@@ -66,12 +62,8 @@ class RecurrenceTests: XCTestCase {
         rec.daysOfWeek.append(RecurrenceDay.of(day: .tuesday))
 
         let calendar = Calendar(identifier: .gregorian)
-        var date = Date()
-        while calendar.component(.weekday, from: date) != GregorianMonday {
-            date = calendar.date(byAdding: DateComponents(day: 1), to: date)!
-        }
+        let monday = calendar.theNext(weekday: GregorianMonday, onOrAfter: now)
 
-        let monday = date
         XCTAssertTrue(rec.recursOn(date: monday, for: series))
         let tuesday = calendar.dayAfter(monday)
         XCTAssertTrue(rec.recursOn(date: tuesday, for: series))
@@ -105,5 +97,17 @@ class RecurrenceTests: XCTestCase {
         XCTAssertTrue(rec.recursOn(date: nextNextMonth, for: series))
         let tripleNextMonth = Calendar.current.date(byAdding: DateComponents(month: 1), to: nextNextMonth)!
         XCTAssertFalse(rec.recursOn(date: tripleNextMonth, for: series))
+    }
+
+    func testFirstTuesdayOfMonth() {
+        let rec = Recurrence.every(.monthly, at: 0, past: 9)
+        rec.daysOfWeek.append(RecurrenceDay.of(day: DayOfWeek.tuesday, in: 1))
+
+        let calendar = Calendar(identifier: .gregorian)
+        let theFirst = calendar.startOfMonth(onOrAfter: now)
+        let firstTuesday = calendar.theNext(weekday: GregorianTuesday, onOrAfter: theFirst)
+        XCTAssertTrue(rec.recursOn(date: firstTuesday, for: series), "Didn't recur on \(firstTuesday)")
+        let secondTuesday = calendar.theNext(weekday: GregorianTuesday, onOrAfter: calendar.dayAfter(firstTuesday))
+        XCTAssertFalse(rec.recursOn(date: secondTuesday, for: series))
     }
 }

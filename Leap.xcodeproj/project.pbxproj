@@ -54,6 +54,7 @@
 		FB166B5C1E8AC3CA00CB95EC /* Fetchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B5B1E8AC3CA00CB95EC /* Fetchable.swift */; };
 		FB166B5E1E8AC6DB00CB95EC /* ModelReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B5D1E8AC6DB00CB95EC /* ModelReference.swift */; };
 		FB1869D41E9FF88A007642F4 /* RecurrenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1869D31E9FF88A007642F4 /* RecurrenceTests.swift */; };
+		FB1869D61EA01CBC007642F4 /* List+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1869D51EA01CBC007642F4 /* List+Leap.swift */; };
 		FB2046A31E82DA2200F130C8 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A21E82DA2200F130C8 /* Event.swift */; };
 		FB2046A61E82E20100F130C8 /* EKEventStore+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A51E82E20100F130C8 /* EKEventStore+Realm.swift */; };
 		FB2046A81E82E28800F130C8 /* EKCalendar+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A71E82E28800F130C8 /* EKCalendar+Realm.swift */; };
@@ -188,6 +189,7 @@
 		FB166B5B1E8AC3CA00CB95EC /* Fetchable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fetchable.swift; sourceTree = "<group>"; };
 		FB166B5D1E8AC6DB00CB95EC /* ModelReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelReference.swift; sourceTree = "<group>"; };
 		FB1869D31E9FF88A007642F4 /* RecurrenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecurrenceTests.swift; sourceTree = "<group>"; };
+		FB1869D51EA01CBC007642F4 /* List+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "List+Leap.swift"; sourceTree = "<group>"; };
 		FB2046A21E82DA2200F130C8 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		FB2046A51E82E20100F130C8 /* EKEventStore+Realm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EKEventStore+Realm.swift"; sourceTree = "<group>"; };
 		FB2046A71E82E28800F130C8 /* EKCalendar+Realm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EKCalendar+Realm.swift"; sourceTree = "<group>"; };
@@ -512,6 +514,7 @@
 				FB4208481E8579D0007F4DBD /* Auditable.swift */,
 				FB42085A1E85A650007F4DBD /* TimeZone.swift */,
 				FB166B561E8ABE1C00CB95EC /* RealmUtil.swift */,
+				FB1869D51EA01CBC007642F4 /* List+Leap.swift */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -981,6 +984,7 @@
 				FBD614581E7F57B0001F4050 /* Validation.swift in Sources */,
 				FB2046B21E82E7BF00F130C8 /* Reminder.swift in Sources */,
 				FB42086E1E89816B007F4DBD /* EKRecurrenceRule+Realm.swift in Sources */,
+				FB1869D61EA01CBC007642F4 /* List+Leap.swift in Sources */,
 				FB4208471E857984007F4DBD /* Recurrence.swift in Sources */,
 				839362211E8FF5F200543CFC /* WeekOverviewPageViewDataSource.swift in Sources */,
 				831444CA1E7B072600A5EF06 /* EventViewCell.swift in Sources */,

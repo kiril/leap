@@ -17,7 +17,7 @@ enum Frequency: String {
     case yearly  = "yearly"
 }
 
-enum DayOfWeek: Int {
+public enum DayOfWeek: Int {
     case sunday    = 1
     case monday    = 2
     case tuesday   = 3
@@ -54,6 +54,13 @@ class RecurrenceDay: Object {
 
     override var hashValue: Int {
         return id
+    }
+
+    override func isEqual(_ object: Any?) -> Bool {
+        if let rd = object as? RecurrenceDay {
+            return rd == self
+        }
+        return false
     }
 
     static func == (lhs: RecurrenceDay, rhs: RecurrenceDay) -> Bool {
@@ -121,23 +128,9 @@ class Recurrence: LeapModel {
             let exact = RecurrenceDay.of(day: dow, in: weekInMonth)
             let fuzzy = RecurrenceDay.of(day: dow)
 
-            var found = false
-            for day in daysOfWeek {
-                if day == exact || day == fuzzy {
-                    found = true
-                    break
-                }
-            }
-
-            guard found else {
-                return false
-            }
-
-            /*
             if !daysOfWeek.contains(exact) && !daysOfWeek.contains(fuzzy) {
                 return false
             }
-            */
         }
 
         if daysOfMonth.count > 0, !daysOfMonth.contains(IntWrapper.of(day)) {
@@ -189,7 +182,7 @@ class Recurrence: LeapModel {
                 let weekInMonth = calendar.ordinality(of: .weekOfMonth, in: .month, for: date)!
                 let weekdayInWeek = RecurrenceDay.of(day: DayOfWeek.from(date: date), in: weekInMonth)
                 let anyWeekday = RecurrenceDay.of(day: DayOfWeek.from(date: date))
-                if !daysOfWeek.contains(weekdayInWeek), !daysOfWeek.contains(anyWeekday) {
+                if !daysOfWeek.contains(weekdayInWeek) && !daysOfWeek.contains(anyWeekday) {
                     return false
                 }
 
