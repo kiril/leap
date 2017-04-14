@@ -185,25 +185,12 @@ class RecurrenceTests: XCTestCase {
         rec.daysOfWeek.append(RecurrenceDay.of(day: .saturday))
         rec.setPositions.append(IntWrapper.of(3))
 
-        let firstOfYear = calendar.date(bySetting: .month, value: 1, of: calendar.startOfMonth(onOrAfter: now))!
-        let year = calendar.component(.year, from: firstOfYear)
-
-        var months: [Date] = []
-        var month = firstOfYear
-        while calendar.component(.year, from: month) == year {
-            months.append(month)
-            month = calendar.date(byAdding: .month, value: 1, to: month)!
-        }
-
-        var n = 1
-        for monthStart in months {
-            let saturday = calendar.theNext(weekday: GregorianSaturday, onOrAfter: monthStart)
-            if n == 3 {
-                XCTAssertTrue(rec.recursOn(saturday, for: series))
-            } else {
-                XCTAssertFalse(rec.recursOn(saturday, for: series))
-            }
-            n += 1
+        let saturdays = calendar.all(weekdays: GregorianSaturday, inYearOf: now)
+        XCTAssertFalse(rec.recursOn(saturdays[0], for: series))
+        XCTAssertFalse(rec.recursOn(saturdays[1], for: series))
+        XCTAssertTrue(rec.recursOn(saturdays[2], for: series))
+        for saturday in saturdays.dropFirst(3) {
+            XCTAssertFalse(rec.recursOn(saturday, for: series), "\(saturday)")
         }
     }
 
@@ -224,11 +211,12 @@ class RecurrenceTests: XCTestCase {
         var finalWeekdayIndex = 0
         for (i, day) in days.reversed().enumerated() {
             if calendar.isWeekday(day) {
-                finalWeekdayIndex = days.count - i
+                finalWeekdayIndex = days.count - i - 1
                 break
             }
         }
         assert(finalWeekdayIndex != 0)
+        print("Final index is \(finalWeekdayIndex) of \(days.count)")
 
         var matchCount = 0
         for (i, day) in days.enumerated() {

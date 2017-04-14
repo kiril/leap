@@ -193,6 +193,19 @@ extension Calendar {
         return days
     }
 
+    func all(weekdays day: Int, inYearOf date: Date) -> [Date] {
+        let theFirst = startOfYear(including: date)
+
+        let year = component(.year, from: theFirst)
+        var one = theNext(weekday: day, onOrAfter: theFirst)
+        var weekdays: [Date] = []
+        while component(.year, from: one) == year {
+            weekdays.append(one)
+            one = theNext(weekday: day, after: one)
+        }
+        return weekdays
+    }
+
     func isDate(_ date: Date, a weekday: Int) -> Bool {
         return component(.weekday, from: date) == weekday
     }

@@ -195,11 +195,16 @@ class Recurrence: LeapModel {
                         matchIndices.append(i)
                         if calendar.isDate(day, theSameDayAs: date) {
                             myIndex = i
+                            if setPositions.contains(IntWrapper.of(matchIndices.count)) {
+                                return true // may as well succeed fast in the simple case
+                            }
                         }
                     }
                 }
+
                 for position in setPositions.map({ return $0.value }) {
-                    if abs(position) < matchIndices.count && matchIndices[position] == myIndex {
+                    let positionalIndex = position < 0 ? matchIndices[position] : matchIndices[position-1]
+                    if abs(position) < matchIndices.count && positionalIndex == myIndex {
                         return true
                     }
                 }
@@ -225,6 +230,38 @@ class Recurrence: LeapModel {
             }
 
             if daysOfYear.count > 0, !daysOfYear.contains(IntWrapper.of(calendar.ordinality(of: .day, in: .year, for: date)!)) {
+                return false
+            }
+
+            if setPositions.count > 0 && daysOfWeek.count > 0 {
+                // we know that we match one of these days...
+                // but now we have to see if we're one of the 'nth' ones for a given position
+                // so...
+                // let's figure out what index this date is within this month
+                // that requires counting all the matching weekdays in this month until we find this date
+                let positions = setPositions.map { return $0.value }
+                var matchIndices: [Int] = []
+                var myPosition = -1
+                for (i, day) in calendar.allDays(inYearOf: date).enumerated() {
+                    if dayOfWeekMatches(for: day) {
+                        matchIndices.append(i)
+                        if calendar.isDate(day, theSameDayAs: date) {
+                            myPosition = matchIndices.count
+                            if positions.contains(myPosition) {
+                                return true
+                            }
+                        }
+                    }
+                }
+
+                for position in positions {
+                    if position < 0 {
+                        let adjusted = matchIndices.count + position + 1
+                        if adjusted == myPosition {
+                            return true
+                        }
+                    }
+                }
                 return false
             }
 
