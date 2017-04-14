@@ -110,4 +110,43 @@ class RecurrenceTests: XCTestCase {
         let secondTuesday = calendar.theNext(weekday: GregorianTuesday, onOrAfter: calendar.dayAfter(firstTuesday))
         XCTAssertFalse(rec.recursOn(secondTuesday, for: series))
     }
+
+    func testSecondTuesdayOfMonth() {
+        let rec = Recurrence.every(.monthly, at: 0, past: 9)
+        rec.daysOfWeek.append(RecurrenceDay.of(day: DayOfWeek.tuesday, in: 2))
+
+        let calendar = Calendar(identifier: .gregorian)
+        let theFirst = calendar.startOfMonth(onOrAfter: now)
+        let firstTuesday = calendar.theNext(weekday: GregorianTuesday, onOrAfter: theFirst)
+        XCTAssertFalse(rec.recursOn(firstTuesday, for: series), "Didn't recur on \(firstTuesday)")
+        let secondTuesday = calendar.theNext(weekday: GregorianTuesday, onOrAfter: calendar.dayAfter(firstTuesday))
+        XCTAssertTrue(rec.recursOn(secondTuesday, for: series))
+    }
+
+    func testSundaysInFebruary() {
+        let rec = Recurrence.every(.weekly, at: 0, past: 9)
+        rec.daysOfWeek.append(RecurrenceDay.of(day: DayOfWeek.sunday))
+        rec.monthsOfYear.append(IntWrapper.of(2))
+
+        let calendar = Calendar(identifier: .gregorian)
+
+        let theFirst = calendar.startOfMonth(onOrAfter: now)
+        let feb1 = calendar.date(bySetting: .month, value: 2, of: theFirst)!
+        let jan1 = calendar.date(byAdding: .month, value: -1, to: feb1)!
+        let mar1 = calendar.date(byAdding: .month, value: 1, to: feb1)!
+
+        XCTAssertEqual(calendar.component(.month, from: feb1), 2)
+
+        for sunday in calendar.all(weekdays: GregorianSunday, inMonthOf: feb1) {
+            XCTAssertTrue(rec.recursOn(sunday, for: series))
+        }
+
+        for sunday in calendar.all(weekdays: GregorianSunday, inMonthOf: mar1) {
+            XCTAssertFalse(rec.recursOn(sunday, for: series))
+        }
+
+        for sunday in calendar.all(weekdays: GregorianSunday, inMonthOf: jan1) {
+            XCTAssertFalse(rec.recursOn(sunday, for: series))
+        }
+    }
 }

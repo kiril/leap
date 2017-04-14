@@ -136,7 +136,23 @@ extension Calendar {
         return d
     }
 
+    func theNext(weekday: Int, after date: Date) -> Date {
+        return theNext(weekday: weekday, onOrAfter: dayAfter(date))
+    }
+
     func startOfMonth(onOrAfter d: Date) -> Date {
         return date(bySetting: .day, value: 1, of: d)!
+    }
+
+    func all(weekdays day: Int, inMonthOf date: Date) -> [Date] {
+        let theFirst = startOfMonth(onOrAfter: date)
+        let month = component(.month, from: theFirst)
+        var one = theNext(weekday: day, onOrAfter: theFirst)
+        var weekdays: [Date] = []
+        while component(.month, from: one) == month {
+            weekdays.append(one)
+            one = theNext(weekday: day, after: one)
+        }
+        return weekdays
     }
 }

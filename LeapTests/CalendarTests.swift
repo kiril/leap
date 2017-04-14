@@ -12,6 +12,9 @@ import Foundation
 @testable import Leap
 
 class CalendarTests: XCTestCase {
+
+    let calendar = Calendar(identifier: .gregorian)
+    let now = Date()
     
     override func setUp() {
         super.setUp()
@@ -24,7 +27,6 @@ class CalendarTests: XCTestCase {
     }
     
     func testFormatDisplayTimeAM() {
-        let calendar = Calendar.current
         let components = DateComponents(calendar: calendar, hour: 9, minute: 5)
         let date = calendar.date(from: components)!
         XCTAssertEqual(calendar.formatDisplayTime(from: date, needsAMPM: false), "9:05")
@@ -32,7 +34,6 @@ class CalendarTests: XCTestCase {
     }
 
     func testFormatDisplayTimePM() {
-        let calendar = Calendar.current
         let components = DateComponents(calendar: calendar, hour: 21, minute: 5)
         let date = calendar.date(from: components)!
         XCTAssertEqual(calendar.formatDisplayTime(from: date, needsAMPM: false), "9:05")
@@ -40,29 +41,56 @@ class CalendarTests: XCTestCase {
     }
 
     func testConvenientComparison() {
-        let a = Calendar.current.todayAt(hour: 9, minute: 0)
-        let b = Calendar.current.todayAt(hour: 10, minute: 0)
-        XCTAssertTrue(Calendar.current.isDate(a, before: b))
-        XCTAssertTrue(Calendar.current.isDate(b, after: a))
+        let a = calendar.todayAt(hour: 9, minute: 0)
+        let b = calendar.todayAt(hour: 10, minute: 0)
+        XCTAssertTrue(calendar.isDate(a, before: b))
+        XCTAssertTrue(calendar.isDate(b, after: a))
 
 
-        let c = Calendar.current.todayAt(hour: 9, minute: 0)
-        let d = Calendar.current.todayAt(hour: 9, minute: 0)
-        XCTAssertFalse(Calendar.current.isDate(c, before: d))
-        XCTAssertFalse(Calendar.current.isDate(c, after: d))
+        let c = calendar.todayAt(hour: 9, minute: 0)
+        let d = calendar.todayAt(hour: 9, minute: 0)
+        XCTAssertFalse(calendar.isDate(c, before: d))
+        XCTAssertFalse(calendar.isDate(c, after: d))
 
 
-        let e = Calendar.current.todayAt(hour: 9, minute: 0)
-        let f = Calendar.current.todayAt(hour: 9, minute: 1)
-        XCTAssertTrue(Calendar.current.isDate(e, before: f))
-        XCTAssertTrue(Calendar.current.isDate(f, after: e))
+        let e = calendar.todayAt(hour: 9, minute: 0)
+        let f = calendar.todayAt(hour: 9, minute: 1)
+        XCTAssertTrue(calendar.isDate(e, before: f))
+        XCTAssertTrue(calendar.isDate(f, after: e))
     }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+
+    func testDayAfter() {
+        let theFirst = calendar.date(bySetting: .day, value: 1, of: now)!
+        let theSecond = calendar.dayAfter(theFirst)
+        XCTAssertEqual(calendar.component(.day, from: theFirst), 1)
+        XCTAssertEqual(calendar.component(.day, from: theSecond), 2)
+        XCTAssertEqual(calendar.component(.month, from: theFirst), calendar.component(.month, from: theSecond))
+        XCTAssertEqual(calendar.component(.year, from: theFirst), calendar.component(.year, from: theSecond))
+    }
+
+    func testNextWeekday() {
+        let firstTuesday = calendar.theNext(weekday: GregorianTuesday, after: now)
+        XCTAssertEqual(calendar.component(.weekday, from: firstTuesday), GregorianTuesday)
+        let sameTuesday = calendar.theNext(weekday: GregorianTuesday, onOrAfter: firstTuesday)
+        XCTAssertEqual(firstTuesday, sameTuesday)
+        let anotherTuesday = calendar.theNext(weekday: GregorianTuesday, after: firstTuesday)
+        XCTAssertNotEqual(firstTuesday, anotherTuesday)
+        XCTAssertEqual(calendar.component(.weekday, from: anotherTuesday), GregorianTuesday)
+        XCTAssertTrue(calendar.isDate(anotherTuesday, after: firstTuesday))
+    }
+
+    func testTheFirst() {
+        let theFirst = calendar.startOfMonth(onOrAfter: now)
+        XCTAssertEqual(calendar.component(.day, from: theFirst), 1)
+    }
+
+    func testAllWeekdays() {
+        let theFirst = calendar.date(bySetting: .day, value: 1, of: now)!
+        XCTAssertEqual(calendar.component(.day, from: theFirst), 1)
+        let wednesdays = calendar.all(weekdays: GregorianWednesday, inMonthOf: theFirst)
+        XCTAssertTrue(wednesdays.count >= 4 && wednesdays.count <= 5)
+        for wednesday in wednesdays {
+            XCTAssertEqual(calendar.component(.weekday, from: wednesday), GregorianWednesday)
         }
     }
-    
 }
