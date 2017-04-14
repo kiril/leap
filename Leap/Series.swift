@@ -58,25 +58,25 @@ class Series: LeapModel {
         return false
     }
 
-    static func on(_ day: GregorianDay) -> [Series] {
+    func event(between start: Date, and end: Date) -> Temporality? {
+        let firstTry = template!.create(onDayOf: start)
+        if let firstTry = firstTry, Calendar.current.isDate(firstTry.date!, betweenInclusive: start, and: end) {
+            return firstTry
+        }
+        let secondTry = template!.create(onDayOf: start)
+        if let secondTry = secondTry, Calendar.current.isDate(secondTry.date!, betweenInclusive: start, and: end) {
+            return secondTry
+        }
+        return nil
+    }
+
+    static func on(_ day: GregorianDay) -> Results<Series> {
         let start = Calendar.current.startOfDay(for: day)
         let end = Calendar.current.startOfDay(for: day.dayAfter)
         return between(start, and: end)
     }
 
-    static func between(_ starting: Date, and before: Date) -> [Series] {
-        var query = Realm.user().objects(Series.self)
-        query = query.filter("startTime < %d AND endTime > %d", before.secondsSinceReferenceDate, starting.secondsSinceReferenceDate)
-        var matches: [Series] = []
-        for series in query {
-            if series.recursBetween(starting, and: before) {
-                matches.append(series)
-            }
-        }
-        return matches
-    }
-
-    static func stub(on date: Date) -> Temporality? {
-        return nil
+    static func between(_ starting: Date, and before: Date) -> Results<Series> {
+        return Realm.user().objects(Series.self).filter("startTime < %d AND endTime > %d", before.secondsSinceReferenceDate, starting.secondsSinceReferenceDate)
     }
 }

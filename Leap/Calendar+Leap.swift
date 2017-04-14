@@ -243,4 +243,12 @@ extension Calendar {
         }
         return true
     }
+
+    func isDate(_ d: Date, between start: Date, and end: Date) -> Bool {
+        return isDate(d, after: start) && isDate(d, before: end)
+    }
+
+    func isDate(_ d: Date, betweenInclusive start: Date, and end: Date) -> Bool {
+        return !isDate(d, before: start) && isDate(d, before: end)
+    }
 }
