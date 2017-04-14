@@ -214,4 +214,20 @@ extension Calendar {
             return false
         }
     }
+
+    func isDate(_ a: Date, theSameDayAs b: Date) -> Bool {
+        if a == b {
+            return true
+        }
+        if component(.year, from: a) != component(.year, from: b) {
+            return false
+        }
+        if component(.month, from: a) != component(.month, from: b) {
+            return false
+        }
+        if component(.day, from: a) != component(.day, from: b) {
+            return false
+        }
+        return true
+    }
 }

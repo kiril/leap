@@ -109,6 +109,17 @@ class Recurrence: LeapModel {
         return Recurrence(value: data)
     }
 
+    func dayOfWeekMatches(for date: Date) -> Bool {
+        guard daysOfWeek.count > 0 else { return true }
+
+        let calendar = Calendar(identifier: .gregorian)
+
+        let dow = DayOfWeek.from(date: date)
+        let week = calendar.ordinality(of: .weekOfMonth, in: .month, for: date)!
+
+        return daysOfWeek.contains(RecurrenceDay.of(day: dow, in: week)) || daysOfWeek.contains(RecurrenceDay.of(day: dow))
+    }
+
     func recursOn(_ date: Date, for series: Series) -> Bool {
         // start with frequency, and then you know how to qualify to begin with, and what to test
         // use the interval to further narrow
@@ -121,16 +132,9 @@ class Recurrence: LeapModel {
         let month = calendar.component(.month, from: date)
         let day = calendar.component(.day, from: date)
         let week = calendar.component(.weekOfYear, from: date)
-        let weekInMonth = calendar.ordinality(of: .weekOfMonth, in: .month, for: date)!
 
-        if daysOfWeek.count > 0 {
-            let dow = DayOfWeek.from(date: date)
-            let exact = RecurrenceDay.of(day: dow, in: weekInMonth)
-            let fuzzy = RecurrenceDay.of(day: dow)
-
-            if !daysOfWeek.contains(exact) && !daysOfWeek.contains(fuzzy) {
-                return false
-            }
+        if !dayOfWeekMatches(for: date) {
+            return false
         }
 
         if daysOfMonth.count > 0, !daysOfMonth.contains(IntWrapper.of(day)) {
@@ -176,6 +180,30 @@ class Recurrence: LeapModel {
                 if monthsSinceStart % interval != 0 {
                     return false
                 }
+            }
+
+            if setPositions.count > 0 && daysOfWeek.count > 0 {
+                // we know that we match one of these days...
+                // but now we have to see if we're one of the 'nth' ones for a given position
+                // so...
+                // let's figure out what index this date is within this month
+                // that requires counting all the matching weekdays in this month until we find this date
+                var matchIndices: [Int] = []
+                var myIndex = -1
+                for (i, day) in calendar.allDays(inMonthOf: date).enumerated() {
+                    if dayOfWeekMatches(for: day) {
+                        matchIndices.append(i)
+                        if calendar.isDate(day, theSameDayAs: date) {
+                            myIndex = i
+                        }
+                    }
+                }
+                for position in setPositions.map({ return $0.value }) {
+                    if abs(position) < matchIndices.count && matchIndices[position] == myIndex {
+                        return true
+                    }
+                }
+                return false
             }
             // TODO: recurrence count/end time?
             return true
