@@ -137,7 +137,7 @@ class WeekNavigationViewController: UIViewController, StoryboardLoadable {
 
         let arrowNib = UINib(nibName: "NavigationToggleArrowView", bundle: nil)
         let arrowView = arrowNib.instantiate(withOwner: nil, options: nil).first as! NavigationToggleArrowView
-        arrowView.direction = .up
+        arrowView.direction = .down
 
         navigationItem.leftBarButtonItems = [
             barButtonItemFor(navView: arrowView),

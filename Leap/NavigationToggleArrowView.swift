@@ -13,22 +13,27 @@ enum NavigationToggleDirection {
 }
 class NavigationToggleArrowView: UIView {
 
-    @IBOutlet weak var arrowLabel: UILabel!
+    @IBOutlet weak var downArrowLabel: UILabel!
+    @IBOutlet weak var upArrowLabel: UILabel!
 
     var direction = NavigationToggleDirection.up {
         didSet {
-            arrowLabel.text = (direction == .up) ? upString : downString
+            updateArrowDisplay()
         }
     }
 
-    private let downString = ""
-    private let upString = ""
+    private func updateArrowDisplay() {
+        downArrowLabel.isHidden = (direction != .down)
+        upArrowLabel.isHidden = (direction != .up)
+    }
 
     override func awakeFromNib() {
         setup()
     }
 
     private func setup() {
-        arrowLabel.textColor = UIColor.projectDarkerGray
+        updateArrowDisplay()
+        downArrowLabel.textColor = UIColor.projectDarkerGray
+        upArrowLabel.textColor = UIColor.projectDarkerGray
     }
 }

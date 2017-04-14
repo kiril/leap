@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -24,18 +24,26 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ghk-oH-2Ns">
                     <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cVP-VO-cXg">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cVP-VO-cXg" userLabel="downArrow">
                             <rect key="frame" x="0.0" y="10.5" width="13.5" height="23"/>
+                            <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="23"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sRF-2W-nPw" userLabel="upArrow">
+                            <rect key="frame" x="0.0" y="10" width="14" height="23"/>
                             <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="23"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
                     <constraints>
+                        <constraint firstItem="sRF-2W-nPw" firstAttribute="centerY" secondItem="ghk-oH-2Ns" secondAttribute="centerY" id="105-zb-ELp"/>
                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="18" id="5Em-WP-gdL"/>
                         <constraint firstItem="cVP-VO-cXg" firstAttribute="leading" secondItem="ghk-oH-2Ns" secondAttribute="leading" id="OHN-B7-zi6"/>
                         <constraint firstItem="cVP-VO-cXg" firstAttribute="centerY" secondItem="ghk-oH-2Ns" secondAttribute="centerY" id="T8g-oI-1v9"/>
                         <constraint firstAttribute="width" secondItem="ghk-oH-2Ns" secondAttribute="height" multiplier="1:1" id="r4X-Rb-rFZ"/>
+                        <constraint firstItem="sRF-2W-nPw" firstAttribute="leading" secondItem="ghk-oH-2Ns" secondAttribute="leading" id="x0A-0g-kyI"/>
                     </constraints>
                 </view>
             </subviews>
@@ -48,7 +56,8 @@
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="arrowLabel" destination="cVP-VO-cXg" id="UjN-kv-aFz"/>
+                <outlet property="downArrowLabel" destination="cVP-VO-cXg" id="byq-aO-wX0"/>
+                <outlet property="upArrowLabel" destination="sRF-2W-nPw" id="kIN-ge-IgP"/>
             </connections>
             <point key="canvasLocation" x="-71" y="-215"/>
         </view>
