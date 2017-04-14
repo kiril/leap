@@ -144,8 +144,23 @@ extension Calendar {
         return date(bySetting: .day, value: 1, of: d)!
     }
 
+    func startOfYear(onOrAfter d: Date) -> Date {
+        return date(bySetting: .month, value: 1, of: date(bySetting: .day, value: 1, of: d)!)!
+    }
+
+    func startOfMonth(including d: Date) -> Date {
+        let daysBackToFirst = component(.day, from: d) - 1
+        return date(byAdding: .day, value: -daysBackToFirst, to: d)!
+    }
+
+    func startOfYear(including d: Date) -> Date {
+        let first = startOfMonth(including: d)
+        return date(byAdding: .month, value: -(component(.month, from: first)-1), to: first)!
+    }
+
     func all(weekdays day: Int, inMonthOf date: Date) -> [Date] {
-        let theFirst = startOfMonth(onOrAfter: date)
+        let theFirst = startOfMonth(including: date)
+
         let month = component(.month, from: theFirst)
         var one = theNext(weekday: day, onOrAfter: theFirst)
         var weekdays: [Date] = []
@@ -154,5 +169,49 @@ extension Calendar {
             one = theNext(weekday: day, after: one)
         }
         return weekdays
+    }
+
+    func allDays(inMonthOf d: Date) -> [Date] {
+        let theFirst = startOfMonth(including: d)
+        var days: [Date] = []
+        var day = theFirst
+        while component(.month, from: day) == component(.month, from: theFirst) {
+            days.append(day)
+            day = dayAfter(day)
+        }
+        return days
+    }
+
+    func allDays(inYearOf d: Date) -> [Date] {
+        let theFirst = startOfYear(including: d)
+        var days: [Date] = []
+        var day = theFirst
+        while component(.year, from: day) == component(.year, from: theFirst) {
+            days.append(day)
+            day = dayAfter(day)
+        }
+        return days
+    }
+
+    func isDate(_ date: Date, a weekday: Int) -> Bool {
+        return component(.weekday, from: date) == weekday
+    }
+
+    func isWeekday(_ date: Date) -> Bool {
+        switch component(.weekday, from: date) {
+        case GregorianSunday, GregorianSaturday:
+            return false
+        default:
+            return true
+        }
+    }
+
+    func isWeekend(_ date: Date) -> Bool {
+        switch component(.weekday, from: date) {
+        case GregorianSunday, GregorianSaturday:
+            return true
+        default:
+            return false
+        }
     }
 }
