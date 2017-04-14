@@ -36,6 +36,8 @@
 		8393621D1E8FF51E00543CFC /* WeekOverview.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8393621C1E8FF51E00543CFC /* WeekOverview.storyboard */; };
 		8393621F1E8FF53B00543CFC /* WeekOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8393621E1E8FF53B00543CFC /* WeekOverviewViewController.swift */; };
 		839362211E8FF5F200543CFC /* WeekOverviewPageViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839362201E8FF5F200543CFC /* WeekOverviewPageViewDataSource.swift */; };
+		839A8AF41EA121DE00893F6F /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839A8AF31EA121DE00893F6F /* MainTabBarController.swift */; };
+		839A8AF61EA1300A00893F6F /* DayNavigationWrapperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839A8AF51EA1300A00893F6F /* DayNavigationWrapperViewController.swift */; };
 		83A72D741E82DAE0005EB213 /* TimePerspective.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A72D731E82DAE0005EB213 /* TimePerspective.swift */; };
 		83A72D771E82DF95005EB213 /* DayScheduleSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A72D761E82DF95005EB213 /* DayScheduleSurface.swift */; };
 		83B5DB701E91D7F400A0CA7E /* (null) in Sources */ = {isa = PBXBuildFile; };
@@ -171,6 +173,8 @@
 		8393621C1E8FF51E00543CFC /* WeekOverview.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WeekOverview.storyboard; sourceTree = "<group>"; };
 		8393621E1E8FF53B00543CFC /* WeekOverviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekOverviewViewController.swift; sourceTree = "<group>"; };
 		839362201E8FF5F200543CFC /* WeekOverviewPageViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekOverviewPageViewDataSource.swift; sourceTree = "<group>"; };
+		839A8AF31EA121DE00893F6F /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		839A8AF51EA1300A00893F6F /* DayNavigationWrapperViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayNavigationWrapperViewController.swift; sourceTree = "<group>"; };
 		83A72D731E82DAE0005EB213 /* TimePerspective.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimePerspective.swift; sourceTree = "<group>"; };
 		83A72D761E82DF95005EB213 /* DayScheduleSurface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayScheduleSurface.swift; sourceTree = "<group>"; };
 		83B5DBED1E91E4CC00A0CA7E /* GregorianDayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GregorianDayTests.swift; sourceTree = "<group>"; };
@@ -331,6 +335,7 @@
 				8336176A1E8C277D009A97FF /* NavigationToggleArrowView.swift */,
 				83B6C6B41E92BC6E002DCDA2 /* DayNavigationViewController.swift */,
 				83B6C6B61E92BC7A002DCDA2 /* DayNavigation.storyboard */,
+				839A8AF51EA1300A00893F6F /* DayNavigationWrapperViewController.swift */,
 			);
 			name = LocalCalendar;
 			sourceTree = "<group>";
@@ -426,6 +431,7 @@
 			isa = PBXGroup;
 			children = (
 				835456141E8AF9EA00A03B34 /* InitialViewController.swift */,
+				839A8AF31EA121DE00893F6F /* MainTabBarController.swift */,
 			);
 			name = InitialNavigation;
 			sourceTree = "<group>";
@@ -947,6 +953,7 @@
 				83D5B85D1E94415A00D5F1C6 /* WeekOverviewDayListingView.swift in Sources */,
 				835456181E8AFD7200A03B34 /* UIColor+ProjectExtensions.swift in Sources */,
 				FBE0EFEC1DFBBB80007BD8DF /* Leap.xcdatamodeld in Sources */,
+				839A8AF61EA1300A00893F6F /* DayNavigationWrapperViewController.swift in Sources */,
 				FB2046AC1E82E76000F130C8 /* EKAlarm+Realm.swift in Sources */,
 				8372067B1E9EAEBF0010B914 /* UIFont+Extensions.swift in Sources */,
 				FBE0EFE61DFBBB80007BD8DF /* AuthViewController.swift in Sources */,
@@ -979,6 +986,7 @@
 				FB2046AA1E82E74700F130C8 /* EKParticipant+Realm.swift in Sources */,
 				833617741E8C2C9B009A97FF /* WeekNavigationViewController.swift in Sources */,
 				FB2046B01E82E7B000F130C8 /* LegacyCalendar.swift in Sources */,
+				839A8AF41EA121DE00893F6F /* MainTabBarController.swift in Sources */,
 				FB4208551E859606007F4DBD /* Alarm.swift in Sources */,
 				831444C61E7B020700A5EF06 /* DayScheduleViewController.swift in Sources */,
 				FB39ADB11E92B9F400B79A7B /* Ignorance.swift in Sources */,

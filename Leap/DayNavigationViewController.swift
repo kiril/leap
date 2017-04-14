@@ -102,15 +102,12 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-}
 
-extension DayNavigationViewController: WeekNavigationViewControllerDelegate {
-    func didSelectDay(dayId: String, on viewController: WeekNavigationViewController) {
-        guard let currentId = currentlySelectedDay?.intId else { return }
-
-        guard dayId != String(currentId) else {
-            dismiss(animated: true)
-            return
+    func navigateToDay(dayId: String?) {
+        guard   let currentId = currentlySelectedDay?.intId,
+            let dayId = dayId,
+            dayId != String(currentId) else {
+                return
         }
 
         let direction: UIPageViewControllerNavigationDirection = (Int(dayId)! > currentId) ? .forward : .reverse
@@ -124,7 +121,12 @@ extension DayNavigationViewController: WeekNavigationViewControllerDelegate {
                                                          direction: direction,
                                                          animated: true)
         updateTitleFor(vc: dayVC)
+    }
+}
 
+extension DayNavigationViewController: WeekNavigationViewControllerDelegate {
+    func didSelectDay(dayId: String?, on viewController: WeekNavigationViewController) {
+        navigateToDay(dayId: dayId)
         dismiss(animated: true)
     }
 }
@@ -164,5 +166,12 @@ extension DayNavigationViewController: UIPageViewControllerDelegate {
         titleView.titleLabel.text = vc.surface?.dateDescription
         titleView.subtitleLabel.text = vc.surface?.weekdayDescription
         titleView.setNeedsLayout()
+    }
+}
+
+extension DayNavigationViewController: SelectedTabTappable {
+    func selectedTabWasTapped(on tabBarController: MainTabBarController) {
+        navigateToDay(dayId: String(Calendar.current.today.id))
+        dismiss(animated: true)
     }
 }

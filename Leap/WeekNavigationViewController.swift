@@ -9,7 +9,7 @@
 import UIKit
 
 protocol WeekNavigationViewControllerDelegate: class {
-    func didSelectDay(dayId: String, on viewController: WeekNavigationViewController)
+    func didSelectDay(dayId: String?, on viewController: WeekNavigationViewController)
 }
 
 class WeekNavigationViewController: UIViewController, StoryboardLoadable {
@@ -186,7 +186,8 @@ class WeekNavigationViewController: UIViewController, StoryboardLoadable {
     }
 
     @objc private func didTapBackgroundView() {
-        self.dismiss(animated: true, completion: nil)
+        self.delegate?.didSelectDay(dayId: nil,
+                                    on: self)
     }
 }
 
