@@ -189,12 +189,6 @@ extension Surface: Updateable {
             }
         }
 
-        for (k, _) in self.data {
-            if data[k] == nil {
-                print("Lost \(k)")
-            }
-        }
-
         self.data = data
 
         if !silently {

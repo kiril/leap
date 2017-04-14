@@ -73,8 +73,6 @@ class DayScheduleSurface: Surface {
         bridge.bindArray(schedule.series)
         schedule.store = bridge
         bridge.populate(schedule)
-        assert(schedule.getValue(for: "events") != nil)
-        assert(schedule.getValue(for: "series") != nil)
         return schedule
     }
 }
