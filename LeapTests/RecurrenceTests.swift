@@ -221,19 +221,13 @@ class RecurrenceTests: XCTestCase {
         for (i, day) in days.enumerated() {
             if calendar.isWeekday(day) {
                 if i == finalWeekdayIndex {
-                    self.measure {
-                        XCTAssertTrue(rec.recursOn(day, for: self.series))
-                    }
+                    XCTAssertTrue(rec.recursOn(day, for: self.series))
                 } else {
                     matchCount += 1
                     if matchCount == 2 {
-                        self.measure {
-                            XCTAssertTrue(rec.recursOn(day, for: self.series))
-                        }
+                        XCTAssertTrue(rec.recursOn(day, for: self.series))
                     } else {
-                        self.measure {
-                            XCTAssertFalse(rec.recursOn(day, for: self.series))
-                        }
+                        XCTAssertFalse(rec.recursOn(day, for: self.series))
                     }
                 }
             }
