@@ -16,8 +16,33 @@ class DayScheduleTitleView: UIView {
         setup()
     }
 
+    enum DayScheduleTitleViewStyle {
+        case normal, light, bold
+    }
+
+    var style = DayScheduleTitleViewStyle.normal {
+        didSet {
+            updateFonts()
+        }
+    }
+
     private func setup() {
+        updateFonts()
+    }
+
+    private func updateFonts() {
+        var color: UIColor!
+
+        switch style {
+        case .normal:
+            color = UIColor.projectDarkerGray
+        case .bold:
+            color = UIColor.projectPurple
+        case .light:
+            color = UIColor.projectLightGray;
+        }
+
         titleLabel.textColor = UIColor.projectDarkerGray
-        subtitleLabel.textColor = UIColor.projectDarkerGray
+        subtitleLabel.textColor = color
     }
 }

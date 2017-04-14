@@ -165,6 +165,18 @@ extension DayNavigationViewController: UIPageViewControllerDelegate {
     fileprivate func updateTitleFor(vc: DayScheduleViewController) {
         titleView.titleLabel.text = vc.surface?.dateDescription
         titleView.subtitleLabel.text = vc.surface?.weekdayDescription
+
+        if let perspective = currentlySelectedDay?.happensIn {
+            switch perspective {
+            case .current:
+                titleView.style = .bold
+            case .future:
+                titleView.style = .normal
+            case .past:
+                titleView.style = .light
+            }
+        }
+
         titleView.setNeedsLayout()
     }
 }
