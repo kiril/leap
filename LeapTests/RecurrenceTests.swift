@@ -216,19 +216,24 @@ class RecurrenceTests: XCTestCase {
             }
         }
         assert(finalWeekdayIndex != 0)
-        print("Final index is \(finalWeekdayIndex) of \(days.count)")
 
         var matchCount = 0
         for (i, day) in days.enumerated() {
             if calendar.isWeekday(day) {
                 if i == finalWeekdayIndex {
-                    XCTAssertTrue(rec.recursOn(day, for: series))
+                    self.measure {
+                        XCTAssertTrue(rec.recursOn(day, for: self.series))
+                    }
                 } else {
                     matchCount += 1
                     if matchCount == 2 {
-                        XCTAssertTrue(rec.recursOn(day, for: series))
+                        self.measure {
+                            XCTAssertTrue(rec.recursOn(day, for: self.series))
+                        }
                     } else {
-                        XCTAssertFalse(rec.recursOn(day, for: series))
+                        self.measure {
+                            XCTAssertFalse(rec.recursOn(day, for: self.series))
+                        }
                     }
                 }
             }
