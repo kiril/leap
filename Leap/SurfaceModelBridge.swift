@@ -179,7 +179,12 @@ class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
                 break
             }
         }
-        try! surface.update(data: data, via: self)
+
+        if let key = onlyName {
+            try! surface.update(key: key, toValue: data[key]!, via: self, silently: false)
+        } else {
+            try! surface.update(data: data, via: self)
+        }
     }
 
     @discardableResult
