@@ -59,11 +59,15 @@ class Series: LeapModel {
     }
 
     func event(between start: Date, and end: Date) -> Temporality? {
-        let firstTry = template!.create(onDayOf: start)
+        let eventId = "\(id)-\(start.secondsSinceReferenceDate)"
+        if let event = Event.by(id: eventId) {
+            return event
+        }
+        let firstTry = template!.create(onDayOf: start, id: eventId)
         if let firstTry = firstTry, Calendar.current.isDate(firstTry.date!, betweenInclusive: start, and: end) {
             return firstTry
         }
-        let secondTry = template!.create(onDayOf: start)
+        let secondTry = template!.create(onDayOf: start, id: eventId)
         if let secondTry = secondTry, Calendar.current.isDate(secondTry.date!, betweenInclusive: start, and: end) {
             return secondTry
         }

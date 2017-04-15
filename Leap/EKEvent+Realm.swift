@@ -62,7 +62,6 @@ extension EKEvent {
             var series = Series.by(id: t.id)
             if series == nil {
                 series = rules[0].asSeries(t)
-                print("Creating a series starting at \(series!.startTime) and ending at \(series!.endTime)")
                 try! Realm.user().write {
                     Realm.user().add(series!)
                 }

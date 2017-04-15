@@ -65,7 +65,6 @@ class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
         references[name] = QueryBridge<M,S>(query)
         let token = query.addNotificationBlock { [weak self] (_: RealmCollectionChange<Results<M>>) in
             if let bridge = self {
-                print("Updating \(name)")
                 bridge.updateReceived(forSource: name)
             }
         }
@@ -81,7 +80,6 @@ class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
             print("No surface, discarding source update")
             return
         }
-        print("populating on update")
         self.populateOnly(surface, restrictTo: name)
     }
 
@@ -172,14 +170,12 @@ class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
                 }
                 if let query = references[name] as? ArrayMaterializable {
                     data[key] = query.materialize()
-                    print("Ok, \(key) => \(data[key]!)")
                 }
                 break
             }
         }
 
         if let key = onlyName {
-            print("Updating surface \(surface) for \(key)")
             try! surface.update(key: key, toValue: data[key]!, via: self, silently: false)
         } else {
             try! surface.update(data: data, via: self)
@@ -231,11 +227,8 @@ class QueryBridge<Model:LeapModel,SomeSurface:Surface>: ArrayMaterializable wher
     func materialize() -> [Surface] {
         var results: [Surface] = []
         for object:Model in query {
-            print("---------- Loading model")
             if let s = SomeSurface.load(fromModel: object) {
                 results.append(s)
-            } else {
-                print("      Yikes, failed")
             }
         }
         return results

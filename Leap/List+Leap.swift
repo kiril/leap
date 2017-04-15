@@ -10,18 +10,4 @@ import Foundation
 import RealmSwift
 
 extension List {
-    func containsEqualTo<T:Equatable>(_ object: T) -> Bool {
-        print("----- containsEqualTo")
-        for o in self {
-            if let t = o as? T {
-                print("Ok, got one...")
-                if t == object {
-                    print("Well, actually found some equal")
-                    return true
-                }
-            }
-            print("\(o) != \(object)")
-        }
-        return false
-    }
 }
