@@ -37,7 +37,7 @@ class Event: _TemporalBase, Temporality {
         set { modalityString = newValue.rawValue }
     }
 
-    var date: Date? { return Date(timeIntervalSinceReferenceDate: Double(startTime)/1000.0) }
+    var date: Date? { return Date(timeIntervalSinceReferenceDate: Double(startTime)) }
     var startDate: Date { return Date(timeIntervalSinceReferenceDate: Double(startTime)) }
     var endDate: Date { return Date(timeIntervalSinceReferenceDate: Double(endTime)) }
     var time: TimeInterval { return Double(startTime) }

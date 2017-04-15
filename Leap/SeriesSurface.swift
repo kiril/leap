@@ -9,13 +9,13 @@
 import Foundation
 
 class SeriesSurface: Surface, ModelLoadable {
-    override var type: String { return "event" }
+    override var type: String { return "series" }
 
     let title                  = SurfaceString(minLength: 1)
 
     func event(for day: GregorianDay) -> EventSurface? {
         let start = Calendar.current.startOfDay(for: day)
-        let end = Calendar.current.startOfDay(for: day)
+        let end = Calendar.current.startOfDay(for: day.dayAfter)
         if let event = Series.by(id: id)?.event(between: start, and: end) as? Event {
             return EventSurface.load(fromModel: event) as? EventSurface
         }
@@ -27,12 +27,12 @@ class SeriesSurface: Surface, ModelLoadable {
             return false
         }
         let start = Calendar.current.startOfDay(for: day)
-        let end = Calendar.current.startOfDay(for: day)
+        let end = Calendar.current.startOfDay(for: day.dayAfter)
         return series.recursBetween(start, and: end)
     }
 
-    static func load(fromModel event: LeapModel) -> Surface? {
-        return load(byId: event.id)
+    static func load(fromModel series: LeapModel) -> Surface? {
+        return load(byId: series.id)
     }
 
     static func load(byId seriesId: String) -> SeriesSurface? {
@@ -43,6 +43,7 @@ class SeriesSurface: Surface, ModelLoadable {
         let surface = SeriesSurface(id: seriesId)
         let bridge = SurfaceModelBridge(id: seriesId, surface: surface)
         bridge.reference(series, as: "series")
-        return nil
+        bridge.bind(surface.title, to: "title", on: "series")
+        return surface
     }
 }

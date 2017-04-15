@@ -18,10 +18,16 @@ class DayScheduleSurface: Surface {
     var day: DaySurface { return DaySurface(id: self.id) }
 
     var filteredSeries: [SeriesSurface] {
+        print("Getting series... have \(series.value.count)")
+        print("Total is \(Series.on(self.day.gregorianDay).count)")
         var matches: [SeriesSurface] = []
         for s in series.value {
+            print("Evaluating a series")
             if s.recursOn(self.day.gregorianDay) {
+                print("Keeping a series")
                 matches.append(s)
+            } else {
+                print("Dropping a series \(s.title.value)")
             }
         }
         return matches

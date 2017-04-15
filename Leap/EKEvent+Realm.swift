@@ -59,9 +59,19 @@ extension EKEvent {
 
 
         if hasRecurrenceRules, let rules = recurrenceRules {
-            let series = Series.by(id: t.id) ?? rules[0].asSeries(t) // lol only ever 1
-            t.series = series
-            t.template = series.template
+            var series = Series.by(id: t.id)
+            if series == nil {
+                series = rules[0].asSeries(t)
+                print("Creating a series starting at \(series!.startTime) and ending at \(series!.endTime)")
+                try! Realm.user().write {
+                    Realm.user().add(series!)
+                }
+            }
+
+            if let series = series {
+                t.series = series
+                t.template = series.template
+            }
         }
 
         return t

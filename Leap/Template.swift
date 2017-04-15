@@ -32,8 +32,8 @@ class Template: LeapModel {
     func create(onDayOf date: Date) -> Event? {
         let calendar = Calendar.current
         let year = calendar.component(.year, from: date)
-        let month = calendar.component(.year, from: date)
-        let day = calendar.component(.year, from: date)
+        let month = calendar.component(.month, from: date)
+        let day = calendar.component(.day, from: date)
         let startComponents = DateComponents(year: year, month: month, day: day, hour: startHour, minute: startMinute)
 
         var endHour = startHour

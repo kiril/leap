@@ -44,8 +44,8 @@ class Series: LeapModel {
      *   }
      */
     func recursBetween(_ startDate: Date, and endDate: Date) -> Bool {
-        guard startTime <= endDate.secondsSinceReferenceDate,
-            endTime > startDate.secondsSinceReferenceDate else {
+        guard startTime <= endDate.secondsSinceReferenceDate &&
+            (endTime == 0 || endTime > startDate.secondsSinceReferenceDate) else {
             return false
         }
         var date:Date? = startDate
@@ -77,6 +77,6 @@ class Series: LeapModel {
     }
 
     static func between(_ starting: Date, and before: Date) -> Results<Series> {
-        return Realm.user().objects(Series.self).filter("startTime < %d AND endTime > %d", before.secondsSinceReferenceDate, starting.secondsSinceReferenceDate)
+        return Realm.user().objects(Series.self).filter("startTime < %d AND (endTime == 0 OR endTime >= %d)", before.secondsSinceReferenceDate, starting.secondsSinceReferenceDate)
     }
 }
