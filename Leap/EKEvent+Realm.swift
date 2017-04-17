@@ -63,7 +63,7 @@ extension EKEvent {
             if series == nil {
                 series = rules[0].asSeries(t)
                 try! Realm.user().write {
-                    Realm.user().add(series!)
+                    Realm.user().add(series!, update: true)
                 }
             }
 
