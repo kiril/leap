@@ -27,13 +27,24 @@ class DayScheduleSurface: Surface {
         return matches
     }
 
+    private var _lastCachedEvents: TimeInterval? = nil
+    private var _entriesCache: [ScheduleEntry]? = nil
+
     var entries: [ScheduleEntry] {
+        if let cacheTime = _lastCachedEvents,
+            let updateTime = lastPersisted,
+            cacheTime > updateTime,
+            let cache = _entriesCache {
+            return cache
+        }
         var entries = events.value.map { event in ScheduleEntry.from(event: event) }
         for seriesSurface in filteredSeries {
             if let eventSurface = seriesSurface.event(for: self.day.gregorianDay) {
                 entries.append(ScheduleEntry.from(event: eventSurface))
             }
         }
+        _entriesCache = entries
+        _lastCachedEvents = Date.timeIntervalSinceReferenceDate
         return entries
     }
 

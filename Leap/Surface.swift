@@ -83,8 +83,8 @@ open class Surface {
     }
 
 
-    public var lastModified: NSDate?
-    public var lastPersisted: NSDate?
+    public var lastModified: TimeInterval?
+    public var lastPersisted: TimeInterval?
 
     internal var observers = [String:WeakObserver]()
 

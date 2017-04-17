@@ -22,8 +22,8 @@ public protocol Persistable {
 
     var isPersisted: Bool { get }
     var isPersistable: Bool { get }
-    var lastPersisted: NSDate? { get }
-    var lastModified: NSDate? { get }
+    var lastPersisted: TimeInterval? { get }
+    var lastModified: TimeInterval? { get }
     var nonPersistableKeys: [String] { get }
 
     func didPersist(into store: BackingStore)

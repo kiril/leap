@@ -140,6 +140,34 @@ class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
     }
 
     func _populate(_ surface: SomeSurface, restrictTo onlyName: String? = nil) {
+        var modelCache: [String:LeapModel] = [:]
+        var arrayCache: [String:[Surface]] = [:]
+        func getModel(_ name: String) -> LeapModel? {
+            var ret = modelCache[name]
+            if ret == nil {
+                if let ref = references[name] as? Reference {
+                    ret = ref.resolve()
+                }
+                if let ret = ret {
+                    modelCache[name] = ret
+                }
+            }
+            return ret
+        }
+
+        func getArray(_ name: String) -> [Surface]? {
+            var ret = arrayCache[name]
+            if ret == nil {
+                if let ref = references[name] as? ArrayMaterializable {
+                    ret = ref.materialize()
+                }
+                if let ret = ret {
+                    arrayCache[name] = ret
+                }
+            }
+            return ret
+        }
+
         var data: ModelData = [:]
         for (key, binding) in bindings {
 
@@ -148,8 +176,7 @@ class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
                 if let onlyName = onlyName, onlyName != name {
                     break
                 }
-                if let reference = references[name] as? Reference,
-                    let model = reference.resolve(),
+                if let model = getModel(name),
                     let value = get(model) {
                     data[key] = value
                 }
@@ -158,8 +185,7 @@ class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
                 if let onlyName = onlyName, onlyName != name {
                     break
                 }
-                if let reference = references[name] as? Reference,
-                    let model = reference.resolve(),
+                if let model = getModel(name),
                     let value = get(model) {
                     data[key] = value
                 }
@@ -168,8 +194,8 @@ class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
                 if let onlyName = onlyName, onlyName != name {
                     break
                 }
-                if let query = references[name] as? ArrayMaterializable {
-                    data[key] = query.materialize()
+                if let array = getArray(name) {
+                    data[key] = array
                 }
                 break
             }
@@ -180,6 +206,7 @@ class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
         } else {
             try! surface.update(data: data, via: self)
         }
+        surface.lastPersisted = Date.timeIntervalSinceReferenceDate
     }
 
     @discardableResult
@@ -204,6 +231,7 @@ class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
                 }
             }
         }
+        surface.lastPersisted = Date.timeIntervalSinceReferenceDate
         return mutated
     }
 }
