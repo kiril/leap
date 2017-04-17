@@ -81,6 +81,7 @@ extension EKRecurrenceRule {
         if let event = tm as? Event {
             templateData["startHour"] = Calendar.current.component(.hour, from: event.startDate)
             templateData["startMinute"] = Calendar.current.component(.minute, from: event.startDate)
+            templateData["durationMinutes"] = (event.endDate.secondsSinceReferenceDate - event.startDate.secondsSinceReferenceDate)/60
             templateData["modalityString"] = event.modalityString
         }
         series.template = Template(value: templateData)
