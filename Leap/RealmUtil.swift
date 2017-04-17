@@ -36,4 +36,11 @@ class IntWrapper: Object, ValueWrapper {
     static func of(num: NSNumber) -> IntWrapper {
         return IntWrapper(value: ["value": num.intValue])
     }
+
+    override func isEqual(_ object: Any?) -> Bool {
+        if let iw = object as? IntWrapper {
+            return iw.value == value
+        }
+        return false
+    }
 }

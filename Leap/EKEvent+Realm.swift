@@ -59,32 +59,26 @@ extension EKEvent {
 
 
         if hasRecurrenceRules, let rules = recurrenceRules {
-            let series = Series.by(id: t.id) ?? seriesFor(t, rule: rules[0]) // lol only ever 1
-            t.series = series
-            t.template = series.template
+            var series = Series.by(id: t.id)
+            if series == nil {
+                series = rules[0].asSeries(t)
+                try! Realm.user().write {
+                    Realm.user().add(series!)
+                }
+            }
+
+            if let series = series {
+                t.series = series
+                t.template = series.template
+            }
         }
 
         return t
     }
 
-    func seriesFor(_ t: Temporality, rule: EKRecurrenceRule) -> Series {
-        let series = Series(value: ["id": t.id, "title": t.title])
-
-        var templateData: [String:Any?] = ["title": t.title,
-                                           "duration": t.duration,
-                                           "detail": t.detail,
-                                           "locationString": t.locationString]
-        if let event = t as? Event {
-            templateData["modalityString"] = event.modalityString
-        }
-        series.template = EventTemplate(value: templateData)
-        series.recurrence = rule.asRecurrence(ofTemporality: t)
-        return series
-    }
-
     func asEvent() -> Event {
         let data: [String:Any?] = [
-            "id": self.eventIdentifier + hackyRecurranceIdSuffix,
+            "id": self.eventIdentifier,
             "title": self.title,
             "detail": self.notes,
             "startTime": self.startDate.secondsSinceReferenceDate,

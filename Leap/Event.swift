@@ -37,7 +37,7 @@ class Event: _TemporalBase, Temporality {
         set { modalityString = newValue.rawValue }
     }
 
-    var date: Date? { return Date(timeIntervalSinceReferenceDate: Double(startTime)/1000.0) }
+    var date: Date? { return Date(timeIntervalSinceReferenceDate: Double(startTime)) }
     var startDate: Date { return Date(timeIntervalSinceReferenceDate: Double(startTime)) }
     var endDate: Date { return Date(timeIntervalSinceReferenceDate: Double(endTime)) }
     var time: TimeInterval { return Double(startTime) }
@@ -53,6 +53,12 @@ class Event: _TemporalBase, Temporality {
     func isDuplicateOfExisting() -> Bool {
         let query = Realm.user().objects(Event.self).filter("title = %@ AND startTime = %d", title, startTime)
         return query.first != nil
+    }
+
+    static func on(_ day: GregorianDay) -> Results<Event> {
+        let start = Calendar.current.startOfDay(for: day)
+        let end = Calendar.current.startOfDay(for: day.dayAfter)
+        return between(start, and: end)
     }
 
     static func between(_ starting: Date, and before: Date) -> Results<Event> {

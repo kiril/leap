@@ -13,8 +13,8 @@ import RealmSwift
 extension Realm {
     static var isInTestMode: Bool { return false }
 
-    static func inMemory() -> Realm {
-        return try! Realm(configuration: Realm.Configuration(inMemoryIdentifier: "Leap"))
+    static func inMemory(name: String = "Leap") -> Realm {
+        return try! Realm(configuration: Realm.Configuration(inMemoryIdentifier: name))
     }
 
     static func diskBacked() -> Realm {
@@ -36,6 +36,10 @@ extension Realm {
             }
         )
         return try! Realm(configuration: config)
+    }
+
+    static func temp() -> Realm {
+        return inMemory(name: "Temp")
     }
 
     static func user() -> Realm {

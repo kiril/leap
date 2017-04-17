@@ -38,7 +38,7 @@ protocol Temporality {
 
     var series: Series? { get set }
     var seriesEventNumber: RealmOptional<Int> { get }
-    var template: EventTemplate? { get set }
+    var template: Template? { get set }
 
     func isUpdatedVersionOf(_ other: Temporality) -> Bool
     func isDuplicateOfExisting() -> Bool
@@ -118,7 +118,7 @@ class _TemporalBase: LeapModel {
     dynamic var wasDetached: Bool = false
     dynamic var locationString: String? = nil
     dynamic var legacyTimeZone: TimeZone?
-    dynamic var template: EventTemplate?
+    dynamic var template: Template?
 
     let seriesEventNumber = RealmOptional<Int>()
 

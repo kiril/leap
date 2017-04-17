@@ -14,30 +14,31 @@ class DayScheduleSurface: Surface {
     override var type: String { return "daySchedule" }
 
     let events = SurfaceProperty<[EventSurface]>()
+    let series = SurfaceProperty<[SeriesSurface]>()
     var day: DaySurface { return DaySurface(id: self.id) }
-    var entries: [ScheduleEntry] {
-        return hackyDeduped(events.value).map { event in ScheduleEntry.from(event: event) }
-    }
 
-    func hackyHash(_ event: EventSurface) -> String {
-        return "\(event.title.value)_\(event.startTime.value)_\(event.endTime.value)"
-    }
-
-    func hackyDeduped(_ events: [EventSurface]) -> [EventSurface] {
-        var deduped: [EventSurface] = []
-        var seenHashes: Set<String> = []
-        for event in events {
-            let eventHash = hackyHash(event)
-            if !seenHashes.contains(eventHash) {
-                seenHashes.update(with: eventHash)
-                deduped.append(event)
+    var filteredSeries: [SeriesSurface] {
+        var matches: [SeriesSurface] = []
+        for s in series.value {
+            if s.recursOn(self.day.gregorianDay) {
+                matches.append(s)
             }
         }
-        return deduped
+        return matches
+    }
+
+    var entries: [ScheduleEntry] {
+        var entries = events.value.map { event in ScheduleEntry.from(event: event) }
+        for seriesSurface in filteredSeries {
+            if let eventSurface = seriesSurface.event(for: self.day.gregorianDay) {
+                entries.append(ScheduleEntry.from(event: eventSurface))
+            }
+        }
+        return entries
     }
 
     var numberOfEntries: Int {
-        return hackyDeduped(events.value).count
+        return entries.count
     }
 
     private static func daySurface(schedule: DayScheduleSurface) -> DaySurface {
@@ -65,8 +66,11 @@ class DayScheduleSurface: Surface {
         let start = Calendar.current.startOfDay(for: schedule.day.gregorianDay)
         let end = Calendar.current.startOfDay(for: schedule.day.gregorianDay.dayAfter)
         let events = Event.between(start, and: end)
+        let series = Series.between(start, and: end)
         bridge.referenceArray(events, using: EventSurface.self, as: "events")
+        bridge.referenceArray(series, using: SeriesSurface.self, as: "series")
         bridge.bindArray(schedule.events)
+        bridge.bindArray(schedule.series)
         schedule.store = bridge
         bridge.populate(schedule)
         return schedule

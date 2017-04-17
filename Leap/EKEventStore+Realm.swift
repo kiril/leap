@@ -24,7 +24,6 @@ func syncEventSearchCallback(for calendar: LegacyCalendar) -> EKEventSearchCallb
                 let existing = Event.by(id: event.id)
 
                 if let existing = existing {
-                    print("EXISTING \(event.title)")
 
                     if event.isUpdatedVersionOf(existing) {
                         // keep any calendar links we might have
