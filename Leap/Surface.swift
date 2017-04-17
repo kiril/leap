@@ -50,7 +50,7 @@ internal class WeakObserver {
  * underlying Model via the Surface, and receive updates about changes
  * to the data this Surface holds.
  */
-open class Surface {
+open class Surface: Equatable {
     public let id: String!
 
     public var type: String { fatalError("Must override type") }
@@ -138,6 +138,10 @@ open class Surface {
     func asJSON() -> JSON {
         return JSON(self.data)
     }
+
+    public static func == (lhs: Surface, rhs: Surface) -> Bool {
+        return lhs.type == rhs.type && lhs.id == rhs.id
+    }
 }
 
 /**
@@ -192,15 +196,7 @@ extension Surface: Updateable {
         self.data = data
 
         if !silently {
-            self.purgeObservers()
-            for (observerSourceId, ref) in self.observers {
-                if let observer = ref.observer {
-                    if let source = source {
-                        guard observerSourceId != source.sourceId else { continue } // don't loop change notifications
-                    }
-                    observer.surfaceDidChange(self)
-                }
-            }
+            self.notifyObserversOfChange(via: source)
         }
     }
 

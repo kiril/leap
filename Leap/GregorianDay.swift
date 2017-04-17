@@ -8,15 +8,18 @@
 
 import Foundation
 
+let gregorianCalendar: Calendar = {
+    var cal = Calendar(identifier: .gregorian)
+    cal.timeZone = Foundation.TimeZone(abbreviation: "GMT")!
+    return cal
+}()
+
+let lru = SwiftlyLRU<Int,GregorianDay>(capacity: 60)
+
 struct GregorianDay {
     // does this need to be gregorian? Do day ids need to e independent of a calendar view? (i.e. are they stored / transmitted at all?
 
     private let secondsInADay : Double = 86400
-    let calendar: Calendar = {
-        var cal = Calendar(identifier: .gregorian)
-        cal.timeZone = Foundation.TimeZone(abbreviation: "GMT")!
-        return cal
-    }()
 
     private let daysSinceEpoch: Int
     var id : Int {
@@ -34,11 +37,11 @@ struct GregorianDay {
     }
 
     var dayAfter: GregorianDay {
-        return GregorianDay(id: id + 1)
+        return GregorianDay.by(id: id + 1)
     }
 
     var dayBefore: GregorianDay {
-        return GregorianDay(id: id - 1)
+        return GregorianDay.by(id: id - 1)
     }
 
     init(id: Int) {
@@ -47,7 +50,7 @@ struct GregorianDay {
         let seconds: TimeInterval = (Double(daysSinceEpoch) * secondsInADay)
 
         let dayDate = Date(timeIntervalSince1970: seconds)
-        let components = calendar.dateComponents([.day, .month, .year], from: dayDate)
+        let components = gregorianCalendar.dateComponents([.day, .month, .year], from: dayDate)
 
         day = components.day!
         month = components.month!
@@ -61,15 +64,24 @@ struct GregorianDay {
         self.month = month
         self.year = year
 
-        let components = DateComponents(calendar: calendar,
+        let components = DateComponents(calendar: gregorianCalendar,
                                         year: year,
                                         month: month,
                                         day: day)
 
-        guard let dayDate = calendar.date(from: components) else { return nil }
+        guard let dayDate = gregorianCalendar.date(from: components) else { return nil }
 
         let daysSinceEpoch = dayDate.timeIntervalSince1970 / secondsInADay
         self.daysSinceEpoch = Int(daysSinceEpoch)
+    }
+
+    static func by(id: Int) -> GregorianDay {
+        if let day = lru[id] {
+            return day
+        }
+        let day = GregorianDay(id: id)
+        lru[id] = day
+        return day
     }
 }
 

@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct OpenTimeViewModel {
+struct OpenTimeViewModel: Equatable {
     let startTime: Date?
     let endTime: Date?
 
@@ -23,5 +23,9 @@ struct OpenTimeViewModel {
 
     init() {
         self.init(startTime: nil, endTime: nil)
+    }
+
+    static func == (lhs: OpenTimeViewModel, rhs: OpenTimeViewModel) -> Bool {
+        return lhs.startTime == rhs.startTime && lhs.endTime == rhs.endTime
     }
 }
