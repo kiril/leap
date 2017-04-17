@@ -66,6 +66,7 @@
 		FB2046B41E82E7DD00F130C8 /* LeapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046B31E82E7DD00F130C8 /* LeapModel.swift */; };
 		FB2046B61E82E9B100F130C8 /* DeviceAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046B51E82E9B100F130C8 /* DeviceAccount.swift */; };
 		FB2046B81E830E4600F130C8 /* Temporality.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046B71E830E4600F130C8 /* Temporality.swift */; };
+		FB268B6C1EA5332D006510A7 /* WrapperTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB268B6B1EA5332D006510A7 /* WrapperTest.swift */; };
 		FB39ADA91E8C65AF00B79A7B /* Object+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADA81E8C65AF00B79A7B /* Object+Leap.swift */; };
 		FB39ADAB1E8C69BB00B79A7B /* SurfaceModelBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADAA1E8C69BB00B79A7B /* SurfaceModelBridge.swift */; };
 		FB39ADAD1E8EC5A800B79A7B /* BridgeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADAC1E8EC5A800B79A7B /* BridgeTest.swift */; };
@@ -202,6 +203,7 @@
 		FB2046B31E82E7DD00F130C8 /* LeapModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeapModel.swift; sourceTree = "<group>"; };
 		FB2046B51E82E9B100F130C8 /* DeviceAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceAccount.swift; sourceTree = "<group>"; };
 		FB2046B71E830E4600F130C8 /* Temporality.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Temporality.swift; sourceTree = "<group>"; };
+		FB268B6B1EA5332D006510A7 /* WrapperTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrapperTest.swift; sourceTree = "<group>"; };
 		FB39ADA81E8C65AF00B79A7B /* Object+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Object+Leap.swift"; sourceTree = "<group>"; };
 		FB39ADAA1E8C69BB00B79A7B /* SurfaceModelBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurfaceModelBridge.swift; sourceTree = "<group>"; };
 		FB39ADAC1E8EC5A800B79A7B /* BridgeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BridgeTest.swift; sourceTree = "<group>"; };
@@ -610,6 +612,7 @@
 				FB39ADB61E93F1EA00B79A7B /* CalendarTests.swift */,
 				FB39ADB81E94067200B79A7B /* EventSurfaceTests.swift */,
 				FB1869D31E9FF88A007642F4 /* RecurrenceTests.swift */,
+				FB268B6B1EA5332D006510A7 /* WrapperTest.swift */,
 			);
 			path = LeapTests;
 			sourceTree = "<group>";
@@ -1031,6 +1034,7 @@
 				FB8BB6231E89A76A00A30315 /* EventKitMigrationTests.swift in Sources */,
 				FBD1045F1E80717E00DDF65B /* SurfaceTests.swift in Sources */,
 				FB39ADB91E94067200B79A7B /* EventSurfaceTests.swift in Sources */,
+				FB268B6C1EA5332D006510A7 /* WrapperTest.swift in Sources */,
 				FB1869D41E9FF88A007642F4 /* RecurrenceTests.swift in Sources */,
 				FB39ADB71E93F1EA00B79A7B /* CalendarTests.swift in Sources */,
 				FB39ADAF1E8EC6B700B79A7B /* TestUtil.swift in Sources */,

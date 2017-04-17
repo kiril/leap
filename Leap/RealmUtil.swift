@@ -15,31 +15,31 @@ typealias ModelData = [String:Any]
 
 protocol ValueWrapper {
     associatedtype T
-    var value: T { get }
+    var raw: T { get }
 }
 
 extension ValueWrapper {
     static func primaryKey() -> String? {
-        return "value"
+        return "raw"
     }
 }
 
 
 
 class IntWrapper: Object, ValueWrapper {
-    var value: Int = 0
+    dynamic var raw: Int = 0
 
     static func of(_ int: Int) -> IntWrapper {
-        return IntWrapper(value: ["value": int])
+        return IntWrapper(value: ["raw": int])
     }
 
     static func of(num: NSNumber) -> IntWrapper {
-        return IntWrapper(value: ["value": num.intValue])
+        return IntWrapper(value: ["raw": num.intValue])
     }
 
     override func isEqual(_ object: Any?) -> Bool {
         if let iw = object as? IntWrapper {
-            return iw.value == value
+            return iw.raw == raw
         }
         return false
     }

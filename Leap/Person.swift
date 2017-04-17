@@ -17,11 +17,11 @@ enum PersonRelationship: String {
 }
 
 class Email: Object, ValueWrapper {
-    dynamic var value: String = ""
+    dynamic var raw: String = ""
 }
 
 class Phone: Object, ValueWrapper {
-    dynamic var value: String = ""
+    dynamic var raw: String = ""
 }
 
 class Person: LeapModel {

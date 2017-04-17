@@ -197,8 +197,8 @@ class Recurrence: LeapModel {
                     }
                 }
 
-                for position in setPositions.map({ return $0.value }) {
-                    let positionalIndex = position < 0 ? matchIndices[position] : matchIndices[position-1]
+                for position in setPositions.map({ return $0.raw }) {
+                    let positionalIndex = position < 0 ? matchIndices[matchIndices.count+position] : matchIndices[position-1]
                     if abs(position) < matchIndices.count && positionalIndex == myIndex {
                         return true
                     }
@@ -234,7 +234,7 @@ class Recurrence: LeapModel {
                 // so...
                 // let's figure out what index this date is within this month
                 // that requires counting all the matching weekdays in this month until we find this date
-                let positions = setPositions.map { return $0.value }
+                let positions = setPositions.map { return $0.raw }
                 var matchIndices: [Int] = []
                 var myPosition = -1
                 for (i, day) in calendar.allDays(inYearOf: date).enumerated() {

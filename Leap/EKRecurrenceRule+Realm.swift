@@ -114,7 +114,12 @@ extension EKRecurrenceRule {
         }
 
         if let positions = setPositions {
-            positions.forEach { pos in recurrence.setPositions.append(IntWrapper.of(num: pos)) }
+            positions.forEach { pos in
+                if Int(pos) <= 0 {
+                    print("Position \(pos)")
+                }
+                recurrence.setPositions.append(IntWrapper.of(num: pos))
+            }
         }
         
         return recurrence
