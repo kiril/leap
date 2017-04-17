@@ -31,8 +31,6 @@ class RecurrenceTests: XCTestCase {
     func testEvery() {
         let rec = Recurrence.every(.daily, at: 0, past: 12)
         XCTAssertEqual(rec.frequency, Frequency.daily)
-        XCTAssertEqual(rec.startHour, 12)
-        XCTAssertEqual(rec.startMinute, 0)
         XCTAssertEqual(rec.count, 0)
     }
     
