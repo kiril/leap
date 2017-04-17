@@ -15,7 +15,7 @@ class DaySurface: Surface, IntIdInitable {
         self.init(id: String(intId))
     }
     var intId: Int { return Int(id!)! }
-    var gregorianDay: GregorianDay { return GregorianDay(id: intId) }
+    var gregorianDay: GregorianDay { return GregorianDay.by(id: intId) }
 
     var weekdayName: String {
         return Calendar.current.weekdaySymbols[weekdayIndex] // force gregorian here but change the locale? Maybe... maybe.

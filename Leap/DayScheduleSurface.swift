@@ -27,25 +27,59 @@ class DayScheduleSurface: Surface {
         return matches
     }
 
-    private var _lastCachedEvents: TimeInterval? = nil
-    private var _entriesCache: [ScheduleEntry]? = nil
+    private var _entries: [ScheduleEntry] = []
+    private var _freshEntries: [ScheduleEntry]? = nil
+    private var _lastCachedEntries: TimeInterval = 0
+    private var _entryRefreshStarted: TimeInterval? = nil
 
-    var entries: [ScheduleEntry] {
-        if let cacheTime = _lastCachedEvents,
-            let updateTime = lastPersisted,
-            cacheTime > updateTime,
-            let cache = _entriesCache {
-            return cache
-        }
+    private func refreshEntries(async: Bool = true) {
         var entries = events.value.map { event in ScheduleEntry.from(event: event) }
         for seriesSurface in filteredSeries {
             if let eventSurface = seriesSurface.event(for: self.day.gregorianDay) {
                 entries.append(ScheduleEntry.from(event: eventSurface))
             }
         }
-        _entriesCache = entries
-        _lastCachedEvents = Date.timeIntervalSinceReferenceDate
-        return entries
+        entries.sort { $0 < $1 }
+        _freshEntries = entries
+        _lastCachedEntries = Date.timeIntervalSinceReferenceDate
+
+        if async {
+            DispatchQueue.main.async {
+                self._entries = self._freshEntries!
+                self.notifyObserversOfChange()
+            }
+        } else {
+            _entries = _freshEntries!
+            _entryRefreshStarted = Date.timeIntervalSinceReferenceDate
+        }
+    }
+
+    private func checkEntryFreshness(async: Bool = true) {
+        if let startTime = _entryRefreshStarted, Date.timeIntervalSinceReferenceDate - startTime < 500.0 {
+            return
+        }
+
+        if let updateTime = lastPersisted, _lastCachedEntries < updateTime {
+            _entryRefreshStarted = Date.timeIntervalSinceReferenceDate
+            if async {
+                DispatchQueue.global(qos: .background).async {
+                    usleep(100*1000) // sleep 100ms to de-bounce this function being called
+                    self.refreshEntries()
+                    self._entryRefreshStarted = nil
+                }
+            } else {
+                refreshEntries(async: false)
+                _entryRefreshStarted = nil
+            }
+        }
+    }
+
+    var entries: [ScheduleEntry] {
+        if _lastCachedEntries == 0 {
+            checkEntryFreshness(async: false)
+        }
+        DispatchQueue.global(qos: .background).async { self.checkEntryFreshness() }
+        return _entries
     }
 
     var numberOfEntries: Int {

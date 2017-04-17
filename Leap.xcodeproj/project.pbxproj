@@ -102,6 +102,7 @@
 		FB42086E1E89816B007F4DBD /* EKRecurrenceRule+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42086D1E89816B007F4DBD /* EKRecurrenceRule+Realm.swift */; };
 		FB4208701E89855D007F4DBD /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB42086F1E89855D007F4DBD /* Group.swift */; };
 		FB4208721E8985DC007F4DBD /* Organization.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4208711E8985DC007F4DBD /* Organization.swift */; };
+		FB4503D31EA579F8001D9F51 /* SwiftyLRU.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4503D21EA579F8001D9F51 /* SwiftyLRU.swift */; };
 		FB4E11A51E79ABB400687702 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4E11A41E79ABB400687702 /* LaunchScreen.storyboard */; };
 		FB4E11A71E79B1F500687702 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4E11A61E79B1F500687702 /* Main.storyboard */; };
 		FB8BB6231E89A76A00A30315 /* EventKitMigrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8BB6221E89A76A00A30315 /* EventKitMigrationTests.swift */; };
@@ -243,6 +244,7 @@
 		FB42086D1E89816B007F4DBD /* EKRecurrenceRule+Realm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EKRecurrenceRule+Realm.swift"; sourceTree = "<group>"; };
 		FB42086F1E89855D007F4DBD /* Group.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		FB4208711E8985DC007F4DBD /* Organization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Organization.swift; sourceTree = "<group>"; };
+		FB4503D21EA579F8001D9F51 /* SwiftyLRU.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyLRU.swift; sourceTree = "<group>"; };
 		FB4E11A41E79ABB400687702 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FB4E11A61E79B1F500687702 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		FB8BB6221E89A76A00A30315 /* EventKitMigrationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventKitMigrationTests.swift; sourceTree = "<group>"; };
@@ -410,6 +412,7 @@
 				FB39ADB21E92D40800B79A7B /* Date+Leap.swift */,
 				FB39ADB41E93EF2D00B79A7B /* Calendar+Leap.swift */,
 				FB39ADBA1E9407FF00B79A7B /* Int+Leap.swift */,
+				FB4503D21EA579F8001D9F51 /* SwiftyLRU.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -1006,6 +1009,7 @@
 				FBD614581E7F57B0001F4050 /* Validation.swift in Sources */,
 				FB2046B21E82E7BF00F130C8 /* Reminder.swift in Sources */,
 				FB42086E1E89816B007F4DBD /* EKRecurrenceRule+Realm.swift in Sources */,
+				FB4503D31EA579F8001D9F51 /* SwiftyLRU.swift in Sources */,
 				FB1869D61EA01CBC007642F4 /* List+Leap.swift in Sources */,
 				FB4208471E857984007F4DBD /* Recurrence.swift in Sources */,
 				839362211E8FF5F200543CFC /* WeekOverviewPageViewDataSource.swift in Sources */,
