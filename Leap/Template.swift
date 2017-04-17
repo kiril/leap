@@ -29,7 +29,7 @@ class Template: LeapModel {
         set { modalityString = newValue.rawValue }
     }
 
-    func create(onDayOf date: Date, id: String? = nil) -> Event? {
+    func event(onDayOf date: Date, id: String? = nil) -> Event? {
         let calendar = Calendar.current
         let year = calendar.component(.year, from: date)
         let month = calendar.component(.month, from: date)

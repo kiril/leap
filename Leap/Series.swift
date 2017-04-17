@@ -9,6 +9,22 @@
 import Foundation
 import RealmSwift
 
+enum SeriesType: String {
+    case event
+    case reminder
+
+    static func of(_ tm: Temporality) -> SeriesType {
+        switch tm {
+        case is Event:
+            return .event
+        case is Reminder:
+            return .reminder
+        default:
+            fatalError("Series doesn't support \(type(of:tm)) types")
+        }
+    }
+}
+
 class Series: LeapModel {
     dynamic var creator: Person?
     dynamic var title: String = ""
@@ -16,6 +32,7 @@ class Series: LeapModel {
     dynamic var recurrence: Recurrence?
     dynamic var startTime: Int = 0
     dynamic var endTime: Int = 0
+    dynamic var typeString: String = SeriesType.event.rawValue
 
     let events = LinkingObjects(fromType: Event.self, property: "series")
 
@@ -29,6 +46,11 @@ class Series: LeapModel {
 
     var endDate: Date? {
         return self.endTime > 0 ? Date(timeIntervalSinceReferenceDate: TimeInterval(self.endTime)) : nil
+    }
+
+    var type: SeriesType {
+        get { return SeriesType(rawValue: self.typeString)! }
+        set { self.typeString = newValue.rawValue }
     }
 
     public static func series(_ title: String, startingOn startDate: Date, endingOn endDate: Date? = nil) -> Series {
@@ -59,15 +81,19 @@ class Series: LeapModel {
     }
 
     func event(between start: Date, and end: Date) -> Temporality? {
+        if self.type == .reminder {
+            return nil
+        }
+
         let eventId = "\(id)-\(start.secondsSinceReferenceDate)"
         if let event = Event.by(id: eventId) {
             return event
         }
-        let firstTry = template!.create(onDayOf: start, id: eventId)
+        let firstTry = template!.event(onDayOf: start, id: eventId)
         if let firstTry = firstTry, Calendar.current.isDate(firstTry.date!, betweenInclusive: start, and: end) {
             return firstTry
         }
-        let secondTry = template!.create(onDayOf: start, id: eventId)
+        let secondTry = template!.event(onDayOf: end, id: eventId)
         if let secondTry = secondTry, Calendar.current.isDate(secondTry.date!, betweenInclusive: start, and: end) {
             return secondTry
         }
