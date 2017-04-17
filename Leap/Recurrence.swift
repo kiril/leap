@@ -32,10 +32,14 @@ public enum DayOfWeek: Int {
     }
 }
 
+
+
 class RecurrenceDay: Object {
     dynamic var id: Int = 0
     dynamic var dayOfWeekRaw: Int = DayOfWeek.sunday.rawValue
     dynamic var week: Int = 0 // 1-indexed
+
+    private static var _recurrenceDayCache: [DayOfWeek:[Int:RecurrenceDay]] = [:]
 
     var dayOfWeek: DayOfWeek {
         get { return DayOfWeek(rawValue: dayOfWeekRaw)! }
@@ -47,9 +51,21 @@ class RecurrenceDay: Object {
     }
 
     static func of(day: DayOfWeek, in week: Int = 0) -> RecurrenceDay {
-        return RecurrenceDay(value: ["id": week*1000 + day.rawValue,
-                                     "dayOfWeekRaw": day.rawValue,
-                                     "week": week])
+        var byWeek: [Int:RecurrenceDay]! = _recurrenceDayCache[day]
+        if let byWeek = byWeek {
+            if let day = byWeek[week] {
+                return day
+            }
+        } else {
+            byWeek = [:]
+            _recurrenceDayCache[day] = byWeek
+        }
+
+        let day = RecurrenceDay(value: ["id": week*1000 + day.rawValue,
+                                        "dayOfWeekRaw": day.rawValue,
+                                        "week": week])
+        byWeek[week] = day
+        return day
     }
 
     override var hashValue: Int {

@@ -1332,6 +1332,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CONFIG_BUNDLE_IDENTIFIER = com.singleleap.LeapChris;
 				CONFIG_DISPLAY_NAME = "Leap Debug";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = W8PY5MD3RJ;
 				INFOPLIST_FILE = Leap/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
