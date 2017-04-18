@@ -51,7 +51,7 @@ class Template: LeapModel {
             return nil
         }
         let data: ModelInitData = ["id": id,
-                                   "title": title,
+                                   "title": "~\(title)",
                                    "detail": detail,
                                    "locationString": locationString,
                                    "agenda": agenda,

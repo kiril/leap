@@ -71,7 +71,7 @@ class Series: LeapModel {
             return false
         }
         var date:Date? = startDate
-        while let d = date, d.secondsSinceReferenceDate <= endDate.secondsSinceReferenceDate {
+        while let d = date, d.secondsSinceReferenceDate < endDate.secondsSinceReferenceDate {
             if recurrence!.recursOn(d, for: self) {
                 return true
             }
@@ -87,7 +87,7 @@ class Series: LeapModel {
 
         let eventId = "\(id)-\(start.secondsSinceReferenceDate)"
         if let event = Event.by(id: eventId) {
-            return event
+            return gregorianCalendar.isDate(event.startDate, betweenInclusive: start, and: end) ? event : nil
         }
         let firstTry = template!.event(onDayOf: start, id: eventId)
         if let firstTry = firstTry, Calendar.current.isDate(firstTry.date!, betweenInclusive: start, and: end) {
