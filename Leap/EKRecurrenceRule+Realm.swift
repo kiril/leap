@@ -71,6 +71,7 @@ extension EKRecurrenceRule {
         let data: ModelInitData = ["id": tm.id,
                                    "title": tm.title,
                                    "startTime": Int(tm.time),
+                                   "typeString": SeriesType.of(tm).rawValue,
                                    "endTime": recurrenceEnd?.endDate?.secondsSinceReferenceDate ?? 0]
         let series = Series(value: data)
 
@@ -80,14 +81,16 @@ extension EKRecurrenceRule {
         if let event = tm as? Event {
             templateData["startHour"] = Calendar.current.component(.hour, from: event.startDate)
             templateData["startMinute"] = Calendar.current.component(.minute, from: event.startDate)
+            templateData["durationMinutes"] = (event.endDate.secondsSinceReferenceDate - event.startDate.secondsSinceReferenceDate)/60
             templateData["modalityString"] = event.modalityString
         }
         series.template = Template(value: templateData)
-        series.recurrence = asRecurrence()
+        series.recurrence = asRecurrence(of: tm)
+
         return series
     }
 
-    func asRecurrence() -> Recurrence {
+    func asRecurrence(of tm: Temporality) -> Recurrence {
         let recurrence = Recurrence(value: ["frequencyRaw": getFrequency().rawValue,
                                             "interval": interval,
                                             "weekStartRaw": weekStart().rawValue,
@@ -95,6 +98,8 @@ extension EKRecurrenceRule {
 
         if let weekdays = daysOfTheWeek {
             weekdays.forEach { day in recurrence.daysOfWeek.append(recurrenceDay(from: day)) }
+        } else if getFrequency() == .weekly {
+            recurrence.daysOfWeek.append(RecurrenceDay.of(day: DayOfWeek.from(date: tm.date!)))
         }
 
         if let days = daysOfTheMonth {
@@ -114,12 +119,7 @@ extension EKRecurrenceRule {
         }
 
         if let positions = setPositions {
-            positions.forEach { pos in
-                if Int(pos) <= 0 {
-                    print("Position \(pos)")
-                }
-                recurrence.setPositions.append(IntWrapper.of(num: pos))
-            }
+            positions.forEach { pos in recurrence.setPositions.append(IntWrapper.of(num: pos)) }
         }
         
         return recurrence

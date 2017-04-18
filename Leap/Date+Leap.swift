@@ -20,4 +20,18 @@ extension Date {
     func seconds(since date: Date) -> Int {
         return secondsSinceReferenceDate - date.secondsSinceReferenceDate
     }
+
+    func isToday() -> Bool {
+        let d = Date()
+        if gregorianCalendar.component(.year, from: d) != gregorianCalendar.component(.year, from: self) {
+            return false
+        }
+        if gregorianCalendar.component(.month, from: d) != gregorianCalendar.component(.month, from: self) {
+            return false
+        }
+        if gregorianCalendar.component(.day, from: d) != gregorianCalendar.component(.day, from: self) {
+            return false
+        }
+        return true
+    }
 }
