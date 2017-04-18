@@ -62,6 +62,9 @@ extension EKEvent {
             var series = Series.by(id: t.id)
             if series == nil {
                 series = rules[0].asSeries(t)
+                if let me = t.me, me.engagement == .disengaged {
+                    series!.status = .archived
+                }
                 try! Realm.user().write {
                     Realm.user().add(series!, update: true)
                 }
@@ -76,9 +79,17 @@ extension EKEvent {
         return t
     }
 
+    var cleanId: String {
+        var id = self.eventIdentifier
+        if id.contains("/RID=") {
+            id = id.components(separatedBy: "/RID")[0]
+        }
+        return id
+    }
+
     func asEvent() -> Event {
         let data: [String:Any?] = [
-            "id": self.eventIdentifier,
+            "id": self.cleanId,
             "title": self.title,
             "detail": self.notes,
             "startTime": self.startDate.secondsSinceReferenceDate,
@@ -106,6 +117,7 @@ extension EKEvent {
 
     func asReminder() -> Reminder {
         let data: [String:Any?] = [
+            "id": self.cleanId,
             "title": self.title,
             "detail": self.notes,
             "startTime": self.startDate.secondsSinceReferenceDate,

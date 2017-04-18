@@ -45,7 +45,7 @@ func syncEventSearchCallback(for calendar: LegacyCalendar) -> EKEventSearchCallb
                              externalItemId: ekEvent.calendarItemExternalIdentifier)
 
                 if existing == nil {
-                    print(" + Event \(event.title)")
+                    print(" + \(event.title) via \(calendar.title)")
                 }
                 realm.add(event, update: true)
 
@@ -70,7 +70,7 @@ func syncEventSearchCallback(for calendar: LegacyCalendar) -> EKEventSearchCallb
                                 itemId: ekEvent.calendarItemIdentifier,
                                 externalItemId: ekEvent.calendarItemExternalIdentifier)
                 if existing == nil {
-                    print(" + Reminder \(reminder.title)")
+                    print(" R \(reminder.title)")
                 }
                 realm.add(reminder, update: true)
             default:

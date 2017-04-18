@@ -107,6 +107,10 @@ class Series: LeapModel {
     }
 
     static func between(_ starting: Date, and before: Date) -> Results<Series> {
-        return Realm.user().objects(Series.self).filter("startTime < %d AND (endTime == 0 OR endTime >= %d)", before.secondsSinceReferenceDate, starting.secondsSinceReferenceDate)
+        return Realm.user().objects(Series.self).filter("statusString = %@ AND startTime < %d AND (endTime == 0 OR endTime >= %d)", ObjectStatus.active.rawValue, before.secondsSinceReferenceDate, starting.secondsSinceReferenceDate)
+    }
+
+    override static func indexedProperties() -> [String] {
+        return ["statusString", "startTime", "endTime"]
     }
 }
