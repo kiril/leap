@@ -85,11 +85,12 @@ extension EKRecurrenceRule {
             templateData["modalityString"] = event.modalityString
         }
         series.template = Template(value: templateData)
-        series.recurrence = asRecurrence()
+        series.recurrence = asRecurrence(of: tm)
+
         return series
     }
 
-    func asRecurrence() -> Recurrence {
+    func asRecurrence(of tm: Temporality) -> Recurrence {
         let recurrence = Recurrence(value: ["frequencyRaw": getFrequency().rawValue,
                                             "interval": interval,
                                             "weekStartRaw": weekStart().rawValue,
@@ -97,6 +98,8 @@ extension EKRecurrenceRule {
 
         if let weekdays = daysOfTheWeek {
             weekdays.forEach { day in recurrence.daysOfWeek.append(recurrenceDay(from: day)) }
+        } else if getFrequency() == .weekly {
+            recurrence.daysOfWeek.append(RecurrenceDay.of(day: DayOfWeek.from(date: tm.date!)))
         }
 
         if let days = daysOfTheMonth {

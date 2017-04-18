@@ -42,6 +42,8 @@ protocol Temporality {
 
     func isUpdatedVersionOf(_ other: Temporality) -> Bool
     func isDuplicateOfExisting() -> Bool
+
+    var status: ObjectStatus { get set }
 }
 
 extension Temporality {

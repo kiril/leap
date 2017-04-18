@@ -21,7 +21,7 @@ class Reminder: _TemporalBase, Temporality {
     var time: TimeInterval { return Double(startTime) }
 
     override static func indexedProperties() -> [String] {
-        return ["location.id", "startDate", "participants"]
+        return ["location.id", "startTime", "participants", "statusString"]
     }
 
     var duration: TimeInterval {
@@ -32,7 +32,7 @@ class Reminder: _TemporalBase, Temporality {
     }
 
     static func range(starting: Date, before: Date) -> Results<Reminder> {
-        let predicate = NSPredicate(format: "startTime >= %d AND startTime < %d", starting.secondsSinceReferenceDate, before.secondsSinceReferenceDate)
+        let predicate = NSPredicate(format: "statusString = %@ AND startTime >= %d AND startTime < %d", ObjectStatus.active.rawValue, starting.secondsSinceReferenceDate, before.secondsSinceReferenceDate)
         return Realm.user().objects(Reminder.self).filter(predicate)
     }
 

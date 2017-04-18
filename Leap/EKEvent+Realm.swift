@@ -74,6 +74,7 @@ extension EKEvent {
                 t.series = series
                 t.template = series.template
             }
+            t.status = .archived
         }
 
         return t

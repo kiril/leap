@@ -90,11 +90,15 @@ class Series: LeapModel {
             return gregorianCalendar.isDate(event.startDate, betweenInclusive: start, and: end) ? event : nil
         }
         let firstTry = template!.event(onDayOf: start, id: eventId)
-        if let firstTry = firstTry, Calendar.current.isDate(firstTry.date!, betweenInclusive: start, and: end) {
+        if let firstTry = firstTry,
+            Calendar.current.isDate(firstTry.startDate, betweenInclusive: start, and: end),
+            self.recurrence!.recursOn(firstTry.startDate, for: self) {
             return firstTry
         }
         let secondTry = template!.event(onDayOf: end, id: eventId)
-        if let secondTry = secondTry, Calendar.current.isDate(secondTry.date!, betweenInclusive: start, and: end) {
+        if let secondTry = secondTry,
+            Calendar.current.isDate(secondTry.startDate, betweenInclusive: start, and: end),
+            self.recurrence!.recursOn(secondTry.startDate, for: self) {
             return secondTry
         }
         return nil
