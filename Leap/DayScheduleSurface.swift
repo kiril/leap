@@ -120,4 +120,21 @@ class DayScheduleSurface: Surface {
         bridge.populate(schedule)
         return schedule
     }
+
+    var displayHiddenEvents: Bool = false
+
+    private var hiddenEvents: [EventSurface] {
+        return [EventSurface]()
+    }
+
+    private func willHideWhenHidden(event: EventSurface) -> Bool {
+//        if event.needs
+        return false
+    }
+
+//    private var hasHiddenEvents: Bool {
+//        return hideableEvents.count > 0
+//    }
+
+//    var shouldShow
 }

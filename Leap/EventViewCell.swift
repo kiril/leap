@@ -128,7 +128,7 @@ class EventViewCell: UICollectionViewCell {
         titleLabel.text = event.title.value
         invitationSummaryLabel.text = event.invitationSummary.value
 
-        if !event.userIsInvited.value || (event.userInvitationResponse.value == .yes) {
+        if event.isConfirmed.value {
             backgroundColor = UIColor.white
             borderColor = UIColor.projectDarkGray
             displayShadow = false

@@ -43,7 +43,8 @@ class EventSurface: Surface, ModelLoadable {
     let userIgnored            = SurfaceBool()
     let userIsInvited          = SurfaceBool()
     let userInvitationResponse = SurfaceProperty<InvitationResponse>()
-    let isUnresolved           = ComputedSurfaceBool<EventSurface>(by: EventSurface.computeIsUnresolved)
+    let needsResponse          = ComputedSurfaceBool<EventSurface>(by: EventSurface.computeNeedsResponse)
+    let isConfirmed            = ComputedSurfaceBool<EventSurface>(by: EventSurface.computeIsConfirmed)
     let perspective            = ComputedSurfaceProperty<TimePerspective,EventSurface>(by: TimePerspective.compute)
     let percentElapsed         = ComputedSurfaceFloat<EventSurface>(by: EventSurface.computeElapsed)
     let invitationSummary      = ComputedSurfaceString<EventSurface>(by: EventSurface.formatInvitationSummary)
@@ -71,8 +72,16 @@ class EventSurface: Surface, ModelLoadable {
         }
     }
 
-    static func computeIsUnresolved(event: EventSurface) -> Bool {
+    static func computeNeedsResponse(event: EventSurface) -> Bool {
         if event.userIsInvited.value, event.userInvitationResponse.value == .none {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    static func computeIsConfirmed(event: EventSurface) -> Bool {
+        if event.userInvitationResponse.value == .yes {
             return true
         } else {
             return false
