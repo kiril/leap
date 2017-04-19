@@ -32,15 +32,8 @@ class Series: LeapModel {
     dynamic var recurrence: Recurrence?
     dynamic var startTime: Int = 0
     dynamic var endTime: Int = 0
-<<<<<<< HEAD
-    dynamic var typeString: String = SeriesType.event.rawValue
-=======
-<<<<<<< Updated upstream
-=======
     dynamic var typeString: String = SeriesType.event.rawValue
     dynamic var lastRecurrenceDay: Date?
->>>>>>> Stashed changes
->>>>>>> recurrence work on limited count recurrence
 
     let events = LinkingObjects(fromType: Event.self, property: "series")
 
