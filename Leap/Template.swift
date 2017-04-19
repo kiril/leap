@@ -54,10 +54,10 @@ class Template: LeapModel {
                                    "title": title,
                                    "detail": detail,
                                    "locationString": locationString,
-                                   "agenda": agenda,
+                                   "agenda": agenda?.copy(),
                                    "modalityString": modalityString,
                                    "startTime": startDate.secondsSinceReferenceDate,
-                                   "series_id": series.id,
+                                   "seriesId": series.id,
                                    "endTime": endDate.secondsSinceReferenceDate]
         let event = Event(value: data)
         try! Realm.temp().write {

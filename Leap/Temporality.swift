@@ -36,7 +36,7 @@ protocol Temporality {
     var alarms: List<Alarm> { get }
     var links: List<CalendarLink> { get }
 
-    var series_id: String? { get set }
+    var seriesId: String? { get set }
     var seriesEventNumber: RealmOptional<Int> { get }
     var template: Template? { get set }
 
@@ -116,7 +116,7 @@ class _TemporalBase: LeapModel {
     dynamic var externalURL: String?
     dynamic var remoteCreated: Date? = nil
     dynamic var remoteLastModified: Date? = nil
-    dynamic var series_id: String? = nil
+    dynamic var seriesId: String? = nil
     dynamic var wasDetached: Bool = false
     dynamic var locationString: String? = nil
     dynamic var legacyTimeZone: TimeZone?
@@ -129,7 +129,7 @@ class _TemporalBase: LeapModel {
     let sourceCalendars = List<LegacyCalendar>()
     let links = List<CalendarLink>()
 
-    var isRecurring: Bool { return series_id != nil }
+    var isRecurring: Bool { return seriesId != nil }
 }
 
 
