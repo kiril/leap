@@ -71,6 +71,7 @@
 		FB2046B61E82E9B100F130C8 /* DeviceAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046B51E82E9B100F130C8 /* DeviceAccount.swift */; };
 		FB2046B81E830E4600F130C8 /* Temporality.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046B71E830E4600F130C8 /* Temporality.swift */; };
 		FB268B6C1EA5332D006510A7 /* WrapperTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB268B6B1EA5332D006510A7 /* WrapperTest.swift */; };
+		FB3895781EA7C0DE000FC103 /* Thread+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3895771EA7C0DE000FC103 /* Thread+Leap.swift */; };
 		FB39ADA91E8C65AF00B79A7B /* Object+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADA81E8C65AF00B79A7B /* Object+Leap.swift */; };
 		FB39ADAB1E8C69BB00B79A7B /* SurfaceModelBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADAA1E8C69BB00B79A7B /* SurfaceModelBridge.swift */; };
 		FB39ADAD1E8EC5A800B79A7B /* BridgeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB39ADAC1E8EC5A800B79A7B /* BridgeTest.swift */; };
@@ -213,6 +214,7 @@
 		FB2046B51E82E9B100F130C8 /* DeviceAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceAccount.swift; sourceTree = "<group>"; };
 		FB2046B71E830E4600F130C8 /* Temporality.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Temporality.swift; sourceTree = "<group>"; };
 		FB268B6B1EA5332D006510A7 /* WrapperTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrapperTest.swift; sourceTree = "<group>"; };
+		FB3895771EA7C0DE000FC103 /* Thread+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Thread+Leap.swift"; sourceTree = "<group>"; };
 		FB39ADA81E8C65AF00B79A7B /* Object+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Object+Leap.swift"; sourceTree = "<group>"; };
 		FB39ADAA1E8C69BB00B79A7B /* SurfaceModelBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurfaceModelBridge.swift; sourceTree = "<group>"; };
 		FB39ADAC1E8EC5A800B79A7B /* BridgeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BridgeTest.swift; sourceTree = "<group>"; };
@@ -413,6 +415,7 @@
 				FB39ADB41E93EF2D00B79A7B /* Calendar+Leap.swift */,
 				FB39ADBA1E9407FF00B79A7B /* Int+Leap.swift */,
 				FB4503D21EA579F8001D9F51 /* SwiftyLRU.swift */,
+				FB3895771EA7C0DE000FC103 /* Thread+Leap.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -1036,6 +1039,7 @@
 				8351BDCD1E7C596C001221AF /* GregorianDay.swift in Sources */,
 				8351BDC91E7C58FD001221AF /* OpenTimeViewModel.swift in Sources */,
 				FB0762DB1E142FBF0035EF8F /* ScheduleViewController.swift in Sources */,
+				FB3895781EA7C0DE000FC103 /* Thread+Leap.swift in Sources */,
 				FB2046A31E82DA2200F130C8 /* Event.swift in Sources */,
 				FB4208511E8593DA007F4DBD /* Venue.swift in Sources */,
 				FBD1045D1E80309300DDF65B /* Property.swift in Sources */,

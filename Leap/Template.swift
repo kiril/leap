@@ -29,7 +29,7 @@ class Template: LeapModel {
         set { modalityString = newValue.rawValue }
     }
 
-    func event(onDayOf date: Date, id: String? = nil) -> Event? {
+    func event(onDayOf date: Date, in series: Series, id: String? = nil) -> Event? {
         let calendar = Calendar.current
         let year = calendar.component(.year, from: date)
         let month = calendar.component(.month, from: date)
@@ -50,13 +50,16 @@ class Template: LeapModel {
         guard let startDate = start, let endDate = end else {
             return nil
         }
+
+        let seriesId: String = series.id
         let data: ModelInitData = ["id": id,
                                    "title": title,
                                    "detail": detail,
                                    "locationString": locationString,
-                                   "agenda": agenda,
+                                   "agenda": agenda?.copy(),
                                    "modalityString": modalityString,
                                    "startTime": startDate.secondsSinceReferenceDate,
+                                   "seriesId": seriesId,
                                    "endTime": endDate.secondsSinceReferenceDate]
         let event = Event(value: data)
         try! Realm.temp().write {

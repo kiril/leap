@@ -16,6 +16,48 @@ let GregorianThursday = 5
 let GregorianFriday = 6
 let GregorianSaturday = 7
 
+typealias DateTest = (Date) -> Bool
+
+class DayIterator: IteratorProtocol {
+    let calendar: Calendar
+    let test: DateTest
+    let start: Date
+    var date: Date
+
+    init(calendar: Calendar, start: Date, while test: @escaping DateTest) {
+        self.calendar = calendar
+        self.start = start
+        self.date = start
+        self.test = test
+    }
+
+    func next() -> Date? {
+        let ret = date
+        if !test(ret) {
+            return nil
+        }
+
+        self.date = calendar.dayAfter(self.date)
+        return ret
+    }
+
+    func reset() {
+        date = start
+    }
+}
+
+class DaySequence: Sequence {
+    let iterator: DayIterator
+    init(_ iterator: DayIterator) {
+        self.iterator = iterator
+    }
+
+    func makeIterator() -> DayIterator {
+        iterator.reset()
+        return iterator
+    }
+}
+
 extension Calendar {
 
     func formatDisplayTime(from date: Date, needsAMPM: Bool) -> String {
@@ -171,26 +213,18 @@ extension Calendar {
         return weekdays
     }
 
-    func allDays(inMonthOf d: Date) -> [Date] {
-        let theFirst = startOfMonth(including: d)
-        var days: [Date] = []
-        var day = theFirst
-        while component(.month, from: day) == component(.month, from: theFirst) {
-            days.append(day)
-            day = dayAfter(day)
-        }
-        return days
+    func sequence(from start: Date, while test: @escaping DateTest) -> DaySequence {
+        return DaySequence(DayIterator(calendar: self, start: start, while: test))
     }
 
-    func allDays(inYearOf d: Date) -> [Date] {
+    func allDays(inMonthOf d: Date) -> DaySequence {
+        let theFirst = startOfMonth(including: d)
+        return sequence(from: theFirst, while: {day in return self.component(.month, from: day) == self.component(.month, from: theFirst) })
+    }
+
+    func allDays(inYearOf d: Date) -> DaySequence {
         let theFirst = startOfYear(including: d)
-        var days: [Date] = []
-        var day = theFirst
-        while component(.year, from: day) == component(.year, from: theFirst) {
-            days.append(day)
-            day = dayAfter(day)
-        }
-        return days
+        return sequence(from: theFirst, while: {day in return self.component(.year, from: day) == self.component(.year, from: theFirst) })
     }
 
     func all(weekdays day: Int, inYearOf date: Date) -> [Date] {

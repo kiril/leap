@@ -47,6 +47,7 @@ class EventSurface: Surface, ModelLoadable {
     let perspective            = ComputedSurfaceProperty<TimePerspective,EventSurface>(by: TimePerspective.compute)
     let percentElapsed         = ComputedSurfaceFloat<EventSurface>(by: EventSurface.computeElapsed)
     let invitationSummary      = ComputedSurfaceString<EventSurface>(by: EventSurface.formatInvitationSummary)
+    let isRecurring            = SurfaceBool()
 
     /**
      * Actually ignores on the underlying event, which should propagate back up.
@@ -132,6 +133,12 @@ class EventSurface: Surface, ModelLoadable {
         bridge.reference(event, as: "event")
 
         bridge.bind(surface.title)
+        bridge.readonlyBind(surface.isRecurring, populateWith: { (m:LeapModel) in
+            if let e = m as? Event {
+                return e.isRecurring
+            }
+            return false
+        })
 
         func getStartTime(model:LeapModel) -> Any? {
             guard let event = model as? Event else {

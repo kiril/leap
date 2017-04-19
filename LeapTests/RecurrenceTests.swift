@@ -144,15 +144,17 @@ class RecurrenceTests: XCTestCase {
     }
 
     func testPositionalInMonth() {
-        let rec = Recurrence.every(.monthly, at: 0, past: 9)
-        rec.daysOfWeek.append(RecurrenceDay.of(day: .friday))
-        rec.setPositions.append(IntWrapper.of(2))
+        self.measure {
+            let rec = Recurrence.every(.monthly, at: 0, past: 9)
+            rec.daysOfWeek.append(RecurrenceDay.of(day: .friday))
+            rec.setPositions.append(2)
 
-        let fridays = calendar.all(weekdays: GregorianFriday, inMonthOf: now)
-        XCTAssertFalse(rec.recursOn(fridays[0], for: series))
-        XCTAssertTrue(rec.recursOn(fridays[1], for: series))
-        for friday in fridays.dropFirst(2) {
-            XCTAssertFalse(rec.recursOn(friday, for: series))
+            let fridays = self.calendar.all(weekdays: GregorianFriday, inMonthOf: self.now)
+            XCTAssertFalse(rec.recursOn(fridays[0], for: self.series))
+            XCTAssertTrue(rec.recursOn(fridays[1], for: self.series))
+            for friday in fridays.dropFirst(2) {
+                XCTAssertFalse(rec.recursOn(friday, for: self.series))
+            }
         }
     }
 
@@ -160,7 +162,7 @@ class RecurrenceTests: XCTestCase {
         let rec = Recurrence.every(.monthly, at: 0, past: 9)
         rec.daysOfWeek.append(RecurrenceDay.of(day: .thursday))
         rec.daysOfWeek.append(RecurrenceDay.of(day: .friday))
-        rec.setPositions.append(IntWrapper.of(2))
+        rec.setPositions.append(2)
 
         let startOfMonth = calendar.startOfMonth(onOrAfter: now)
 
@@ -193,39 +195,41 @@ class RecurrenceTests: XCTestCase {
     }
 
     func testSecondAndLastWeekdayInYear() {
-        let rec = Recurrence.every(.yearly, at: 0, past: 9)
-        rec.daysOfWeek.append(RecurrenceDay.of(day: .monday))
-        rec.daysOfWeek.append(RecurrenceDay.of(day: .tuesday))
-        rec.daysOfWeek.append(RecurrenceDay.of(day: .wednesday))
-        rec.daysOfWeek.append(RecurrenceDay.of(day: .thursday))
-        rec.daysOfWeek.append(RecurrenceDay.of(day: .friday))
-        rec.setPositions.append(IntWrapper.of(2))
-        rec.setPositions.append(IntWrapper.of(-1))
+        self.measure {
+            let rec = Recurrence.every(.yearly, at: 0, past: 9)
+            rec.daysOfWeek.append(RecurrenceDay.of(day: .monday))
+            rec.daysOfWeek.append(RecurrenceDay.of(day: .tuesday))
+            rec.daysOfWeek.append(RecurrenceDay.of(day: .wednesday))
+            rec.daysOfWeek.append(RecurrenceDay.of(day: .thursday))
+            rec.daysOfWeek.append(RecurrenceDay.of(day: .friday))
+            rec.setPositions.append(IntWrapper.of(2))
+            rec.setPositions.append(IntWrapper.of(-1))
 
-        let startOfYear = calendar.startOfYear(onOrAfter: now)
+            let startOfYear = self.calendar.startOfYear(onOrAfter: self.now)
 
-        let days = calendar.allDays(inYearOf: startOfYear)
+            let days = Array(self.calendar.allDays(inYearOf: startOfYear))
 
-        var finalWeekdayIndex = 0
-        for (i, day) in days.reversed().enumerated() {
-            if calendar.isWeekday(day) {
-                finalWeekdayIndex = days.count - i - 1
-                break
+            var finalWeekdayIndex = 0
+            for (i, day) in days.reversed().enumerated() {
+                if self.calendar.isWeekday(day) {
+                    finalWeekdayIndex = days.count - i - 1
+                    break
+                }
             }
-        }
-        assert(finalWeekdayIndex != 0)
+            assert(finalWeekdayIndex != 0)
 
-        var matchCount = 0
-        for (i, day) in days.enumerated() {
-            if calendar.isWeekday(day) {
-                if i == finalWeekdayIndex {
-                    XCTAssertTrue(rec.recursOn(day, for: self.series))
-                } else {
-                    matchCount += 1
-                    if matchCount == 2 {
+            var matchCount = 0
+            for (i, day) in days.enumerated() {
+                if self.calendar.isWeekday(day) {
+                    if i == finalWeekdayIndex {
                         XCTAssertTrue(rec.recursOn(day, for: self.series))
                     } else {
-                        XCTAssertFalse(rec.recursOn(day, for: self.series))
+                        matchCount += 1
+                        if matchCount == 2 {
+                            XCTAssertTrue(rec.recursOn(day, for: self.series))
+                        } else {
+                            XCTAssertFalse(rec.recursOn(day, for: self.series))
+                        }
                     }
                 }
             }

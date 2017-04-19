@@ -9,5 +9,38 @@
 import Foundation
 import RealmSwift
 
-extension List {
+extension List where T == IntWrapper {
+    func contains(_ int: Int) -> Bool {
+        for wrapper in self {
+            if wrapper.raw == int {
+                return true
+            }
+        }
+        return false
+    }
+
+    func append(_ int: Int) {
+        self.append(IntWrapper.of(int))
+    }
+}
+
+extension List where T == RecurrenceDay {
+
+    func contains(day: DayOfWeek) -> Bool {
+        for rd in self {
+            if rd.dayOfWeek == day {
+                return true
+            }
+        }
+        return false
+    }
+
+    func contains(day: DayOfWeek, week: Int) -> Bool {
+        for rd in self {
+            if rd.dayOfWeek == day && rd.week == week {
+                return true
+            }
+        }
+        return false
+    }
 }
