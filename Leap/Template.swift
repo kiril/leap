@@ -50,6 +50,8 @@ class Template: LeapModel {
         guard let startDate = start, let endDate = end else {
             return nil
         }
+
+        let seriesId: String = series.id
         let data: ModelInitData = ["id": id,
                                    "title": title,
                                    "detail": detail,
@@ -57,7 +59,7 @@ class Template: LeapModel {
                                    "agenda": agenda?.copy(),
                                    "modalityString": modalityString,
                                    "startTime": startDate.secondsSinceReferenceDate,
-                                   "seriesId": series.id,
+                                   "seriesId": seriesId,
                                    "endTime": endDate.secondsSinceReferenceDate]
         let event = Event(value: data)
         try! Realm.temp().write {

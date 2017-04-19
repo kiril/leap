@@ -35,8 +35,6 @@ class Series: LeapModel {
     dynamic var typeString: String = SeriesType.event.rawValue
     dynamic var lastRecurrenceDay: Date?
 
-    let events = LinkingObjects(fromType: Event.self, property: "series")
-
     static func by(id: String) -> Series? {
         return fetch(id: id)
     }
