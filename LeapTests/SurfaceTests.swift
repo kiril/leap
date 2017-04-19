@@ -43,17 +43,17 @@ class SurfaceTests: XCTestCase {
         XCTAssertEqual(repr.count.value, 0, "Default int value")
     }
 
-    func testPropertyMutation() throws {
+    func testPropertyMutation() {
         guard let repr = testSurface else {
             fatalError("OMG")
         }
-        try repr.title.update(to: "Another Title")
+        repr.title.update(to: "Another Title")
         XCTAssertEqual(repr.title.value, "Another Title", "Field mutating")
         XCTAssertTrue(repr.dirtyFields.contains("title"), "Dirty tracking")
         XCTAssertTrue(repr.isDirty, "Dirty state tracking")
 
         XCTAssertFalse(repr.dirtyFields.contains("count"), "Dirty tracking base")
-        try repr.count.update(to: 4)
+        repr.count.update(to: 4)
         XCTAssertEqual(repr.count.value, 4, "Int field mutating")
         XCTAssertTrue(repr.dirtyFields.contains("count"), "Dirty tracking 2")
     }
@@ -106,12 +106,12 @@ class SurfaceTests: XCTestCase {
         let dumb1 = DumbObserver()
 
         repr.register(observer: dumb1)
-        try repr.title.update(to: "Well, New Titles Abound")
+        repr.title.update(to: "Well, New Titles Abound")
         XCTAssertTrue(dumb1.observedChange, "Observer was notified")
 
         dumb1.reset()
         XCTAssertFalse(dumb1.observedChange, "Reset")
-        try repr.title.update(to: "New Title 2", silently: true)
+        repr.title.update(to: "New Title 2", silently: true)
         XCTAssertFalse(dumb1.observedChange, "Silent didn't notify observer")
 
         let dumb2 = DumbObserver()
@@ -119,17 +119,17 @@ class SurfaceTests: XCTestCase {
         XCTAssertFalse(dumb2.observedChange, "Just Checking")
 
         repr.register(observer: dumb2)
-        try repr.title.update(to: "OMG A Title")
+        repr.title.update(to: "OMG A Title")
         XCTAssertTrue(dumb1.observedChange, "Still goes to original")
         XCTAssertTrue(dumb2.observedChange, "And goes to the new one")
 
         dumb1.reset()
         dumb2.reset()
-        try repr.title.update(to: "The Best Title Ever", silently: true)
+        repr.title.update(to: "The Best Title Ever", silently: true)
         XCTAssertFalse(dumb1.observedChange, "Silent")
         XCTAssertFalse(dumb2.observedChange, "Silent")
 
-        try repr.title.update(to: "A Real Title", via: dumb1)
+        repr.title.update(to: "A Real Title", via: dumb1)
         XCTAssertFalse(dumb1.observedChange, "No looping please")
         XCTAssertTrue(dumb2.observedChange, "But other observers get the change")
     }

@@ -46,7 +46,7 @@ class BridgeTest: XCTestCase {
         guard let model = TestModel.by(id: testId), let surface = testSurface else {
             fatalError("yikes")
         }
-        try! surface.title.update(to: "New Title")
+        surface.title.update(to: "New Title")
         XCTAssertNotEqual(surface.title.value, model.title)
         try! surface.flush()
         XCTAssertEqual(surface.title.value, model.title)
