@@ -71,7 +71,7 @@ extension EKEvent {
             }
 
             if let series = series {
-                t.series = series
+                t.series_id = series.id
                 t.template = series.template
             }
             t.status = .archived

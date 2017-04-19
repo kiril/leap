@@ -9,6 +9,7 @@
 import Foundation
 import RealmSwift
 
+
 enum Frequency: String {
     case unknown = "unknown"
     case daily   = "daily"
@@ -16,6 +17,7 @@ enum Frequency: String {
     case monthly = "monthly"
     case yearly  = "yearly"
 }
+
 
 public enum DayOfWeek: Int {
     case sunday    = 1
@@ -31,7 +33,6 @@ public enum DayOfWeek: Int {
         return DayOfWeek(rawValue: components.weekday!)!
     }
 }
-
 
 
 class RecurrenceDay: Object {
@@ -172,7 +173,6 @@ class Recurrence: LeapModel {
                     return false
                 }
             }
-            // TODO: recurrence count/end time?
             return true
 
         case .weekly:
@@ -182,7 +182,6 @@ class Recurrence: LeapModel {
                     return false
                 }
             }
-            // TODO: recurrence count/end time?
             return true
 
         case .monthly:
@@ -221,7 +220,6 @@ class Recurrence: LeapModel {
                 }
                 return false
             }
-            // TODO: recurrence count/end time?
             return true
 
         case .yearly:
@@ -273,6 +271,7 @@ class Recurrence: LeapModel {
                         }
                     }
                 }
+
                 return false
             }
 

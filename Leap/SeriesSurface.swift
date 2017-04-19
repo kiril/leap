@@ -16,7 +16,7 @@ class SeriesSurface: Surface, ModelLoadable {
     func event(for day: GregorianDay) -> EventSurface? {
         let start = Calendar.current.startOfDay(for: day)
         let end = Calendar.current.startOfDay(for: day.dayAfter)
-        if let event = Series.by(id: id)?.event(between: start, and: end) as? Event {
+        if let event = Series.by(id: id)?.event(between: start, and: end) {
             return EventSurface.load(fromModel: event) as? EventSurface
         }
         return nil
