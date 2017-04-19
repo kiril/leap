@@ -33,13 +33,18 @@ class DayScheduleSurface: Surface {
     private var _entryRefreshStarted: TimeInterval? = nil
 
     private func refreshEntries(async: Bool = true) {
-        var entries = events.value.map { event in ScheduleEntry.from(event: event) }
+        var events = self.events.value
         for seriesSurface in filteredSeries {
             if let eventSurface = seriesSurface.event(for: self.day.gregorianDay) {
-                entries.append(ScheduleEntry.from(event: eventSurface))
+                events.append(eventSurface)
             }
         }
+
+        let eventsSet = Set<EventSurface>(events)
+        var entries = Array(eventsSet).map { event in ScheduleEntry.from(event: event) }
+
         entries.sort { $0 < $1 }
+
         _freshEntries = entries
         _lastCachedEntries = Date.timeIntervalSinceReferenceDate
 
@@ -51,6 +56,20 @@ class DayScheduleSurface: Surface {
         } else {
             _entries = _freshEntries!
             _entryRefreshStarted = Date.timeIntervalSinceReferenceDate
+        }
+    }
+
+    private func filterHiddenEventEntries(entries: [ScheduleEntry]) -> [ScheduleEntry] {
+        guard (!displayHiddenEvents) else { return entries }
+
+        return entries.filter() { (scheduleEntry) -> Bool in
+            switch scheduleEntry {
+            case .event(let event):
+                return eventAlwaysDisplaysInSchedule(event: event)
+            default:
+                return true
+            }
+
         }
     }
 
@@ -79,7 +98,10 @@ class DayScheduleSurface: Surface {
             checkEntryFreshness(async: false)
         }
         DispatchQueue.global(qos: .background).async { self.checkEntryFreshness() }
-        return _entries
+
+        // also should add open time here:
+
+        return filterHiddenEventEntries(entries: _entries)
     }
 
     var numberOfEntries: Int {
@@ -119,5 +141,27 @@ class DayScheduleSurface: Surface {
         schedule.store = bridge
         bridge.populate(schedule)
         return schedule
+    }
+
+    var displayHiddenEvents: Bool = false {
+        didSet {
+            notifyObserversOfChange()
+        }
+    }
+
+    func toggleHiddenEvents(){
+        displayHiddenEvents = !displayHiddenEvents
+    }
+
+    var textForHiddenButton: String {
+        return displayHiddenEvents ? "Hide Events" : "Show Hidden Events"
+    }
+
+    private func eventAlwaysDisplaysInSchedule(event: EventSurface) -> Bool {
+        return event.isConfirmed.value || event.needsResponse.value
+    }
+
+    private func eventIsHideable(event: EventSurface) -> Bool {
+        return !eventAlwaysDisplaysInSchedule(event: event)
     }
 }

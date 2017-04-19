@@ -208,7 +208,7 @@ class Series: LeapModel {
 
         let eventId = "\(id)-\(start.secondsSinceReferenceDate)"
         if let event = Event.by(id: eventId) {
-            return gregorianCalendar.isDate(event.startDate, betweenInclusive: start, and: end) ? event : nil
+            return Calendar.universalGregorian.isDate(event.startDate, betweenInclusive: start, and: end) ? event : nil
         }
 
         let firstTry = template!.event(onDayOf: start, in: self, id: eventId)

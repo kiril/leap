@@ -23,13 +23,15 @@ extension Date {
 
     func isToday() -> Bool {
         let d = Date()
-        if gregorianCalendar.component(.year, from: d) != gregorianCalendar.component(.year, from: self) {
+        let cal = Calendar.universalGregorian
+        
+        if cal.component(.year, from: d) != cal.component(.year, from: self) {
             return false
         }
-        if gregorianCalendar.component(.month, from: d) != gregorianCalendar.component(.month, from: self) {
+        if cal.component(.month, from: d) != cal.component(.month, from: self) {
             return false
         }
-        if gregorianCalendar.component(.day, from: d) != gregorianCalendar.component(.day, from: self) {
+        if cal.component(.day, from: d) != cal.component(.day, from: self) {
             return false
         }
         return true

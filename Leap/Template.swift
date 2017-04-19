@@ -62,8 +62,8 @@ class Template: LeapModel {
                                    "seriesId": seriesId,
                                    "endTime": endDate.secondsSinceReferenceDate]
         let event = Event(value: data)
-        try! Realm.temp().write {
-            Realm.temp().add(event, update: true)
+        try! Realm.user().write {
+            Realm.user().add(event, update: true)
         }
         return event
     }

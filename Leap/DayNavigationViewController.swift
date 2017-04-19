@@ -12,6 +12,8 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
     @IBOutlet weak var pageViewContainer: UIView!
     var titleView: DayScheduleTitleView!
 
+    @IBOutlet weak var hiddenEventsButton: UIButton!
+
     private lazy var daySchedulePageViewDataSource = DaySchedulePageViewDataSource()
 
     fileprivate var currentlySelectedDay: DaySurface? {
@@ -22,6 +24,15 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
     }
 
     var daySchedulePageViewController: UIPageViewController!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        setupNavigation()
+        setupPageViewController()
+        setupHiddenEventsButton()
+        // Do any additional setup after loading the view.
+    }
 
     private func setupPageViewController() {
         daySchedulePageViewController = UIPageViewController(transitionStyle: .scroll,
@@ -69,6 +80,20 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
         ]
     }
 
+    private func setupHiddenEventsButton() {
+        let cornerRadius: CGFloat = 10.0
+
+        let blur = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
+        blur.isUserInteractionEnabled = false
+        blur.frame = hiddenEventsButton.bounds
+
+        hiddenEventsButton.insertSubview(blur, at: 0)
+        hiddenEventsButton.layer.cornerRadius = cornerRadius
+        hiddenEventsButton.layer.masksToBounds = true
+        hiddenEventsButton.layer.borderColor = UIColor.projectPurple.cgColor
+        hiddenEventsButton.layer.borderWidth = 0.5
+    }
+
     private func barButtonItemFor(navView view: UIView) -> UIBarButtonItem {
         view.translatesAutoresizingMaskIntoConstraints = false
         let tap = UITapGestureRecognizer(target: self, action: #selector(didTapNavigation))
@@ -90,13 +115,6 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
         present(navVC, animated: true, completion: nil)
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        setupNavigation()
-        setupPageViewController()
-        // Do any additional setup after loading the view.
-    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -178,6 +196,8 @@ extension DayNavigationViewController: UIPageViewControllerDelegate {
         }
 
         titleView.setNeedsLayout()
+
+        hiddenEventsButton.setTitle(vc.surface?.textForHiddenButton, for: .normal)
     }
 }
 

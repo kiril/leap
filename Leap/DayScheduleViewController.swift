@@ -59,7 +59,6 @@ class DayScheduleViewController: UICollectionViewController, StoryboardLoadable 
         switch entry {
         case .event(let event):
             cell.configure(with: event)
-            cell.delegate = self
         case .openTime:
             // for now, just hack in a new event view model since we don't have an open time view to display
             self.configureCellWidth(cell)
@@ -125,22 +124,6 @@ extension DayScheduleViewController: SurfaceObserver {
     func surfaceDidChange(_ surface: Surface) {
         self.collectionView?.reloadData()
         self.collectionView?.collectionViewLayout.invalidateLayout()
-    }
-}
-
-extension DayScheduleViewController: EventViewCellDelegate {
-    func didChoose(response: InvitationResponse,
-                   ignored: Bool,
-                   forEventId eventId: String,
-                   on eventViewCell: EventViewCell) {
-
-        guard let event = EventSurface.load(byId: eventId) else { return }
-        event.userInvitationResponse.update(to: response)
-        event.userIgnored.update(to: ignored)
-
-        try! event.flush()
-
-        eventViewCell.configure(with: event)
     }
 }
 

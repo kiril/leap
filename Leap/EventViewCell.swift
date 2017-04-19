@@ -8,13 +8,6 @@
 
 import UIKit
 
-protocol EventViewCellDelegate: class {
-    func didChoose(response: InvitationResponse,
-                   ignored: Bool,
-                   forEventId eventId: String,
-                   on eventViewCell: EventViewCell)
-}
-
 class EventViewCell: UICollectionViewCell {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
@@ -26,8 +19,6 @@ class EventViewCell: UICollectionViewCell {
     @IBOutlet weak var maybeButton: UIButton!
     @IBOutlet weak var ignoreButton: UIButton!
     @IBOutlet weak var remindButton: UIButton!
-
-    weak var delegate: EventViewCellDelegate?
 
     var borderColor: UIColor = UIColor.black {
         didSet { updateBorderColor() }
@@ -85,35 +76,32 @@ class EventViewCell: UICollectionViewCell {
 
     private func setupButtons() {
         for button in [yesButton, noButton, maybeButton, ignoreButton] {
-            button?.addTarget(self, action: #selector(setInvitationResponse), for: .touchUpInside)
+            button?.addTarget(self, action: #selector(setEventResponse), for: .touchUpInside)
         }
     }
 
-    @objc private func setInvitationResponse(sender: UIButton) {
+    @objc private func setEventResponse(sender: UIButton) {
         let event = self.event!
-        var response: InvitationResponse?
-        var ignored: Bool?
+        var response: EventResponse?
 
         if sender == yesButton { response = .yes }
         if sender == noButton { response = .no }
         if sender == maybeButton { response = .maybe }
+        if sender == ignoreButton { response = .ignore }
 
         if  let r = response {
-            // yes, no, or maybe was tapped
-
-            if r == event.userInvitationResponse.value {
-                // selected response button was tapped, so force .none
-                response = .none
+            guard r != event.userResponse.value else {
+                // selected button was tapped
+                return
             }
-        } else {
-            // ignore button was tapped
-            ignored = !event.userIgnored.value
+
+            event.userResponse.update(to: r)
+
+//            configure(with: event)
+
+            try! event.flush()
         }
 
-        delegate?.didChoose(response: response ?? .none,
-                            ignored: ignored ?? false,
-                            forEventId: event.id,
-                            on: self)
     }
 
     func configure(with event: EventSurface) {
@@ -128,7 +116,7 @@ class EventViewCell: UICollectionViewCell {
         titleLabel.text = event.title.value
         invitationSummaryLabel.text = event.invitationSummary.value
 
-        if !event.userIsInvited.value || (event.userInvitationResponse.value == .yes) {
+        if event.isConfirmed.value {
             backgroundColor = UIColor.white
             borderColor = UIColor.projectDarkGray
             displayShadow = false
@@ -145,14 +133,13 @@ class EventViewCell: UICollectionViewCell {
             contentView.alpha = 1.0
         }
 
-        let showResponseActions = event.userIsInvited.value && (event.userInvitationResponse.value != .yes)
-        invitationActionContainer.isHidden = !showResponseActions
+        invitationActionContainer.isHidden = event.isConfirmed.value
 
         updateActionButtons(forEvent: event)
     }
 
     private func updateActionButtons(forEvent event: EventSurface) {
-        let isResponded = event.userIgnored.value || (event.userInvitationResponse.value != .none)
+        let isResponded = !event.needsResponse.value
 
         if isResponded {
             for button in [yesButton, noButton, maybeButton] as! [UIButton] {
@@ -166,7 +153,7 @@ class EventViewCell: UICollectionViewCell {
                                         bold: false,
                                         backgroundColor: UIColor.projectDarkGray)
             } else {
-                switch event.userInvitationResponse.value {
+                switch event.userResponse.value {
                 case .yes:
                     applyActionButtonFormat(to: yesButton,
                                             color: UIColor.white,

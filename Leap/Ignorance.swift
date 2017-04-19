@@ -10,26 +10,25 @@ import Foundation
 import RealmSwift
 
 class Ignorance: LeapModel {
-    dynamic var person: Person?
     dynamic var event: Event?
     dynamic var reminder: Reminder?
 
-    static func of(_ thing: Temporality, by person: Person) -> Ignorance? {
+    static func of(_ thing: Temporality) -> Ignorance? {
         let realm = Realm.user()
         let query = realm.objects(Ignorance.self)
         switch thing {
         case let event as Event:
-            return query.filter("person = %@ AND event = %@", person, event).first
+            return query.filter("event = %@", event).first
         case let reminder as Reminder:
-            return query.filter("person = %@ AND reminder = %@", person, reminder).first
+            return query.filter("reminder = %@", reminder).first
         default:
             return nil
         }
     }
 
     @discardableResult
-    static func ignore(_ thing: Temporality, for person: Person) -> Bool {
-        if let _ = of(thing, by: person) {
+    static func ignore(_ thing: Temporality) -> Bool {
+        if let _ = of(thing) {
             return false
         }
         let realm = Realm.user()
@@ -38,10 +37,10 @@ class Ignorance: LeapModel {
         try! realm.safeWrite {
             switch thing {
             case let event as Event:
-                realm.add(Ignorance(value: ["person": person, "event": event]))
+                realm.add(Ignorance(value: ["event": event]))
                 wrote = true
             case let reminder as Reminder:
-                realm.add(Ignorance(value: ["person": person, "reminder": reminder]))
+                realm.add(Ignorance(value: ["reminder": reminder]))
                 wrote = true
             default:
                 break
@@ -52,8 +51,8 @@ class Ignorance: LeapModel {
     }
 
     @discardableResult
-    static func unignore(_ thing: Temporality, for person: Person) -> Bool {
-        guard   let ignorance = of(thing, by: person) else {
+    static func unignore(_ thing: Temporality) -> Bool {
+        guard   let ignorance = of(thing) else {
             return false
         }
         ignorance.delete()
