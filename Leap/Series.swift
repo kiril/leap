@@ -59,6 +59,10 @@ class Series: LeapModel {
     }
 
     func calculateLastRecurrenceDay() {
+        guard recurrence!.count > 0 else {
+            return
+        }
+
         let realm = Realm.user()
         var lastDay: Date?
         let rec = recurrence!
@@ -73,7 +77,7 @@ class Series: LeapModel {
         switch recurrence!.frequency {
         case .daily:
             // I don't think Daily can work any other way...
-            lastDay = Calendar.current.date(byAdding: .day, value: maxRecurrences, to: startDate)
+            lastDay = Calendar.current.date(byAdding: .day, value: maxRecurrences-1, to: startDate)
 
         case .weekly:
             let occurrencesPerWeek = rec.daysOfWeek.count
@@ -163,7 +167,7 @@ class Series: LeapModel {
             lastDay = day
         }
 
-        try! realm.write {
+        try! realm.safeWrite {
             self.lastRecurrenceDay = lastDay!
             realm.add(self, update: true)
         }

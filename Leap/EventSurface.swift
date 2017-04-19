@@ -133,7 +133,12 @@ class EventSurface: Surface, ModelLoadable {
         bridge.reference(event, as: "event")
 
         bridge.bind(surface.title)
-        bridge.bind(surface.isRecurring)
+        bridge.readonlyBind(surface.isRecurring, populateWith: { (m:LeapModel) in
+            if let e = m as? Event {
+                return e.isRecurring
+            }
+            return false
+        })
 
         func getStartTime(model:LeapModel) -> Any? {
             guard let event = model as? Event else {

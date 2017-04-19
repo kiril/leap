@@ -40,7 +40,7 @@ class RecurrenceDay: Object {
     dynamic var dayOfWeekRaw: Int = DayOfWeek.sunday.rawValue
     dynamic var week: Int = 0 // 1-indexed
 
-    private static var _recurrenceDayCache: [DayOfWeek:[Int:RecurrenceDay]] = [:]
+    private static var _recurrenceDayCache: [Int:[Int:RecurrenceDay]] = [:]
 
     var dayOfWeek: DayOfWeek {
         get { return DayOfWeek(rawValue: dayOfWeekRaw)! }
@@ -51,22 +51,32 @@ class RecurrenceDay: Object {
         return "id"
     }
 
+    static func _cache() -> [Int:[Int:RecurrenceDay]] {
+        var cache: [Int:[Int:RecurrenceDay]]!
+        cache = Thread.getValue(forKey: "recurrenceDayCache")
+        if cache == nil {
+            cache = [:]
+            Thread.set(value: cache, forKey: "recurrenceDayCache")
+        }
+        return cache
+    }
+
     static func of(day: DayOfWeek, in week: Int = 0) -> RecurrenceDay {
-        var byWeek: [Int:RecurrenceDay]! = _recurrenceDayCache[day]
-        if let byWeek = byWeek {
+        var cache = _cache()
+
+        if let byWeek = cache[day.rawValue] {
             if let day = byWeek[week] {
                 return day
             }
         } else {
-            byWeek = [:]
-            _recurrenceDayCache[day] = byWeek
+            cache[day.rawValue] = [:]
         }
 
-        let day = RecurrenceDay(value: ["id": week*1000 + day.rawValue,
+        let rd = RecurrenceDay(value: ["id": week*1000 + day.rawValue,
                                         "dayOfWeekRaw": day.rawValue,
                                         "week": week])
-        byWeek[week] = day
-        return day
+        cache[day.rawValue]![week] = rd
+        return rd
     }
 
     override var hashValue: Int {
@@ -75,7 +85,7 @@ class RecurrenceDay: Object {
 
     override func isEqual(_ object: Any?) -> Bool {
         if let rd = object as? RecurrenceDay {
-            return rd == self
+            return rd.id == self.id
         }
         return false
     }
@@ -89,6 +99,8 @@ class RecurrenceDay: Object {
 // NOTE: can you indicate attendence to all future?
 // Can you make it such that editing doesn't by default even touch the recurrence?
 class Recurrence: LeapModel {
+    static let calendar = Calendar(identifier: .gregorian)
+
     dynamic var count: Int = 0
     dynamic var frequencyRaw: String = Frequency.unknown.rawValue
     dynamic var interval: Int = 0
@@ -123,13 +135,9 @@ class Recurrence: LeapModel {
 
     func dayOfWeekMatches(for date: Date) -> Bool {
         guard daysOfWeek.count > 0 else { return true }
+        let week = Recurrence.calendar.ordinality(of: .weekOfMonth, in: .month, for: date)!
 
-        let calendar = Calendar(identifier: .gregorian)
-
-        let dow = DayOfWeek.from(date: date)
-        let week = calendar.ordinality(of: .weekOfMonth, in: .month, for: date)!
-
-        return daysOfWeek.contains(RecurrenceDay.of(day: dow, in: week)) || daysOfWeek.contains(RecurrenceDay.of(day: dow))
+        return daysOfWeek.contains(day: DayOfWeek.from(date: date), week: week) || daysOfWeek.contains(day: DayOfWeek.from(date: date), week: 0)
     }
 
     func recursOn(_ date: Date, for series: Series) -> Bool {
@@ -149,19 +157,19 @@ class Recurrence: LeapModel {
             return false
         }
 
-        if daysOfMonth.count > 0, !daysOfMonth.contains(IntWrapper.of(day)) {
+        if daysOfMonth.count > 0, !daysOfMonth.contains(day) {
             return false
         }
 
-        if daysOfYear.count > 0, !daysOfYear.contains(IntWrapper.of(calendar.ordinality(of: .day, in: .year, for: date)!)) {
+        if daysOfYear.count > 0, !daysOfYear.contains(calendar.ordinality(of: .day, in: .year, for: date)!) {
             return false
         }
 
-        if weeksOfYear.count > 0, !weeksOfYear.contains(IntWrapper.of(week)) {
+        if weeksOfYear.count > 0, !weeksOfYear.contains(week) {
             return false
         }
 
-        if monthsOfYear.count > 0, !monthsOfYear.contains(IntWrapper.of(month)) {
+        if monthsOfYear.count > 0, !monthsOfYear.contains(month) {
             return false
         }
 
@@ -200,16 +208,18 @@ class Recurrence: LeapModel {
                 // that requires counting all the matching weekdays in this month until we find this date
                 var matchIndices: [Int] = []
                 var myIndex = -1
-                for (i, day) in calendar.allDays(inMonthOf: date).enumerated() {
+                var i = 0
+                for day in calendar.allDays(inMonthOf: date) {
                     if dayOfWeekMatches(for: day) {
                         matchIndices.append(i)
                         if calendar.isDate(day, theSameDayAs: date) {
                             myIndex = i
-                            if setPositions.contains(IntWrapper.of(matchIndices.count)) {
+                            if setPositions.contains(matchIndices.count) {
                                 return true // may as well succeed fast in the simple case
                             }
                         }
                     }
+                    i += 1
                 }
 
                 for position in setPositions.map({ return $0.raw }) {
@@ -230,15 +240,15 @@ class Recurrence: LeapModel {
                 }
             }
 
-            if monthsOfYear.count > 0, !monthsOfYear.contains(IntWrapper.of(month)) {
+            if monthsOfYear.count > 0, !monthsOfYear.contains(month) {
                 return false
             }
 
-            if weeksOfYear.count > 0, !weeksOfYear.contains(IntWrapper.of(week)) {
+            if weeksOfYear.count > 0, !weeksOfYear.contains(week) {
                 return false
             }
 
-            if daysOfYear.count > 0, !daysOfYear.contains(IntWrapper.of(calendar.ordinality(of: .day, in: .year, for: date)!)) {
+            if daysOfYear.count > 0, !daysOfYear.contains(calendar.ordinality(of: .day, in: .year, for: date)!) {
                 return false
             }
 
@@ -249,18 +259,32 @@ class Recurrence: LeapModel {
                 // let's figure out what index this date is within this month
                 // that requires counting all the matching weekdays in this month until we find this date
                 let positions = setPositions.map { return $0.raw }
+                var haveNegative = false
+                for position in positions {
+                    if position < 0 {
+                        haveNegative = true
+                        break
+                    }
+                }
                 var matchIndices: [Int] = []
                 var myPosition = -1
-                for (i, day) in calendar.allDays(inYearOf: date).enumerated() {
-                    if dayOfWeekMatches(for: day) {
+
+                let allYear = calendar.allDays(inYearOf: date)
+
+                var i = 0
+                for aDay in allYear {
+                    if dayOfWeekMatches(for: aDay) {
                         matchIndices.append(i)
-                        if calendar.isDate(day, theSameDayAs: date) {
+                        if calendar.isDate(aDay, theSameDayAs: date) {
                             myPosition = matchIndices.count
                             if positions.contains(myPosition) {
                                 return true
                             }
                         }
+                    } else if !haveNegative && myPosition != -1 {
+                        return false
                     }
+                    i += 1
                 }
 
                 for position in positions {

@@ -65,8 +65,15 @@ extension EKEvent {
                 if let me = t.me, me.engagement == .disengaged {
                     series!.status = .archived
                 }
-                try! Realm.user().write {
+                try! Realm.user().safeWrite {
                     Realm.user().add(series!, update: true)
+                }
+            } else {
+                if Int(t.time) < series!.startTime {
+                    try! Realm.user().safeWrite {
+                        series!.startTime = Int(t.time)
+                        series!.calculateLastRecurrenceDay()
+                    }
                 }
             }
 
