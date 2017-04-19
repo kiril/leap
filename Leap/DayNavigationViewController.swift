@@ -196,6 +196,8 @@ extension DayNavigationViewController: UIPageViewControllerDelegate {
         }
 
         titleView.setNeedsLayout()
+
+        hiddenEventsButton.setTitle(vc.surface?.textForHiddenButton, for: .normal)
     }
 }
 

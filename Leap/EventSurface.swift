@@ -10,11 +10,12 @@
 import Foundation
 
 
-enum InvitationResponse {
+enum EventResponse {
     case none,
     yes,
     no,
-    maybe
+    maybe,
+    ignore
 }
 
 extension TimePerspective {
@@ -42,7 +43,7 @@ class EventSurface: Surface, ModelLoadable {
     let timeRange              = ComputedSurfaceString<EventSurface>(by: EventSurface.eventTimeRange)
     let userIgnored            = SurfaceBool()
     let userIsInvited          = SurfaceBool()
-    let userInvitationResponse = SurfaceProperty<InvitationResponse>()
+    let userResponse           = SurfaceProperty<EventResponse>()
     let needsResponse          = ComputedSurfaceBool<EventSurface>(by: EventSurface.computeNeedsResponse)
     let isConfirmed            = ComputedSurfaceBool<EventSurface>(by: EventSurface.computeIsConfirmed)
     let perspective            = ComputedSurfaceProperty<TimePerspective,EventSurface>(by: TimePerspective.compute)
@@ -58,7 +59,7 @@ class EventSurface: Surface, ModelLoadable {
             let event = bridge.dereference("event") as? Event else {
             fatalError("No backing bridge")
         }
-        if Ignorance.ignore(event, for: event.me!.person!) {
+        if Ignorance.ignore(event) {
             self.notifyObserversOfChange() // because the Ignorance model isn't referenced
         }
     }
@@ -66,22 +67,18 @@ class EventSurface: Surface, ModelLoadable {
     func stopIgnoring() {
         if let bridge = self.store as? SurfaceModelBridge,
             let event = bridge.dereference("event") as? Event,
-            let ignorance = Ignorance.of(event, by: event.me!.person!) {
+            let ignorance = Ignorance.of(event) {
             ignorance.delete()
             self.notifyObserversOfChange()
         }
     }
 
     static func computeNeedsResponse(event: EventSurface) -> Bool {
-        if event.userIsInvited.value, event.userInvitationResponse.value == .none {
-            return true
-        } else {
-            return false
-        }
+        return event.userResponse.value == .none
     }
 
     static func computeIsConfirmed(event: EventSurface) -> Bool {
-        if event.userInvitationResponse.value == .yes {
+        if event.userResponse.value == .yes {
             return true
         } else {
             return false
@@ -179,30 +176,6 @@ class EventSurface: Surface, ModelLoadable {
         }
         bridge.bind(surface.endTime, populateWith: getEndTime, on: "event", persistWith: setEndTime)
 
-        func getUserIgnored(model:LeapModel) -> Any? {
-            guard let thing = model as? Temporality, let me = thing.me else {
-                return false
-            }
-            if let _ = Ignorance.of(thing, by: me.person!) {
-                return true
-            }
-            return false
-        }
-        func setUserIgnored(model:LeapModel, value: Any?) {
-            guard   let thing = model as? Temporality,
-                    let me = thing.me,
-                    let ignore = value as? Bool else {
-                fatalError("OMG wrong type or something \(model)")
-            }
-
-            if ignore {
-                Ignorance.ignore(thing, for: me.person!)
-            } else {
-                Ignorance.unignore(thing, for: me.person!)
-            }
-        }
-        bridge.bind(surface.userIgnored, populateWith: getUserIgnored, on: "event", persistWith: setUserIgnored)
-
         bridge.readonlyBind(surface.userIsInvited) { (model:LeapModel) in
             guard let thing = model as? Temporality, let me = thing.me else {
                 return false
@@ -210,29 +183,65 @@ class EventSurface: Surface, ModelLoadable {
             return me.ownership == .invitee
         }
 
-        func getInvitationResponse(model:LeapModel) -> Any? {
-            guard let thing = model as? Temporality, let me = thing.me else {
-                return InvitationResponse.none
+        func getEventResponse(model:LeapModel) -> Any? {
+            guard let thing = model as? Temporality else {
+                return EventResponse.none
             }
+
+            // handle ignorance first...
+            if let _ = Ignorance.of(thing) {
+                return EventResponse.ignore
+            }
+
+
+            guard let me = thing.me else {
+                return EventResponse.none
+            }
+
+            // now handle normal engagement states...
             switch me.engagement {
             case .undecided, .none:
-                return InvitationResponse.none
+                return EventResponse.none
             case .engaged:
-                return InvitationResponse.yes
+                return EventResponse.yes
             case .disengaged:
-                return InvitationResponse.no
+                return EventResponse.no
             case .tracking:
-                return InvitationResponse.maybe
+                return EventResponse.maybe
             }
         }
-        func setInvitationResponse(model:LeapModel, value: Any?) {
+        func setEventResponse(model:LeapModel, value: Any?) {
             guard   let thing = model as? Temporality,
-                    let me = thing.me,
-                    let response = value as? InvitationResponse else {
+                    let response = value as? EventResponse else {
                 fatalError("OMG wrong type or something \(model)")
                 // could this happen just because you are no longer invited?
             }
 
+            // handle ignorance first
+            if response == .ignore {
+                Ignorance.ignore(thing)
+                return
+            } else {
+                Ignorance.unignore(thing)
+            }
+
+            if thing.me == nil {
+                // We need to add a participant if you don't have 
+
+                let personData: [String:Any?] = ["isMe": true]
+                let enforcedMe = Person(value: personData)
+
+                let participantData: [String: Any?] = ["person": enforcedMe]
+                let enforcedMeParticipation = Participant(value: participantData)
+
+                thing.participants.append(enforcedMeParticipation)
+            }
+
+            guard let me = thing.me else {
+                fatalError("me should be enforced")
+            }
+
+            // now handle other engagement settings
             switch response {
             case .none:
                 me.engagement = .undecided
@@ -242,15 +251,21 @@ class EventSurface: Surface, ModelLoadable {
                 me.engagement = .disengaged
             case .maybe:
                 me.engagement = .tracking
+            case .ignore:
+                fatalError("Should have returned earlier if ignore was set")
             }
         }
-        bridge.bind(surface.userInvitationResponse,
-                    populateWith: getInvitationResponse,
+        bridge.bind(surface.userResponse,
+                    populateWith: getEventResponse,
                     on: "event",
-                    persistWith: setInvitationResponse)
+                    persistWith: setEventResponse)
 
         surface.store = bridge
         bridge.populate(surface)
         return surface
     }
+}
+
+extension EventSurface: Hashable {
+    var hashValue: Int { return id.hashValue }
 }
