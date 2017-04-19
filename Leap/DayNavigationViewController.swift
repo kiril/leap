@@ -64,7 +64,7 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
                                                           direction: .forward,
                                                           animated: false, completion: nil)
 
-        updateTitleFor(vc: initialDayVC)
+        updateLabelsFor(vc: initialDayVC)
     }
 
     private func setupNavigation() {
@@ -92,6 +92,17 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
         hiddenEventsButton.layer.masksToBounds = true
         hiddenEventsButton.layer.borderColor = UIColor.projectPurple.cgColor
         hiddenEventsButton.layer.borderWidth = 0.5
+        hiddenEventsButton.addTarget(self,
+                                     action: #selector(toggleHideEvents),
+                                     for: .touchUpInside)
+
+    }
+
+    @objc func toggleHideEvents() {
+        guard let vc = daySchedulePageViewController.viewControllers?.first as? DayScheduleViewController else { return }
+
+        vc.surface.toggleHiddenEvents()
+        updateLabelsFor(vc: vc)
     }
 
     private func barButtonItemFor(navView view: UIView) -> UIBarButtonItem {
@@ -138,7 +149,7 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
         daySchedulePageViewController.setViewControllers([dayVC],
                                                          direction: direction,
                                                          animated: true)
-        updateTitleFor(vc: dayVC)
+        updateLabelsFor(vc: dayVC)
     }
 }
 
@@ -177,10 +188,10 @@ extension DayNavigationViewController: UIPageViewControllerDelegate {
                             didFinishAnimating finished: Bool,
                             previousViewControllers: [UIViewController],
                             transitionCompleted completed: Bool) {
-        updateTitleFor(vc: pageViewController.viewControllers?.first as! DayScheduleViewController)
+        updateLabelsFor(vc: pageViewController.viewControllers?.first as! DayScheduleViewController)
     }
 
-    fileprivate func updateTitleFor(vc: DayScheduleViewController) {
+    fileprivate func updateLabelsFor(vc: DayScheduleViewController) {
         titleView.titleLabel.text = vc.surface?.dateDescription
         titleView.subtitleLabel.text = vc.surface?.weekdayDescription
 

@@ -33,7 +33,7 @@ class DayScheduleViewController: UICollectionViewController, StoryboardLoadable 
         self.collectionView!.collectionViewLayout = layout
         self.collectionView!.contentInset = UIEdgeInsets(top:    15.0,
                                                          left:   15.0,
-                                                         bottom: 15.0,
+                                                         bottom: 75.0,
                                                          right:  15.0)
         self.collectionView!.alwaysBounceVertical = true
     }
