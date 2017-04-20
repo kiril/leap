@@ -41,7 +41,6 @@ class EventSurface: Surface, ModelLoadable {
     let startTime              = SurfaceDate()
     let endTime                = SurfaceDate()
     let timeRange              = ComputedSurfaceString<EventSurface>(by: EventSurface.eventTimeRange)
-    let userIgnored            = SurfaceBool()
     let userIsInvited          = SurfaceBool()
     let userResponse           = SurfaceProperty<EventResponse>()
     let needsResponse          = ComputedSurfaceBool<EventSurface>(by: EventSurface.computeNeedsResponse)
