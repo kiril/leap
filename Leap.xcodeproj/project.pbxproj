@@ -25,6 +25,9 @@
 		833617701E8C2C75009A97FF /* WeekNavigation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8336176F1E8C2C75009A97FF /* WeekNavigation.storyboard */; };
 		833617741E8C2C9B009A97FF /* WeekNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833617731E8C2C9B009A97FF /* WeekNavigationViewController.swift */; };
 		833617781E8C4756009A97FF /* StoryboardLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833617771E8C4756009A97FF /* StoryboardLoadable.swift */; };
+		834FBEB81EA86957004D9302 /* TimeRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834FBEB71EA86957004D9302 /* TimeRange.swift */; };
+		834FBEBA1EA86BD4004D9302 /* TimeRangeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834FBEB91EA86BD4004D9302 /* TimeRangeTests.swift */; };
+		834FBEBC1EA8882C004D9302 /* OpenTimeViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 834FBEBB1EA8882C004D9302 /* OpenTimeViewCell.xib */; };
 		8351BDC91E7C58FD001221AF /* OpenTimeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDC81E7C58FD001221AF /* OpenTimeViewModel.swift */; };
 		8351BDCD1E7C596C001221AF /* GregorianDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDCC1E7C596C001221AF /* GregorianDay.swift */; };
 		8351BDD11E807C4C001221AF /* WeekOverviewSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDD01E807C4C001221AF /* WeekOverviewSurface.swift */; };
@@ -168,6 +171,9 @@
 		8336176F1E8C2C75009A97FF /* WeekNavigation.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WeekNavigation.storyboard; sourceTree = "<group>"; };
 		833617731E8C2C9B009A97FF /* WeekNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekNavigationViewController.swift; sourceTree = "<group>"; };
 		833617771E8C4756009A97FF /* StoryboardLoadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardLoadable.swift; sourceTree = "<group>"; };
+		834FBEB71EA86957004D9302 /* TimeRange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeRange.swift; sourceTree = "<group>"; };
+		834FBEB91EA86BD4004D9302 /* TimeRangeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeRangeTests.swift; sourceTree = "<group>"; };
+		834FBEBB1EA8882C004D9302 /* OpenTimeViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OpenTimeViewCell.xib; sourceTree = "<group>"; };
 		8351BDC81E7C58FD001221AF /* OpenTimeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenTimeViewModel.swift; sourceTree = "<group>"; };
 		8351BDCC1E7C596C001221AF /* GregorianDay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GregorianDay.swift; sourceTree = "<group>"; };
 		8351BDD01E807C4C001221AF /* WeekOverviewSurface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekOverviewSurface.swift; sourceTree = "<group>"; };
@@ -339,6 +345,7 @@
 				831444C01E7AF77700A5EF06 /* DaySchedule.storyboard */,
 				831444C71E7B034A00A5EF06 /* EventViewCell.xib */,
 				831444C91E7B072600A5EF06 /* EventViewCell.swift */,
+				834FBEBB1EA8882C004D9302 /* OpenTimeViewCell.xib */,
 				831444C51E7B020700A5EF06 /* DayScheduleViewController.swift */,
 				831444CB1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift */,
 				835456191E8C09A100A03B34 /* DayScheduleTitleView.xib */,
@@ -416,6 +423,7 @@
 				FB39ADBA1E9407FF00B79A7B /* Int+Leap.swift */,
 				FB4503D21EA579F8001D9F51 /* SwiftyLRU.swift */,
 				FB3895771EA7C0DE000FC103 /* Thread+Leap.swift */,
+				834FBEB71EA86957004D9302 /* TimeRange.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -621,6 +629,7 @@
 			isa = PBXGroup;
 			children = (
 				83B5DBED1E91E4CC00A0CA7E /* GregorianDayTests.swift */,
+				834FBEB91EA86BD4004D9302 /* TimeRangeTests.swift */,
 				FBE0EFFB1DFBBB80007BD8DF /* LeapTests.swift */,
 				FBE0EFFD1DFBBB80007BD8DF /* Info.plist */,
 				FBD1045E1E80717E00DDF65B /* SurfaceTests.swift */,
@@ -770,6 +779,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				833617701E8C2C75009A97FF /* WeekNavigation.storyboard in Resources */,
+				834FBEBC1EA8882C004D9302 /* OpenTimeViewCell.xib in Resources */,
 				FBE4DEA31E6CB9F10062507B /* Auth0.plist in Resources */,
 				83D5B85F1E9441A600D5F1C6 /* WeekOverviewDayListingView.xib in Resources */,
 				831444C11E7AF77700A5EF06 /* DaySchedule.storyboard in Resources */,
@@ -1037,6 +1047,7 @@
 				FBE0EFE41DFBBB80007BD8DF /* AppDelegate.swift in Sources */,
 				83A72D771E82DF95005EB213 /* DayScheduleSurface.swift in Sources */,
 				8351BDCD1E7C596C001221AF /* GregorianDay.swift in Sources */,
+				834FBEB81EA86957004D9302 /* TimeRange.swift in Sources */,
 				8351BDC91E7C58FD001221AF /* OpenTimeViewModel.swift in Sources */,
 				FB0762DB1E142FBF0035EF8F /* ScheduleViewController.swift in Sources */,
 				FB3895781EA7C0DE000FC103 /* Thread+Leap.swift in Sources */,
@@ -1057,6 +1068,7 @@
 				83B5DB701E91D7F400A0CA7E /* (null) in Sources */,
 				FB8BB6231E89A76A00A30315 /* EventKitMigrationTests.swift in Sources */,
 				FBD1045F1E80717E00DDF65B /* SurfaceTests.swift in Sources */,
+				834FBEBA1EA86BD4004D9302 /* TimeRangeTests.swift in Sources */,
 				FB39ADB91E94067200B79A7B /* EventSurfaceTests.swift in Sources */,
 				FB268B6C1EA5332D006510A7 /* WrapperTest.swift in Sources */,
 				FB1869D41E9FF88A007642F4 /* RecurrenceTests.swift in Sources */,

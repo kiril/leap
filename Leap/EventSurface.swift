@@ -268,3 +268,10 @@ class EventSurface: Surface, ModelLoadable {
 extension EventSurface: Hashable {
     var hashValue: Int { return id.hashValue }
 }
+
+extension EventSurface {
+    var range: TimeRange? {
+        return TimeRange(start: startTime.value,
+                         end: endTime.value)
+    }
+}
