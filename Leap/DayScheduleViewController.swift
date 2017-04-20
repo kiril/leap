@@ -20,6 +20,10 @@ class DayScheduleViewController: UICollectionViewController, StoryboardLoadable 
         return Bundle.main.loadNibNamed("EventViewCell", owner: nil, options: nil)?.first as! EventViewCell
     }()
 
+    fileprivate lazy var prototypeOpenTimeEventCell: OpenTimeViewCell = {
+        return Bundle.main.loadNibNamed("OpenTimeViewCell", owner: nil, options: nil)?.first as! OpenTimeViewCell
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -61,17 +65,19 @@ class DayScheduleViewController: UICollectionViewController, StoryboardLoadable 
         case .event(let event):
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: eventReuseIdentifier, for: indexPath)
             (cell as! EventViewCell).configure(with: event)
-            self.configureCellWidth(cell as! EventViewCell)
 
-        case .openTime:
+        case .openTime(let openTime):
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: openTimeReuseIdentifier, for: indexPath)
+            (cell as! OpenTimeViewCell).configure(with: openTime)
         }
+
+        self.configureCellWidth(cell)
 
         return cell
     }
 
 
-    func configureCellWidth(_ cell: EventViewCell) {
+    func configureCellWidth(_ cell: UICollectionViewCell) {
         cell.contentView.widthAnchor.constraint(equalToConstant: targetCellWidth).isActive = true
     }
 
@@ -148,8 +154,11 @@ extension DayScheduleViewController: UICollectionViewDelegateFlowLayout {
             let size = prototypeEventCell.systemLayoutSizeFitting(targetSize)
             return size
 
-        case .openTime:
-            return CGSize(width: 0, height: 0)
+        case .openTime(let openTime):
+            configureCellWidth(prototypeOpenTimeEventCell)
+            prototypeOpenTimeEventCell.configure(with: openTime)
+            let size = prototypeOpenTimeEventCell.systemLayoutSizeFitting(targetSize)
+            return size
         }
     }
 }

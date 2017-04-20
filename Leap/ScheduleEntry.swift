@@ -51,16 +51,20 @@ enum ScheduleEntry: Comparable {
             switch rhs {
             case let .event(event2):
                 return event.startTime.value < event2.startTime.value
-            default:
-                return false
+            case let .openTime(openTime2):
+                guard let openStart = openTime2.startTime else { return false } // is this right?
+                return event.startTime.value < openStart
             }
 
         case let .openTime(time):
+            guard let openStart = time.startTime else { return true } // is this right?
+
             switch rhs {
+            case let .event(event2):
+                return openStart < event2.startTime.value
             case let .openTime(time2):
-                return time.startTime == time2.startTime
-            default:
-                return false
+                guard let open2Start = time2.startTime else { return false } // is this right?
+                return openStart < open2Start
             }
         }
     }

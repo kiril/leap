@@ -28,6 +28,7 @@
 		834FBEB81EA86957004D9302 /* TimeRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834FBEB71EA86957004D9302 /* TimeRange.swift */; };
 		834FBEBA1EA86BD4004D9302 /* TimeRangeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834FBEB91EA86BD4004D9302 /* TimeRangeTests.swift */; };
 		834FBEBC1EA8882C004D9302 /* OpenTimeViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 834FBEBB1EA8882C004D9302 /* OpenTimeViewCell.xib */; };
+		834FBEBE1EA8F335004D9302 /* OpenTimeViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834FBEBD1EA8F335004D9302 /* OpenTimeViewCell.swift */; };
 		8351BDC91E7C58FD001221AF /* OpenTimeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDC81E7C58FD001221AF /* OpenTimeViewModel.swift */; };
 		8351BDCD1E7C596C001221AF /* GregorianDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDCC1E7C596C001221AF /* GregorianDay.swift */; };
 		8351BDD11E807C4C001221AF /* WeekOverviewSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8351BDD01E807C4C001221AF /* WeekOverviewSurface.swift */; };
@@ -174,6 +175,7 @@
 		834FBEB71EA86957004D9302 /* TimeRange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeRange.swift; sourceTree = "<group>"; };
 		834FBEB91EA86BD4004D9302 /* TimeRangeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeRangeTests.swift; sourceTree = "<group>"; };
 		834FBEBB1EA8882C004D9302 /* OpenTimeViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OpenTimeViewCell.xib; sourceTree = "<group>"; };
+		834FBEBD1EA8F335004D9302 /* OpenTimeViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenTimeViewCell.swift; sourceTree = "<group>"; };
 		8351BDC81E7C58FD001221AF /* OpenTimeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenTimeViewModel.swift; sourceTree = "<group>"; };
 		8351BDCC1E7C596C001221AF /* GregorianDay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GregorianDay.swift; sourceTree = "<group>"; };
 		8351BDD01E807C4C001221AF /* WeekOverviewSurface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekOverviewSurface.swift; sourceTree = "<group>"; };
@@ -346,6 +348,7 @@
 				831444C71E7B034A00A5EF06 /* EventViewCell.xib */,
 				831444C91E7B072600A5EF06 /* EventViewCell.swift */,
 				834FBEBB1EA8882C004D9302 /* OpenTimeViewCell.xib */,
+				834FBEBD1EA8F335004D9302 /* OpenTimeViewCell.swift */,
 				831444C51E7B020700A5EF06 /* DayScheduleViewController.swift */,
 				831444CB1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift */,
 				835456191E8C09A100A03B34 /* DayScheduleTitleView.xib */,
@@ -1036,6 +1039,7 @@
 				FB2046A61E82E20100F130C8 /* EKEventStore+Realm.swift in Sources */,
 				83B6C6B31E92B850002DCDA2 /* UIPageViewController.swift in Sources */,
 				FB2046B41E82E7DD00F130C8 /* LeapModel.swift in Sources */,
+				834FBEBE1EA8F335004D9302 /* OpenTimeViewCell.swift in Sources */,
 				FB39ADA91E8C65AF00B79A7B /* Object+Leap.swift in Sources */,
 				FB166B571E8ABE1C00CB95EC /* RealmUtil.swift in Sources */,
 				FBD614561E7F38D4001F4050 /* Schema.swift in Sources */,

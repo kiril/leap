@@ -115,7 +115,8 @@ class DayScheduleSurface: Surface {
                          end: scheduleEnd)!
     }
 
-    private func scheduleEntriesForEvents(events: [EventSurface]) -> [ScheduleEntry] {
+    private func
+        scheduleEntriesForEvents(events: [EventSurface]) -> [ScheduleEntry] {
         var openTimeRanges = [normalScheduleRange]
 
         for event in events {
@@ -128,7 +129,9 @@ class DayScheduleSurface: Surface {
         }
 
         let openTimeEntries = openTimeRanges.map{ ScheduleEntry.from(openTimeStart: $0.start, end: $0.end) }
-        var theEntries = openTimeEntries + events.map { ScheduleEntry.from(event: $0) }
+        let eventEntries = events.map { ScheduleEntry.from(event: $0) }
+
+        var theEntries = openTimeEntries + eventEntries
 
         theEntries.sort()
 
