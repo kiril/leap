@@ -27,12 +27,12 @@ class DayScheduleSurface: Surface {
         return matches
     }
 
-    private var _entries: [ScheduleEntry] = []
-    private var _freshEntries: [ScheduleEntry]? = nil
-    private var _lastCachedEntries: TimeInterval = 0
-    private var _entryRefreshStarted: TimeInterval? = nil
+    private var _events: [EventSurface] = []
+    private var _freshEvents: [EventSurface]? = nil
+    private var _lastCachedEvents: TimeInterval = 0
+    private var _eventRefreshStarted: TimeInterval? = nil
 
-    private func refreshEntries(async: Bool = true) {
+    private func refreshEvents(async: Bool = true) {
         var events = self.events.value
         for seriesSurface in filteredSeries {
             if let eventSurface = seriesSurface.event(for: self.day.gregorianDay) {
@@ -40,68 +40,78 @@ class DayScheduleSurface: Surface {
             }
         }
 
-        let eventsSet = Set<EventSurface>(events)
-        var entries = Array(eventsSet).map { event in ScheduleEntry.from(event: event) }
+        events = Array(Set<EventSurface>(events))
 
-        entries.sort { $0 < $1 }
+        events.sort { $0.startTime.value < $1.startTime.value }
 
-        _freshEntries = entries
-        _lastCachedEntries = Date.timeIntervalSinceReferenceDate
+        _freshEvents = events
+        _lastCachedEvents = Date.timeIntervalSinceReferenceDate
 
         if async {
             DispatchQueue.main.async {
-                self._entries = self._freshEntries!
+                self._events = self._freshEvents!
                 self.notifyObserversOfChange()
             }
         } else {
-            _entries = _freshEntries!
-            _entryRefreshStarted = Date.timeIntervalSinceReferenceDate
+            _events = _freshEvents!
+            _eventRefreshStarted = Date.timeIntervalSinceReferenceDate
         }
     }
 
-    private func filterHiddenEventEntries(entries: [ScheduleEntry]) -> [ScheduleEntry] {
-        guard (!displayHiddenEvents) else { return entries }
-
-        return entries.filter() { (scheduleEntry) -> Bool in
-            switch scheduleEntry {
-            case .event(let event):
-                return eventAlwaysDisplaysInSchedule(event: event)
-            default:
-                return true
-            }
-
-        }
-    }
-
-    private func checkEntryFreshness(async: Bool = true) {
-        if let startTime = _entryRefreshStarted, Date.timeIntervalSinceReferenceDate - startTime < 500.0 {
+    private func checkEventFreshness(async: Bool = true) {
+        if let startTime = _eventRefreshStarted, Date.timeIntervalSinceReferenceDate - startTime < 500.0 {
             return
         }
 
-        if let updateTime = lastPersisted, _lastCachedEntries < updateTime {
-            _entryRefreshStarted = Date.timeIntervalSinceReferenceDate
+        if let updateTime = lastPersisted, _lastCachedEvents < updateTime {
+            _eventRefreshStarted = Date.timeIntervalSinceReferenceDate
             if async {
                 DispatchQueue.global(qos: .background).async {
                     usleep(100*1000) // sleep 100ms to de-bounce this function being called
-                    self.refreshEntries()
-                    self._entryRefreshStarted = nil
+                    self.refreshEvents()
+                    self._eventRefreshStarted = nil
                 }
             } else {
-                refreshEntries(async: false)
-                _entryRefreshStarted = nil
+                refreshEvents(async: false)
+                _eventRefreshStarted = nil
             }
         }
     }
 
     var entries: [ScheduleEntry] {
-        if _lastCachedEntries == 0 {
-            checkEntryFreshness(async: false)
+        if _lastCachedEvents == 0 {
+            checkEventFreshness(async: false)
         }
-        DispatchQueue.global(qos: .background).async { self.checkEntryFreshness() }
+        DispatchQueue.global(qos: .background).async { self.checkEventFreshness() }
 
+        let events = self.events(showingHidden: displayHiddenEvents)
         // also should add open time here:
 
-        return filterHiddenEventEntries(entries: _entries)
+        return events.map { ScheduleEntry.from(event: $0) }
+    }
+
+    private func events(showingHidden: Bool) -> [EventSurface] {
+        if showingHidden {
+            return _events
+        } else {
+            return _events.filter() { (event) -> Bool in
+                return eventAlwaysDisplaysInSchedule(event: event)
+            }
+        }
+    }
+
+    var hideableEventsCount: Int {
+        return _events.filter() { (event) -> Bool in
+            return eventIsHideable(event: event)
+        }.count
+    }
+
+    var hasHideableEvents: Bool {
+        return hideableEventsCount > 0
+    }
+
+    var enableHideableEventsButton: Bool {
+        return hasHideableEvents
     }
 
     var numberOfEntries: Int {
@@ -154,7 +164,8 @@ class DayScheduleSurface: Surface {
     }
 
     var textForHiddenButton: String {
-        return displayHiddenEvents ? "Hide Events" : "Show Hidden Events"
+        guard hasHideableEvents else { return "No Hidden Events" }
+        return displayHiddenEvents ? "Hide Events" : "Show \(hideableEventsCount) Hidden Event\(hideableEventsCount > 1 ? "s" : "")"
     }
 
     private func eventAlwaysDisplaysInSchedule(event: EventSurface) -> Bool {
