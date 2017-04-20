@@ -134,7 +134,7 @@ extension EKEvent {
             "modalityString": EventModality.inPerson.rawValue,
             "externalURL": self.url?.absoluteString,
             "wasDetached": self.isDetached,
-            "firmnessString": self.firmness,
+            "firmnessString": self.firmness.rawValue,
         ]
 
         return Event(value: data)
