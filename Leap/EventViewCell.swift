@@ -147,28 +147,26 @@ class EventViewCell: UICollectionViewCell {
             }
             applyActionButtonFormat(to: ignoreButton, bold: false)
 
-            if event.userIgnored.value {
+            switch event.userResponse.value {
+            case .yes:
+                applyActionButtonFormat(to: yesButton,
+                                        color: UIColor.white,
+                                        backgroundColor: UIColor.projectBlue)
+            case .no:
+                applyActionButtonFormat(to: noButton,
+                                        color: UIColor.white,
+                                        backgroundColor: UIColor.projectRed)
+            case .maybe:
+                applyActionButtonFormat(to: maybeButton,
+                                        color: UIColor.white,
+                                        backgroundColor: UIColor.projectPurple)
+            case .ignore:
                 applyActionButtonFormat(to: ignoreButton,
                                         color: UIColor.white,
                                         bold: false,
                                         backgroundColor: UIColor.projectDarkGray)
-            } else {
-                switch event.userResponse.value {
-                case .yes:
-                    applyActionButtonFormat(to: yesButton,
-                                            color: UIColor.white,
-                                            backgroundColor: UIColor.projectBlue)
-                case .no:
-                    applyActionButtonFormat(to: noButton,
-                                            color: UIColor.white,
-                                            backgroundColor: UIColor.projectRed)
-                case .maybe:
-                    applyActionButtonFormat(to: maybeButton,
-                                            color: UIColor.white,
-                                            backgroundColor: UIColor.projectPurple)
-                default:
-                    break
-                }
+            case .none:
+                break;
             }
         } else {
             applyActionButtonFormat(to: yesButton, color: UIColor.projectBlue)

@@ -85,9 +85,8 @@ class DayScheduleSurface: Surface {
         DispatchQueue.global(qos: .background).async { self.checkEventFreshness() }
 
         let events = self.events(showingHidden: displayHiddenEvents)
-        // also should add open time here:
 
-        return events.map { ScheduleEntry.from(event: $0) }
+        return scheduleEntriesForEvents(events: events)
     }
 
     private func events(showingHidden: Bool) -> [EventSurface] {
@@ -98,6 +97,45 @@ class DayScheduleSurface: Surface {
                 return eventAlwaysDisplaysInSchedule(event: event)
             }
         }
+    }
+
+    private var normalScheduleRange: TimeRange {
+        let scheduleStartHour = 9 // 9am
+        let scheduleEndHour = 22 // 10pm
+
+        let dayStart = Calendar.current.startOfDay(for: self.day.gregorianDay)
+        let scheduleStart = Calendar.current.date(byAdding: DateComponents(hour: scheduleStartHour),
+                                                  to: dayStart,
+                                                  wrappingComponents: false)!
+        let scheduleEnd = Calendar.current.date(byAdding: DateComponents(hour: scheduleEndHour),
+                                                to: dayStart,
+                                                wrappingComponents: false)!
+
+        return TimeRange(start: scheduleStart,
+                         end: scheduleEnd)!
+    }
+
+    private func
+        scheduleEntriesForEvents(events: [EventSurface]) -> [ScheduleEntry] {
+        var openTimeRanges = [normalScheduleRange]
+
+        for event in events {
+            guard let range = event.range else { continue }
+            openTimeRanges = openTimeRanges.timeRangesByExcluding(timeRange: range)
+        }
+
+        openTimeRanges = openTimeRanges.filter { (timeRange) -> Bool in
+            return timeRange.durationInSeconds >= (60 * 30) // only keep ranges > 30 minutes
+        }
+
+        let openTimeEntries = openTimeRanges.map{ ScheduleEntry.from(openTimeStart: $0.start, end: $0.end) }
+        let eventEntries = events.map { ScheduleEntry.from(event: $0) }
+
+        var theEntries = openTimeEntries + eventEntries
+
+        theEntries.sort()
+
+        return theEntries
     }
 
     var hideableEventsCount: Int {

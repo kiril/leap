@@ -10,13 +10,18 @@ import Foundation
 import UIKit
 import EventKit
 
-private let reuseIdentifier = "EventViewCell"
+private let eventReuseIdentifier = "EventViewCell"
+private let openTimeReuseIdentifier = "OpenTimeViewCell"
 
 class DayScheduleViewController: UICollectionViewController, StoryboardLoadable {
 
     var surface: DayScheduleSurface!
     fileprivate lazy var prototypeEventCell: EventViewCell = {
         return Bundle.main.loadNibNamed("EventViewCell", owner: nil, options: nil)?.first as! EventViewCell
+    }()
+
+    fileprivate lazy var prototypeOpenTimeEventCell: OpenTimeViewCell = {
+        return Bundle.main.loadNibNamed("OpenTimeViewCell", owner: nil, options: nil)?.first as! OpenTimeViewCell
     }()
 
     override func viewDidLoad() {
@@ -26,7 +31,8 @@ class DayScheduleViewController: UICollectionViewController, StoryboardLoadable 
     }
 
     private func setupCollectionView() {
-        self.collectionView!.register(UINib(nibName: "EventViewCell", bundle: nil), forCellWithReuseIdentifier: reuseIdentifier)
+        self.collectionView!.register(UINib(nibName: "EventViewCell", bundle: nil), forCellWithReuseIdentifier: eventReuseIdentifier)
+        self.collectionView!.register(UINib(nibName: "OpenTimeViewCell", bundle: nil), forCellWithReuseIdentifier: openTimeReuseIdentifier)
 
         let layout = CalendarViewFlowLayout()
 
@@ -49,8 +55,7 @@ class DayScheduleViewController: UICollectionViewController, StoryboardLoadable 
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! EventViewCell
-        self.configureCellWidth(cell)
+        var cell: UICollectionViewCell!
 
         // Configure the cell
 
@@ -58,19 +63,25 @@ class DayScheduleViewController: UICollectionViewController, StoryboardLoadable 
 
         switch entry {
         case .event(let event):
-            cell.configure(with: event)
-        case .openTime:
-            // for now, just hack in a new event view model since we don't have an open time view to display
-            self.configureCellWidth(cell)
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: eventReuseIdentifier, for: indexPath)
+            (cell as! EventViewCell).configure(with: event)
+
+        case .openTime(let openTime):
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: openTimeReuseIdentifier, for: indexPath)
+            (cell as! OpenTimeViewCell).configure(with: openTime)
         }
+
+        self.configureCellWidth(cell)
 
         return cell
     }
 
 
-    func configureCellWidth(_ cell: EventViewCell) {
+    func configureCellWidth(_ cell: UICollectionViewCell) {
         cell.contentView.widthAnchor.constraint(equalToConstant: targetCellWidth).isActive = true
     }
+
+
 
     fileprivate var targetCellWidth: CGFloat {
         return collectionView!.bounds.size.width - 30
@@ -143,8 +154,11 @@ extension DayScheduleViewController: UICollectionViewDelegateFlowLayout {
             let size = prototypeEventCell.systemLayoutSizeFitting(targetSize)
             return size
 
-        case .openTime:
-            return CGSize(width: 0, height: 0)
+        case .openTime(let openTime):
+            configureCellWidth(prototypeOpenTimeEventCell)
+            prototypeOpenTimeEventCell.configure(with: openTime)
+            let size = prototypeOpenTimeEventCell.systemLayoutSizeFitting(targetSize)
+            return size
         }
     }
 }

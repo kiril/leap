@@ -41,7 +41,6 @@ class EventSurface: Surface, ModelLoadable {
     let startTime              = SurfaceDate()
     let endTime                = SurfaceDate()
     let timeRange              = ComputedSurfaceString<EventSurface>(by: EventSurface.eventTimeRange)
-    let userIgnored            = SurfaceBool()
     let userIsInvited          = SurfaceBool()
     let userResponse           = SurfaceProperty<EventResponse>()
     let needsResponse          = ComputedSurfaceBool<EventSurface>(by: EventSurface.computeNeedsResponse)
@@ -275,4 +274,11 @@ class EventSurface: Surface, ModelLoadable {
 
 extension EventSurface: Hashable {
     var hashValue: Int { return id.hashValue }
+}
+
+extension EventSurface {
+    var range: TimeRange? {
+        return TimeRange(start: startTime.value,
+                         end: endTime.value)
+    }
 }

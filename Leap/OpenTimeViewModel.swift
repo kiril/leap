@@ -12,10 +12,6 @@ struct OpenTimeViewModel: Equatable {
     let startTime: Date?
     let endTime: Date?
 
-    var timeRange: String {
-        return "10 - 11pm"
-    }
-
     init(startTime: Date?, endTime: Date?) {
         self.startTime = startTime
         self.endTime = endTime
@@ -28,4 +24,30 @@ struct OpenTimeViewModel: Equatable {
     static func == (lhs: OpenTimeViewModel, rhs: OpenTimeViewModel) -> Bool {
         return lhs.startTime == rhs.startTime && lhs.endTime == rhs.endTime
     }
+
+    var timeRange: String {
+        let calendar = Calendar.current
+
+        guard let startTime = startTime else {
+            guard let endTime = endTime else { return "" }
+
+            let to = calendar.formatDisplayTime(from: endTime, needsAMPM: true)
+            return "Until \(to)"
+        }
+        guard let endTime = endTime else {
+            let from = calendar.formatDisplayTime(from: startTime, needsAMPM: true)
+            return "\(from) onwards"
+        }
+
+        let startHour = calendar.component(.hour, from: startTime)
+        let endHour = calendar.component(.hour, from: endTime)
+
+        let crossesNoon = startHour < 12 && endHour >= 12
+
+        let from = calendar.formatDisplayTime(from: startTime, needsAMPM: crossesNoon)
+        let to = calendar.formatDisplayTime(from: endTime, needsAMPM: true)
+
+        return "\(from)-\(to)"
+    }
+
 }
