@@ -50,6 +50,7 @@ class EventSurface: Surface, ModelLoadable {
     let percentElapsed         = ComputedSurfaceFloat<EventSurface>(by: EventSurface.computeElapsed)
     let invitationSummary      = ComputedSurfaceString<EventSurface>(by: EventSurface.formatInvitationSummary)
     let isRecurring            = SurfaceBool()
+    let origin                 = SurfaceProperty<Origin>()
 
     /**
      * Actually ignores on the underlying event, which should propagate back up.
@@ -139,6 +140,12 @@ class EventSurface: Surface, ModelLoadable {
         bridge.reference(event, as: "event")
 
         bridge.bind(surface.title)
+        bridge.readonlyBind(surface.origin) { (m) -> Any? in
+            if let e = m as? Event {
+                return e.origin
+            }
+            return Origin.unknown
+        }
         bridge.readonlyBind(surface.isRecurring, populateWith: { (m:LeapModel) in
             if let e = m as? Event {
                 return e.isRecurring

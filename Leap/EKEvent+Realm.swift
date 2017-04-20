@@ -29,7 +29,6 @@ extension EKEvent {
         let availability: EKEventAvailability = self.availability
 
         var organizerId: String? = nil
-
         if let organizer = self.organizer, let participant = organizer.asParticipant(availability: availability, ownership: Ownership.organizer) {
             if let person = participant.person {
                 organizerId = person.id
@@ -49,6 +48,23 @@ extension EKEvent {
                     event.reservations.append(reservation)
                 }
             }
+        }
+
+        if t.participants.count == 0 {
+            t.origin = .share
+
+        } else if let me = t.me {
+            if me.ownership == .organizer {
+                t.origin = .personal
+            } else {
+                t.origin = .invite
+            }
+
+        } else {
+            t.origin = .unknown
+        }
+
+        if availability == .tentative {
         }
 
         if let ekAlarms = self.alarms {
@@ -95,6 +111,15 @@ extension EKEvent {
         return id
     }
 
+    var firmness: Firmness {
+        switch availability {
+        case .tentative:
+            return .soft
+        default:
+            return .firm
+        }
+    }
+
     func asEvent() -> Event {
         let data: [String:Any?] = [
             "id": self.cleanId,
@@ -109,6 +134,7 @@ extension EKEvent {
             "modalityString": EventModality.inPerson.rawValue,
             "externalURL": self.url?.absoluteString,
             "wasDetached": self.isDetached,
+            "firmnessString": self.firmness,
         ]
 
         return Event(value: data)

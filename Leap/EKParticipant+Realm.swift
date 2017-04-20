@@ -55,7 +55,7 @@ extension EKParticipant {
             case .busy, .unavailable, .notSupported:
                 return Engagement.engaged
             case .tentative, .free:
-                return Engagement.tracking
+                return Engagement.engaged
             }
         case .declined:
             return Engagement.disengaged
@@ -68,8 +68,21 @@ extension EKParticipant {
 
     func asParticipant(availability: EKEventAvailability, ownership: Ownership) -> Participant? {
         let realm = Realm.user()
-        guard self.participantType == EKParticipantType.person else {
+        switch participantType {
+        case .person:
+            break
+
+        case .group:
+            break
+
+        case .resource:
             return nil
+
+        case .room:
+            return nil
+
+        case .unknown:
+            break
         }
 
         var person: Person?

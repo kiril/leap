@@ -24,6 +24,9 @@ class Phone: Object, ValueWrapper {
     dynamic var raw: String = ""
 }
 
+let fakeFirstName = "<First>"
+let fakeLastName = "<Last>"
+
 class Person: LeapModel {
     dynamic var givenName: String?
     dynamic var familyName: String?
@@ -40,14 +43,20 @@ class Person: LeapModel {
     let numbers = List<Phone>()
     let addresses = List<Address>()
 
-    var name: String { return "\(givenName!) \(familyName!)" }
+    var name: String { return "\(givenName ?? fakeFirstName) \(familyName ?? fakeLastName)" }
 
     func setNameComponents(from fullName: String?) {
         if let fullName = fullName {
-            let bits = fullName.components(separatedBy: " ")
-            if bits.count == 2 {
-                self.givenName = bits[0]
-                self.familyName = bits[1]
+            if fullName.contains("@") {
+                self.emails.append(Email(value: ["raw": fullName]))
+            } else {
+                let bits = fullName.components(separatedBy: " ")
+                if bits.count == 2 {
+                    self.givenName = bits[0]
+                    self.familyName = bits[1]
+                } else {
+                    self.givenName = bits[0]
+                }
             }
         }
     }

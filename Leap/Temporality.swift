@@ -10,12 +10,21 @@ import Foundation
 import RealmSwift
 
 
+enum Origin: String {
+    case invite
+    case share
+    case subscription
+    case personal
+    case unknown
+}
+
 
 protocol Temporality {
     var id: String { get }
     var title: String { get }
     var detail: String? { get }
     var externalId: String? { get }
+    var origin: Origin { get set }
 
     var date: Date? { get }
     var time: TimeInterval { get }
@@ -121,6 +130,7 @@ class _TemporalBase: LeapModel {
     dynamic var locationString: String? = nil
     dynamic var legacyTimeZone: TimeZone?
     dynamic var template: Template?
+    dynamic var originString: String = Origin.unknown.rawValue
 
     let seriesEventNumber = RealmOptional<Int>()
 
@@ -130,6 +140,11 @@ class _TemporalBase: LeapModel {
     let links = List<CalendarLink>()
 
     var isRecurring: Bool { return seriesId != nil }
+
+    var origin: Origin {
+        get { return Origin(rawValue: originString)! }
+        set { originString = newValue.rawValue }
+    }
 }
 
 
