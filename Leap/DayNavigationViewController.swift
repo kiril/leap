@@ -14,13 +14,11 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
 
     @IBOutlet weak var hiddenEventsButton: UIButton!
 
-    private lazy var daySchedulePageViewDataSource = DaySchedulePageViewDataSource()
-
+    fileprivate var currentlySelectedDayScheduleVC: DayScheduleViewController? {
+        return daySchedulePageViewController.viewControllers?.first as? DayScheduleViewController
+    }
     fileprivate var currentlySelectedDay: DaySurface? {
-        guard let day = daySchedulePageViewController.viewControllers?.first as? DayScheduleViewController else {
-            return nil
-        }
-        return day.surface.day
+        return currentlySelectedDayScheduleVC?.surface.day
     }
 
     var daySchedulePageViewController: UIPageViewController!
@@ -39,7 +37,7 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
                                                              navigationOrientation: .horizontal,
                                                              options: nil)
 
-        daySchedulePageViewController.dataSource = daySchedulePageViewDataSource
+        daySchedulePageViewController.dataSource = self
         daySchedulePageViewController.delegate = self
 
         addChildViewController(daySchedulePageViewController)
@@ -56,15 +54,21 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
         daySchedulePageViewController.view.translatesAutoresizingMaskIntoConstraints = false // HELPS
         daySchedulePageViewController.view.backgroundColor = UIColor.white
 
-        let initialDay = DayScheduleSurface.load(dayId: Calendar.current.today.id)
-        let initialDayVC = DayScheduleViewController.loadFromStoryboard()
-        initialDayVC.surface = initialDay
-        initialDay.register(observer: initialDayVC)
+        let initialDayVC = dayScheduleViewController(forDayId: Calendar.current.today.id)
         daySchedulePageViewController.setViewControllers([initialDayVC],
                                                           direction: .forward,
                                                           animated: false, completion: nil)
 
         updateLabelsFor(vc: initialDayVC)
+    }
+
+    fileprivate func dayScheduleViewController(forDayId dayId: Int) -> DayScheduleViewController {
+        let daySchedule = DayScheduleSurface.load(dayId: dayId)
+        let dayVC = DayScheduleViewController.loadFromStoryboard()
+        dayVC.surface = daySchedule
+        daySchedule.register(observer: dayVC)
+        daySchedule.register(observer: self)
+        return dayVC
     }
 
     private func setupNavigation() {
@@ -141,11 +145,8 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
 
         let direction: UIPageViewControllerNavigationDirection = (Int(dayId)! > currentId) ? .forward : .reverse
 
-        let dayVC = DayScheduleViewController.loadFromStoryboard()
-        let surface = DayScheduleSurface.load(dayId: dayId)
-        dayVC.surface = surface
-        surface.register(observer: dayVC)
 
+        let dayVC = dayScheduleViewController(forDayId: Int(dayId)!)
         daySchedulePageViewController.setViewControllers([dayVC],
                                                          direction: direction,
                                                          animated: true)
@@ -160,7 +161,7 @@ extension DayNavigationViewController: WeekNavigationViewControllerDelegate {
     }
 }
 
-class DaySchedulePageViewDataSource: NSObject, UIPageViewControllerDataSource {
+extension DayNavigationViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController,
                             viewControllerAfter viewController: UIViewController) -> UIViewController? {
         let indexVC = viewController as! DayScheduleViewController
@@ -174,12 +175,8 @@ class DaySchedulePageViewDataSource: NSObject, UIPageViewControllerDataSource {
     }
 
     private func viewControllerFor(surface: DaySurface) -> UIViewController? {
-        guard let id = surface.id else { return nil }
-        let vc = DayScheduleViewController.loadFromStoryboard()
-        let scheduleSurface = DayScheduleSurface.load(dayId: id)
-        vc.surface = scheduleSurface
-        scheduleSurface.register(observer: vc)
-        return vc
+        guard let id = Int(surface.id) else { return nil }
+        return dayScheduleViewController(forDayId: id)
     }
 }
 
@@ -209,6 +206,7 @@ extension DayNavigationViewController: UIPageViewControllerDelegate {
         titleView.setNeedsLayout()
 
         hiddenEventsButton.setTitle(vc.surface?.textForHiddenButton, for: .normal)
+        hiddenEventsButton.isEnabled = vc.surface.enableHideableEventsButton
     }
 }
 
@@ -216,5 +214,20 @@ extension DayNavigationViewController: SelectedTabTappable {
     func selectedTabWasTapped(on tabBarController: MainTabBarController) {
         navigateToDay(dayId: String(Calendar.current.today.id))
         dismiss(animated: true)
+    }
+}
+
+extension DayNavigationViewController: SourceIdentifiable {
+    var sourceId: String { return "DayNavigationViewController" }
+}
+
+
+extension DayNavigationViewController: SurfaceObserver {
+    func surfaceDidChange(_ surface: Surface) {
+        guard let   vc = currentlySelectedDayScheduleVC,
+                    vc.surface == surface else { return }
+
+        // update hidden events button if necessary
+        updateLabelsFor(vc: vc)
     }
 }
