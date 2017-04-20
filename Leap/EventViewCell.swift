@@ -20,6 +20,8 @@ class EventViewCell: UICollectionViewCell {
     @IBOutlet weak var ignoreButton: UIButton!
     @IBOutlet weak var remindButton: UIButton!
 
+    @IBOutlet weak var recurringIcon: UIImageView!
+
     var borderColor: UIColor = UIColor.black {
         didSet { updateBorderColor() }
     }
@@ -134,6 +136,7 @@ class EventViewCell: UICollectionViewCell {
         }
 
         invitationActionContainer.isHidden = event.isConfirmed.value
+        recurringIcon.isHidden = !event.isRecurring.value
 
         updateActionButtons(forEvent: event)
     }

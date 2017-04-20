@@ -27,12 +27,15 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Y9n-0L-JzR">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="18"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10:00pm-11:00pm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rSm-Ad-vKa">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="18"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="10am-12pm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rSm-Ad-vKa">
+                                                <rect key="frame" x="0.0" y="0.0" width="380" height="18"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="recurring_icon" translatesAutoresizingMaskIntoConstraints="NO" id="0bI-PL-a0q">
+                                                <rect key="frame" x="390" y="0.0" width="24" height="18"/>
+                                            </imageView>
                                         </subviews>
                                     </stackView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" verticalCompressionResistancePriority="752" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qnk-55-lVk">
@@ -107,6 +110,7 @@
                 <outlet property="invitationSummaryLabel" destination="vc8-Lw-op2" id="xfR-2P-198"/>
                 <outlet property="maybeButton" destination="zII-07-TYH" id="s84-Gp-aXB"/>
                 <outlet property="noButton" destination="OCC-lH-cVP" id="C0I-6Z-X1N"/>
+                <outlet property="recurringIcon" destination="0bI-PL-a0q" id="npu-eh-2UV"/>
                 <outlet property="remindButton" destination="pUw-eQ-tcj" id="IOO-gT-hgr"/>
                 <outlet property="timeLabel" destination="rSm-Ad-vKa" id="7Xd-vy-1Fo"/>
                 <outlet property="titleLabel" destination="Qnk-55-lVk" id="uce-Ya-ah4"/>
@@ -115,4 +119,7 @@
             <point key="canvasLocation" x="-281" y="-41.5"/>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="recurring_icon" width="24" height="18"/>
+    </resources>
 </document>
