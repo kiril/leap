@@ -18,6 +18,12 @@ enum EventModality: String {
     case chat     = "chat"
 }
 
+enum Firmness: String {
+    case firm
+    case soft
+    case unknown
+}
+
 /**
  * Here's our core!
  */
@@ -27,6 +33,7 @@ class Event: _TemporalBase, Temporality {
     dynamic var modalityString: String = EventModality.unknown.rawValue
     dynamic var organizer: Person? = nil
     dynamic var agenda: Checklist? = nil
+    dynamic var firmnessString: String = Firmness.firm.rawValue
 
     let channels = List<Channel>()
     let venues = List<Venue>()
@@ -35,6 +42,11 @@ class Event: _TemporalBase, Temporality {
     var modality: EventModality {
         get { return EventModality(rawValue: modalityString)! }
         set { modalityString = newValue.rawValue }
+    }
+
+    var firmness: Firmness {
+        get { return Firmness(rawValue: firmnessString)! }
+        set { firmnessString = newValue.rawValue }
     }
 
     var date: Date? { return Date(timeIntervalSinceReferenceDate: Double(startTime)) }

@@ -55,7 +55,7 @@ extension EKParticipant {
             case .busy, .unavailable, .notSupported:
                 return Engagement.engaged
             case .tentative, .free:
-                return Engagement.tracking
+                return Engagement.engaged
             }
         case .declined:
             return Engagement.disengaged
