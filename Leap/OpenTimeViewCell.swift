@@ -33,5 +33,7 @@ class OpenTimeViewCell: UICollectionViewCell {
 
         self.contentView.translatesAutoresizingMaskIntoConstraints = false
         self.translatesAutoresizingMaskIntoConstraints = false
+
+        titleLabel.textColor = UIColor.projectDarkGray
     }
 }
