@@ -30,11 +30,20 @@ extension EKEvent {
 
         var organizerId: String? = nil
 
+        print("-----------------------------------")
+        print(t.title)
+        print("-----------------------------------")
+        var hasOrganizer = false
         if let organizer = self.organizer, let participant = organizer.asParticipant(availability: availability, ownership: Ownership.organizer) {
+            print(" + Organizer Participant: \(participant.person!.name) \(participant.person!.isMe)")
+            hasOrganizer = true
             if let person = participant.person {
                 organizerId = person.id
             }
             t.participants.append(participant)
+        } else if self.organizer != nil {
+            print(" + Organizer : \(String(describing: organizer!.name)) \(organizer!.isCurrentUser)")
+            print(" - Organizing Participant")
         }
 
         if let attendees = self.attendees {
@@ -49,6 +58,27 @@ extension EKEvent {
                     event.reservations.append(reservation)
                 }
             }
+        }
+
+        if t.participants.count > (hasOrganizer ? 1 : 0) {
+            print(" + Participants : \(t.participants.count)")
+            for participant in t.participants {
+                print("     \(participant.person!.name) - \(String(describing:participant.ownership))")
+            }
+        }
+
+        if t.participants.count == 0 {
+            t.origin = .share
+
+        } else if let me = t.me {
+            if me.ownership == .organizer {
+                t.origin = .personal
+            } else {
+                t.origin = .invite
+            }
+
+        } else {
+            t.origin = .unknown
         }
 
         if let ekAlarms = self.alarms {

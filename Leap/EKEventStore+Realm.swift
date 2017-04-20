@@ -21,6 +21,11 @@ func syncEventSearchCallback(for calendar: LegacyCalendar) -> EKEventSearchCallb
         try! realm.write {
             switch temporality {
             case var event as Event:
+                if event.participants.count == 0 {
+                    print(" = = = = = = =")
+                    print("\(event.title) in \(calendar.title)")
+                    print(" = = = = = = =")
+                }
                 let existing = Event.by(id: event.id)
 
                 if let existing = existing {
