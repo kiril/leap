@@ -47,7 +47,9 @@ extension EKParticipant {
 
     func getEngagement(availability: EKEventAvailability) -> Engagement {
         switch self.participantStatus {
-        case .unknown, .pending:
+        case .unknown:
+            return Engagement.undecided
+        case .pending:
             return Engagement.undecided
         case .accepted, .completed, .inProcess:
             // in our world, an event is an event, so if it's not really an event, fuck it

@@ -95,4 +95,8 @@ class Participant: LeapModel {
         get { return Ownership(rawValue: ownershipString)! }
         set { ownershipString = newValue.rawValue }
     }
+
+    var isMe: Bool {
+        return person?.isMe ?? false
+    }
 }

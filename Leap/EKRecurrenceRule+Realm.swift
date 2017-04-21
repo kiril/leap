@@ -72,6 +72,9 @@ extension EKRecurrenceRule {
                                    "title": tm.title,
                                    "startTime": Int(tm.time),
                                    "typeString": SeriesType.of(tm).rawValue,
+                                   "participants": tm.participants,
+                                   "alarms": tm.alarms,
+                                   "links": tm.links,
                                    "endTime": recurrenceEnd?.endDate?.secondsSinceReferenceDate ?? 0]
         let series = Series(value: data)
 

@@ -60,9 +60,11 @@ class Template: LeapModel {
                                    "modalityString": modalityString,
                                    "startTime": startDate.secondsSinceReferenceDate,
                                    "seriesId": seriesId,
+                                   "participants": series.participants,
+                                   "alarms": series.alarms,
                                    "endTime": endDate.secondsSinceReferenceDate]
         let event = Event(value: data)
-        try! Realm.user().write {
+        try! Realm.user().write { // TODO: - store in memory eventually?
             Realm.user().add(event, update: true)
         }
         return event
