@@ -33,6 +33,7 @@ class Event: _TemporalBase, Temporality {
     dynamic var modalityString: String = EventModality.unknown.rawValue
     dynamic var agenda: Checklist? = nil
     dynamic var firmnessString: String = Firmness.firm.rawValue
+    dynamic var isTentative: Bool = false
 
     let channels = List<Channel>()
     let venues = List<Venue>()
