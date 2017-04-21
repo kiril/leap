@@ -20,7 +20,7 @@ class EventViewCell: UICollectionViewCell {
     @IBOutlet weak var ignoreButton: UIButton!
     @IBOutlet weak var remindButton: UIButton!
 
-    @IBOutlet weak var recurringIcon: UIImageView!
+    @IBOutlet weak var recurringIcon: UILabel!
 
     var borderColor: UIColor = UIColor.black {
         didSet { updateBorderColor() }
