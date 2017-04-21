@@ -149,8 +149,9 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
         let dayVC = dayScheduleViewController(forDayId: Int(dayId)!)
         daySchedulePageViewController.setViewControllers([dayVC],
                                                          direction: direction,
-                                                         animated: true)
-        updateLabelsFor(vc: dayVC)
+                                                         animated: true) {[weak self] _ in
+            self?.updateLabelsFor(vc: dayVC)
+        }
     }
 }
 
