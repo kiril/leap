@@ -91,8 +91,9 @@ func syncEventSearchCallback(for calendar: LegacyCalendar) -> EKEventSearchCallb
                     event.origin = .personal
                     if event.participants.isEmpty {
                         let me = Person.me() ?? Person(value: ["isMe": true])
+                        let engagement:Engagement = event.isTentative ? .tracking : .engaged
                         let participant = Participant(value: ["person": me,
-                                                              "engagementString": Engagement.engaged.rawValue,
+                                                              "engagementString": engagement.rawValue,
                                                               "ownershipString": Ownership.organizer.rawValue,
                                                               "importanceString": ParticipationImportance.critical.rawValue])
                         event.participants.append(participant)
