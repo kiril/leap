@@ -27,7 +27,11 @@ class DayScheduleSurface: Surface {
         return matches
     }
 
-    private var _events: [EventSurface] = []
+    private var _events: [EventSurface] = [] {
+        didSet { _didLoadInitialEvents = true }
+    }
+    private var _didLoadInitialEvents = false
+
     private var _freshEvents: [EventSurface]? = nil
     private var _lastCachedEvents: TimeInterval = 0
     private var _eventRefreshStarted: TimeInterval? = nil
@@ -80,6 +84,8 @@ class DayScheduleSurface: Surface {
     }
 
     var entries: [ScheduleEntry] {
+        guard _didLoadInitialEvents else { return [ScheduleEntry]() }
+        
         DispatchQueue.global(qos: .background).async { self.checkEventFreshness() }
 
         let events = self.events(showingHidden: displayHiddenEvents)
