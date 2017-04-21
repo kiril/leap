@@ -47,7 +47,7 @@ class EventSurface: Surface, ModelLoadable {
     let isConfirmed            = ComputedSurfaceBool<EventSurface>(by: EventSurface.computeIsConfirmed)
     let perspective            = ComputedSurfaceProperty<TimePerspective,EventSurface>(by: TimePerspective.compute)
     let percentElapsed         = ComputedSurfaceFloat<EventSurface>(by: EventSurface.computeElapsed)
-    let invitationSummary      = ComputedSurfaceString<EventSurface>(by: EventSurface.formatInvitationSummary)
+    let invitationSummary      = SurfaceString()
     let isRecurring            = SurfaceBool()
     let origin                 = SurfaceProperty<Origin>()
 
@@ -187,6 +187,50 @@ class EventSurface: Surface, ModelLoadable {
                 return false
             }
             return me.ownership == .invitee
+        }
+
+        bridge.readonlyBind(surface.invitationSummary) { (model:LeapModel) -> String? in
+            let someone = "Someone"
+            let someCalendar = "Shared Calendar"
+            if let event = model as? Event {
+                switch event.origin {
+                case .share:
+                    if let link = event.links.first, let organizer = event.organizer {
+                        return "\(organizer.name) -> \(link.calendar!.title)"
+                    } else if let organizer = event.organizer {
+                        return "from \(organizer.name)"
+                    } else if let link = event.links.first {
+                        return "via \(link.calendar?.title ?? someCalendar)"
+                    }
+
+                case .invite:
+                    let from = event.organizer?.name ?? someone
+                    var to = ""
+
+                    for participant in event.invitees {
+                        let name = participant.isMe ? "Me" : participant.name
+                        if !to.characters.isEmpty {
+                            to += ", "
+                        }
+                        to += name
+                    }
+                    if to.characters.isEmpty {
+                        to = "Unknown Invitees"
+                    }
+
+                    return "\(from) -> \(to)"
+
+                case .subscription:
+                    return "via \(event.links.first?.calendar!.title ?? someCalendar)"
+
+                case .personal:
+                    return nil
+
+                case .unknown:
+                    return nil
+                }
+            }
+            return nil
         }
 
         func getEventResponse(model:LeapModel) -> Any? {

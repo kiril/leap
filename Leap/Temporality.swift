@@ -67,6 +67,26 @@ extension Temporality {
         return nil
     }
 
+    var organizer: Participant? {
+        for participant in participants {
+            if participant.ownership == .organizer {
+                return participant
+            }
+        }
+
+        return nil
+    }
+
+    var invitees: [Participant] {
+        var them: [Participant] = []
+        for participant in participants {
+            if participant.person != nil && participant.ownership != .organizer {
+                them.append(participant)
+            }
+        }
+        return them
+    }
+
     func linkTo(calendar: LegacyCalendar, itemId: String, externalItemId: String?) {
         for link in links {
             if link.calendar == calendar {
