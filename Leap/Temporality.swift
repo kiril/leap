@@ -8,6 +8,7 @@
 
 import Foundation
 import RealmSwift
+import EventKit
 
 
 enum Origin: String {
@@ -49,7 +50,7 @@ protocol Temporality {
     var seriesEventNumber: RealmOptional<Int> { get }
     var template: Template? { get set }
 
-    func isUpdatedVersionOf(_ other: Temporality) -> Bool
+    func isBetterVersionOf(_ other: Temporality) -> Bool
     func isDuplicateOfExisting() -> Bool
 
     var status: ObjectStatus { get set }
@@ -86,7 +87,7 @@ extension Temporality {
         links.append(newLink)
     }
 
-    func isUpdatedVersionOf(_ old: Temporality) -> Bool {
+    func isBetterVersionOf(_ old: Temporality) -> Bool {
 
         // for recurring events, we want the earliest instance
         if old.isRecurring, !wasDetached {
@@ -136,7 +137,6 @@ class _TemporalBase: LeapModel {
 
     let alarms = List<Alarm>()
     let participants = List<Participant>()
-    let sourceCalendars = List<LegacyCalendar>()
     let links = List<CalendarLink>()
 
     var isRecurring: Bool { return seriesId != nil }
@@ -144,6 +144,25 @@ class _TemporalBase: LeapModel {
     var origin: Origin {
         get { return Origin(rawValue: originString)! }
         set { originString = newValue.rawValue }
+    }
+}
+
+
+extension Temporality {
+
+    func finagleParticipantStatus(availability: EKEventAvailability = .busy) {
+        if participants.count == 1 && participants[0].isMe {
+            switch availability {
+            case .busy, .unavailable, .notSupported:
+                participants[0].engagement = .engaged
+            default:
+                participants[0].engagement = .tracking
+            }
+        }
+
+        if let me = self.me, me.ownership == .organizer && me.engagement == .undecided {
+            me.engagement = .engaged // fuck me, Google, you suck via EventKit, ok?
+        }
     }
 }
 

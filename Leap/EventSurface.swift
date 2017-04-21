@@ -199,7 +199,6 @@ class EventSurface: Surface, ModelLoadable {
                 return EventResponse.ignore
             }
 
-
             guard let me = thing.me else {
                 return EventResponse.none
             }

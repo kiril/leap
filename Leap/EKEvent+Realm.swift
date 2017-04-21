@@ -36,6 +36,10 @@ extension EKEvent {
             t.participants.append(participant)
         }
 
+        if t.title.contains("Services") {
+            print("HERE")
+        }
+
         if let attendees = self.attendees {
             for attendee in attendees {
                 if let participant = attendee.asParticipant(availability: availability, ownership: Ownership.invitee), let person = participant.person, person.id != organizerId {
@@ -64,8 +68,7 @@ extension EKEvent {
             t.origin = .unknown
         }
 
-        if availability == .tentative {
-        }
+        t.finagleParticipantStatus(availability: availability)
 
         if let ekAlarms = self.alarms {
             for alarm in ekAlarms {
@@ -113,7 +116,7 @@ extension EKEvent {
 
     var firmness: Firmness {
         switch availability {
-        case .tentative:
+        case .tentative, .free:
             return .soft
         default:
             return .firm

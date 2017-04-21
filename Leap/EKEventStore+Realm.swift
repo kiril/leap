@@ -25,14 +25,40 @@ func syncEventSearchCallback(for calendar: LegacyCalendar) -> EKEventSearchCallb
 
                 if let existing = existing {
 
-                    if event.isUpdatedVersionOf(existing) {
-                        // keep any calendar links we might have
+                    if event.isBetterVersionOf(existing) {
+                        // keep any calendar links we might have, but overwrite with this
                         for link in existing.links {
                             event.linkTo(link: link)
                         }
+                        if existing.isRecurring && !event.isRecurring {
+                            event.seriesId = existing.seriesId
+                            event.status = .archived
+                        }
+                        if let oldMe = existing.me, let newMe = event.me {
+                            if oldMe.engagement == .engaged && newMe.engagement == .undecided {
+                                newMe.engagement = .engaged // horrible hack
+                            }
+                        } else if !existing.participants.isEmpty && event.participants.isEmpty {
+                            event.participants.append(objectsIn: existing.participants) // horrible hack
+                            event.finagleParticipantStatus()
+                        }
                         // TODO: actually figure out change sets
                     } else {
-                        event = existing
+                        if event.isRecurring && !existing.isRecurring {
+                            existing.seriesId = event.seriesId
+                            existing.status = .archived
+                        }
+                        if !existing.wasDetached && !event.wasDetached {
+                            if let oldMe = existing.me, let newMe = event.me {
+                                if newMe.engagement == .engaged && oldMe.engagement == .undecided {
+                                    oldMe.engagement = .engaged // horrible hack
+                                }
+                            } else if !event.participants.isEmpty && existing.participants.isEmpty {
+                                existing.participants.append(objectsIn: event.participants) // horrible hack
+                                existing.finagleParticipantStatus()
+                            }
+                            event = existing
+                        }
                     }
                 } else if event.isDuplicateOfExisting() {
                     // TODO: should I record this somehow? is it a calendar thing?
@@ -45,14 +71,14 @@ func syncEventSearchCallback(for calendar: LegacyCalendar) -> EKEventSearchCallb
                              externalItemId: ekEvent.calendarItemExternalIdentifier)
 
                 if existing == nil {
-                    print(" + \(event.title) via \(calendar.title)")
+                    print(" + \(event.title) via \(calendar.title) [\(event.statusString)]")
                 }
                 realm.add(event, update: true)
 
             case var reminder as Reminder:
                 let existing = Reminder.by(id: reminder.id)
                 if let existing = existing {
-                    if reminder.isUpdatedVersionOf(existing) {
+                    if reminder.isBetterVersionOf(existing) {
                         for link in existing.links {
                             reminder.linkTo(link: link)
                         }

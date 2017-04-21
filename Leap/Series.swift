@@ -34,6 +34,10 @@ class Series: LeapModel {
     dynamic var endTime: Int = 0
     dynamic var typeString: String = SeriesType.event.rawValue
     dynamic var lastRecurrenceDay: Date?
+    
+    let participants = List<Participant>()
+    let alarms = List<Alarm>()
+    let links = List<CalendarLink>()
 
     static func by(id: String) -> Series? {
         return fetch(id: id)
@@ -199,7 +203,6 @@ class Series: LeapModel {
         }
         return false
     }
-
 
     func event(between start: Date, and end: Date) -> Event? {
         guard self.type == .event else {
