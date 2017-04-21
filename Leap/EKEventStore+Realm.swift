@@ -87,6 +87,17 @@ func syncEventSearchCallback(for calendar: LegacyCalendar) -> EKEventSearchCallb
                 event.linkTo(calendar: calendar,
                              itemId: ekEvent.calendarItemIdentifier,
                              externalItemId: ekEvent.calendarItemExternalIdentifier)
+                if calendar.relationship == .owner && event.origin == .share {
+                    event.origin = .personal
+                    if event.participants.isEmpty {
+                        let me = Person.me() ?? Person(value: ["isMe": true])
+                        let participant = Participant(value: ["person": me,
+                                                              "engagementString": Engagement.engaged.rawValue,
+                                                              "ownershipString": Ownership.organizer.rawValue,
+                                                              "importanceString": ParticipationImportance.critical.rawValue])
+                        event.participants.append(participant)
+                    }
+                }
 
                 if let seriesId = event.seriesId, let series = Series.by(id: seriesId) {
                     for link in event.links {
