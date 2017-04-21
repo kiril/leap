@@ -196,19 +196,20 @@ class EventSurface: Surface, ModelLoadable {
                 switch event.origin {
                 case .share:
                     if let link = event.links.first, let organizer = event.organizer {
-                        return "\(organizer.name) -> \(link.calendar!.title)"
+                        return "\(organizer.nameOrEmail) -> \(link.calendar!.title)"
                     } else if let organizer = event.organizer {
-                        return "from \(organizer.name)"
+                        return "from \(organizer.nameOrEmail)"
                     } else if let link = event.links.first {
                         return "via \(link.calendar?.title ?? someCalendar)"
                     }
+                    return "via Shared Calendar"
 
                 case .invite:
                     let from = event.organizer?.name ?? someone
                     var to = ""
 
                     for participant in event.invitees {
-                        let name = participant.isMe ? "Me" : participant.name
+                        let name = participant.isMe ? "Me" : participant.nameOrEmail
                         if !to.characters.isEmpty {
                             to += ", "
                         }
@@ -229,8 +230,9 @@ class EventSurface: Surface, ModelLoadable {
                 case .unknown:
                     return nil
                 }
+            } else {
+                return "Not an Event"
             }
-            return nil
         }
 
         func getEventResponse(model:LeapModel) -> Any? {

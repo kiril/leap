@@ -54,7 +54,7 @@ extension EKEvent {
             }
         }
 
-        if t.participants.count == 0 {
+        if t.participants.isEmpty {
             t.origin = .share
 
         } else if let me = t.me {
@@ -88,6 +88,13 @@ extension EKEvent {
                     Realm.user().add(series!, update: true)
                 }
             } else {
+                for link in t.links {
+                    if !series!.links.contains(link) {
+                        try! Realm.user().safeWrite {
+                            series!.links.append(link)
+                        }
+                    }
+                }
                 if Int(t.time) < series!.startTime {
                     try! Realm.user().safeWrite {
                         series!.startTime = Int(t.time)

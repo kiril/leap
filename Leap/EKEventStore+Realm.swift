@@ -21,14 +21,23 @@ func syncEventSearchCallback(for calendar: LegacyCalendar) -> EKEventSearchCallb
         try! realm.write {
             switch temporality {
             case var event as Event:
-                let existing = Event.by(id: event.id)
+                var existing = Event.by(id: event.id)
+                if let e = existing, e === event {
+                    existing = nil
+                }
 
                 if let existing = existing {
 
                     if event.isBetterVersionOf(existing) {
                         // keep any calendar links we might have, but overwrite with this
+                        let series = event.seriesId != nil ? Series.by(id: event.seriesId!) : nil
                         for link in existing.links {
                             event.linkTo(link: link)
+                            if let series = series, !series.links.contains(link) {
+                                try! Realm.user().safeWrite {
+                                    series.links.append(link)
+                                }
+                            }
                         }
                         if existing.isRecurring && !event.isRecurring {
                             event.seriesId = existing.seriesId
@@ -44,6 +53,15 @@ func syncEventSearchCallback(for calendar: LegacyCalendar) -> EKEventSearchCallb
                         }
                         // TODO: actually figure out change sets
                     } else {
+                        let series = existing.seriesId != nil ? Series.by(id: existing.seriesId!) : nil
+
+                        for link in event.links {
+                            if let series = series, !series.links.contains(link) {
+                                try! Realm.user().safeWrite {
+                                    series.links.append(link)
+                                }
+                            }
+                        }
                         if event.isRecurring && !existing.isRecurring {
                             existing.seriesId = event.seriesId
                             existing.status = .archived
@@ -69,6 +87,14 @@ func syncEventSearchCallback(for calendar: LegacyCalendar) -> EKEventSearchCallb
                 event.linkTo(calendar: calendar,
                              itemId: ekEvent.calendarItemIdentifier,
                              externalItemId: ekEvent.calendarItemExternalIdentifier)
+
+                if let seriesId = event.seriesId, let series = Series.by(id: seriesId) {
+                    for link in event.links {
+                        if !series.links.contains(link) {
+                            series.links.append(link)
+                        }
+                    }
+                }
 
                 if existing == nil {
                     print(" + \(event.title) via \(calendar.title) [\(event.statusString)]")

@@ -103,4 +103,8 @@ class Participant: LeapModel {
     var name: String {
         return person?.name ?? "Unknown"
     }
+
+    var nameOrEmail: String {
+        return person?.name ?? person?.emails.first?.raw ?? "Unknown"
+    }
 }

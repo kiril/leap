@@ -34,6 +34,7 @@ class Series: LeapModel {
     dynamic var endTime: Int = 0
     dynamic var typeString: String = SeriesType.event.rawValue
     dynamic var lastRecurrenceDay: Date?
+    dynamic var originString: String = Origin.unknown.rawValue
     
     let participants = List<Participant>()
     let alarms = List<Alarm>()
