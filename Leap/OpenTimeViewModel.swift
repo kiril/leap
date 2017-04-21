@@ -11,14 +11,16 @@ import Foundation
 struct OpenTimeViewModel: Equatable {
     let startTime: Date?
     let endTime: Date?
+    var occurenceIndex: Int
 
-    init(startTime: Date?, endTime: Date?) {
+    init(startTime: Date?, endTime: Date?, occurenceIndex: Int) {
         self.startTime = startTime
         self.endTime = endTime
+        self.occurenceIndex = occurenceIndex
     }
 
     init() {
-        self.init(startTime: nil, endTime: nil)
+        self.init(startTime: nil, endTime: nil, occurenceIndex: 0)
     }
 
     static func == (lhs: OpenTimeViewModel, rhs: OpenTimeViewModel) -> Bool {

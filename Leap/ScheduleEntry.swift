@@ -22,8 +22,8 @@ enum ScheduleEntry: Comparable {
         return .event(entry: event)
     }
 
-    static func from(openTimeStart start: Date?, end: Date?) -> ScheduleEntry {
-        let openTime = OpenTimeViewModel(startTime: start, endTime: end)
+    static func from(openTimeStart start: Date?, end: Date?, occurenceIndex: Int) -> ScheduleEntry {
+        let openTime = OpenTimeViewModel(startTime: start, endTime: end, occurenceIndex: occurenceIndex)
         return .openTime(entry: openTime)
     }
 
@@ -84,7 +84,9 @@ class ScheduleEntryWrapper: IGListDiffable {
         case .event(entry: let event):
             return NSNumber(value: event.id.hash)
         case .openTime(entry: let openTime):
-            return NSNumber(value: openTime.timeRange.hash)
+            let result = "opentime-\(openTime.occurenceIndex)"
+            print(result)
+            return NSNumber(value: result.hash)
         }
     }
 

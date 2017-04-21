@@ -135,7 +135,14 @@ class DayScheduleSurface: Surface {
             return timeRange.durationInSeconds >= (60 * 30) // only keep ranges > 30 minutes
         }
 
-        let openTimeEntries = openTimeRanges.map{ ScheduleEntry.from(openTimeStart: $0.start, end: $0.end) }
+        var openTimeEntries = [ScheduleEntry]()
+        for (index, range) in openTimeRanges.enumerated() {
+            let entry = ScheduleEntry.from(openTimeStart: range.start,
+                                           end: range.end,
+                                           occurenceIndex: index)
+            openTimeEntries.append(entry)
+        }
+
         let eventEntries = events.map { ScheduleEntry.from(event: $0) }
 
         var theEntries = openTimeEntries + eventEntries
