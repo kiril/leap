@@ -59,6 +59,8 @@ class EventViewCell: UICollectionViewCell {
 
     private func updateFonts() {
         invitationSummaryLabel.textColor = UIColor.projectLightGray
+        recurringIcon.textColor = UIColor.projectLightGray
+        
         titleLabel.textColor = UIColor.projectDarkGray
         timeLabel.textColor = UIColor.projectDarkGray
     }
