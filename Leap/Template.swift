@@ -62,6 +62,8 @@ class Template: LeapModel {
                                    "seriesId": seriesId,
                                    "participants": series.participants,
                                    "alarms": series.alarms,
+                                   "links": series.links,
+                                   "originString": series.originString,
                                    "endTime": endDate.secondsSinceReferenceDate]
         let event = Event(value: data)
         try! Realm.user().write { // TODO: - store in memory eventually?

@@ -67,6 +67,26 @@ extension Temporality {
         return nil
     }
 
+    var organizer: Participant? {
+        for participant in participants {
+            if participant.ownership == .organizer {
+                return participant
+            }
+        }
+
+        return nil
+    }
+
+    var invitees: [Participant] {
+        var them: [Participant] = []
+        for participant in participants {
+            if participant.person != nil && participant.ownership != .organizer {
+                them.append(participant)
+            }
+        }
+        return them
+    }
+
     func linkTo(calendar: LegacyCalendar, itemId: String, externalItemId: String?) {
         for link in links {
             if link.calendar == calendar {
@@ -171,4 +191,13 @@ class CalendarLink: Object {
     dynamic var calendar: LegacyCalendar?
     dynamic var itemId: String = ""
     dynamic var externalItemId: String?
+
+    override func isEqual(_ object: Any?) -> Bool {
+        if let rhs = object as? CalendarLink {
+            let lhs = self
+            return lhs.calendar == rhs.calendar && lhs.itemId == rhs.itemId && lhs.externalItemId == rhs.externalItemId
+        }
+        return false
+    }
+
 }

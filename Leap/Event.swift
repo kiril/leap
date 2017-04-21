@@ -31,7 +31,6 @@ class Event: _TemporalBase, Temporality {
     dynamic var startTime: Int = 0
     dynamic var endTime: Int = 0
     dynamic var modalityString: String = EventModality.unknown.rawValue
-    dynamic var organizer: Person? = nil
     dynamic var agenda: Checklist? = nil
     dynamic var firmnessString: String = Firmness.firm.rawValue
 

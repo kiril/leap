@@ -118,6 +118,7 @@ class EventViewCell: UICollectionViewCell {
         timeLabel.text = event.timeRange.value
         titleLabel.text = event.title.value
         invitationSummaryLabel.text = event.invitationSummary.value
+        invitationSummaryLabel.isHidden = !event.needsResponse.value
 
         if event.isConfirmed.value {
             backgroundColor = UIColor.white

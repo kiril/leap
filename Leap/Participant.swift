@@ -99,4 +99,12 @@ class Participant: LeapModel {
     var isMe: Bool {
         return person?.isMe ?? false
     }
+
+    var name: String {
+        return person?.name ?? "Unknown"
+    }
+
+    var nameOrEmail: String {
+        return person?.name ?? person?.emails.first?.raw ?? "Unknown"
+    }
 }
