@@ -55,6 +55,7 @@ class DayScheduleSurface: Surface {
         } else {
             _events = _freshEvents!
             _eventRefreshStarted = Date.timeIntervalSinceReferenceDate
+            self.notifyObserversOfChange()
         }
     }
 
@@ -79,9 +80,6 @@ class DayScheduleSurface: Surface {
     }
 
     var entries: [ScheduleEntry] {
-        if _lastCachedEvents == 0 {
-            checkEventFreshness(async: false)
-        }
         DispatchQueue.global(qos: .background).async { self.checkEventFreshness() }
 
         let events = self.events(showingHidden: displayHiddenEvents)
@@ -90,11 +88,14 @@ class DayScheduleSurface: Surface {
     }
 
     private func events(showingHidden: Bool) -> [EventSurface] {
-        if showingHidden {
-            return _events
-        } else {
-            return _events.filter() { (event) -> Bool in
-                return eventAlwaysDisplaysInSchedule(event: event)
+        return _events.filter() { (event) -> Bool in
+            switch displayableType(forEvent: event) {
+            case .always:
+                return true
+            case .sometimes:
+                return showingHidden
+            case .never:
+                return false
             }
         }
     }
@@ -140,7 +141,7 @@ class DayScheduleSurface: Surface {
 
     var hideableEventsCount: Int {
         return _events.filter() { (event) -> Bool in
-            return eventIsHideable(event: event)
+            return displayableType(forEvent: event) == .sometimes
         }.count
     }
 
@@ -188,6 +189,7 @@ class DayScheduleSurface: Surface {
         bridge.bindArray(schedule.series)
         schedule.store = bridge
         bridge.populate(schedule)
+        DispatchQueue.global(qos: .background).async { schedule.checkEventFreshness() }
         return schedule
     }
 
@@ -206,11 +208,25 @@ class DayScheduleSurface: Surface {
         return displayHiddenEvents ? "Hide Events" : "Show \(hideableEventsCount) Hidden Event\(hideableEventsCount > 1 ? "s" : "")"
     }
 
-    private func eventAlwaysDisplaysInSchedule(event: EventSurface) -> Bool {
-        return event.isConfirmed.value || event.needsResponse.value
+    private func displayableType(forEvent event: EventSurface) -> EventDisplayableType {
+        if event.userResponse.value == EventResponse.no {
+            return .never
+        }
+        else if event.isConfirmed.value || event.needsResponse.value {
+            return .always
+        }
+        return .sometimes
     }
 
-    private func eventIsHideable(event: EventSurface) -> Bool {
-        return !eventAlwaysDisplaysInSchedule(event: event)
+    override func shouldNotifyObserversAboutChange(to updatedKey: String) -> Bool {
+        if updatedKey == series.key || updatedKey == events.key {
+            DispatchQueue.global(qos: .background).async { self.checkEventFreshness() }
+            return false
+        }
+        return true
+    }
+
+    private enum EventDisplayableType {
+        case always, sometimes, never
     }
 }

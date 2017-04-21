@@ -142,6 +142,10 @@ open class Surface: Equatable {
     public static func == (lhs: Surface, rhs: Surface) -> Bool {
         return lhs.type == rhs.type && lhs.id == rhs.id
     }
+
+    func shouldNotifyObserversAboutChange(to updatedKey: String) -> Bool {
+        return true
+    }
 }
 
 /**
@@ -173,6 +177,9 @@ extension Surface: Observable {
  */
 extension Surface: Updateable {
     public func update(data: [String:Any], via source: SourceIdentifiable?, silently: Bool = false) throws {
+
+        var shouldNotifyObservers = false
+
         for (key, value) in data {
             guard let property = properties[key] else {
                 throw SchemaError.noSuch(type: self.type, property: key)
@@ -182,6 +189,10 @@ extension Surface: Updateable {
             }
             guard property.isValid(value: value) else {
                 throw SchemaError.invalidValueFor(type: self.type, property: key, value: value)
+            }
+
+            if shouldNotifyObserversAboutChange(to: property.key) {
+                shouldNotifyObservers = true
             }
         }
 
@@ -195,7 +206,7 @@ extension Surface: Updateable {
 
         self.data = data
 
-        if !silently {
+        if !silently && shouldNotifyObservers {
             self.notifyObserversOfChange(via: source)
         }
     }
@@ -218,7 +229,7 @@ extension Surface: Updateable {
 
         data[key] = value
 
-        if !silently {
+        if !silently && shouldNotifyObserversAboutChange(to: key) {
             self.notifyObserversOfChange(via: source)
         }
     }
@@ -231,7 +242,7 @@ extension Surface: Updateable {
 
         data[key] = nil
 
-        if !silently {
+        if !silently && shouldNotifyObserversAboutChange(to: key) {
             self.notifyObserversOfChange(via: source)
         }
     }

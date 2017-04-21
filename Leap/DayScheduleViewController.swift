@@ -9,20 +9,19 @@
 import Foundation
 import UIKit
 import EventKit
+import IGListKit
 
-private let eventReuseIdentifier = "EventViewCell"
-private let openTimeReuseIdentifier = "OpenTimeViewCell"
+class DayScheduleViewController: UIViewController, StoryboardLoadable {
 
-class DayScheduleViewController: UICollectionViewController, StoryboardLoadable {
+    @IBOutlet weak var collectionView: IGListCollectionView!
+
+    lazy var collectionAdapter: IGListAdapter = {
+        return IGListAdapter(updater: IGListAdapterUpdater(),
+                             viewController: self,
+                             workingRangeSize: 0)
+    }()
 
     var surface: DayScheduleSurface!
-    fileprivate lazy var prototypeEventCell: EventViewCell = {
-        return Bundle.main.loadNibNamed("EventViewCell", owner: nil, options: nil)?.first as! EventViewCell
-    }()
-
-    fileprivate lazy var prototypeOpenTimeEventCell: OpenTimeViewCell = {
-        return Bundle.main.loadNibNamed("OpenTimeViewCell", owner: nil, options: nil)?.first as! OpenTimeViewCell
-    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,65 +30,22 @@ class DayScheduleViewController: UICollectionViewController, StoryboardLoadable 
     }
 
     private func setupCollectionView() {
-        self.collectionView!.register(UINib(nibName: "EventViewCell", bundle: nil), forCellWithReuseIdentifier: eventReuseIdentifier)
-        self.collectionView!.register(UINib(nibName: "OpenTimeViewCell", bundle: nil), forCellWithReuseIdentifier: openTimeReuseIdentifier)
 
         let layout = CalendarViewFlowLayout()
+        collectionAdapter.collectionView = collectionView
 
-        self.collectionView!.collectionViewLayout = layout
-        self.collectionView!.contentInset = UIEdgeInsets(top:    15.0,
+        collectionAdapter.dataSource = self
+
+        collectionView!.collectionViewLayout = layout
+        collectionView!.contentInset = UIEdgeInsets(top:    15.0,
                                                          left:   15.0,
                                                          bottom: 75.0,
                                                          right:  15.0)
-        self.collectionView!.alwaysBounceVertical = true
-    }
 
-    // MARK: UICollectionViewDataSource
-
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return surface.numberOfEntries
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        var cell: UICollectionViewCell!
-
-        // Configure the cell
-
-        let entry = surface.entries[indexPath.row]
-
-        switch entry {
-        case .event(let event):
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: eventReuseIdentifier, for: indexPath)
-            (cell as! EventViewCell).configure(with: event)
-
-        case .openTime(let openTime):
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: openTimeReuseIdentifier, for: indexPath)
-            (cell as! OpenTimeViewCell).configure(with: openTime)
-        }
-
-        self.configureCellWidth(cell)
-
-        return cell
-    }
-
-
-    func configureCellWidth(_ cell: UICollectionViewCell) {
-        cell.contentView.widthAnchor.constraint(equalToConstant: targetCellWidth).isActive = true
-    }
-
-
-
-    fileprivate var targetCellWidth: CGFloat {
-        return collectionView!.bounds.size.width - 30
+        collectionView!.alwaysBounceVertical = true
     }
 
     // MARK: UICollectionViewDelegate
-
-
 }
 
 extension DayScheduleViewController {
@@ -133,21 +89,40 @@ extension DayScheduleViewController: SourceIdentifiable {
 
 extension DayScheduleViewController: SurfaceObserver {
     func surfaceDidChange(_ surface: Surface) {
-        self.collectionView?.reloadData()
-        self.collectionView?.collectionViewLayout.invalidateLayout()
+        self.collectionAdapter.performUpdates(animated: true)
     }
 }
 
-extension DayScheduleViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+extension DayScheduleViewController: IGListAdapterDataSource {
+    func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
+        return ScheduleSectionController()
+    }
 
-        let entry = surface.entries[indexPath.row]
+    func objects(for listAdapter: IGListAdapter) -> [IGListDiffable] {
+        return surface.entries.diffable()
+    }
 
+    func emptyView(for listAdapter: IGListAdapter) -> UIView? {
+        return nil
+    }
+}
+
+class ScheduleSectionController: IGListSectionController, IGListSectionType {
+    var scheduleEntry: ScheduleEntry?
+
+    override init() {
+        super.init()
+        inset = UIEdgeInsets(top: 0, left: 0, bottom: 15, right: 0)
+    }
+
+    func numberOfItems() -> Int {
+        return 1
+    }
+
+    func sizeForItem(at index: Int) -> CGSize {
         let targetSize = CGSize(width: targetCellWidth, height: 100000000)
 
-        switch entry {
+        switch scheduleEntry! {
         case .event(let event):
             configureCellWidth(prototypeEventCell)
             prototypeEventCell.configure(with: event)
@@ -161,4 +136,56 @@ extension DayScheduleViewController: UICollectionViewDelegateFlowLayout {
             return size
         }
     }
+
+    func didUpdate(to object: Any) {
+        scheduleEntry = (object as? ScheduleEntryWrapper)?.scheduleEntry
+    }
+
+    func cellForItem(at index: Int) -> UICollectionViewCell {
+        var cell: UICollectionViewCell!
+
+        // Configure the cell
+
+        switch scheduleEntry! {
+        case .event(let event):
+            cell = collectionContext!.dequeueReusableCell(withNibName: "EventViewCell",
+                                                          bundle: nil,
+                                                          for: self,
+                                                          at: index)
+            (cell as! EventViewCell).configure(with: event)
+
+        case .openTime(let openTime):
+            cell = collectionContext!.dequeueReusableCell(withNibName: "OpenTimeViewCell",
+                                                          bundle: nil,
+                                                          for: self,
+                                                          at: index)
+            (cell as! OpenTimeViewCell).configure(with: openTime)
+        }
+
+        self.configureCellWidth(cell)
+        
+        return cell
+    }
+
+    func didSelectItem(at index: Int) {
+        return
+    }
+
+    fileprivate var targetCellWidth: CGFloat {
+        return collectionContext!.containerSize.width
+    }
+
+    private lazy var prototypeEventCell: EventViewCell = {
+        return Bundle.main.loadNibNamed("EventViewCell", owner: nil, options: nil)?.first as! EventViewCell
+    }()
+
+    private lazy var prototypeOpenTimeEventCell: OpenTimeViewCell = {
+        return Bundle.main.loadNibNamed("OpenTimeViewCell", owner: nil, options: nil)?.first as! OpenTimeViewCell
+    }()
+
+    func configureCellWidth(_ cell: UICollectionViewCell) {
+        cell.contentView.widthAnchor.constraint(equalToConstant: targetCellWidth).isActive = true
+    }
 }
+
+
