@@ -41,7 +41,7 @@ class Person: LeapModel {
     let numbers = List<Phone>()
     let addresses = List<Address>()
 
-    var name: String {
+    var name: String? {
         if let f = givenName, let l = familyName {
             return "\(f) \(l)"
         } else if let f = givenName {
