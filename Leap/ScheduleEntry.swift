@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import IGListKit
+
 
 enum ScheduleEntry: Comparable {
     case event(entry: EventSurface)
@@ -67,5 +69,54 @@ enum ScheduleEntry: Comparable {
                 return openStart < open2Start
             }
         }
+    }
+}
+
+class ScheduleEntryWrapper: IGListDiffable {
+    let scheduleEntry: ScheduleEntry
+
+    init(scheduleEntry: ScheduleEntry) {
+        self.scheduleEntry = scheduleEntry
+    }
+
+    func diffIdentifier() -> NSObjectProtocol {
+        switch scheduleEntry {
+        case .event(entry: let event):
+            return NSNumber(value: event.id.hash)
+        case .openTime(entry: let openTime):
+            return NSNumber(value: openTime.timeRange.hash)
+        }
+    }
+
+    func isEqual(toDiffableObject object: IGListDiffable?) -> Bool {
+        guard let otherEntryWrapper = object as? ScheduleEntryWrapper else {
+            return false
+        }
+        let otherEntry = otherEntryWrapper.scheduleEntry
+
+        switch (scheduleEntry, otherEntry) {
+        case let (.event(a), .event(b)):
+            return (a == b) && (a.userResponse.value == b.userResponse.value)
+        case let (.openTime(a), .openTime(b)):
+            return a.timeRange == b.timeRange
+        default:
+            return false
+        }
+    }
+}
+
+protocol ScheduleEntryProtocol {}
+extension ScheduleEntry: ScheduleEntryProtocol {}
+extension Array where Element: ScheduleEntryProtocol {
+    func diffable() -> [ScheduleEntryWrapper] {
+        var wrapped = [ScheduleEntryWrapper]()
+
+        let entries = self as! [ScheduleEntry]
+
+        for entry in entries {
+            wrapped.append(ScheduleEntryWrapper(scheduleEntry: entry))
+        }
+
+        return wrapped
     }
 }

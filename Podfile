@@ -16,6 +16,8 @@ target 'Leap' do
   pod 'Fabric'
   pod 'Crashlytics'
 
+  pod 'IGListKit', '~> 2.0.0'
+
   target 'LeapTests' do
     inherit! :search_paths
     # Pods for testing

@@ -99,7 +99,8 @@ class EventViewCell: UICollectionViewCell {
 
             event.userResponse.update(to: r)
 
-//            configure(with: event)
+            configure(with: event)
+            // Eventually, may want to replace this by having the cell observe the EventSurface directly
 
             try! event.flush()
         }
