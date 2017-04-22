@@ -315,6 +315,52 @@ class EventSurface: Surface, ModelLoadable {
         bridge.populate(surface)
         return surface
     }
+
+    func buttonText(forResponse response: EventResponse) -> String? {
+        switch origin.value {
+        case .invite:
+            switch response {
+            case .yes:
+                return "Yes"
+            case .no:
+                return "No"
+            case .maybe:
+                return "Maybe"
+            case .ignore:
+                return "Ignore"
+            case .none:
+                return nil
+            }
+        case .share:
+            switch response {
+            case .yes:
+                return "Join"
+            case .no:
+                return nil
+            case .maybe:
+                return nil
+            case .ignore:
+                return "Ignore"
+            case .none:
+                return nil
+            }
+        case .personal:
+            switch response {
+            case .yes:
+                return "Confirm"
+            case .no:
+                return "Remove"
+            case .maybe:
+                return "Maybe"
+            case .ignore:
+                return "Ignore"
+            case .none:
+                return nil
+            }
+        default:
+            return nil
+        }
+    }
 }
 
 extension EventSurface: Hashable {
