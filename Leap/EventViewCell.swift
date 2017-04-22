@@ -30,7 +30,9 @@ class EventViewCell: UICollectionViewCell {
         didSet { updateShadow() }
     }
 
-    private var event: EventSurface?
+    private var event: EventSurface? {
+        didSet { setupButtons() }
+    }
 
     private func updateBorderColor() {
         self.layer.borderColor = borderColor.cgColor
@@ -81,32 +83,40 @@ class EventViewCell: UICollectionViewCell {
     private func setupButtons() {
         for button in [yesButton, noButton, maybeButton, ignoreButton] {
             button?.addTarget(self, action: #selector(setEventResponse), for: .touchUpInside)
+
+            if  let button = button,
+                let text = event?.buttonText(forResponse: self.responseType(forButton: button)) {
+                button.setTitle(text, for: .normal)
+                button.isHidden = false
+            } else {
+                button?.isHidden = true
+            }
         }
+    }
+
+    private func responseType(forButton button: UIButton) -> EventResponse {
+        if button == yesButton { return .yes }
+        if button == noButton { return .no }
+        if button == maybeButton { return .maybe }
+        if button == ignoreButton { return .ignore }
+        return .none
     }
 
     @objc private func setEventResponse(sender: UIButton) {
         let event = self.event!
-        var response: EventResponse?
+        let response = self.responseType(forButton: sender)
 
-        if sender == yesButton { response = .yes }
-        if sender == noButton { response = .no }
-        if sender == maybeButton { response = .maybe }
-        if sender == ignoreButton { response = .ignore }
-
-        if  let r = response {
-            guard r != event.userResponse.value else {
-                // selected button was tapped
-                return
-            }
-
-            event.userResponse.update(to: r)
-
-            configure(with: event)
-            // Eventually, may want to replace this by having the cell observe the EventSurface directly
-
-            try! event.flush()
+        guard response != event.userResponse.value else {
+            // selected button was tapped
+            return
         }
 
+        event.userResponse.update(to: response)
+
+        configure(with: event)
+        // Eventually, may want to replace this by having the cell observe the EventSurface directly
+
+        try! event.flush()
     }
 
     func configure(with event: EventSurface) {
