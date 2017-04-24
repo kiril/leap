@@ -209,6 +209,9 @@ class EventSurface: Surface, ModelLoadable {
                     var to = ""
 
                     for participant in event.invitees {
+                        if participant == event.organizer {
+                            continue
+                        }
                         let name = participant.isMe ? "Me" : participant.nameOrEmail
                         if !to.characters.isEmpty {
                             to += ", "
