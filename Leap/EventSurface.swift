@@ -172,10 +172,13 @@ class EventSurface: Surface, ModelLoadable {
             if let event = model as? Event {
                 switch event.origin {
                 case .share:
-                    if let link = event.links.first, let organizer = event.organizer {
-                        return "\(organizer.nameOrEmail) -> \(link.calendar!.title)"
-                    } else if let organizer = event.organizer {
-                        return "from \(organizer.nameOrEmail)"
+                    if  let link = event.links.first,
+                        let organizer = event.organizer,
+                        let from = organizer.nameOrEmail {
+                        return "\(from) -> \(link.calendar!.title)"
+                    } else if   let organizer = event.organizer,
+                                let from = organizer.nameOrEmail {
+                        return "from \(from)"
                     } else if let link = event.links.first {
                         return "via \(link.calendar?.title ?? someCalendar)"
                     }
