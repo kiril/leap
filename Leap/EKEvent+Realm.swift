@@ -34,18 +34,25 @@ extension EKEvent {
         return hasRecurrenceRules && self.recurrenceRules != nil
     }
 
+    var me: EKParticipant? {
+        if let attendees = self.attendees {
+            for attendee in attendees {
+                if attendee.isCurrentUser {
+                    return attendee
+                }
+            }
+        }
+        return nil
+    }
+
     var origin: Origin {
         if let organizer = self.organizer, organizer.isCurrentUser {
             return .personal
+        } else if let _ = me {
+            return .invite
+        } else {
+            return .unknown
         }
-
-        for attendee in self.attendees! {
-            if attendee.isCurrentUser {
-                return .invite
-            }
-        }
-
-        return .unknown
     }
 
     var rule: EKRecurrenceRule? { return self.recurrenceRules?[0] }

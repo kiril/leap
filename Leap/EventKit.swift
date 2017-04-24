@@ -38,10 +38,7 @@ class EventKit {
 
     func importCalendar(_ cal: EKCalendar) {
         let legacy = cal.asLegacyCalendar(eventStoreId: store.eventStoreIdentifier)
-        let realm = Realm.user()
-        try! realm.safeWrite {
-            realm.add(legacy, update: true)
-        }
+        legacy.update()
         let startOfDay = Calendar.current.startOfDay(for: Date())
         let endOfDay = Calendar.current.startOfDay(for: Calendar.current.dayAfter(startOfDay))
 
@@ -51,28 +48,22 @@ class EventKit {
     }
 
     func importEvent(_ ekEvent: EKEvent, in calendar: EKCalendar) {
-        let id = ekEvent.cleanId
-
-        if let series = Series.by(id: id) {
+        if let series = Series.by(id: ekEvent.cleanId) { // always keep series as series, even if arrives w/o recurrence info
             importAsSeries(ekEvent, in: calendar, given: series)
 
-        } else if let event = Event.by(id: id) {
-            importAsEvent(ekEvent, in: calendar, given: event)
-
-        } else if let reminder = Reminder.by(id: id) {
-            importAsReminder(ekEvent, in: calendar, given: reminder)
-        }
-
-        if ekEvent.isRecurring && !ekEvent.isDetached {
-            importAsSeries(ekEvent, in: calendar)
-
         } else {
-            switch ekEvent.type {
-            case .event:
-                importAsEvent(ekEvent, in: calendar)
 
-            case .reminder:
-                importAsReminder(ekEvent, in: calendar)
+            if ekEvent.isRecurring && !ekEvent.isDetached {
+                importAsSeries(ekEvent, in: calendar, given: Series.by(id: ekEvent.cleanId))
+
+            } else {
+                switch ekEvent.type {
+                case .event:
+                    importAsEvent(ekEvent, in: calendar, given: Event.by(id: ekEvent.cleanId))
+
+                case .reminder:
+                    importAsReminder(ekEvent, in: calendar, given: Reminder.by(id: ekEvent.cleanId))
+                }
             }
         }
     }
@@ -88,9 +79,7 @@ class EventKit {
 
         } else {
             let event = ekEvent.asEvent()
-            try! realm.safeWrite {
-                realm.add(event)
-            }
+            event.insert()
         }
     }
 
@@ -105,27 +94,27 @@ class EventKit {
 
         } else {
             let reminder = ekEvent.asReminder()
-            try! realm.safeWrite {
-                realm.add(reminder)
-            }
+            reminder.insert()
         }
     }
 
     func importAsSeries(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: Series? = nil) {
-        let realm = Realm.user()
+        if let event = Event.by(id: ekEvent.cleanId) {
+            print("DELETE old event \(ekEvent.cleanId)")
+            event.delete()
+        }
 
-        if let existing = existing {
-            try! realm.safeWrite {
+        if let existing = existing ?? Series.by(id: ekEvent.cleanId) {
+            try! Realm.user().safeWrite {
                 existing.updateStartTimeIfEarlier(ekEvent.startDate.secondsSinceReferenceDate)
                 existing.template.addParticipants(ekEvent.getParticipants())
                 existing.template.addLink(calendar.link(to: ekEvent))
                 existing.template.addAlarms(ekEvent.getAlarms())
             }
+
         } else if let rule = ekEvent.rule {
             let series = rule.asSeries(for: ekEvent, in: calendar)
-            try! realm.safeWrite {
-                realm.add(series)
-            }
+            series.insert()
         }
     }
 }
