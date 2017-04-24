@@ -42,9 +42,33 @@ class DayScheduleSurface: Surface {
     }
     private var _didLoadInitialEvents = false
 
+
+    private var _reminders: [ReminderSurface] = [] {
+        didSet { _didLoadInitialReminders = true }
+    }
+    private var _didLoadInitialReminders = false
+
+    private var _didLoadInitialData: Bool { return _didLoadInitialEvents && _didLoadInitialReminders }
+
+
     private var _freshEvents: [EventSurface]? = nil
+    private var _freshReminders: [ReminderSurface]? = nil
+
     private var _lastCachedEvents: TimeInterval = 0
     private var _eventRefreshStarted: TimeInterval? = nil
+
+    private var _lastCachedReminders: TimeInterval = 0
+    private var _reminderRefreshStarted: TimeInterval? = nil
+
+    private func updateData() {
+        if let events = _freshEvents {
+            _events = events
+        }
+        if let reminders = _freshReminders {
+            _reminders = reminders
+        }
+        self.notifyObserversOfChange()
+    }
 
     private func refreshEvents(async: Bool = true) {
         var events = self.events.value
@@ -63,13 +87,10 @@ class DayScheduleSurface: Surface {
 
         if async {
             DispatchQueue.main.async {
-                self._events = self._freshEvents!
-                self.notifyObserversOfChange()
+                self.updateData()
             }
         } else {
-            _events = _freshEvents!
-            _eventRefreshStarted = Date.timeIntervalSinceReferenceDate
-            self.notifyObserversOfChange()
+            self.updateData()
         }
     }
 
@@ -94,18 +115,32 @@ class DayScheduleSurface: Surface {
     }
 
     var entries: [ScheduleEntry] {
-        guard _didLoadInitialEvents else { return [ScheduleEntry]() }
+        guard _didLoadInitialData else { return [ScheduleEntry]() }
         
         DispatchQueue.global(qos: .background).async { self.checkEventFreshness() }
 
         let events = self.events(showingHidden: displayHiddenEvents)
+        let reminders = self.reminders(showingHidden: displayHiddenEvents)
 
-        return scheduleEntriesForEvents(events: events)
+        return scheduleEntries(events: events, reminders: reminders)
     }
 
     private func events(showingHidden: Bool) -> [EventSurface] {
         return _events.filter() { (event) -> Bool in
             switch displayableType(forEvent: event) {
+            case .always:
+                return true
+            case .sometimes:
+                return showingHidden
+            case .never:
+                return false
+            }
+        }
+    }
+
+    private func reminders(showingHidden: Bool) -> [ReminderSurface] {
+        return _reminders.filter() { (reminder) -> Bool in
+            switch displayableType(forReminder: reminder) {
             case .always:
                 return true
             case .sometimes:
@@ -236,6 +271,10 @@ class DayScheduleSurface: Surface {
             return .always
         }
         return .sometimes
+    }
+
+    private func displayableType(forReminder reminder: ReminderSurface) -> EventDisplayableType {
+        return .always
     }
 
     override func shouldNotifyObserversAboutChange(to updatedKey: String) -> Bool {
