@@ -17,7 +17,6 @@ class EventViewCell: UICollectionViewCell {
     @IBOutlet weak var yesButton: UIButton!
     @IBOutlet weak var noButton: UIButton!
     @IBOutlet weak var maybeButton: UIButton!
-    @IBOutlet weak var ignoreButton: UIButton!
     @IBOutlet weak var remindButton: UIButton!
 
     @IBOutlet weak var recurringIcon: UILabel!
@@ -81,7 +80,7 @@ class EventViewCell: UICollectionViewCell {
     }
 
     private func setupButtons() {
-        for button in [yesButton, noButton, maybeButton, ignoreButton] {
+        for button in [yesButton, noButton, maybeButton] {
             button?.addTarget(self, action: #selector(setEventResponse), for: .touchUpInside)
 
             if  let button = button,
@@ -98,7 +97,6 @@ class EventViewCell: UICollectionViewCell {
         if button == yesButton { return .yes }
         if button == noButton { return .no }
         if button == maybeButton { return .maybe }
-        if button == ignoreButton { return .ignore }
         return .none
     }
 
@@ -113,13 +111,22 @@ class EventViewCell: UICollectionViewCell {
 
         event.userResponse.update(to: response)
 
-        configure(with: event)
+        if response == .yes {
+            // hacky, but just trying to show yes briefly
+            configure(with: event, forceDisplayResponses: true)
+            let halfSecond = DispatchTime.now() + DispatchTimeInterval.milliseconds(500)
+            DispatchQueue.main.asyncAfter(deadline: halfSecond) { [weak self] in
+                self?.configure(with: event)
+            }
+        } else {
+            configure(with: event)
+        }
         // Eventually, may want to replace this by having the cell observe the EventSurface directly
 
         try! event.flush()
     }
 
-    func configure(with event: EventSurface) {
+    func configure(with event: EventSurface, forceDisplayResponses: Bool = false) {
         // move out of here to seperate helper classes
         // if this needs to be different
         // for different contexts
@@ -148,7 +155,7 @@ class EventViewCell: UICollectionViewCell {
             contentView.alpha = 1.0
         }
 
-        invitationActionContainer.isHidden = event.isConfirmed.value
+        invitationActionContainer.isHidden = event.isConfirmed.value && !forceDisplayResponses
         recurringIcon.isHidden = !event.isRecurring.value
 
         updateActionButtons(forEvent: event)
@@ -161,7 +168,6 @@ class EventViewCell: UICollectionViewCell {
             for button in [yesButton, noButton, maybeButton] as! [UIButton] {
                 applyActionButtonFormat(to: button)
             }
-            applyActionButtonFormat(to: ignoreButton, bold: false)
 
             switch event.userResponse.value {
             case .yes:
@@ -176,11 +182,6 @@ class EventViewCell: UICollectionViewCell {
                 applyActionButtonFormat(to: maybeButton,
                                         color: UIColor.white,
                                         backgroundColor: UIColor.projectPurple)
-            case .ignore:
-                applyActionButtonFormat(to: ignoreButton,
-                                        color: UIColor.white,
-                                        bold: false,
-                                        backgroundColor: UIColor.projectDarkGray)
             case .none:
                 break;
             }
@@ -188,7 +189,6 @@ class EventViewCell: UICollectionViewCell {
             applyActionButtonFormat(to: yesButton, color: UIColor.projectBlue)
             applyActionButtonFormat(to: noButton, color: UIColor.projectRed)
             applyActionButtonFormat(to: maybeButton, color: UIColor.projectPurple)
-            applyActionButtonFormat(to: ignoreButton, bold: false)
         }
 
         applyActionButtonFormat(to: remindButton, bold: false)
