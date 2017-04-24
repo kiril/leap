@@ -50,10 +50,6 @@ class EventSurface: Surface, ModelLoadable {
     let isRecurring            = SurfaceBool()
     let origin                 = SurfaceProperty<Origin>()
 
-    func temporarilyDisplayYesResponse() {
-
-    }
-
     /**
      * Actually ignores on the underlying event, which should propagate back up.
      */
