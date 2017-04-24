@@ -9,36 +9,16 @@
 import Foundation
 import RealmSwift
 
-enum SeriesType: String {
-    case event
-    case reminder
-
-    static func of(_ tm: Temporality) -> SeriesType {
-        switch tm {
-        case is Event:
-            return .event
-        case is Reminder:
-            return .reminder
-        default:
-            fatalError("Series doesn't support \(type(of:tm)) types")
-        }
-    }
-}
-
 class Series: LeapModel {
     dynamic var creator: Person?
     dynamic var title: String = ""
-    dynamic var template: Template?
+    dynamic var template: Template!
     dynamic var recurrence: Recurrence?
     dynamic var startTime: Int = 0
     dynamic var endTime: Int = 0
-    dynamic var typeString: String = SeriesType.event.rawValue
+    dynamic var typeString: String = CalendarItemType.event.rawValue
     dynamic var lastRecurrenceDay: Date?
     dynamic var originString: String = Origin.unknown.rawValue
-    
-    let participants = List<Participant>()
-    let alarms = List<Alarm>()
-    let links = List<CalendarLink>()
 
     static func by(id: String) -> Series? {
         return fetch(id: id)
@@ -52,8 +32,8 @@ class Series: LeapModel {
         return self.endTime > 0 ? Date(timeIntervalSinceReferenceDate: TimeInterval(self.endTime)) : nil
     }
 
-    var type: SeriesType {
-        get { return SeriesType(rawValue: self.typeString)! }
+    var type: CalendarItemType {
+        get { return CalendarItemType(rawValue: self.typeString)! }
         set { self.typeString = newValue.rawValue }
     }
 
@@ -61,6 +41,13 @@ class Series: LeapModel {
         return Series(value: ["title": title,
                               "startTime": startDate.secondsSinceReferenceDate,
                               "endTime": endDate?.secondsSinceReferenceDate ?? 0])
+    }
+
+    func updateStartTimeIfEarlier(_ time: Int) {
+        if time < startTime {
+            startTime = time
+            calculateLastRecurrenceDay()
+        }
     }
 
     func calculateLastRecurrenceDay() {
@@ -215,14 +202,14 @@ class Series: LeapModel {
             return Calendar.universalGregorian.isDate(event.startDate, betweenInclusive: start, and: end) ? event : nil
         }
 
-        let firstTry = template!.event(onDayOf: start, in: self, id: eventId)
+        let firstTry = template!.event(onDayOf: start, id: eventId)
         if let firstTry = firstTry,
             Calendar.current.isDate(firstTry.startDate, betweenInclusive: start, and: end),
             self.recurrence!.recursOn(firstTry.startDate, for: self) {
             return firstTry
         }
 
-        let secondTry = template!.event(onDayOf: end, in: self, id: eventId)
+        let secondTry = template!.event(onDayOf: end, id: eventId)
         if let secondTry = secondTry,
             Calendar.current.isDate(secondTry.startDate, betweenInclusive: start, and: end),
             self.recurrence!.recursOn(secondTry.startDate, for: self) {

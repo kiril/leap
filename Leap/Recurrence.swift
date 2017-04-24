@@ -104,7 +104,6 @@ class Recurrence: LeapModel {
     dynamic var count: Int = 0
     dynamic var frequencyRaw: String = Frequency.unknown.rawValue
     dynamic var interval: Int = 0
-    dynamic var referenceEvent: Event?
     dynamic var weekStartRaw: Int = DayOfWeek.sunday.rawValue
 
     let daysOfWeek = List<RecurrenceDay>()

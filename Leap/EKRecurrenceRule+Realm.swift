@@ -66,66 +66,49 @@ extension EKRecurrenceRule {
     }
 
 
-
-    func asSeries(_ tm: Temporality) -> Series {
-        var data: ModelInitData = ["id": tm.id,
-                                   "title": tm.title,
-                                   "startTime": Int(tm.time),
-                                   "typeString": SeriesType.of(tm).rawValue,
-                                   "participants": tm.participants,
-                                   "alarms": tm.alarms,
-                                   "links": tm.links,
-                                   "endTime": recurrenceEnd?.endDate?.secondsSinceReferenceDate ?? 0]
-        if let event = tm as? Event {
-            data["originString"] = event.originString
-        }
-        let series = Series(value: data)
-
-        var templateData: ModelInitData = ["title": tm.title,
-                                           "detail": tm.detail,
-                                           "locationString": tm.locationString]
-        if let event = tm as? Event {
-            templateData["startHour"] = Calendar.current.component(.hour, from: event.startDate)
-            templateData["startMinute"] = Calendar.current.component(.minute, from: event.startDate)
-            templateData["durationMinutes"] = (event.endDate.secondsSinceReferenceDate - event.startDate.secondsSinceReferenceDate)/60
-            templateData["modalityString"] = event.modalityString
-        }
-        series.template = Template(value: templateData)
-        series.recurrence = asRecurrence(of: tm)
-
-        return series
+    func asSeries(for event: EKEvent, in calendar: EKCalendar) -> Series {
+        let data: ModelInitData = ["id": event.cleanId,
+                                   "title": event.title,
+                                   "startTime": event.startDate.secondsSinceReferenceDate,
+                                   "typeString": event.type.rawValue,
+                                   "endTime": recurrenceEnd?.endDate?.secondsSinceReferenceDate ?? 0,
+                                   "originString": event.origin.rawValue,
+                                   "template": event.asTemplate(),
+                                   "recurrence": self.asRecurrence(for: event)]
+        return Series(value: data)
     }
 
-    func asRecurrence(of tm: Temporality) -> Recurrence {
+    func asRecurrence(for event: EKEvent) -> Recurrence {
         let recurrence = Recurrence(value: ["frequencyRaw": getFrequency().rawValue,
                                             "interval": interval,
                                             "weekStartRaw": weekStart().rawValue,
                                             "count": recurrenceEnd?.occurrenceCount ?? 0])
 
         if let weekdays = daysOfTheWeek {
-            weekdays.forEach { day in recurrence.daysOfWeek.append(recurrenceDay(from: day)) }
+            weekdays.forEach { recurrence.daysOfWeek.append(recurrenceDay(from: $0)) }
+
         } else if getFrequency() == .weekly {
-            recurrence.daysOfWeek.append(RecurrenceDay.of(day: DayOfWeek.from(date: tm.date!)))
+            recurrence.daysOfWeek.append(RecurrenceDay.of(day: DayOfWeek.from(date: event.startDate)))
         }
 
         if let days = daysOfTheMonth {
-            days.forEach { day in recurrence.daysOfMonth.append(IntWrapper.of(num: day)) }
+            days.forEach { recurrence.daysOfMonth.append(Int($0)) }
         }
 
         if let days = daysOfTheYear {
-            days.forEach { day in recurrence.daysOfYear.append(IntWrapper.of(num: day)) }
+            days.forEach { recurrence.daysOfYear.append(Int($0)) }
         }
 
         if let weeks = weeksOfTheYear {
-            weeks.forEach { week in recurrence.weeksOfYear.append(IntWrapper.of(num: week)) }
+            weeks.forEach { recurrence.weeksOfYear.append(Int($0)) }
         }
 
         if let months = monthsOfTheYear {
-            months.forEach { month in recurrence.monthsOfYear.append(IntWrapper.of(num: month)) }
+            months.forEach { recurrence.monthsOfYear.append(Int($0)) }
         }
 
         if let positions = setPositions {
-            positions.forEach { pos in recurrence.setPositions.append(IntWrapper.of(num: pos)) }
+            positions.forEach { recurrence.setPositions.append(Int($0)) }
         }
         
         return recurrence

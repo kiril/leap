@@ -10,104 +10,45 @@ import Foundation
 import EventKit
 import RealmSwift
 
+enum CalendarItemType: String {
+    case event
+    case reminder
+}
+
 extension EKEvent {
 
-    func asTemporality() -> Temporality? {
-        var t: Temporality!
-
-        if self.isAllDay {
-            t = self.asReminder()
-        } else {
-            switch self.availability {
-            case .free:
-                t = self.asReminder()
-            default:
-                t = self.asEvent()
-            }
+    var type: CalendarItemType {
+        switch self.availability {
+        case .free:
+            return .reminder
+        default:
+            return self.isAllDay ? .reminder : .event
         }
-
-        let availability: EKEventAvailability = self.availability
-
-        var organizerId: String? = nil
-        if let organizer = self.organizer, let participant = organizer.asParticipant(availability: availability, ownership: Ownership.organizer) {
-            if let person = participant.person {
-                organizerId = person.id
-            }
-            t.participants.append(participant)
-        }
-
-        if let attendees = self.attendees {
-            for attendee in attendees {
-                if let participant = attendee.asParticipant(availability: availability, ownership: Ownership.invitee), let person = participant.person, person.id != organizerId {
-                    t.participants.append(participant)
-                } else if let event = t as? Event,
-                    let reservation = attendee.asRoomReservation(for: event) {
-                    event.reservations.append(reservation)
-                } else if let event = t as? Event,
-                    let reservation = attendee.asResourceReservation(for: event) {
-                    event.reservations.append(reservation)
-                }
-            }
-        }
-
-        if t.participants.isEmpty {
-            t.origin = .share
-
-        } else if let me = t.me {
-            if me.ownership == .organizer {
-                t.origin = .personal
-            } else {
-                t.origin = .invite
-            }
-
-        } else {
-            t.origin = .unknown
-        }
-
-        t.finagleParticipantStatus(availability: availability)
-
-        if let ekAlarms = self.alarms {
-            for alarm in ekAlarms {
-                t.alarms.append(alarm.asAlarm())
-            }
-        }
-
-
-        if hasRecurrenceRules, let rules = recurrenceRules {
-            var series = Series.by(id: t.id)
-            if series == nil {
-                series = rules[0].asSeries(t)
-                if let me = t.me, me.engagement == .disengaged {
-                    series!.status = .archived
-                }
-                try! Realm.user().safeWrite {
-                    Realm.user().add(series!, update: true)
-                }
-            } else {
-                for link in t.links {
-                    if !series!.links.contains(link) {
-                        try! Realm.user().safeWrite {
-                            series!.links.append(link)
-                        }
-                    }
-                }
-                if Int(t.time) < series!.startTime {
-                    try! Realm.user().safeWrite {
-                        series!.startTime = Int(t.time)
-                        series!.calculateLastRecurrenceDay()
-                    }
-                }
-            }
-
-            if let series = series {
-                t.seriesId = series.id
-                t.template = series.template
-            }
-            t.status = .archived
-        }
-
-        return t
     }
+
+    var modality: EventModality {
+        return EventModality.inPerson
+    }
+
+    var isRecurring: Bool {
+        return hasRecurrenceRules && self.recurrenceRules != nil
+    }
+
+    var origin: Origin {
+        if let organizer = self.organizer, organizer.isCurrentUser {
+            return .personal
+        }
+
+        for attendee in self.attendees! {
+            if attendee.isCurrentUser {
+                return .invite
+            }
+        }
+
+        return .unknown
+    }
+
+    var rule: EKRecurrenceRule? { return self.recurrenceRules?[0] }
 
     var cleanId: String {
         var id = self.eventIdentifier
@@ -126,49 +67,143 @@ extension EKEvent {
         }
     }
 
-    func asEvent() -> Event {
-        let data: [String:Any?] = [
+    var isTentative: Bool { return self.availability == .tentative }
+
+    func getAlarms() -> [Alarm] {
+        var alarms: [Alarm] = []
+
+        if let ekAlarms = self.alarms {
+            for alarm in ekAlarms {
+                alarms.append(alarm.asAlarm())
+            }
+        }
+
+        return alarms
+    }
+
+
+    func getParticipants() -> [Participant] {
+        var participants: [Participant] = []
+
+        let availability: EKEventAvailability = self.availability
+
+        var me: Participant?
+        var organizerId: String? = nil
+        if let organizer = self.organizer, let participant = organizer.asParticipant(availability: availability, ownership: Ownership.organizer) {
+            if let person = participant.person {
+                organizerId = person.id
+            }
+            participants.append(participant)
+            if participant.isMe {
+                me = participant
+            }
+        }
+
+        if let attendees = self.attendees {
+            for attendee in attendees {
+                if let participant = attendee.asParticipant(availability: availability, ownership: Ownership.invitee),
+                    let person = participant.person,
+                    person.id != organizerId {
+                    participants.append(participant)
+                    if participant.isMe {
+                        me = participant
+                    }
+                }
+            }
+        }
+
+        if participants.count == 1 && participants[0].isMe {
+            switch availability {
+            case .busy, .unavailable, .notSupported:
+                participants[0].engagement = .engaged
+            default:
+                participants[0].engagement = .tracking
+            }
+        }
+
+        if let me = me, me.ownership == .organizer && me.engagement == .undecided {
+            me.engagement = .engaged
+        }
+        
+        return participants
+    }
+
+    func asTemporality() -> Temporality? {
+        var t: Temporality!
+
+        if self.isAllDay {
+            t = self.asReminder()
+        } else {
+            switch self.availability {
+            case .free:
+                t = self.asReminder()
+            default:
+                t = self.asEvent()
+            }
+        }
+
+        t.participants.append(objectsIn: getParticipants())
+        t.origin = self.origin
+        t.alarms.append(objectsIn: getAlarms())
+
+        return t
+    }
+
+    func addCommonData(_ data: ModelInitData) -> ModelInitData {
+        var common: ModelInitData = [
             "id": self.cleanId,
             "title": self.title,
             "detail": self.notes,
+            "locationString": self.location,
+            "modalityString": self.modality.rawValue,
+            "originString": self.origin.rawValue,
+        ]
+        for (key, value) in data {
+            common[key] = value
+        }
+        return common
+    }
+
+    func asTemplate() -> Template {
+        let calendar = Calendar.current
+        let hour = calendar.component(.hour, from: startDate)
+        let minute = calendar.component(.minute, from: startDate)
+        let durationInSeconds = endDate.secondsSinceReferenceDate - startDate.secondsSinceReferenceDate
+        let durationInMinutes = durationInSeconds / 60
+
+        let data = addCommonData(["startHour": hour,
+                                  "startMinute": minute,
+                                  "durationMinutes": durationInMinutes,
+                                  "seriesId": cleanId,
+                                  "isTentative": self.isTentative])
+        return Template(value: data)
+    }
+    
+    func asEvent() -> Event {
+        let data = addCommonData([
             "startTime": self.startDate.secondsSinceReferenceDate,
             "endTime": self.endDate.secondsSinceReferenceDate,
-            "locationString": self.location,
             "remoteCreated": self.creationDate,
             "remoteModified": self.lastModifiedDate,
             "legacyTimeZone": TimeZone.from(self.timeZone),
-            "modalityString": EventModality.inPerson.rawValue,
             "externalURL": self.url?.absoluteString,
             "wasDetached": self.isDetached,
-            "isTentative": self.availability == .tentative,
+            "isTentative": self.isTentative,
             "firmnessString": self.firmness.rawValue,
-        ]
+        ])
 
         return Event(value: data)
     }
 
-    var hackyRecurranceIdSuffix: String {
-        // The purpose of this is to force duplicate any EKEvents that are returned with recurrances,
-        // to force them to display until we get recurrence-based queries up and running.
-        if self.hasRecurrenceRules {
-            return "+hacky_recurrance_id_\(self.startDate.secondsSinceReferenceDate)"
-        }
-        return ""
-    }
-
     func asReminder() -> Reminder {
-        let data: [String:Any?] = [
-            "id": self.cleanId,
-            "title": self.title,
-            "detail": self.notes,
+        let data = addCommonData([
             "startTime": self.startDate.secondsSinceReferenceDate,
-            "locationString": self.location,
             "legacyTimeZone": TimeZone.from(self.timeZone),
             "remoteCreated": self.creationDate,
             "remoteModified": self.lastModifiedDate,
             "externalURL": self.url?.absoluteString,
             "wasDetached": self.isDetached,
-            ]
+            ])
 
         return Reminder(value: data)
     }

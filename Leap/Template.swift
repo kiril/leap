@@ -9,7 +9,7 @@
 import Foundation
 import RealmSwift
 
-class Template: LeapModel {
+class Template: LeapModel, Particible, Alarmable, Linkable {
     dynamic var title: String = ""
     dynamic var detail: String?
     dynamic var locationString: String?
@@ -20,16 +20,22 @@ class Template: LeapModel {
     dynamic var durationMinutes: Int = 0
     dynamic var leadTime: Double = 0.0
     dynamic var trailTime: Double = 0.0
+    dynamic var isTentative: Bool = false
+    dynamic var originString: String = Origin.unknown.rawValue
+    dynamic var seriesId: String?
 
-    let alarms = List<Alarm>()
     let channels = List<Channel>()
+
+    let participants = List<Participant>()
+    let alarms = List<Alarm>()
+    let links = List<CalendarLink>()
 
     var modality: EventModality {
         get { return EventModality(rawValue: modalityString)! }
         set { modalityString = newValue.rawValue }
     }
 
-    func event(onDayOf date: Date, in series: Series, id: String? = nil) -> Event? {
+    func event(onDayOf date: Date, id: String? = nil) -> Event? {
         let calendar = Calendar.current
         let year = calendar.component(.year, from: date)
         let month = calendar.component(.month, from: date)
@@ -51,7 +57,6 @@ class Template: LeapModel {
             return nil
         }
 
-        let seriesId: String = series.id
         let data: ModelInitData = ["id": id,
                                    "title": title,
                                    "detail": detail,
@@ -60,13 +65,13 @@ class Template: LeapModel {
                                    "modalityString": modalityString,
                                    "startTime": startDate.secondsSinceReferenceDate,
                                    "seriesId": seriesId,
-                                   "participants": series.participants,
-                                   "alarms": series.alarms,
-                                   "links": series.links,
-                                   "originString": series.originString,
+                                   "participants": participants,
+                                   "alarms": alarms,
+                                   "links": links,
+                                   "originString": originString,
                                    "endTime": endDate.secondsSinceReferenceDate]
         let event = Event(value: data)
-        try! Realm.user().write { // TODO: - store in memory eventually?
+        try! Realm.user().safeWrite { // TODO: - store in memory eventually?
             Realm.user().add(event, update: true)
         }
         return event

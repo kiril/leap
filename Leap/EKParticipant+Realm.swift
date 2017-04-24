@@ -87,13 +87,13 @@ extension EKParticipant {
             break
         }
 
-        var person: Person?
+        var person: Person!
         if self.isCurrentUser {
             person = Person.me()
             if person == nil {
                 let data: [String:Any?] = ["isMe": true, "url": self.url.absoluteString]
                 person = Person(value: data)
-                person!.setNameComponents(from: self.name)
+                person.setNameComponents(from: self.name)
             }
         } else {
             person = realm.objects(Person.self).filter("url = '\(self.url.absoluteString)'").first
@@ -102,7 +102,7 @@ extension EKParticipant {
         if person == nil {
             let data: [String:Any?] = ["url": self.url.absoluteString]
             person = Person(value: data)
-            person!.setNameComponents(from: self.name)
+            person.setNameComponents(from: self.name)
         }
         // TODO: there's some kind of "contactPredicate" on the EKParticipant that might let me
         //       figure out who this really is, if I access contact data...

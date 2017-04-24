@@ -107,4 +107,11 @@ class Participant: LeapModel {
     var nameOrEmail: String {
         return person?.name ?? person?.emails.first?.raw ?? "Unknown"
     }
+
+    override func isEqual(_ object: Any?) -> Bool {
+        if let p = object as? Participant {
+            return p.person?.url == self.person?.url
+        }
+        return false
+    }
 }

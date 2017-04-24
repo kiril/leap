@@ -31,4 +31,11 @@ class Alarm: LeapModel {
         get { return ProximityTrigger(rawValue: geoTriggerString ?? "") }
         set { geoTriggerString = newValue?.rawValue }
     }
+
+    override func isEqual(_ object: Any?) -> Bool {
+        if let a = object as? Alarm {
+            return typeString == a.typeString && (absoluteTime == a.absoluteTime || relativeOffset == a.relativeOffset)
+        }
+        return false
+    }
 }
