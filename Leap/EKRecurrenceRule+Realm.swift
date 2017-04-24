@@ -44,8 +44,8 @@ extension EKRecurrenceRule {
                                    "startTime": event.startDate.secondsSinceReferenceDate,
                                    "typeString": event.type.rawValue,
                                    "endTime": recurrenceEnd?.endDate?.secondsSinceReferenceDate ?? 0,
-                                   "originString": event.origin.rawValue,
-                                   "template": event.asTemplate(),
+                                   "originString": event.getOrigin(in: calendar).rawValue,
+                                   "template": event.asTemplate(in: calendar),
                                    "recurrence": self.asRecurrence(for: event)]
         return Series(value: data)
     }

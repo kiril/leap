@@ -117,6 +117,7 @@ class Series: LeapModel {
 
         case .yearly:
             if rec.daysOfYear.count > 0 {
+
                 let occurrencesPerYear = rec.daysOfYear.count
                 let fullYears = maxRecurrences / occurrencesPerYear
                 let remainder = maxRecurrences % occurrencesPerYear
@@ -136,6 +137,24 @@ class Series: LeapModel {
                     lastDay = day
                 }
 
+            } else if rec.monthsOfYear.count == 1 {
+                if rec.daysOfMonth.count == 1 || rec.daysOfWeek.count == 1 {
+                    let yearsOut = maxRecurrences
+                    let lastYearStart = Calendar.current.date(byAdding: .year, value: yearsOut-1, to: startDate)!
+                    let firstOfMonth = Calendar.current.date(bySetting: .day, value: 1, of: lastYearStart)!
+
+                    let lastMonthStart = Calendar.current.date(bySetting: .month, value: rec.monthsOfYear[0].raw, of: firstOfMonth)!
+                    let lastMonthEnd = Calendar.current.date(byAdding: .month, value: 1, to: lastMonthStart)!
+
+                    var day = lastMonthStart
+                    while day < lastMonthEnd {
+                        if rec.recursOn(day, for: self) {
+                            lastDay = day
+                            break
+                        }
+                        day = Calendar.current.dayAfter(day)
+                    }
+                }
             }
             break
 

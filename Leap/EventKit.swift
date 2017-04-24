@@ -36,15 +36,20 @@ class EventKit {
         return Calendar.current.date(byAdding: plus4years, to: startOfToday, wrappingComponents: true)!
     }
 
-    func importCalendar(_ cal: EKCalendar) {
-        let legacy = cal.asLegacyCalendar(eventStoreId: store.eventStoreIdentifier)
-        legacy.update()
+    func importCalendar(_ calendar: EKCalendar) {
+        calendar.asLegacyCalendar(eventStoreId: store.eventStoreIdentifier).update()
         let startOfDay = Calendar.current.startOfDay(for: Date())
         let endOfDay = Calendar.current.startOfDay(for: Calendar.current.dayAfter(startOfDay))
 
-        store.events(in: cal, from: startOfDay, to: endOfDay).forEach { self.importEvent($0, in: cal) }
-        store.events(in: cal, from: longAgo(), to: startOfDay).forEach { self.importEvent($0, in: cal) }
-        store.events(in: cal, from: endOfDay, to: farOffFuture()).forEach { self.importEvent($0, in: cal) }
+        let callback = eventSearchCallback(calendar)
+
+        store.enumerateEvents(in: calendar, from: startOfDay, to: endOfDay, using: callback)
+        store.enumerateEvents(in: calendar, from: longAgo(), to: startOfDay, using: callback)
+        store.enumerateEvents(in: calendar, from: endOfDay, to: farOffFuture(), using: callback)
+    }
+
+    func eventSearchCallback(_ calendar: EKCalendar) -> EKEventSearchCallback {
+        return { (event:EKEvent, stop:UnsafeMutablePointer<ObjCBool>) in self.importEvent(event, in: calendar) }
     }
 
     func importEvent(_ ekEvent: EKEvent, in calendar: EKCalendar) {
@@ -72,14 +77,28 @@ class EventKit {
         let realm = Realm.user()
 
         if let existing = existing {
+            if existing.participants.isEmpty && ekEvent.hasAttendees {
+                try! realm.safeWrite {
+                    existing.addParticipants(ekEvent.getParticipants())
+                }
+                if let me = existing.me, me.engagement == .disengaged, existing.status != .archived {
+                    try! realm.safeWrite {
+                        existing.status = .archived
+                    }
+                }
+            }
             try! realm.safeWrite {
-                existing.addParticipants(ekEvent.getParticipants())
                 existing.addLink(calendar.link(to: ekEvent))
             }
+            print("event UPDATE \(ekEvent.title)")
 
         } else {
-            let event = ekEvent.asEvent()
+            let event = ekEvent.asEvent(in: calendar)
+            if let me = event.me, me.engagement == .disengaged {
+                event.status = .archived
+            }
             event.insert()
+            print("event INSERT \(ekEvent.title)")
         }
     }
 
@@ -87,34 +106,52 @@ class EventKit {
         let realm = Realm.user()
 
         if let existing = existing {
+            if existing.participants.isEmpty && ekEvent.hasAttendees {
+                try! realm.safeWrite {
+                    existing.addParticipants(ekEvent.getParticipants())
+                }
+            }
             try! realm.safeWrite {
-                existing.addParticipants(ekEvent.getParticipants())
                 existing.addLink(calendar.link(to: ekEvent))
             }
+            print("reminder UPDATE \(ekEvent.title)")
 
         } else {
-            let reminder = ekEvent.asReminder()
+            let reminder = ekEvent.asReminder(in: calendar)
             reminder.insert()
+            print("reminder INSERT \(ekEvent.title)")
         }
     }
 
     func importAsSeries(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: Series? = nil) {
         if let event = Event.by(id: ekEvent.cleanId) {
-            print("DELETE old event \(ekEvent.cleanId)")
             event.delete()
+            print("event DELETE series root \(ekEvent.title)")
         }
 
-        if let existing = existing ?? Series.by(id: ekEvent.cleanId) {
+        if let existing = existing {
+            guard ekEvent.startDate < existing.startDate else {
+                return
+            }
+
             try! Realm.user().safeWrite {
                 existing.updateStartTimeIfEarlier(ekEvent.startDate.secondsSinceReferenceDate)
                 existing.template.addParticipants(ekEvent.getParticipants())
                 existing.template.addLink(calendar.link(to: ekEvent))
                 existing.template.addAlarms(ekEvent.getAlarms())
+                if let me = existing.template.me, me.engagement == .disengaged, existing.status != .archived {
+                    existing.status = .archived
+                }
             }
+            print("series UPDATE \(ekEvent.title)")
 
         } else if let rule = ekEvent.rule {
             let series = rule.asSeries(for: ekEvent, in: calendar)
+            if let me = series.template.me, me.engagement == .disengaged {
+                series.status = .archived
+            }
             series.insert()
+            print("series INSERT \(ekEvent.title)")
         }
     }
 }

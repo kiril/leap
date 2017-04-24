@@ -34,4 +34,8 @@ extension EKEventStore {
         let predicate: NSPredicate = predicateForEvents(withStart: start, end: end, calendars: [calendar])
         return events(matching: predicate)
     }
+
+    func enumerateEvents(in calendar: EKCalendar, from start: Date, to end: Date, using callback: @escaping EKEventSearchCallback) {
+        enumerateEvents(matching: predicateForEvents(withStart: start, end: end, calendars: [calendar]), using: callback)
+    }
 }

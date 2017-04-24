@@ -45,13 +45,36 @@ extension EKEvent {
         return nil
     }
 
-    var origin: Origin {
+    func getOrigin(in calendar: EKCalendar) -> Origin {
         if let organizer = self.organizer, organizer.isCurrentUser {
             return .personal
+
         } else if let _ = me {
             return .invite
+
+        } else if hasAttendees {
+            return .share
+
         } else {
-            return .unknown
+            if calendar.isSubscribed {
+                return .subscription
+            } else if calendar.isImmutable {
+                return .share
+            } else {
+                switch calendar.type {
+                case .birthday:
+                    return .share
+
+                case .subscription:
+                    return .subscription
+
+                case .local:
+                    return .personal
+
+                default:
+                    return .unknown
+                }
+            }
         }
     }
 
@@ -135,35 +158,17 @@ extension EKEvent {
         return participants
     }
 
-    func asTemporality() -> Temporality? {
-        var t: Temporality!
-
-        if self.isAllDay {
-            t = self.asReminder()
-        } else {
-            switch self.availability {
-            case .free:
-                t = self.asReminder()
-            default:
-                t = self.asEvent()
-            }
-        }
-
-        t.participants.append(objectsIn: getParticipants())
-        t.origin = self.origin
-        t.alarms.append(objectsIn: getAlarms())
-
-        return t
-    }
-
-    func addCommonData(_ data: ModelInitData) -> ModelInitData {
+    func addCommonData(_ data: ModelInitData, in calendar: EKCalendar) -> ModelInitData {
         var common: ModelInitData = [
             "id": self.cleanId,
             "title": self.title,
             "detail": self.notes,
             "locationString": self.location,
             "modalityString": self.modality.rawValue,
-            "originString": self.origin.rawValue,
+            "originString": self.getOrigin(in: calendar).rawValue,
+            "participants": self.getParticipants(),
+            "links": [calendar.link(to: self)],
+            "alarms": self.getAlarms(),
         ]
         for (key, value) in data {
             common[key] = value
@@ -171,10 +176,9 @@ extension EKEvent {
         return common
     }
 
-    func asTemplate() -> Template {
-        let calendar = Calendar.current
-        let hour = calendar.component(.hour, from: startDate)
-        let minute = calendar.component(.minute, from: startDate)
+    func asTemplate(in calendar: EKCalendar) -> Template {
+        let hour = Calendar.current.component(.hour, from: startDate)
+        let minute = Calendar.current.component(.minute, from: startDate)
         let durationInSeconds = endDate.secondsSinceReferenceDate - startDate.secondsSinceReferenceDate
         let durationInMinutes = durationInSeconds / 60
 
@@ -182,11 +186,11 @@ extension EKEvent {
                                   "startMinute": minute,
                                   "durationMinutes": durationInMinutes,
                                   "seriesId": cleanId,
-                                  "isTentative": self.isTentative])
+                                  "isTentative": self.isTentative], in: calendar)
         return Template(value: data)
     }
     
-    func asEvent() -> Event {
+    func asEvent(in calendar: EKCalendar) -> Event {
         let data = addCommonData([
             "startTime": self.startDate.secondsSinceReferenceDate,
             "endTime": self.endDate.secondsSinceReferenceDate,
@@ -197,12 +201,12 @@ extension EKEvent {
             "wasDetached": self.isDetached,
             "isTentative": self.isTentative,
             "firmnessString": self.firmness.rawValue,
-        ])
+            ], in: calendar)
 
         return Event(value: data)
     }
 
-    func asReminder() -> Reminder {
+    func asReminder(in calendar: EKCalendar) -> Reminder {
         let data = addCommonData([
             "startTime": self.startDate.secondsSinceReferenceDate,
             "legacyTimeZone": TimeZone.from(self.timeZone),
@@ -210,7 +214,7 @@ extension EKEvent {
             "remoteModified": self.lastModifiedDate,
             "externalURL": self.url?.absoluteString,
             "wasDetached": self.isDetached,
-            ])
+            ], in: calendar)
 
         return Reminder(value: data)
     }

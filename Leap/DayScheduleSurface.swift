@@ -17,9 +17,12 @@ class DayScheduleSurface: Surface {
     let series = SurfaceProperty<[SeriesSurface]>()
     var day: DaySurface { return DaySurface(id: self.id) }
 
-    var filteredSeries: [SeriesSurface] {
+    var filteredEventSeries: [SeriesSurface] {
         var matches: [SeriesSurface] = []
         for s in series.value {
+            guard s.seriesType.value == .event else {
+                continue
+            }
             if s.recursOn(self.day.gregorianDay) {
                 matches.append(s)
             }
@@ -38,7 +41,7 @@ class DayScheduleSurface: Surface {
 
     private func refreshEvents(async: Bool = true) {
         var events = self.events.value
-        for seriesSurface in filteredSeries {
+        for seriesSurface in filteredEventSeries {
             if let eventSurface = seriesSurface.event(for: self.day.gregorianDay) {
                 events.append(eventSurface)
             }

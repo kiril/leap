@@ -12,6 +12,7 @@ class SeriesSurface: Surface, ModelLoadable {
     override var type: String { return "series" }
 
     let title                  = SurfaceString(minLength: 1)
+    let seriesType     = SurfaceProperty<CalendarItemType>()
 
     func event(for day: GregorianDay) -> EventSurface? {
         let start = Calendar.current.startOfDay(for: day)
@@ -44,6 +45,13 @@ class SeriesSurface: Surface, ModelLoadable {
         let bridge = SurfaceModelBridge(id: seriesId, surface: surface)
         bridge.reference(series, as: "series")
         bridge.bind(surface.title, to: "title", on: "series")
+        bridge.readonlyBind(surface.seriesType) { (model:LeapModel) in
+            if let s = model as? Series {
+                return s.type
+            }
+            return nil
+        }
+        bridge.populate(surface)
         return surface
     }
 }
