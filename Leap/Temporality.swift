@@ -20,7 +20,7 @@ enum Origin: String {
 }
 
 
-protocol Temporality {
+protocol Temporality: Particible {
     var id: String { get }
     var title: String { get }
     var detail: String? { get }
@@ -39,15 +39,11 @@ protocol Temporality {
     var isRecurring: Bool { get }
     var wasDetached: Bool { get }
 
-    var participants: List<Participant> { get }
-    var me: Participant? { get }
-
     var externalURL: String? { get set }
     var alarms: List<Alarm> { get }
     var links: List<CalendarLink> { get }
 
     var seriesId: String? { get set }
-    var seriesEventNumber: RealmOptional<Int> { get }
     var template: Template? { get set }
 
     func isBetterVersionOf(_ other: Temporality) -> Bool
@@ -57,35 +53,6 @@ protocol Temporality {
 }
 
 extension Temporality {
-    var me: Participant? {
-        for participant in participants {
-            if let person = participant.person, person.isMe {
-                return participant
-            }
-        }
-
-        return nil
-    }
-
-    var organizer: Participant? {
-        for participant in participants {
-            if participant.ownership == .organizer {
-                return participant
-            }
-        }
-
-        return nil
-    }
-
-    var invitees: [Participant] {
-        var them: [Participant] = []
-        for participant in participants {
-            if participant.person != nil && participant.ownership != .organizer {
-                them.append(participant)
-            }
-        }
-        return them
-    }
 
     func linkTo(calendar: LegacyCalendar, itemId: String, externalItemId: String?) {
         for link in links {
@@ -165,39 +132,4 @@ class _TemporalBase: LeapModel {
         get { return Origin(rawValue: originString)! }
         set { originString = newValue.rawValue }
     }
-}
-
-
-extension Temporality {
-
-    func finagleParticipantStatus(availability: EKEventAvailability = .busy) {
-        if participants.count == 1 && participants[0].isMe {
-            switch availability {
-            case .busy, .unavailable, .notSupported:
-                participants[0].engagement = .engaged
-            default:
-                participants[0].engagement = .tracking
-            }
-        }
-
-        if let me = self.me, me.ownership == .organizer && me.engagement == .undecided {
-            me.engagement = .engaged // fuck me, Google, you suck via EventKit, ok?
-        }
-    }
-}
-
-
-class CalendarLink: Object {
-    dynamic var calendar: LegacyCalendar?
-    dynamic var itemId: String = ""
-    dynamic var externalItemId: String?
-
-    override func isEqual(_ object: Any?) -> Bool {
-        if let rhs = object as? CalendarLink {
-            let lhs = self
-            return lhs.calendar == rhs.calendar && lhs.itemId == rhs.itemId && lhs.externalItemId == rhs.externalItemId
-        }
-        return false
-    }
-
 }

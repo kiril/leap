@@ -168,6 +168,8 @@ class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
             return ret
         }
 
+        var madeChanges = false
+
         var data: ModelData = [:]
         for (key, binding) in bindings {
 
@@ -177,7 +179,9 @@ class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
                     break
                 }
                 if let model = getModel(name),
-                    let value = get(model) {
+                    let value = get(model),
+                    value !~= data[key] {
+                    madeChanges = true
                     data[key] = value
                 }
 
@@ -186,7 +190,9 @@ class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
                     break
                 }
                 if let model = getModel(name),
-                    let value = get(model) {
+                    let value = get(model),
+                    value !~= data[key] {
+                    madeChanges = true
                     data[key] = value
                 }
 
@@ -194,11 +200,19 @@ class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
                 if let onlyName = onlyName, onlyName != name {
                     break
                 }
-                if let array = getArray(name) {
+                if let array = getArray(name),
+                    array !~= data[key] {
+                    madeChanges = true
                     data[key] = array
                 }
                 break
             }
+        }
+
+        surface.lastPersisted = Date.timeIntervalSinceReferenceDate
+
+        guard madeChanges else {
+            return
         }
 
         if let key = onlyName {
@@ -206,7 +220,6 @@ class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
         } else {
             try! surface.update(data: data, via: self)
         }
-        surface.lastPersisted = Date.timeIntervalSinceReferenceDate
     }
 
     @discardableResult

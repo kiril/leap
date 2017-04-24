@@ -51,31 +51,20 @@ class RecurrenceDay: Object {
         return "id"
     }
 
-    static func _cache() -> [Int:[Int:RecurrenceDay]] {
-        var cache: [Int:[Int:RecurrenceDay]]!
-        cache = Thread.getValue(forKey: "recurrenceDayCache")
-        if cache == nil {
-            cache = [:]
-            Thread.set(value: cache, forKey: "recurrenceDayCache")
-        }
-        return cache
-    }
-
     static func of(day: DayOfWeek, in week: Int = 0) -> RecurrenceDay {
-        var cache = _cache()
+        let dayId = week * 1000 + day.rawValue
+        let realm = Realm.user()
 
-        if let byWeek = cache[day.rawValue] {
-            if let day = byWeek[week] {
-                return day
-            }
-        } else {
-            cache[day.rawValue] = [:]
+        if let d = realm.objects(RecurrenceDay.self).filter("id = %d", dayId).first {
+            return d
         }
 
-        let rd = RecurrenceDay(value: ["id": week*1000 + day.rawValue,
-                                        "dayOfWeekRaw": day.rawValue,
-                                        "week": week])
-        cache[day.rawValue]![week] = rd
+        let rd = RecurrenceDay(value: ["id": dayId,
+                                       "dayOfWeekRaw": day.rawValue,
+                                       "week": week])
+        try! realm.safeWrite {
+            realm.add(rd)
+        }
         return rd
     }
 
@@ -104,7 +93,6 @@ class Recurrence: LeapModel {
     dynamic var count: Int = 0
     dynamic var frequencyRaw: String = Frequency.unknown.rawValue
     dynamic var interval: Int = 0
-    dynamic var referenceEvent: Event?
     dynamic var weekStartRaw: Int = DayOfWeek.sunday.rawValue
 
     let daysOfWeek = List<RecurrenceDay>()

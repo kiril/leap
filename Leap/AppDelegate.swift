@@ -38,33 +38,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let eventStore = EKEventStore()
         eventStore.requestAccess(to: EKEntityType.event) { (accessGranted:Bool, error:Error?) in
             if accessGranted {
-                let realm = Realm.user()
-                let calendars = eventStore.legacyCalendars()
-                for calendar in calendars {
-                    try! realm.write {
-                        realm.add(calendar, update: true)
-                    }
-                    eventStore.syncTodayEvents(forCalendar: calendar)
-                }
-                for calendar in calendars {
-                    eventStore.syncThisWeekEvents(forCalendar: calendar)
-                }
-//                for calendar in calendars {
-//                    eventStore.syncFutureEvents(forCalendar: calendar)
-//                    eventStore.syncPastEvents(forCalendar: calendar)
-//                }
-
-                let context = self.persistentContainer.viewContext
-                let credentialFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Credentials")
-
-                do {
-                    let credentials = try context.fetch(credentialFetch) as! [NSManagedObject]
-                    if !credentials.isEmpty {
-                        self.credentials = credentials[0]
-                    }
-                } catch {
-                    print("Failed to get credentials \(error)")
-                }
+                let importer = EventKit(store: eventStore)
+                importer.importAll()
             }
         }
     }

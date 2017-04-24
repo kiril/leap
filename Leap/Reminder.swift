@@ -9,7 +9,7 @@
 import Foundation
 import RealmSwift
 
-class Reminder: _TemporalBase, Temporality {
+class Reminder: _TemporalBase, Temporality, Linkable, Alarmable {
     dynamic var event: Event?
     dynamic var location: Location?
     dynamic var geoFence: GeoFence?

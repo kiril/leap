@@ -50,6 +50,12 @@ extension EKCalendar {
                                       "editable": !self.isImmutable,
                                       "relationshipString": self.isSubscribed ? CalendarRelationship.follower.rawValue : CalendarRelationship.owner.rawValue])
     }
+
+    func link(to event: EKEvent) -> CalendarLink {
+        return CalendarLink(value: ["calendar": LegacyCalendar.by(id: self.calendarIdentifier)!,
+                                    "itemId": event.calendarItemIdentifier,
+                                    "externalItemId": event.calendarItemExternalIdentifier])
+    }
 }
 
 extension LegacyCalendar {
