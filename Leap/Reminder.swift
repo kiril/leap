@@ -31,9 +31,9 @@ class Reminder: _TemporalBase, Temporality, Linkable, Alarmable {
         return Double(endTime - startTime)
     }
 
-    static func range(starting: Date, before: Date) -> Results<Reminder> {
+    static func between(_ starting: Date, and before: Date) -> Results<Reminder> {
         let predicate = NSPredicate(format: "statusString = %@ AND startTime >= %d AND startTime < %d", ObjectStatus.active.rawValue, starting.secondsSinceReferenceDate, before.secondsSinceReferenceDate)
-        return Realm.user().objects(Reminder.self).filter(predicate)
+        return Realm.user().objects(Reminder.self).filter(predicate).sorted(byKeyPath: "startTime")
     }
 
     func isDuplicateOfExisting() -> Bool {
@@ -42,5 +42,11 @@ class Reminder: _TemporalBase, Temporality, Linkable, Alarmable {
         }
         let query = Realm.user().objects(Reminder.self).filter("title = %@ AND startTime = %d", title, startTime)
         return query.first != nil
+    }
+
+    static func on(_ day: GregorianDay) -> Results<Reminder> {
+        let start = Calendar.current.startOfDay(for: day)
+        let end = Calendar.current.startOfDay(for: day.dayAfter)
+        return between(start, and: end)
     }
 }

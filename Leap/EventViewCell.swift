@@ -140,7 +140,7 @@ class EventViewCell: UICollectionViewCell {
 
         if event.isConfirmed.value {
             backgroundColor = UIColor.white
-            borderColor = UIColor.projectDarkGray
+            borderColor = UIColor.projectLightGray
             displayShadow = false
         } else {
             backgroundColor = UIColor.projectLightBackgroundGray
