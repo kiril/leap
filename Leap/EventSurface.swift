@@ -204,24 +204,33 @@ class EventSurface: Surface, ModelLoadable {
                     return "via Shared Calendar"
 
                 case .invite:
-                    let from = event.organizer?.name ?? someone
+                    let from = event.organizer?.nameOrEmail
                     var to = ""
 
                     for participant in event.invitees {
                         if participant == event.organizer {
                             continue
                         }
-                        let name = participant.isMe ? "Me" : participant.nameOrEmail
+                        let name = participant.isMe ? "Me" : participant.nameOrEmail ?? someone
                         if !to.characters.isEmpty {
                             to += ", "
                         }
                         to += name
                     }
-                    if to.characters.isEmpty {
-                        to = "Unknown Invitees"
+
+                    guard let fromName = from else {
+                        return "-> \(to)"
                     }
 
-                    return "\(from) -> \(to)"
+                    if event.me != nil && to == "Me" {
+                        return "from \(fromName)"
+                    }
+
+                    guard !to.characters.isEmpty else {
+                        return "from \(fromName)"
+                    }
+
+                    return "\(fromName) -> \(to)"
 
                 case .subscription:
                     return "via \(event.links.first?.calendar!.title ?? someCalendar)"
