@@ -35,6 +35,35 @@ class Template: LeapModel, Particible, Alarmable, Linkable {
         set { modalityString = newValue.rawValue }
     }
 
+    func reminder(onDayOf date: Date, id: String? = nil) -> Reminder? {
+        let calendar = Calendar.current
+        let year = calendar.component(.year, from: date)
+        let month = calendar.component(.month, from: date)
+        let day = calendar.component(.day, from: date)
+        let startComponents = DateComponents(year: year, month: month, day: day, hour: startHour, minute: startMinute)
+        let start = Calendar.current.date(from: startComponents)
+
+        guard let startDate = start else {
+            return nil
+        }
+
+        let data: ModelInitData = ["id": id,
+                                   "title": title,
+                                   "detail": detail,
+                                   "locationString": locationString,
+                                   "startTime": startDate.secondsSinceReferenceDate,
+                                   "seriesId": seriesId,
+                                   "participants": participants,
+                                   "alarms": alarms,
+                                   "links": links,
+                                   "originString": originString]
+        let reminder = Reminder(value: data)
+        try! Realm.user().safeWrite { // TODO: - store in memory eventually?
+            Realm.user().add(reminder)
+        }
+        return reminder
+    }
+
     func event(onDayOf date: Date, id: String? = nil) -> Event? {
         let calendar = Calendar.current
         let year = calendar.component(.year, from: date)

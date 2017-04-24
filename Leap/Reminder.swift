@@ -17,8 +17,10 @@ class Reminder: _TemporalBase, Temporality, Linkable, Alarmable {
     dynamic var endTime: Int = 0
     dynamic var timeUTC: Int = 0
 
-    var date: Date? { return Date(timeIntervalSinceReferenceDate: Double(startTime)/1000.0) }
+    var date: Date? { return Date(timeIntervalSinceReferenceDate: Double(startTime)) }
     var time: TimeInterval { return Double(startTime) }
+
+    var startDate: Date { return Date(timeIntervalSinceReferenceDate: Double(startTime)) }
 
     override static func indexedProperties() -> [String] {
         return ["location.id", "startTime", "participants", "statusString"]

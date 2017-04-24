@@ -13,7 +13,7 @@ class Series: LeapModel {
     dynamic var creator: Person?
     dynamic var title: String = ""
     dynamic var template: Template!
-    dynamic var recurrence: Recurrence?
+    dynamic var recurrence: Recurrence!
     dynamic var startTime: Int = 0
     dynamic var endTime: Int = 0
     dynamic var typeString: String = CalendarItemType.event.rawValue
@@ -234,7 +234,34 @@ class Series: LeapModel {
             self.recurrence!.recursOn(secondTry.startDate, for: self) {
             return secondTry
         }
+        
+        return nil
+    }
 
+    func reminder(between start: Date, and end: Date) -> Reminder? {
+        guard self.type == .reminder else {
+            return nil
+        }
+
+        let reminderId = "\(id)-\(start.secondsSinceReferenceDate)"
+        if let reminder = Reminder.by(id: reminderId) {
+            return Calendar.universalGregorian.isDate(reminder.startDate, betweenInclusive: start, and: end) ? reminder : nil
+        }
+
+        let firstTry = template.reminder(onDayOf: start, id: reminderId)
+        if let firstTry = firstTry,
+            Calendar.current.isDate(firstTry.startDate, betweenInclusive: start, and: end),
+            self.recurrence.recursOn(firstTry.startDate, for: self) {
+            return firstTry
+        }
+
+        let secondTry = template.reminder(onDayOf: end, id: reminderId)
+        if let secondTry = secondTry,
+            Calendar.current.isDate(secondTry.startDate, betweenInclusive: start, and: end),
+            self.recurrence.recursOn(secondTry.startDate, for: self) {
+            return secondTry
+        }
+        
         return nil
     }
 

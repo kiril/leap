@@ -12,6 +12,7 @@ class ReminderSurface: Surface, ModelLoadable {
     override var type: String { return "reminder" }
 
     let title                  = SurfaceString(minLength: 1)
+    let startTime              = SurfaceInt()
 
     static func load(fromModel reminder: LeapModel) -> Surface? {
         return load(byId: reminder.id)
@@ -28,10 +29,17 @@ class ReminderSurface: Surface, ModelLoadable {
         bridge.reference(reminder, as: "reminder")
 
         bridge.bind(surface.title)
+        bridge.bind(surface.startTime)
 
         surface.store = bridge
         bridge.populate(surface)
         return surface
     }
 
+}
+
+
+
+extension ReminderSurface: Hashable {
+    var hashValue: Int { return id.hashValue }
 }

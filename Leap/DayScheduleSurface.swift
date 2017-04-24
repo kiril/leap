@@ -16,11 +16,7 @@ class DayScheduleSurface: Surface {
 
     let events = SurfaceProperty<[EventSurface]>()
     let series = SurfaceProperty<[SeriesSurface]>()
-    let reminders = ComputedSurfaceProperty<[ReminderSurface],DayScheduleSurface>(by: DayScheduleSurface.computeReminders)
-
-    static func computeReminders(daySchedule: DayScheduleSurface) -> [ReminderSurface] {
-        return [ReminderSurface]()
-    }
+    let reminders = SurfaceProperty<[ReminderSurface]>()
 
     var day: DaySurface { return DaySurface(id: self.id) }
 
@@ -28,6 +24,19 @@ class DayScheduleSurface: Surface {
         var matches: [SeriesSurface] = []
         for s in series.value {
             guard s.seriesType.value == .event else {
+                continue
+            }
+            if s.recursOn(self.day.gregorianDay) {
+                matches.append(s)
+            }
+        }
+        return matches
+    }
+
+    var filteredReminderSeries: [SeriesSurface] {
+        var matches: [SeriesSurface] = []
+        for s in series.value {
+            guard s.seriesType.value == .reminder else {
                 continue
             }
             if s.recursOn(self.day.gregorianDay) {
@@ -94,6 +103,30 @@ class DayScheduleSurface: Surface {
         }
     }
 
+    private func refreshReminders(async: Bool = true) {
+        var reminders = self.reminders.value
+        for seriesSurface in filteredReminderSeries {
+            if let reminderSurface = seriesSurface.reminder(for: self.day.gregorianDay) {
+                reminders.append(reminderSurface)
+            }
+        }
+
+        reminders = Array(Set<ReminderSurface>(reminders))
+
+        reminders.sort { $0.startTime.value < $1.startTime.value }
+
+        _freshReminders = reminders
+        _lastCachedReminders = Date.timeIntervalSinceReferenceDate
+
+        if async {
+            DispatchQueue.main.async {
+                self.updateData()
+            }
+        } else {
+            self.updateData()
+        }
+    }
+
     private func checkEventFreshness(async: Bool = true) {
         if let startTime = _eventRefreshStarted, Date.timeIntervalSinceReferenceDate - startTime < 500.0 {
             return
@@ -114,15 +147,42 @@ class DayScheduleSurface: Surface {
         }
     }
 
+    private func checkReminderFreshness(async: Bool = true) {
+        if let startTime = _reminderRefreshStarted, Date.timeIntervalSinceReferenceDate - startTime < 500.0 {
+            return
+        }
+
+        if let updateTime = lastPersisted, _lastCachedReminders < updateTime {
+            _reminderRefreshStarted = Date.timeIntervalSinceReferenceDate
+            if async {
+                DispatchQueue.global(qos: .background).async {
+                    usleep(100*1000) // sleep 100ms to de-bounce this function being called
+                    self.refreshReminders()
+                    self._reminderRefreshStarted = nil
+                }
+            } else {
+                refreshReminders(async: false)
+                _reminderRefreshStarted = nil
+            }
+        }
+    }
+
     var entries: [ScheduleEntry] {
-        guard _didLoadInitialData else { return [ScheduleEntry]() }
+        guard _didLoadInitialEvents else { return [ScheduleEntry]() }
         
         DispatchQueue.global(qos: .background).async { self.checkEventFreshness() }
 
         let events = self.events(showingHidden: displayHiddenEvents)
-        let reminders = self.reminders(showingHidden: displayHiddenEvents)
 
-        return scheduleEntries(events: events, reminders: reminders)
+        return scheduleEntries(events: events)
+    }
+
+    var reminderList: [ReminderSurface] {
+        guard _didLoadInitialReminders else { return [ReminderSurface]() }
+
+        DispatchQueue.global(qos: .background).async { self.checkReminderFreshness() }
+
+        return self.reminders(showingHidden: displayHiddenEvents)
     }
 
     private func events(showingHidden: Bool) -> [EventSurface] {
@@ -167,8 +227,7 @@ class DayScheduleSurface: Surface {
                          end: scheduleEnd)!
     }
 
-    private func
-        scheduleEntriesForEvents(events: [EventSurface]) -> [ScheduleEntry] {
+    private func scheduleEntries(events: [EventSurface]) -> [ScheduleEntry] {
         var openTimeRanges = [normalScheduleRange]
 
         for event in events {

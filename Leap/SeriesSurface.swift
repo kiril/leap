@@ -23,6 +23,15 @@ class SeriesSurface: Surface, ModelLoadable {
         return nil
     }
 
+    func reminder(for day: GregorianDay) -> ReminderSurface? {
+        let start = Calendar.current.startOfDay(for: day)
+        let end = Calendar.current.startOfDay(for: day.dayAfter)
+        if let reminder = Series.by(id: id)?.reminder(between: start, and: end) {
+            return ReminderSurface.load(fromModel: reminder) as? ReminderSurface
+        }
+        return nil
+    }
+
     func recursOn(_ day: GregorianDay) -> Bool {
         guard let series = Series.by(id: id) else {
             return false
