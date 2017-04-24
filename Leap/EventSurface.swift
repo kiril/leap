@@ -50,28 +50,6 @@ class EventSurface: Surface, ModelLoadable {
     let isRecurring            = SurfaceBool()
     let origin                 = SurfaceProperty<Origin>()
 
-    /**
-     * Actually ignores on the underlying event, which should propagate back up.
-     */
-    func ignore() {
-        guard let bridge = self.store as? SurfaceModelBridge,
-            let event = bridge.dereference("event") as? Event else {
-            fatalError("No backing bridge")
-        }
-        if Ignorance.ignore(event) {
-            self.notifyObserversOfChange() // because the Ignorance model isn't referenced
-        }
-    }
-
-    func stopIgnoring() {
-        if let bridge = self.store as? SurfaceModelBridge,
-            let event = bridge.dereference("event") as? Event,
-            let ignorance = Ignorance.of(event) {
-            ignorance.delete()
-            self.notifyObserversOfChange()
-        }
-    }
-
     static func computeNeedsResponse(event: EventSurface) -> Bool {
         return event.userResponse.value == .none
     }
@@ -104,7 +82,7 @@ class EventSurface: Surface, ModelLoadable {
             more = " \(days) day\(ess) later"
         }
 
-        return "\(from)-\(to)\(more)"
+        return "\(from) - \(to)\(more)"
     }
 
     static func computeElapsed(event: EventSurface) -> Float {

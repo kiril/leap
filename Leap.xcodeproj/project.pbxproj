@@ -35,6 +35,7 @@
 		835456151E8AF9EA00A03B34 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835456141E8AF9EA00A03B34 /* InitialViewController.swift */; };
 		835456181E8AFD7200A03B34 /* UIColor+ProjectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835456171E8AFD7200A03B34 /* UIColor+ProjectExtensions.swift */; };
 		8354561A1E8C09A100A03B34 /* DayScheduleTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 835456191E8C09A100A03B34 /* DayScheduleTitleView.xib */; };
+		8366F1151EAE66C400E3A448 /* ReminderSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8366F1141EAE66C400E3A448 /* ReminderSurface.swift */; };
 		8372067B1E9EAEBF0010B914 /* UIFont+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8372067A1E9EAEBF0010B914 /* UIFont+Extensions.swift */; };
 		8372067D1E9F3EDE0010B914 /* RealmExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8372067C1E9F3EDE0010B914 /* RealmExtensions.swift */; };
 		8393621D1E8FF51E00543CFC /* WeekOverview.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8393621C1E8FF51E00543CFC /* WeekOverview.storyboard */; };
@@ -187,6 +188,7 @@
 		835456141E8AF9EA00A03B34 /* InitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
 		835456171E8AFD7200A03B34 /* UIColor+ProjectExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+ProjectExtensions.swift"; sourceTree = "<group>"; };
 		835456191E8C09A100A03B34 /* DayScheduleTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DayScheduleTitleView.xib; sourceTree = "<group>"; };
+		8366F1141EAE66C400E3A448 /* ReminderSurface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderSurface.swift; sourceTree = "<group>"; };
 		8372067A1E9EAEBF0010B914 /* UIFont+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Extensions.swift"; sourceTree = "<group>"; };
 		8372067C1E9F3EDE0010B914 /* RealmExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmExtensions.swift; sourceTree = "<group>"; };
 		8393621C1E8FF51E00543CFC /* WeekOverview.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WeekOverview.storyboard; sourceTree = "<group>"; };
@@ -487,6 +489,7 @@
 			children = (
 				8351BDD01E807C4C001221AF /* WeekOverviewSurface.swift */,
 				FBD614531E7F3370001F4050 /* EventSurface.swift */,
+				8366F1141EAE66C400E3A448 /* ReminderSurface.swift */,
 				83A72D761E82DF95005EB213 /* DayScheduleSurface.swift */,
 				83F4B1601E7C383F000FCB8D /* ScheduleEntry.swift */,
 				FB39ADBC1E94154A00B79A7B /* DaySurface.swift */,
@@ -1024,6 +1027,7 @@
 				FB42084B1E857DAF007F4DBD /* Participant.swift in Sources */,
 				FB934F201E7E01DF0068CDEF /* Surface.swift in Sources */,
 				FB39ADAB1E8C69BB00B79A7B /* SurfaceModelBridge.swift in Sources */,
+				8366F1151EAE66C400E3A448 /* ReminderSurface.swift in Sources */,
 				FBB4BFD81E8ACED1001679BF /* Operation.swift in Sources */,
 				8351BDD11E807C4C001221AF /* WeekOverviewSurface.swift in Sources */,
 				831444CC1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift in Sources */,

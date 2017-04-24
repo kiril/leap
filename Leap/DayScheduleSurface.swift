@@ -8,6 +8,7 @@
 
 import Foundation
 import EventKit
+import RealmSwift
 
 class DayScheduleSurface: Surface {
 
@@ -15,6 +16,12 @@ class DayScheduleSurface: Surface {
 
     let events = SurfaceProperty<[EventSurface]>()
     let series = SurfaceProperty<[SeriesSurface]>()
+    let reminders = ComputedSurfaceProperty<[ReminderSurface],DayScheduleSurface>(by: DayScheduleSurface.computeReminders)
+
+    static func computeReminders(daySchedule: DayScheduleSurface) -> [ReminderSurface] {
+        return [ReminderSurface]()
+    }
+
     var day: DaySurface { return DaySurface(id: self.id) }
 
     var filteredEventSeries: [SeriesSurface] {
@@ -190,12 +197,16 @@ class DayScheduleSurface: Surface {
 
         let start = Calendar.current.startOfDay(for: schedule.day.gregorianDay)
         let end = Calendar.current.startOfDay(for: schedule.day.gregorianDay.dayAfter)
+
         let events = Event.between(start, and: end)
         let series = Series.between(start, and: end)
+
         bridge.referenceArray(events, using: EventSurface.self, as: "events")
         bridge.referenceArray(series, using: SeriesSurface.self, as: "series")
+
         bridge.bindArray(schedule.events)
         bridge.bindArray(schedule.series)
+
         schedule.store = bridge
         bridge.populate(schedule)
         DispatchQueue.global(qos: .background).async { schedule.checkEventFreshness() }
@@ -214,7 +225,7 @@ class DayScheduleSurface: Surface {
 
     var textForHiddenButton: String {
         guard hasHideableEvents else { return "No Hidden Events" }
-        return displayHiddenEvents ? "Hide Events" : "Show \(hideableEventsCount) Hidden Event\(hideableEventsCount > 1 ? "s" : "")"
+        return displayHiddenEvents ? "Hide \"Maybe\" Events" : "Show \(hideableEventsCount) \"Maybe\" Event\(hideableEventsCount > 1 ? "s" : "")"
     }
 
     private func displayableType(forEvent event: EventSurface) -> EventDisplayableType {

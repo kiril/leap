@@ -47,7 +47,7 @@ struct OpenTimeViewModel: Equatable {
         let from = calendar.formatDisplayTime(from: startTime, needsAMPM: crossesNoon)
         let to = calendar.formatDisplayTime(from: endTime, needsAMPM: true)
 
-        return "\(from)-\(to)"
+        return "\(from) - \(to)"
     }
 
 }
