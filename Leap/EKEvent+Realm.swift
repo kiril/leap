@@ -50,9 +50,13 @@ extension EKEvent {
             return .personal
 
         } else if let _ = me {
-            return .invite
+            if attendees!.count > 1 {
+                return .invite
+            } else {
+                return .personal
+            }
 
-        } else if hasAttendees {
+        } else if hasAttendees { // and none of them is me
             return .share
 
         } else {

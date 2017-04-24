@@ -104,8 +104,8 @@ class Participant: LeapModel {
         return person?.name ?? "Unknown"
     }
 
-    var nameOrEmail: String {
-        return person?.name ?? person?.emails.first?.raw ?? "Unknown"
+    var nameOrEmail: String? {
+        return person?.name ?? person?.emails.first?.raw
     }
 
     override func isEqual(_ object: Any?) -> Bool {
