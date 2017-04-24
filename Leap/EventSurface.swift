@@ -14,8 +14,7 @@ enum EventResponse {
     case none,
     yes,
     no,
-    maybe,
-    ignore
+    maybe
 }
 
 extension TimePerspective {
@@ -50,6 +49,10 @@ class EventSurface: Surface, ModelLoadable {
     let invitationSummary      = SurfaceString()
     let isRecurring            = SurfaceBool()
     let origin                 = SurfaceProperty<Origin>()
+
+    func temporarilyDisplayYesResponse() {
+
+    }
 
     /**
      * Actually ignores on the underlying event, which should propagate back up.
@@ -236,20 +239,11 @@ class EventSurface: Surface, ModelLoadable {
         }
 
         func getEventResponse(model:LeapModel) -> Any? {
-            guard let thing = model as? Temporality else {
+            guard   let thing = model as? Temporality,
+                    let me = thing.me else {
                 return EventResponse.none
             }
 
-            // handle ignorance first...
-            if let _ = Ignorance.of(thing) {
-                return EventResponse.ignore
-            }
-
-            guard let me = thing.me else {
-                return EventResponse.none
-            }
-
-            // now handle normal engagement states...
             switch me.engagement {
             case .undecided, .none:
                 return EventResponse.none
@@ -266,14 +260,6 @@ class EventSurface: Surface, ModelLoadable {
                     let response = value as? EventResponse else {
                 fatalError("OMG wrong type or something \(model)")
                 // could this happen just because you are no longer invited?
-            }
-
-            // handle ignorance first
-            if response == .ignore {
-                Ignorance.ignore(thing)
-                return
-            } else {
-                Ignorance.unignore(thing)
             }
 
             if thing.me == nil {
@@ -302,8 +288,6 @@ class EventSurface: Surface, ModelLoadable {
                 me.engagement = .disengaged
             case .maybe:
                 me.engagement = .tracking
-            case .ignore:
-                fatalError("Should have returned earlier if ignore was set")
             }
         }
         bridge.bind(surface.userResponse,
@@ -326,39 +310,31 @@ class EventSurface: Surface, ModelLoadable {
                 return "No"
             case .maybe:
                 return "Maybe"
-            case .ignore:
-                return "Ignore"
             case .none:
                 return nil
             }
-        case .share:
+        case .share, .subscription:
             switch response {
             case .yes:
                 return "Join"
             case .no:
-                return nil
+                return "No"
             case .maybe:
-                return nil
-            case .ignore:
-                return "Ignore"
+                return "Maybe"
             case .none:
                 return nil
             }
-        case .personal:
+        case .personal, .unknown:
             switch response {
             case .yes:
                 return "Confirm"
             case .no:
-                return "Remove"
+                return "No"
             case .maybe:
                 return "Maybe"
-            case .ignore:
-                return "Ignore"
             case .none:
                 return nil
             }
-        default:
-            return nil
         }
     }
 }
