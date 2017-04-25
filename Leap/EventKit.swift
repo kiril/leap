@@ -67,7 +67,14 @@ class EventKit {
                     importAsEvent(ekEvent, in: calendar, given: Event.by(id: ekEvent.cleanId))
 
                 case .reminder:
-                    importAsReminder(ekEvent, in: calendar, given: Reminder.by(id: ekEvent.cleanId))
+                    if let series = Series.by(title: ekEvent.title),
+                        (series.isExactRecurrence(date: ekEvent.startDate) || (ekEvent.isAllDay && series.recurrence.recursOn(ekEvent.startDate, for: series))) {
+                        print("reminder DUPLICATE of Series \(ekEvent.title)")
+                        importAsSeries(ekEvent, in: calendar, given: series)
+
+                    } else {
+                        importAsReminder(ekEvent, in: calendar, given: Reminder.by(id: ekEvent.cleanId))
+                    }
                 }
             }
         }
@@ -127,6 +134,10 @@ class EventKit {
         if let event = Event.by(id: ekEvent.cleanId) {
             event.delete()
             print("event DELETE series root \(ekEvent.title)")
+        }
+        if let reminder = Reminder.by(id: ekEvent.cleanId) {
+            reminder.delete()
+            print("reminder DELETE series root \(ekEvent.title)")
         }
 
         if let existing = existing {

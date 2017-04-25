@@ -215,8 +215,13 @@ class Series: LeapModel {
     }
 
     func startTime(between start: Date, and end: Date) -> Date? {
+        if Calendar.universalGregorian.component(.minute, from: start) == template.startMinute &&
+            Calendar.universalGregorian.component(.hour, from: start) == template.startHour {
+            return start < end ? start : nil
+        }
         let minuteSet = Calendar.universalGregorian.date(bySetting: .minute, value: template.startMinute, of: start)!
         let possibility = Calendar.universalGregorian.date(bySetting: .hour, value: template.startHour, of: minuteSet)!
+
         guard possibility < end else {
             return nil
         }
@@ -230,6 +235,16 @@ class Series: LeapModel {
         let hour = Calendar.universalGregorian.component(.hour, from: start)
         let minute = Calendar.universalGregorian.component(.minute, from: start)
         return "\(id)-\(year).\(month).\(day).\(hour):\(minute)"
+    }
+
+    func isExactRecurrence(date: Date) -> Bool {
+        if Calendar.universalGregorian.component(.hour, from: date) == template.startHour &&
+            Calendar.universalGregorian.component(.minute, from: date) == template.startMinute &&
+            recurrence.recursOn(date, for: self) {
+            return true
+
+        }
+        return false
     }
 
     func event(between start: Date, and end: Date) -> Event? {
@@ -296,5 +311,9 @@ class Series: LeapModel {
 
     override static func indexedProperties() -> [String] {
         return ["statusString", "startTime", "endTime"]
+    }
+
+    static func by(title: String) -> Series? {
+        return Realm.user().objects(Series.self).filter("title = %@ AND statusString = %@", title, ObjectStatus.active.rawValue).first
     }
 }
