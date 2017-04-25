@@ -91,6 +91,15 @@ class DayScheduleSurface: Surface {
 
         events.sort { $0.startTime.value == $1.startTime.value ? $0.endTime.value < $1.endTime.value : $0.startTime.value < $1.startTime.value }
 
+        var priorEvent: EventSurface? = nil
+        for event in events {
+            if let prior = priorEvent, prior.intersectsWith(event) {
+                prior.isInConflict = true
+                event.isInConflict = true
+            }
+            priorEvent = event
+        }
+
         _freshEvents = events
         _lastCachedEvents = Date.timeIntervalSinceReferenceDate
 
