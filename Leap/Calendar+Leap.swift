@@ -285,4 +285,35 @@ extension Calendar {
     func isDate(_ d: Date, betweenInclusive start: Date, and end: Date) -> Bool {
         return !isDate(d, before: start) && isDate(d, before: end)
     }
+
+    func weekdayOrdinal(of date: Date) -> Int {
+        let month = self.component(.month, from: date)
+        let weekday = self.component(.weekday, from: date)
+        let firstOfMonth = self.startOfMonth(including: date)
+        let firstWeekday = self.theNext(weekday: weekday, onOrAfter: firstOfMonth)
+        var d = firstWeekday
+        var nth = 0
+        while self.component(.month, from: d) == month {
+            nth += 1
+            if self.isDate(d, inSameDayAs: date) {
+                break
+            }
+            d = self.theNext(weekday: weekday, after: d)
+        }
+        return nth
+    }
+
+    func count(weekday: Int, inMonthOf date: Date) -> Int {
+        let firstOfMonth = self.startOfMonth(including: date)
+        let firstWeekday = self.theNext(weekday: weekday, onOrAfter: firstOfMonth)
+        let dayOfFirstWeekday = self.component(.day, from: firstWeekday)
+        let daysInMonth = self.range(of: .day, in: .month, for: date)!.upperBound - 1
+        let daysRemaining = daysInMonth - dayOfFirstWeekday
+        let weeksRemaining = daysRemaining / 7
+        return weeksRemaining + 1
+    }
+
+    func negativeOrdinal(ordinal: Int, total: Int) -> Int {
+        return (ordinal - total) - 1
+    }
 }

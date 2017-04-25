@@ -93,4 +93,8 @@ class CalendarTests: XCTestCase {
             XCTAssertEqual(calendar.component(.weekday, from: wednesday), GregorianWednesday)
         }
     }
+
+    //func weekdayOrdinal(of date: Date) -> Int {
+    //func count(weekday: Int, inMonthOf date: Date) -> Int {
+    //func negativeOrdinal(ordinal: Int, total: Int) -> Int {
 }
