@@ -171,7 +171,7 @@ extension EKEvent {
             "modalityString": self.modality.rawValue,
             "originString": self.getOrigin(in: calendar).rawValue,
             "participants": self.getParticipants(),
-            "links": [calendar.link(to: self)],
+            "linkedCalendarIds": [calendar.asLinkId()],
             "alarms": self.getAlarms(),
         ]
         for (key, value) in data {

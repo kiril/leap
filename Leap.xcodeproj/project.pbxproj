@@ -111,9 +111,8 @@
 		FB4503D31EA579F8001D9F51 /* SwiftyLRU.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4503D21EA579F8001D9F51 /* SwiftyLRU.swift */; };
 		FB4E11A51E79ABB400687702 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4E11A41E79ABB400687702 /* LaunchScreen.storyboard */; };
 		FB4E11A71E79B1F500687702 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4E11A61E79B1F500687702 /* Main.storyboard */; };
-		FB7ECD1A1EAE567300163AD5 /* CalendarLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB7ECD191EAE567300163AD5 /* CalendarLink.swift */; };
 		FB7ECD1C1EAE5C5500163AD5 /* Particible.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB7ECD1B1EAE5C5500163AD5 /* Particible.swift */; };
-		FB7ECD1E1EAE602600163AD5 /* Linkable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB7ECD1D1EAE602600163AD5 /* Linkable.swift */; };
+		FB7ECD1E1EAE602600163AD5 /* CalendarLinkable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB7ECD1D1EAE602600163AD5 /* CalendarLinkable.swift */; };
 		FB7ECD201EAE64F900163AD5 /* Alarmable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB7ECD1F1EAE64F900163AD5 /* Alarmable.swift */; };
 		FB8BB6231E89A76A00A30315 /* EventKitMigrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8BB6221E89A76A00A30315 /* EventKitMigrationTests.swift */; };
 		FB934F201E7E01DF0068CDEF /* Surface.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F1F1E7E01DF0068CDEF /* Surface.swift */; };
@@ -264,9 +263,8 @@
 		FB4503D21EA579F8001D9F51 /* SwiftyLRU.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyLRU.swift; sourceTree = "<group>"; };
 		FB4E11A41E79ABB400687702 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FB4E11A61E79B1F500687702 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		FB7ECD191EAE567300163AD5 /* CalendarLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarLink.swift; sourceTree = "<group>"; };
 		FB7ECD1B1EAE5C5500163AD5 /* Particible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Particible.swift; sourceTree = "<group>"; };
-		FB7ECD1D1EAE602600163AD5 /* Linkable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Linkable.swift; sourceTree = "<group>"; };
+		FB7ECD1D1EAE602600163AD5 /* CalendarLinkable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarLinkable.swift; sourceTree = "<group>"; };
 		FB7ECD1F1EAE64F900163AD5 /* Alarmable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alarmable.swift; sourceTree = "<group>"; };
 		FB8BB6221E89A76A00A30315 /* EventKitMigrationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventKitMigrationTests.swift; sourceTree = "<group>"; };
 		FB934F1F1E7E01DF0068CDEF /* Surface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Surface.swift; sourceTree = "<group>"; };
@@ -564,8 +562,7 @@
 				FB42085A1E85A650007F4DBD /* TimeZone.swift */,
 				FB166B561E8ABE1C00CB95EC /* RealmUtil.swift */,
 				FB1869D51EA01CBC007642F4 /* List+Leap.swift */,
-				FB7ECD1D1EAE602600163AD5 /* Linkable.swift */,
-				FB7ECD191EAE567300163AD5 /* CalendarLink.swift */,
+				FB7ECD1D1EAE602600163AD5 /* CalendarLinkable.swift */,
 				FB7ECD1F1EAE64F900163AD5 /* Alarmable.swift */,
 			);
 			name = Util;
@@ -1018,7 +1015,6 @@
 				FB4208571E85A168007F4DBD /* GeoFence.swift in Sources */,
 				FB39ADBB1E9407FF00B79A7B /* Int+Leap.swift in Sources */,
 				FB166B5C1E8AC3CA00CB95EC /* Fetchable.swift in Sources */,
-				FB7ECD1A1EAE567300163AD5 /* CalendarLink.swift in Sources */,
 				FB166B5E1E8AC6DB00CB95EC /* ModelReference.swift in Sources */,
 				833617781E8C4756009A97FF /* StoryboardLoadable.swift in Sources */,
 				FB4208661E8976B1007F4DBD /* Series.swift in Sources */,
@@ -1077,7 +1073,7 @@
 				834FBEB81EA86957004D9302 /* TimeRange.swift in Sources */,
 				8351BDC91E7C58FD001221AF /* OpenTimeViewModel.swift in Sources */,
 				FB0762DB1E142FBF0035EF8F /* ScheduleViewController.swift in Sources */,
-				FB7ECD1E1EAE602600163AD5 /* Linkable.swift in Sources */,
+				FB7ECD1E1EAE602600163AD5 /* CalendarLinkable.swift in Sources */,
 				FB3895781EA7C0DE000FC103 /* Thread+Leap.swift in Sources */,
 				FB2046A31E82DA2200F130C8 /* Event.swift in Sources */,
 				FB4208511E8593DA007F4DBD /* Venue.swift in Sources */,
