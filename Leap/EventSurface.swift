@@ -52,6 +52,14 @@ class EventSurface: Surface, ModelLoadable {
     let isRecurring            = SurfaceBool()
     let origin                 = SurfaceProperty<Origin>()
 
+
+    func intersectsWith(_ other: EventSurface) -> Bool {
+        if endTime.value < other.startTime.value || other.endTime.value < startTime.value {
+            return false
+        }
+        return true
+    }
+
     static func computeNeedsResponse(event: EventSurface) -> Bool {
         return event.userResponse.value == .none
     }
