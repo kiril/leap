@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="ReminderCollectionViewCell" customModule="Leap" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="212" height="88"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="212" height="88"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Liz's Birthday" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mst-Dh-BuR">
+                        <rect key="frame" x="62.5" y="35.5" width="87.5" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="Mst-Dh-BuR" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="Ffe-zS-LPU"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Mst-Dh-BuR" secondAttribute="bottom" id="XZu-pO-E96"/>
+                <constraint firstItem="Mst-Dh-BuR" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="dcd-yB-afg"/>
+                <constraint firstItem="Mst-Dh-BuR" firstAttribute="top" relation="greaterThanOrEqual" secondItem="gTV-IL-0wX" secondAttribute="top" id="dv6-th-QNq"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Mst-Dh-BuR" secondAttribute="trailing" id="eze-u5-0nV"/>
+                <constraint firstItem="Mst-Dh-BuR" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gTV-IL-0wX" secondAttribute="leading" id="smr-Nb-pwA"/>
+            </constraints>
+            <size key="customSize" width="212" height="88"/>
+            <point key="canvasLocation" x="-51" y="10"/>
+        </collectionViewCell>
+    </objects>
+</document>
