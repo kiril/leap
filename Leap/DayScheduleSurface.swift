@@ -294,12 +294,15 @@ class DayScheduleSurface: Surface {
 
         let events = Event.between(start, and: end)
         let series = Series.between(start, and: end)
+        let reminders = Reminder.between(start, and: end)
 
         bridge.referenceArray(events, using: EventSurface.self, as: "events")
         bridge.referenceArray(series, using: SeriesSurface.self, as: "series")
+        bridge.referenceArray(reminders, using: ReminderSurface.self, as: "reminders")
 
         bridge.bindArray(schedule.events)
         bridge.bindArray(schedule.series)
+        bridge.bindArray(schedule.reminders)
 
         schedule.store = bridge
         bridge.populate(schedule)
@@ -339,6 +342,9 @@ class DayScheduleSurface: Surface {
     override func shouldNotifyObserversAboutChange(to updatedKey: String) -> Bool {
         if updatedKey == series.key || updatedKey == events.key {
             DispatchQueue.global(qos: .background).async { self.checkEventFreshness() }
+        }
+        if updatedKey == series.key || updatedKey == reminders.key {
+            DispatchQueue.global(qos: .background).async { self.checkReminderFreshness() }
             return false
         }
         return true
