@@ -34,6 +34,9 @@
                 <constraint firstItem="Mst-Dh-BuR" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gTV-IL-0wX" secondAttribute="leading" id="smr-Nb-pwA"/>
             </constraints>
             <size key="customSize" width="212" height="130"/>
+            <connections>
+                <outlet property="titleLabel" destination="Mst-Dh-BuR" id="CHl-fh-zlg"/>
+            </connections>
             <point key="canvasLocation" x="-51" y="31"/>
         </collectionViewCell>
     </objects>

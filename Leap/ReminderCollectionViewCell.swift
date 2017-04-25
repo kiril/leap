@@ -10,6 +10,8 @@ import UIKit
 
 class ReminderCollectionViewCell: UICollectionViewCell {
 
+    @IBOutlet weak var titleLabel: UILabel!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -17,12 +19,13 @@ class ReminderCollectionViewCell: UICollectionViewCell {
     }
 
     func configure(with reminder: ReminderSurface) {
-        
+        titleLabel.text = reminder.title.value
     }
 
     private func setup() {
         self.contentView.translatesAutoresizingMaskIntoConstraints = false
         self.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.textColor = UIColor.projectDarkGray
     }
 
 }
