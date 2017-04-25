@@ -10,6 +10,8 @@ import Foundation
 import EventKit
 import RealmSwift
 
+let importQueue = DispatchQueue(label: "eventkit.import")
+
 class EventKit {
     let store: EKEventStore
 
@@ -21,16 +23,16 @@ class EventKit {
         let startOfDay = Calendar.current.startOfDay(for: Date())
         let endOfDay = Calendar.current.startOfDay(for: Calendar.current.dayAfter(startOfDay))
         // get today's stuff flowing in fast
-        store.calendars(for: EKEntityType.event).forEach { c in self.importEvents(in: c, from: startOfDay, to: endOfDay) }
-        store.calendars(for: EKEntityType.reminder).forEach { c in self.importEvents(in: c, from: startOfDay, to: endOfDay) }
+        store.calendars(for: EKEntityType.event).forEach { self.importEvents(in: $0, from: startOfDay, to: endOfDay) }
+        store.calendars(for: EKEntityType.reminder).forEach { self.importEvents(in: $0, from: startOfDay, to: endOfDay) }
 
         // future, because you're more likely to look there soon
-        store.calendars(for: EKEntityType.event).forEach { c in self.importEvents(in: c, from: endOfDay, to: farOffFuture()) }
-        store.calendars(for: EKEntityType.reminder).forEach { c in self.importEvents(in: c, from: endOfDay, to: farOffFuture()) }
+        store.calendars(for: EKEntityType.event).forEach { self.importEvents(in: $0, from: endOfDay, to: farOffFuture()) }
+        store.calendars(for: EKEntityType.reminder).forEach { self.importEvents(in: $0, from: endOfDay, to: farOffFuture()) }
 
         // then get the past (which cleans up some stuff about event recurrence, too)
-        store.calendars(for: EKEntityType.event).forEach { c in self.importEvents(in: c, from: longAgo(), to: startOfDay) }
-        store.calendars(for: EKEntityType.reminder).forEach { c in self.importEvents(in: c, from: longAgo(), to: startOfDay) }
+        store.calendars(for: EKEntityType.event).forEach { self.importEvents(in: $0, from: longAgo(), to: startOfDay) }
+        store.calendars(for: EKEntityType.reminder).forEach { self.importEvents(in: $0, from: longAgo(), to: startOfDay) }
     }
 
     // max sync distance is 4 years
@@ -57,27 +59,29 @@ class EventKit {
     }
 
     func importEvent(_ ekEvent: EKEvent, in calendar: EKCalendar) {
-        if let series = Series.by(id: ekEvent.cleanId) { // always keep series as series, even if arrives w/o recurrence info
-            importAsSeries(ekEvent, in: calendar, given: series)
-
-        } else {
-
-            if ekEvent.isRecurring && !ekEvent.isDetached {
-                importAsSeries(ekEvent, in: calendar, given: Series.by(id: ekEvent.cleanId))
+        importQueue.async {
+            if let series = Series.by(id: ekEvent.cleanId) { // always keep series as series, even if arrives w/o recurrence info
+                self.importAsSeries(ekEvent, in: calendar, given: series)
 
             } else {
-                switch ekEvent.type {
-                case .event:
-                    importAsEvent(ekEvent, in: calendar, given: Event.by(id: ekEvent.cleanId))
 
-                case .reminder:
-                    if let series = Series.by(title: ekEvent.title),
-                        (series.isExactRecurrence(date: ekEvent.startDate) || (ekEvent.isAllDay && series.recurrence.recursOn(ekEvent.startDate, for: series))) {
-                        print("reminder DUPLICATE of Series \(ekEvent.title)")
-                        importAsSeries(ekEvent, in: calendar, given: series)
+                if ekEvent.isRecurring && !ekEvent.isDetached {
+                    self.importAsSeries(ekEvent, in: calendar, given: Series.by(id: ekEvent.cleanId))
 
-                    } else {
-                        importAsReminder(ekEvent, in: calendar, given: Reminder.by(id: ekEvent.cleanId))
+                } else {
+                    switch ekEvent.type {
+                    case .event:
+                        self.importAsEvent(ekEvent, in: calendar, given: Event.by(id: ekEvent.cleanId))
+
+                    case .reminder:
+                        if let series = Series.by(title: ekEvent.title),
+                            (series.isExactRecurrence(date: ekEvent.startDate) || (ekEvent.isAllDay && series.recurrence.recursOn(ekEvent.startDate, for: series))) {
+                            print("reminder DUPLICATE of Series \(ekEvent.title)")
+                            self.importAsSeries(ekEvent, in: calendar, given: series)
+
+                        } else {
+                            self.importAsReminder(ekEvent, in: calendar, given: Reminder.by(id: ekEvent.cleanId))
+                        }
                     }
                 }
             }
@@ -109,7 +113,12 @@ class EventKit {
                 event.status = .archived
             }
             event.insert()
-            print("event INSERT \(ekEvent.title)")
+            print("event INSERT \(ekEvent.title) from \(calendar.title)")
+            if ekEvent.title.contains("Eleni") {
+                print("    Calendar: \(calendar.title) - \(calendar.calendarIdentifier)")
+                print("    Source: \(calendar.source.title) - \(calendar.source.sourceIdentifier)")
+                print("    ID: \(ekEvent.eventIdentifier)")
+            }
         }
     }
 
