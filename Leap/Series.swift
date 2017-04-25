@@ -13,6 +13,9 @@ let reminderQueue = DispatchQueue(label: "reminder.materialize")
 let eventQueue = DispatchQueue(label: "event.materialize")
 
 class Series: LeapModel {
+    static let reminderCache = SwiftlyLRU<String,Reminder>(capacity: 100)
+    static let eventCache = SwiftlyLRU<String,Event>(capacity: 100)
+
     dynamic var creator: Person?
     dynamic var title: String = ""
     dynamic var template: Template!
@@ -255,23 +258,16 @@ class Series: LeapModel {
         guard let eventStart = startTime(between: start, and: end), recurrence.recursOn(eventStart, for: self) else {
             return nil
         }
-
         let eventId = generateId(for: eventStart)
-
-        eventQueue.sync {
-            if let _ = Event.by(id: eventId) {
-                return
-            }
-
-            if let event = template.event(onDayOf: eventStart, id: eventId),
-                Calendar.universalGregorian.isDate(event.startDate, betweenInclusive: start, and: end) &&
-                    self.recurrence.recursOn(event.startDate, for: self) {
-                event.insert()
-            }
-        }
-
         if let event = Event.by(id: eventId) {
             return Calendar.universalGregorian.isDate(event.startDate, betweenInclusive: start, and: end) ? event : nil
+        }
+
+        if let event = template.event(onDayOf: eventStart, id: eventId),
+            Calendar.universalGregorian.isDate(event.startDate, betweenInclusive: start, and: end) &&
+                self.recurrence.recursOn(event.startDate, for: self) {
+            event.update()
+            return event
         }
         
         return nil
@@ -288,22 +284,18 @@ class Series: LeapModel {
 
         let reminderId = self.generateId(for: reminderStart)
 
-        reminderQueue.sync {
-            guard Reminder.by(id: reminderId) == nil else {
-                return
-            }
-
-            if let reminder = template.reminder(onDayOf: reminderStart, id: reminderId),
-                Calendar.universalGregorian.isDate(reminder.startDate, betweenInclusive: start, and: end) &&
-                self.recurrence.recursOn(reminder.startDate, for: self) {
-                reminder.insert()
-            }
-        }
-
         if let reminder = Reminder.by(id: reminderId) {
             return Calendar.universalGregorian.isDate(reminder.startDate, betweenInclusive: start, and: end) ? reminder : nil
         }
-        
+
+
+        if let reminder = template.reminder(onDayOf: reminderStart, id: reminderId),
+            Calendar.universalGregorian.isDate(reminder.startDate, betweenInclusive: start, and: end) &&
+                self.recurrence.recursOn(reminder.startDate, for: self) {
+            reminder.update()
+            return reminder
+        }
+
         return nil
     }
 
