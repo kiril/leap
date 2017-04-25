@@ -11,7 +11,7 @@ import RealmSwift
 import EventKit
 
 protocol CalendarLinkable {
-    var linkedCalendarIds: List<StringObject> { get }
+    var linkedCalendarIds: List<StringWrapper> { get }
 }
 
 extension CalendarLinkable {
@@ -20,14 +20,15 @@ extension CalendarLinkable {
     }
 
     func addLink(to string: String) {
-        let id = StringObject(string)
+        let id = StringWrapper(string)
 
         if !linkedCalendarIds.contains(id) {
             linkedCalendarIds.append(id)
         }
     }
+
     var linkedCalendars: [LegacyCalendar] {
-        return linkedCalendarIds.flatMap { LegacyCalendar.by(id: $0.stringValue) }
+        return linkedCalendarIds.flatMap { LegacyCalendar.by(id: $0.raw) }
     }
 }
 
@@ -36,25 +37,8 @@ protocol CalendarLinkIdentifiable {
 }
 
 extension CalendarLinkIdentifiable {
-    func asLinkId() -> StringObject {
-        return StringObject(calendarLinkId)
-    }
-}
-
-class StringObject: Object {
-    // move this somewhere else if useful?
-    public dynamic var stringValue = ""
-
-    convenience init(_ string: String) {
-        self.init(value: ["stringValue": string])
-    }
-
-    override func isEqual(_ object: Any?) -> Bool {
-        if  let rhs = object as? StringObject {
-            let lhs = self
-            return lhs.stringValue == rhs.stringValue
-        }
-        return false
+    func asLinkId() -> StringWrapper {
+        return StringWrapper(calendarLinkId)
     }
 }
 

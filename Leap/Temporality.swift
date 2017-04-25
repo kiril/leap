@@ -41,7 +41,7 @@ protocol Temporality: Particible {
 
     var externalURL: String? { get set }
     var alarms: List<Alarm> { get }
-    var linkedCalendarIds: List<StringObject> { get }
+    var linkedCalendarIds: List<StringWrapper> { get }
 
     var seriesId: String? { get set }
     var template: Template? { get set }
@@ -104,7 +104,7 @@ class _TemporalBase: LeapModel {
 
     let alarms = List<Alarm>()
     let participants = List<Participant>()
-    let linkedCalendarIds = List<StringObject>()
+    let linkedCalendarIds = List<StringWrapper>()
 
     var isRecurring: Bool { return seriesId != nil }
 
