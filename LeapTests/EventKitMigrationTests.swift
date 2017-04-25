@@ -48,7 +48,7 @@ class EventKitMigrationTests: XCTestCase {
         XCTAssertEqual(r3.interval, 2)
         XCTAssertEqual(r3.frequency, Frequency.yearly)
         XCTAssertEqual(r3.daysOfWeek.count, 1)
-        XCTAssertEqual(r3.daysOfWeek[0].dayOfWeek, DayOfWeek.tuesday)
+        XCTAssertEqual(DayOfWeek.from(int: r3.daysOfWeek[0].raw), DayOfWeek.tuesday)
 
         let endDate = Calendar.current.date(byAdding: DateComponents(year: 1), to: Date())!
         let ek4 = EKRecurrenceRule(recurrenceWith: EKRecurrenceFrequency.weekly, interval: 1, daysOfTheWeek: [EKRecurrenceDayOfWeek(EKWeekday.tuesday), EKRecurrenceDayOfWeek(EKWeekday.thursday)], daysOfTheMonth: nil, monthsOfTheYear: [1 as NSNumber, 2 as NSNumber], weeksOfTheYear: nil, daysOfTheYear: nil, setPositions: nil, end: EKRecurrenceEnd(end: endDate))
@@ -65,8 +65,8 @@ class EventKitMigrationTests: XCTestCase {
         XCTAssertEqual(r4.interval, 1)
         XCTAssertEqual(r4.frequency, Frequency.weekly)
         XCTAssertEqual(r4.daysOfWeek.count, 2)
-        XCTAssertEqual(r4.daysOfWeek[0].dayOfWeek, DayOfWeek.tuesday)
-        XCTAssertEqual(r4.daysOfWeek[1].dayOfWeek, DayOfWeek.thursday)
+        XCTAssertEqual(DayOfWeek.from(int: r4.daysOfWeek[0].raw), DayOfWeek.tuesday)
+        XCTAssertEqual(DayOfWeek.from(int: r4.daysOfWeek[1].raw), DayOfWeek.thursday)
         XCTAssertEqual(r4.monthsOfYear.count, 2)
         XCTAssertEqual(r4.monthsOfYear[0].raw, 1)
         XCTAssertEqual(r4.monthsOfYear[1].raw, 2)

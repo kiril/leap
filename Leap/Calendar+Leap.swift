@@ -219,10 +219,17 @@ extension Calendar {
 
     func allDays(inMonthOf d: Date) -> DaySequence {
         let theFirst = startOfMonth(including: d)
-        return sequence(from: theFirst, while: {day in return self.component(.month, from: day) == self.component(.month, from: theFirst) })
+        let year = self.component(.year, from: theFirst)
+        return sequence(from: theFirst, while: {day in return self.component(.month, from: day) == year })
     }
 
     func allDays(inYearOf d: Date) -> DaySequence {
+        let theFirst = startOfYear(including: d)
+        let year = self.component(.year, from: theFirst)
+        return sequence(from: theFirst, while: {day in return self.component(.year, from: day) == year })
+    }
+
+    func allDaysReversed(inYearOf d: Date) -> DaySequence {
         let theFirst = startOfYear(including: d)
         return sequence(from: theFirst, while: {day in return self.component(.year, from: day) == self.component(.year, from: theFirst) })
     }
