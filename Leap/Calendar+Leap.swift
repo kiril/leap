@@ -219,8 +219,8 @@ extension Calendar {
 
     func allDays(inMonthOf d: Date) -> DaySequence {
         let theFirst = startOfMonth(including: d)
-        let year = self.component(.year, from: theFirst)
-        return sequence(from: theFirst, while: {day in return self.component(.month, from: day) == year })
+        let month = self.component(.month, from: theFirst)
+        return sequence(from: theFirst, while: {day in return self.component(.month, from: day) == month })
     }
 
     func allDays(inYearOf d: Date) -> DaySequence {

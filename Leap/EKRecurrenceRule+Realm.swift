@@ -33,8 +33,7 @@ extension EKRecurrenceRule {
     }
 
     func recurrenceDay(from dow: EKRecurrenceDayOfWeek) -> Int {
-        let day: DayOfWeek = DayOfWeek(rawValue: dow.dayOfTheWeek.rawValue) ?? .sunday
-        return day.toInt(week: dow.weekNumber)
+        return DayOfWeek.from(int: dow.dayOfTheWeek.rawValue).toInt(week: dow.weekNumber)
     }
 
 

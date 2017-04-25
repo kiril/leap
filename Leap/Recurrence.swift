@@ -34,11 +34,31 @@ public enum DayOfWeek: Int {
     }
 
     func toInt(week: Int = 0) -> Int {
-        return week >= 0 ? (week * 1000) + self.rawValue : (week * 1000) - self.rawValue
+        if week == 0 {
+            return self.rawValue
+        }
+        return week > 0 ? (week * 1000) + self.rawValue : (week * 1000) - self.rawValue
     }
 
     static func from(int: Int) -> DayOfWeek {
-        return DayOfWeek(rawValue: abs(int) % 1000)!
+        switch abs(int) % 1000 {
+        case 1:
+            return .sunday
+        case 2:
+            return .monday
+        case 3:
+            return .tuesday
+        case 4:
+            return .wednesday
+        case 5:
+            return .thursday
+        case 6:
+            return .friday
+        case 7:
+            return .saturday
+        default:
+            fatalError("Invalid day of week \(int)")
+        }
     }
 }
 

@@ -194,6 +194,23 @@ class RecurrenceTests: XCTestCase {
         }
     }
 
+    func testDayOfWeek() {
+        XCTAssertEqual(DayOfWeek.sunday.toInt(), 1)
+        XCTAssertEqual(DayOfWeek.sunday.toInt(week: 1), 1001)
+        XCTAssertEqual(DayOfWeek.sunday.toInt(week: -2), -2001)
+
+        XCTAssertEqual(DayOfWeek.from(int: -2001), DayOfWeek.sunday)
+        XCTAssertEqual(DayOfWeek.from(int: 1001), DayOfWeek.sunday)
+        XCTAssertEqual(DayOfWeek.from(int: 1), DayOfWeek.sunday)
+    }
+
+    func testDayOfWeekMatches() {
+        let rec = Recurrence.every(.yearly, at: 0, past: 9)
+        rec.daysOfWeek.append(DayOfWeek.saturday.toInt())
+
+        XCTAssertTrue(rec.dayOfWeekMatches(for: calendar.theNext(weekday: GregorianSaturday, after: Date())))
+    }
+
     func testSecondAndLastWeekdayInYear() {
         self.measure {
             let rec = Recurrence.every(.yearly, at: 0, past: 9)
