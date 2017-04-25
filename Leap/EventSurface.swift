@@ -33,6 +33,8 @@ extension TimePerspective {
 class EventSurface: Surface, ModelLoadable {
     override var type: String { return "event" }
 
+    var isInConflict = false
+
     // validation
     // change detection!! (because need to know when fields are dirty)
     // next: change this to NSObject, use KVO and 'public private (set) var xxx' for properties

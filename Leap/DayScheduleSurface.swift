@@ -89,7 +89,7 @@ class DayScheduleSurface: Surface {
 
         events = Array(Set<EventSurface>(events))
 
-        events.sort { $0.startTime.value < $1.startTime.value }
+        events.sort { $0.startTime.value == $1.startTime.value ? $0.endTime.value < $1.endTime.value : $0.startTime.value < $1.startTime.value }
 
         _freshEvents = events
         _lastCachedEvents = Date.timeIntervalSinceReferenceDate
