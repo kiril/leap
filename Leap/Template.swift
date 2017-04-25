@@ -59,7 +59,7 @@ class Template: LeapModel, Particible, Alarmable, CalendarLinkable {
                                    "originString": originString]
         let reminder = Reminder(value: data)
         try! Realm.user().safeWrite { // TODO: - store in memory eventually?
-            Realm.user().add(reminder, update: true)
+            Realm.user().add(reminder)
         }
         return reminder
     }
