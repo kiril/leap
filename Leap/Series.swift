@@ -228,7 +228,7 @@ class Series: LeapModel {
         return possibility
     }
 
-    func idFor(start: Date) -> String {
+    func generateId(for start: Date) -> String {
         let year = Calendar.universalGregorian.component(.year, from: start)
         let month = Calendar.universalGregorian.component(.month, from: start)
         let day = Calendar.universalGregorian.component(.day, from: start)
@@ -256,7 +256,7 @@ class Series: LeapModel {
             return nil
         }
 
-        let eventId = idFor(start: eventStart)
+        let eventId = generateId(for: eventStart)
 
         eventQueue.sync {
             if let _ = Event.by(id: eventId) {
@@ -286,10 +286,10 @@ class Series: LeapModel {
             return nil
         }
 
-        let reminderId = self.idFor(start: reminderStart)
+        let reminderId = self.generateId(for: reminderStart)
 
         reminderQueue.sync {
-            if let _ = Reminder.by(id: reminderId) {
+            guard Reminder.by(id: reminderId) == nil else {
                 return
             }
 
