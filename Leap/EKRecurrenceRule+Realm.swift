@@ -46,11 +46,11 @@ extension EKRecurrenceRule {
                                    "endTime": recurrenceEnd?.endDate?.secondsSinceReferenceDate ?? 0,
                                    "originString": event.getOrigin(in: calendar).rawValue,
                                    "template": event.asTemplate(in: calendar),
-                                   "recurrence": self.asRecurrence(for: event)]
+                                   "recurrence": self.asRecurrence(on: event.startDate)]
         return Series(value: data)
     }
 
-    func asRecurrence(for event: EKEvent) -> Recurrence {
+    func asRecurrence(on date: Date) -> Recurrence {
         let recurrence = Recurrence(value: ["frequencyRaw": getFrequency().rawValue,
                                             "interval": interval,
                                             "weekStartRaw": weekStart().rawValue,
@@ -60,7 +60,7 @@ extension EKRecurrenceRule {
             weekdays.forEach { recurrence.daysOfWeek.append(recurrenceDay(from: $0)) }
 
         } else if getFrequency() == .weekly {
-            recurrence.daysOfWeek.append(RecurrenceDay.of(day: DayOfWeek.from(date: event.startDate)))
+            recurrence.daysOfWeek.append(RecurrenceDay.of(day: DayOfWeek.from(date: date)))
         }
 
         if let days = daysOfTheMonth {

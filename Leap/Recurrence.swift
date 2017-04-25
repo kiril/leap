@@ -134,39 +134,16 @@ class Recurrence: LeapModel {
         }
 
         // now calculate the exact nth Tuesday, both as a positive and a negative
-        let firstOfMonth = Recurrence.calendar.startOfMonth(including: date)
-        let firstWeekday = Recurrence.calendar.theNext(weekday: day.rawValue, onOrAfter: firstOfMonth)
-        let dayOfFirstWeekday = Recurrence.calendar.component(.day, from: firstWeekday)
-        let daysInMonth = Recurrence.calendar.range(of: .day, in: .month, for: date)!.upperBound - 1
-        let daysRemaining = daysInMonth - dayOfFirstWeekday
-        let weeksRemaining = daysRemaining / 7
-        let totalWeekdays = weeksRemaining + 1
+        let ordinal = Recurrence.calendar.weekdayOrdinal(of: date)
+        let totalWeekdays = Recurrence.calendar.count(weekday: day.rawValue, inMonthOf: date)
 
-        assert(totalWeekdays <= 5)
-
-
-        let month = Recurrence.calendar.component(.month, from: date)
-        var d = firstWeekday
-        var nth = 0
-        while Recurrence.calendar.component(.month, from: d) == month {
-            nth += 1
-            if Recurrence.calendar.isDate(d, inSameDayAs: date) {
-                break
-            }
-            d = Recurrence.calendar.theNext(weekday: day.rawValue, after: d)
-        }
-
-        assert(nth >= 1 && nth <= 5)
-
-        if daysOfWeek.contains(day: day, week: nth) { // exact positive-index match
+        if daysOfWeek.contains(day: day, week: ordinal) { // exact positive-index match
             return true
         }
 
-        let negativeWeek = (nth - totalWeekdays) - 1
+        let negativeOrdinal = Recurrence.calendar.negativeOrdinal(ordinal: ordinal, total: totalWeekdays)
 
-        assert(negativeWeek < 0 && negativeWeek >= -5)
-
-        if daysOfWeek.contains(day: day, week: negativeWeek) { // exact positive-index match
+        if daysOfWeek.contains(day: day, week: negativeOrdinal) { // exact positive-index match
             return true
         }
 
