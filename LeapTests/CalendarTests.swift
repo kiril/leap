@@ -94,7 +94,26 @@ class CalendarTests: XCTestCase {
         }
     }
 
-    //func weekdayOrdinal(of date: Date) -> Int {
+    func testWeekdayOrdinal() {
+        let components = DateComponents(year: 2017, month: 1, day: 1)
+        let januaryFirst2017 = calendar.date(from: components)!
+        XCTAssertEqual(calendar.component(.weekday, from: januaryFirst2017), GregorianSunday)
+        XCTAssertEqual(calendar.weekdayOrdinal(of: januaryFirst2017), 1)
+        XCTAssertEqual(calendar.count(weekday: GregorianSunday, inMonthOf: januaryFirst2017), 5)
+
+
+        let aprilComponents = DateComponents(year: 2017, month: 4, day: 10)
+        let aprilTenth2017 = calendar.date(from: aprilComponents)!
+        XCTAssertEqual(calendar.component(.weekday, from: aprilTenth2017), GregorianMonday)
+        XCTAssertEqual(calendar.weekdayOrdinal(of: aprilTenth2017), 2)
+        XCTAssertEqual(calendar.count(weekday: GregorianMonday, inMonthOf: aprilTenth2017), 4)
+    }
+
+    func testNegativeOrdinal() {
+        XCTAssertEqual(calendar.negativeOrdinal(ordinal: 3, total: 4), -2)
+        XCTAssertEqual(calendar.negativeOrdinal(ordinal: 4, total: 4), -1)
+        XCTAssertEqual(calendar.negativeOrdinal(ordinal: 1, total: 5), -5)
+    }
     //func count(weekday: Int, inMonthOf date: Date) -> Int {
     //func negativeOrdinal(ordinal: Int, total: Int) -> Int {
 }
