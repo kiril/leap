@@ -99,7 +99,7 @@ class EventKit {
                 }
             }
             try! realm.safeWrite {
-                existing.addLink(calendar.link(to: ekEvent))
+                existing.addLink(to: calendar)
             }
             print("event UPDATE \(ekEvent.title)")
 
@@ -123,7 +123,7 @@ class EventKit {
                 }
             }
             try! realm.safeWrite {
-                existing.addLink(calendar.link(to: ekEvent))
+                existing.addLink(to: calendar)
             }
             print("reminder UPDATE \(ekEvent.title)")
 
@@ -152,7 +152,7 @@ class EventKit {
             try! Realm.user().safeWrite {
                 existing.updateStartTimeIfEarlier(ekEvent.startDate.secondsSinceReferenceDate)
                 existing.template.addParticipants(ekEvent.getParticipants())
-                existing.template.addLink(calendar.link(to: ekEvent))
+                existing.template.addLink(to: calendar)
                 existing.template.addAlarms(ekEvent.getAlarms())
                 if let me = existing.template.me, me.engagement == .disengaged, existing.status != .archived {
                     existing.status = .archived

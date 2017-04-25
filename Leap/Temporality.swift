@@ -41,7 +41,7 @@ protocol Temporality: Particible {
 
     var externalURL: String? { get set }
     var alarms: List<Alarm> { get }
-    var links: List<CalendarLink> { get }
+    var linkedCalendarIds: List<StringObject> { get }
 
     var seriesId: String? { get set }
     var template: Template? { get set }
@@ -53,26 +53,6 @@ protocol Temporality: Particible {
 }
 
 extension Temporality {
-
-    func linkTo(calendar: LegacyCalendar, itemId: String, externalItemId: String?) {
-        for link in links {
-            if link.calendar == calendar {
-                return
-            }
-        }
-        links.append(CalendarLink(value: ["itemId": itemId as Any?,
-                                          "externalItemId": externalItemId,
-                                          "calendar": calendar as Any?]))
-    }
-
-    func linkTo(link newLink: CalendarLink) {
-        for link in links {
-            if link.calendar == newLink.calendar {
-                return
-            }
-        }
-        links.append(newLink)
-    }
 
     func isBetterVersionOf(_ old: Temporality) -> Bool {
 
@@ -124,7 +104,7 @@ class _TemporalBase: LeapModel {
 
     let alarms = List<Alarm>()
     let participants = List<Participant>()
-    let links = List<CalendarLink>()
+    let linkedCalendarIds = List<StringObject>()
 
     var isRecurring: Bool { return seriesId != nil }
 

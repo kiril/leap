@@ -9,7 +9,7 @@
 import Foundation
 import RealmSwift
 
-class Template: LeapModel, Particible, Alarmable, Linkable {
+class Template: LeapModel, Particible, Alarmable, CalendarLinkable {
     dynamic var title: String = ""
     dynamic var detail: String?
     dynamic var locationString: String?
@@ -28,7 +28,7 @@ class Template: LeapModel, Particible, Alarmable, Linkable {
 
     let participants = List<Participant>()
     let alarms = List<Alarm>()
-    let links = List<CalendarLink>()
+    let linkedCalendarIds = List<StringObject>()
 
     var modality: EventModality {
         get { return EventModality(rawValue: modalityString)! }
@@ -55,7 +55,7 @@ class Template: LeapModel, Particible, Alarmable, Linkable {
                                    "seriesId": seriesId,
                                    "participants": participants,
                                    "alarms": alarms,
-                                   "links": links,
+                                   "linkedCalendarIds": linkedCalendarIds,
                                    "originString": originString]
         return Reminder(value: data)
     }
@@ -92,7 +92,7 @@ class Template: LeapModel, Particible, Alarmable, Linkable {
                                    "seriesId": seriesId,
                                    "participants": participants,
                                    "alarms": alarms,
-                                   "links": links,
+                                   "linkedCalendarIds": linkedCalendarIds,
                                    "originString": originString,
                                    "endTime": endDate.secondsSinceReferenceDate]
         return Event(value: data)
