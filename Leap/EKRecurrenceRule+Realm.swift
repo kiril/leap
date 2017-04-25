@@ -81,6 +81,11 @@ extension EKRecurrenceRule {
         if let positions = setPositions {
             positions.forEach { recurrence.setPositions.append(Int($0)) }
         }
+
+        if getFrequency() == .yearly && recurrence.daysOfYear.isEmpty && recurrence.weeksOfYear.isEmpty && recurrence.monthsOfYear.isEmpty && recurrence.setPositions.isEmpty {
+            recurrence.monthsOfYear.append(Recurrence.calendar.component(.month, from: date))
+            recurrence.daysOfMonth.append(Recurrence.calendar.component(.day, from: date))
+        }
         
         return recurrence
     }
