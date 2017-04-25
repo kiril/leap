@@ -211,28 +211,42 @@ class Series: LeapModel {
         return false
     }
 
+    func startTime(between start: Date, and end: Date) -> Date? {
+        let minuteSet = Calendar.universalGregorian.date(bySetting: .minute, value: template.startMinute, of: start)!
+        let possibility = Calendar.universalGregorian.date(bySetting: .hour, value: template.startHour, of: minuteSet)!
+        guard possibility < end else {
+            return nil
+        }
+        return possibility
+    }
+
+    func idFor(start: Date) -> String {
+        let year = Calendar.universalGregorian.component(.year, from: start)
+        let month = Calendar.universalGregorian.component(.month, from: start)
+        let day = Calendar.universalGregorian.component(.day, from: start)
+        let hour = Calendar.universalGregorian.component(.hour, from: start)
+        let minute = Calendar.universalGregorian.component(.minute, from: start)
+        return "\(id)-\(year).\(month).\(day).\(hour):\(minute)"
+    }
+
     func event(between start: Date, and end: Date) -> Event? {
         guard self.type == .event else {
             return nil
         }
 
-        let eventId = "\(id)-\(start.secondsSinceReferenceDate)"
+        guard let eventStart = startTime(between: start, and: end), recurrence.recursOn(eventStart, for: self) else {
+            return nil
+        }
+
+        let eventId = idFor(start: eventStart)
+
         if let event = Event.by(id: eventId) {
+            // it might have moved, so we have to check again
             return Calendar.universalGregorian.isDate(event.startDate, betweenInclusive: start, and: end) ? event : nil
         }
 
-        let firstTry = template!.event(onDayOf: start, id: eventId)
-        if let firstTry = firstTry,
-            Calendar.current.isDate(firstTry.startDate, betweenInclusive: start, and: end),
-            self.recurrence!.recursOn(firstTry.startDate, for: self) {
-            return firstTry
-        }
-
-        let secondTry = template!.event(onDayOf: end, id: eventId)
-        if let secondTry = secondTry,
-            Calendar.current.isDate(secondTry.startDate, betweenInclusive: start, and: end),
-            self.recurrence!.recursOn(secondTry.startDate, for: self) {
-            return secondTry
+        if let event = template.event(onDayOf: eventStart, id: eventId) {
+            return event
         }
         
         return nil
@@ -243,23 +257,18 @@ class Series: LeapModel {
             return nil
         }
 
-        let reminderId = "\(id)-\(start.secondsSinceReferenceDate)"
+        guard let reminderStart = startTime(between: start, and: end), recurrence.recursOn(reminderStart, for: self) else {
+            return nil
+        }
+
+        let reminderId = self.idFor(start: reminderStart)
+
         if let reminder = Reminder.by(id: reminderId) {
             return Calendar.universalGregorian.isDate(reminder.startDate, betweenInclusive: start, and: end) ? reminder : nil
         }
 
-        let firstTry = template.reminder(onDayOf: start, id: reminderId)
-        if let firstTry = firstTry,
-            Calendar.current.isDate(firstTry.startDate, betweenInclusive: start, and: end),
-            self.recurrence.recursOn(firstTry.startDate, for: self) {
-            return firstTry
-        }
-
-        let secondTry = template.reminder(onDayOf: end, id: reminderId)
-        if let secondTry = secondTry,
-            Calendar.current.isDate(secondTry.startDate, betweenInclusive: start, and: end),
-            self.recurrence.recursOn(secondTry.startDate, for: self) {
-            return secondTry
+        if let reminder = template.reminder(onDayOf: reminderStart, id: reminderId) {
+            return reminder
         }
         
         return nil
