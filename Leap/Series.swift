@@ -9,6 +9,9 @@
 import Foundation
 import RealmSwift
 
+let reminderQueue = DispatchQueue(label: "reminder.materialize")
+let eventQueue = DispatchQueue(label: "event.materialize")
+
 class Series: LeapModel {
     dynamic var creator: Person?
     dynamic var title: String = ""
@@ -240,13 +243,16 @@ class Series: LeapModel {
 
         let eventId = idFor(start: eventStart)
 
-        if let event = Event.by(id: eventId) {
-            // it might have moved, so we have to check again
-            return Calendar.universalGregorian.isDate(event.startDate, betweenInclusive: start, and: end) ? event : nil
+        eventQueue.sync {
+            if let _ = Event.by(id: eventId) {
+                return
+            }
+
+            let _ = template.event(onDayOf: eventStart, id: eventId)
         }
 
-        if let event = template.event(onDayOf: eventStart, id: eventId) {
-            return event
+        if let event = Event.by(id: eventId) {
+            return Calendar.universalGregorian.isDate(event.startDate, betweenInclusive: start, and: end) ? event : nil
         }
         
         return nil
@@ -263,12 +269,16 @@ class Series: LeapModel {
 
         let reminderId = self.idFor(start: reminderStart)
 
-        if let reminder = Reminder.by(id: reminderId) {
-            return Calendar.universalGregorian.isDate(reminder.startDate, betweenInclusive: start, and: end) ? reminder : nil
+        reminderQueue.sync {
+            if let _ = Reminder.by(id: reminderId) {
+                return
+            }
+
+            let _ = template.reminder(onDayOf: reminderStart, id: reminderId)
         }
 
-        if let reminder = template.reminder(onDayOf: reminderStart, id: reminderId) {
-            return reminder
+        if let reminder = Reminder.by(id: reminderId) {
+            return Calendar.universalGregorian.isDate(reminder.startDate, betweenInclusive: start, and: end) ? reminder : nil
         }
         
         return nil
