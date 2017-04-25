@@ -209,8 +209,6 @@ class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
             }
         }
 
-        surface.lastPersisted = Date.timeIntervalSinceReferenceDate
-
         guard madeChanges else {
             return
         }
@@ -220,6 +218,8 @@ class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
         } else {
             try! surface.update(data: data, via: self)
         }
+
+        surface.lastPersisted = Date.timeIntervalSinceReferenceDate
     }
 
     @discardableResult

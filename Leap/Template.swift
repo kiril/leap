@@ -57,11 +57,7 @@ class Template: LeapModel, Particible, Alarmable, Linkable {
                                    "alarms": alarms,
                                    "links": links,
                                    "originString": originString]
-        let reminder = Reminder(value: data)
-        try! Realm.user().safeWrite { // TODO: - store in memory eventually?
-            Realm.user().add(reminder)
-        }
-        return reminder
+        return Reminder(value: data)
     }
 
     func event(onDayOf date: Date, id: String? = nil) -> Event? {
@@ -99,10 +95,6 @@ class Template: LeapModel, Particible, Alarmable, Linkable {
                                    "links": links,
                                    "originString": originString,
                                    "endTime": endDate.secondsSinceReferenceDate]
-        let event = Event(value: data)
-        try! Realm.user().safeWrite { // TODO: - store in memory eventually?
-            Realm.user().add(event, update: true)
-        }
-        return event
+        return Event(value: data)
     }
 }

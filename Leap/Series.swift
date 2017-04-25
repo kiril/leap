@@ -263,7 +263,11 @@ class Series: LeapModel {
                 return
             }
 
-            let _ = template.event(onDayOf: eventStart, id: eventId)
+            if let event = template.event(onDayOf: eventStart, id: eventId),
+                Calendar.universalGregorian.isDate(event.startDate, betweenInclusive: start, and: end) &&
+                    self.recurrence.recursOn(event.startDate, for: self) {
+                event.insert()
+            }
         }
 
         if let event = Event.by(id: eventId) {
@@ -289,7 +293,11 @@ class Series: LeapModel {
                 return
             }
 
-            let _ = template.reminder(onDayOf: reminderStart, id: reminderId)
+            if let reminder = template.reminder(onDayOf: reminderStart, id: reminderId),
+                Calendar.universalGregorian.isDate(reminder.startDate, betweenInclusive: start, and: end) &&
+                self.recurrence.recursOn(reminder.startDate, for: self) {
+                reminder.insert()
+            }
         }
 
         if let reminder = Reminder.by(id: reminderId) {

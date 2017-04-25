@@ -27,28 +27,29 @@ class LeapModel: Object, Auditable {
         set { statusString = newValue.rawValue }
     }
 
-    func delete() {
-        let realm = Realm.user()
+    func delete(into aRealm: Realm? = nil) {
+        let realm = aRealm ?? Realm.user()
         try! realm.safeWrite {
             realm.delete(self)
         }
     }
 
-    func insert() {
-        let realm = Realm.user()
+    func insert(into aRealm: Realm? = nil) {
+        let realm = aRealm ?? Realm.user()
         try! realm.safeWrite {
             realm.add(self)
         }
     }
 
-    func update() {
-        let realm = Realm.user()
+    func update(into aRealm: Realm? = nil) {
+        let realm = aRealm ?? Realm.user()
         try! realm.safeWrite {
             realm.add(self, update: true)
         }
     }
 
-    static func fetch<ModelType:Object>(id: String) -> ModelType? {
-        return Realm.user().objects(ModelType.self).filter("id = %@", id).first
+    static func fetch<ModelType:Object>(id: String, from aRealm: Realm? = nil) -> ModelType? {
+        let realm = aRealm ?? Realm.user()
+        return realm.objects(ModelType.self).filter("id = %@", id).first
     }
 }

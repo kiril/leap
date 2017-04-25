@@ -145,7 +145,9 @@ class DayScheduleSurface: Surface {
             _eventRefreshStarted = Date.timeIntervalSinceReferenceDate
             if async {
                 DispatchQueue.global(qos: .background).async {
-                    usleep(100*1000) // sleep 100ms to de-bounce this function being called
+                    if self._lastCachedEvents > 0 { // if we have never done so, don't wait, it slows down the UI
+                        usleep(100*1000) // sleep 100ms to de-bounce this function being called
+                    }
                     self.refreshEvents()
                     self._eventRefreshStarted = nil
                 }
@@ -165,7 +167,9 @@ class DayScheduleSurface: Surface {
             _reminderRefreshStarted = Date.timeIntervalSinceReferenceDate
             if async {
                 DispatchQueue.global(qos: .background).async {
-                    usleep(100*1000) // sleep 100ms to de-bounce this function being called
+                    if self._lastCachedReminders > 0 { // if we have never done so, don't wait, it slows down the UI
+                        usleep(100*1000) // sleep 100ms to de-bounce this function being called
+                    }
                     self.refreshReminders()
                     self._reminderRefreshStarted = nil
                 }
@@ -349,6 +353,10 @@ class DayScheduleSurface: Surface {
     }
 
     override func shouldNotifyObserversAboutChange(to updatedKey: String) -> Bool {
+        guard lastPersisted != nil else {
+            return false
+        }
+
         if updatedKey == series.key || updatedKey == events.key {
             DispatchQueue.global(qos: .background).async { self.checkEventFreshness() }
         }
