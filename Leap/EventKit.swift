@@ -18,8 +18,19 @@ class EventKit {
     }
 
     func importAll() {
-        store.calendars(for: EKEntityType.event).forEach { c in self.importCalendar(c) }
-        store.calendars(for: EKEntityType.reminder).forEach { c in self.importCalendar(c) }
+        let startOfDay = Calendar.current.startOfDay(for: Date())
+        let endOfDay = Calendar.current.startOfDay(for: Calendar.current.dayAfter(startOfDay))
+        // get today's stuff flowing in fast
+        store.calendars(for: EKEntityType.event).forEach { c in self.importEvents(in: c, from: startOfDay, to: endOfDay) }
+        store.calendars(for: EKEntityType.reminder).forEach { c in self.importEvents(in: c, from: startOfDay, to: endOfDay) }
+
+        // future, because you're more likely to look there soon
+        store.calendars(for: EKEntityType.event).forEach { c in self.importEvents(in: c, from: endOfDay, to: farOffFuture()) }
+        store.calendars(for: EKEntityType.reminder).forEach { c in self.importEvents(in: c, from: endOfDay, to: farOffFuture()) }
+
+        // then get the past (which cleans up some stuff about event recurrence, too)
+        store.calendars(for: EKEntityType.event).forEach { c in self.importEvents(in: c, from: longAgo(), to: startOfDay) }
+        store.calendars(for: EKEntityType.reminder).forEach { c in self.importEvents(in: c, from: longAgo(), to: startOfDay) }
     }
 
     // max sync distance is 4 years
@@ -36,16 +47,9 @@ class EventKit {
         return Calendar.current.date(byAdding: plus4years, to: startOfToday, wrappingComponents: true)!
     }
 
-    func importCalendar(_ calendar: EKCalendar) {
+    func importEvents(in calendar: EKCalendar, from: Date, to: Date) {
         calendar.asLegacyCalendar(eventStoreId: store.eventStoreIdentifier).update()
-        let startOfDay = Calendar.current.startOfDay(for: Date())
-        let endOfDay = Calendar.current.startOfDay(for: Calendar.current.dayAfter(startOfDay))
-
-        let callback = eventSearchCallback(calendar)
-
-        store.enumerateEvents(in: calendar, from: startOfDay, to: endOfDay, using: callback)
-        store.enumerateEvents(in: calendar, from: longAgo(), to: startOfDay, using: callback)
-        store.enumerateEvents(in: calendar, from: endOfDay, to: farOffFuture(), using: callback)
+        store.enumerateEvents(in: calendar, from: from, to: to, using: eventSearchCallback(calendar))
     }
 
     func eventSearchCallback(_ calendar: EKCalendar) -> EKEventSearchCallback {
