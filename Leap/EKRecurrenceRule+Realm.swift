@@ -83,8 +83,8 @@ extension EKRecurrenceRule {
         }
 
         if getFrequency() == .yearly && recurrence.daysOfYear.isEmpty && recurrence.weeksOfYear.isEmpty && recurrence.monthsOfYear.isEmpty && recurrence.setPositions.isEmpty {
-            recurrence.monthsOfYear.append(Recurrence.calendar.component(.month, from: date))
-            recurrence.daysOfMonth.append(Recurrence.calendar.component(.day, from: date))
+            recurrence.monthsOfYear.append(Recurrence.calendar.component(.month, from: event.startDate))
+            recurrence.daysOfMonth.append(Recurrence.calendar.component(.day, from: event.startDate))
         }
         
         return recurrence
