@@ -152,6 +152,7 @@ class Series: LeapModel {
                     let lastMonthStart = Calendar.current.date(bySetting: .month, value: rec.monthsOfYear[0].raw, of: firstOfMonth)!
                     let lastMonthEnd = Calendar.current.date(byAdding: .month, value: 1, to: lastMonthStart)!
 
+                    // TODO: skip to the damned day, given that it's so easy...
                     var day = lastMonthStart
                     while day < lastMonthEnd {
                         if rec.recursOn(day, for: self) {
@@ -287,7 +288,6 @@ class Series: LeapModel {
         if let reminder = Reminder.by(id: reminderId) {
             return Calendar.universalGregorian.isDate(reminder.startDate, betweenInclusive: start, and: end) ? reminder : nil
         }
-
 
         if let reminder = template.reminder(onDayOf: reminderStart, id: reminderId),
             Calendar.universalGregorian.isDate(reminder.startDate, betweenInclusive: start, and: end) &&
