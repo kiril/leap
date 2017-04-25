@@ -13,10 +13,16 @@ class ReminderCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        setup()
     }
 
     func configure(with reminder: ReminderSurface) {
         
+    }
+
+    private func setup() {
+        self.contentView.translatesAutoresizingMaskIntoConstraints = false
+        self.translatesAutoresizingMaskIntoConstraints = false
     }
 
 }
