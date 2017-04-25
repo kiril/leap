@@ -32,9 +32,9 @@ extension EKRecurrenceRule {
         }
     }
 
-    func recurrenceDay(from dow: EKRecurrenceDayOfWeek) -> RecurrenceDay {
+    func recurrenceDay(from dow: EKRecurrenceDayOfWeek) -> Int {
         let day: DayOfWeek = DayOfWeek(rawValue: dow.dayOfTheWeek.rawValue) ?? .sunday
-        return RecurrenceDay.of(day: day, in: dow.weekNumber)
+        return day.toInt(week: dow.weekNumber)
     }
 
 
@@ -60,7 +60,7 @@ extension EKRecurrenceRule {
             weekdays.forEach { recurrence.daysOfWeek.append(recurrenceDay(from: $0)) }
 
         } else if getFrequency() == .weekly {
-            recurrence.daysOfWeek.append(RecurrenceDay.of(day: DayOfWeek.from(date: date)))
+            recurrence.daysOfWeek.append(DayOfWeek.from(date: date).toInt())
         }
 
         if let days = daysOfTheMonth {

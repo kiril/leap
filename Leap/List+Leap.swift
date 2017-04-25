@@ -23,24 +23,3 @@ extension List where T == IntWrapper {
         self.append(IntWrapper.of(int))
     }
 }
-
-extension List where T == RecurrenceDay {
-
-    func contains(day: DayOfWeek) -> Bool {
-        for rd in self {
-            if rd.dayOfWeek == day {
-                return true
-            }
-        }
-        return false
-    }
-
-    func contains(day: DayOfWeek, week: Int) -> Bool {
-        for rd in self {
-            if rd.dayOfWeek == day && rd.week == week {
-                return true
-            }
-        }
-        return false
-    }
-}

@@ -32,55 +32,13 @@ public enum DayOfWeek: Int {
         let components = Calendar.current.dateComponents([Calendar.Component.weekday], from: date)
         return DayOfWeek(rawValue: components.weekday!)!
     }
-}
 
-
-class RecurrenceDay: Object {
-    dynamic var id: Int = 0
-    dynamic var dayOfWeekRaw: Int = DayOfWeek.sunday.rawValue
-    dynamic var week: Int = 0 // 1-indexed
-
-    private static var _recurrenceDayCache: [Int:[Int:RecurrenceDay]] = [:]
-
-    var dayOfWeek: DayOfWeek {
-        get { return DayOfWeek(rawValue: dayOfWeekRaw)! }
-        set { dayOfWeekRaw = newValue.rawValue }
+    func toInt(week: Int = 0) -> Int {
+        return week >= 0 ? (week * 1000) + self.rawValue : (week * 1000) - self.rawValue
     }
 
-    override static func primaryKey() -> String? {
-        return "id"
-    }
-
-    static func of(day: DayOfWeek, in week: Int = 0) -> RecurrenceDay {
-        let dayId = week * 1000 + day.rawValue
-        let realm = Realm.user()
-
-        if let d = realm.objects(RecurrenceDay.self).filter("id = %d", dayId).first {
-            return d
-        }
-
-        let rd = RecurrenceDay(value: ["id": dayId,
-                                       "dayOfWeekRaw": day.rawValue,
-                                       "week": week])
-        try! realm.safeWrite {
-            realm.add(rd)
-        }
-        return rd
-    }
-
-    override var hashValue: Int {
-        return id
-    }
-
-    override func isEqual(_ object: Any?) -> Bool {
-        if let rd = object as? RecurrenceDay {
-            return rd.id == self.id
-        }
-        return false
-    }
-
-    static func == (lhs: RecurrenceDay, rhs: RecurrenceDay) -> Bool {
-        return lhs.id == rhs.id
+    static func from(int: Int) -> DayOfWeek {
+        return DayOfWeek(rawValue: abs(int) % 1000)!
     }
 }
 
@@ -95,7 +53,7 @@ class Recurrence: LeapModel {
     dynamic var interval: Int = 0
     dynamic var weekStartRaw: Int = DayOfWeek.sunday.rawValue
 
-    let daysOfWeek = List<RecurrenceDay>()
+    let daysOfWeek = List<IntWrapper>()
     let daysOfMonth = List<IntWrapper>()
     let daysOfYear = List<IntWrapper>()
     let weeksOfYear = List<IntWrapper>()
@@ -125,25 +83,21 @@ class Recurrence: LeapModel {
         guard daysOfWeek.count > 0 else { return true }
         let day = DayOfWeek.from(date: date)
 
-        if daysOfWeek.contains(day: day, week: 0) { // 'any Tuesday' is in there, so yay
+        if daysOfWeek.contains(day.toInt()) { // 'any Tuesday' is in there, so yay
             return true
-        }
-
-        if !daysOfWeek.contains(day: day) { // at all, so no Tuesdays are in there, regardless of week
-            return false
         }
 
         // now calculate the exact nth Tuesday, both as a positive and a negative
         let ordinal = Recurrence.calendar.weekdayOrdinal(of: date)
         let totalWeekdays = Recurrence.calendar.count(weekday: day.rawValue, inMonthOf: date)
 
-        if daysOfWeek.contains(day: day, week: ordinal) { // exact positive-index match
+        if daysOfWeek.contains(day.toInt(week: ordinal)) { // exact positive-index match
             return true
         }
 
         let negativeOrdinal = Recurrence.calendar.negativeOrdinal(ordinal: ordinal, total: totalWeekdays)
 
-        if daysOfWeek.contains(day: day, week: negativeOrdinal) { // exact positive-index match
+        if daysOfWeek.contains(day.toInt(week: negativeOrdinal)) { // exact positive-index match
             return true
         }
 

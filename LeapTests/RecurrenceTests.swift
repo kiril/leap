@@ -41,7 +41,7 @@ class RecurrenceTests: XCTestCase {
 
     func testOneDayOfWeek() {
         let rec = Recurrence.every(.daily, at: 30, past: 2)
-        rec.daysOfWeek.append(RecurrenceDay.of(day: .monday))
+        rec.daysOfWeek.append(DayOfWeek.monday.toInt())
 
         let monday = calendar.theNext(weekday: GregorianMonday, onOrAfter: now)
 
@@ -56,8 +56,8 @@ class RecurrenceTests: XCTestCase {
 
     func testMultipleDaysOfWeek() {
         let rec = Recurrence.every(.daily, at: 30, past: 2)
-        rec.daysOfWeek.append(RecurrenceDay.of(day: .monday))
-        rec.daysOfWeek.append(RecurrenceDay.of(day: .tuesday))
+        rec.daysOfWeek.append(DayOfWeek.monday.toInt())
+        rec.daysOfWeek.append(DayOfWeek.tuesday.toInt())
 
         let monday = calendar.theNext(weekday: GregorianMonday, onOrAfter: now)
 
@@ -98,7 +98,7 @@ class RecurrenceTests: XCTestCase {
 
     func testFirstTuesdayOfMonth() {
         let rec = Recurrence.every(.monthly, at: 0, past: 9)
-        rec.daysOfWeek.append(RecurrenceDay.of(day: DayOfWeek.tuesday, in: 1))
+        rec.daysOfWeek.append(DayOfWeek.tuesday.toInt(week: 1))
 
         let theFirst = calendar.startOfMonth(onOrAfter: now)
         let firstTuesday = calendar.theNext(weekday: GregorianTuesday, onOrAfter: theFirst)
@@ -109,7 +109,7 @@ class RecurrenceTests: XCTestCase {
 
     func testSecondTuesdayOfMonth() {
         let rec = Recurrence.every(.monthly, at: 0, past: 9)
-        rec.daysOfWeek.append(RecurrenceDay.of(day: DayOfWeek.tuesday, in: 2))
+        rec.daysOfWeek.append(DayOfWeek.tuesday.toInt(week: 2))
 
         let theFirst = calendar.startOfMonth(onOrAfter: now)
         let firstTuesday = calendar.theNext(weekday: GregorianTuesday, onOrAfter: theFirst)
@@ -120,7 +120,7 @@ class RecurrenceTests: XCTestCase {
 
     func testSundaysInFebruary() {
         let rec = Recurrence.every(.weekly, at: 0, past: 9)
-        rec.daysOfWeek.append(RecurrenceDay.of(day: .sunday))
+        rec.daysOfWeek.append(DayOfWeek.sunday.toInt())
         rec.monthsOfYear.append(IntWrapper.of(2))
 
         let theFirst = calendar.startOfMonth(onOrAfter: now)
@@ -146,7 +146,7 @@ class RecurrenceTests: XCTestCase {
     func testPositionalInMonth() {
         self.measure {
             let rec = Recurrence.every(.monthly, at: 0, past: 9)
-            rec.daysOfWeek.append(RecurrenceDay.of(day: .friday))
+            rec.daysOfWeek.append(DayOfWeek.friday.toInt())
             rec.setPositions.append(2)
 
             let fridays = self.calendar.all(weekdays: GregorianFriday, inMonthOf: self.now)
@@ -160,8 +160,8 @@ class RecurrenceTests: XCTestCase {
 
     func testComplexPositionalInMonth() {
         let rec = Recurrence.every(.monthly, at: 0, past: 9)
-        rec.daysOfWeek.append(RecurrenceDay.of(day: .thursday))
-        rec.daysOfWeek.append(RecurrenceDay.of(day: .friday))
+        rec.daysOfWeek.append(DayOfWeek.thursday.toInt())
+        rec.daysOfWeek.append(DayOfWeek.friday.toInt())
         rec.setPositions.append(2)
 
         let startOfMonth = calendar.startOfMonth(onOrAfter: now)
@@ -182,7 +182,7 @@ class RecurrenceTests: XCTestCase {
 
     func testPositionalInYear() {
         let rec = Recurrence.every(.yearly, at: 0, past: 9)
-        rec.daysOfWeek.append(RecurrenceDay.of(day: .saturday))
+        rec.daysOfWeek.append(DayOfWeek.saturday.toInt())
         rec.setPositions.append(IntWrapper.of(3))
 
         let saturdays = calendar.all(weekdays: GregorianSaturday, inYearOf: now)
@@ -197,13 +197,13 @@ class RecurrenceTests: XCTestCase {
     func testSecondAndLastWeekdayInYear() {
         self.measure {
             let rec = Recurrence.every(.yearly, at: 0, past: 9)
-            rec.daysOfWeek.append(RecurrenceDay.of(day: .monday))
-            rec.daysOfWeek.append(RecurrenceDay.of(day: .tuesday))
-            rec.daysOfWeek.append(RecurrenceDay.of(day: .wednesday))
-            rec.daysOfWeek.append(RecurrenceDay.of(day: .thursday))
-            rec.daysOfWeek.append(RecurrenceDay.of(day: .friday))
-            rec.setPositions.append(IntWrapper.of(2))
-            rec.setPositions.append(IntWrapper.of(-1))
+            rec.daysOfWeek.append(DayOfWeek.monday.toInt())
+            rec.daysOfWeek.append(DayOfWeek.tuesday.toInt())
+            rec.daysOfWeek.append(DayOfWeek.wednesday.toInt())
+            rec.daysOfWeek.append(DayOfWeek.thursday.toInt())
+            rec.daysOfWeek.append(DayOfWeek.friday.toInt())
+            rec.setPositions.append(2)
+            rec.setPositions.append(-1)
 
             let startOfYear = self.calendar.startOfYear(onOrAfter: self.now)
 
@@ -219,7 +219,8 @@ class RecurrenceTests: XCTestCase {
             assert(finalWeekdayIndex != 0)
 
             var matchCount = 0
-            for (i, day) in days.enumerated() {
+            var i = 0
+            for day in self.calendar.allDays(inYearOf: startOfYear) {
                 if self.calendar.isWeekday(day) {
                     if i == finalWeekdayIndex {
                         XCTAssertTrue(rec.recursOn(day, for: self.series))
@@ -232,6 +233,7 @@ class RecurrenceTests: XCTestCase {
                         }
                     }
                 }
+                i += 1
             }
         }
     }
