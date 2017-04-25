@@ -28,7 +28,7 @@ class Template: LeapModel, Particible, Alarmable, CalendarLinkable {
 
     let participants = List<Participant>()
     let alarms = List<Alarm>()
-    let linkedCalendarIds = List<StringObject>()
+    let linkedCalendarIds = List<StringWrapper>()
 
     var modality: EventModality {
         get { return EventModality(rawValue: modalityString)! }
