@@ -85,9 +85,13 @@ class Event: _TemporalBase, Temporality, CalendarLinkable, Alarmable, Fuzzy {
         return between(start, and: end)
     }
 
-    static func between(_ starting: Date, and before: Date) -> Results<Event> {
-        let predicate = NSPredicate(format: "statusString = %@ AND ((startTime >= %d AND startTime < %d) OR (endTime >= %d AND endTime <= %d))", ObjectStatus.active.rawValue, starting.secondsSinceReferenceDate, before.secondsSinceReferenceDate, starting.secondsSinceReferenceDate, before.secondsSinceReferenceDate)
+    static func between(_ starting: Date, and before: Date, withStatus status: ObjectStatus = .active) -> Results<Event> {
+        let predicate = NSPredicate(format: "statusString = %@ AND ((startTime >= %d AND startTime < %d) OR (endTime >= %d AND endTime <= %d))", status.rawValue, starting.secondsSinceReferenceDate, before.secondsSinceReferenceDate, starting.secondsSinceReferenceDate, before.secondsSinceReferenceDate)
         return Realm.user().objects(Event.self).filter(predicate).sorted(byKeyPath: "startTime")
         // TODO: also spanning this range??? (notes???)
+    }
+
+    static func by(id: String) -> Event? {
+        return fetch(id: id)
     }
 }

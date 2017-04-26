@@ -259,7 +259,7 @@ class Series: LeapModel, Fuzzy {
         return false
     }
 
-    func event(between start: Date, and end: Date) -> Event? {
+    func event(between start: Date, and end: Date, withStatus status: [ObjectStatus] = [.active]) -> Event? {
         guard self.type == .event else {
             return nil
         }
@@ -269,7 +269,11 @@ class Series: LeapModel, Fuzzy {
         }
         let eventId = generateId(for: eventStart)
         if let event = Event.by(id: eventId) {
-            return Calendar.universalGregorian.isDate(event.startDate, betweenInclusive: start, and: end) ? event : nil
+            if Calendar.universalGregorian.isDate(event.startDate, betweenInclusive: start, and: end) {
+                return object(event, ifHasStatus: status)
+            } else {
+                return nil
+            }
         }
 
         if let event = template.event(onDayOf: eventStart, id: eventId),
@@ -279,6 +283,13 @@ class Series: LeapModel, Fuzzy {
             return event
         }
         
+        return nil
+    }
+
+    private func object<T: Auditable>(_ object: T, ifHasStatus status:[ObjectStatus]) -> T? {
+        for status in status {
+            if object.status == status { return object }
+        }
         return nil
     }
 

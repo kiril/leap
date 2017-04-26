@@ -8,7 +8,7 @@
 
 
 import Foundation
-
+import RealmSwift
 
 enum EventResponse {
     case none,
@@ -105,6 +105,27 @@ class EventSurface: Surface, ModelLoadable {
             return 0.0
         } else {
             return Float(now.seconds(since: event.startTime.value))/Float(event.endTime.value.seconds(since: event.startTime.value))
+        }
+    }
+
+    func hackyCreateReminderFromEvent() {
+        // Okay, this is going to be mostly to get it displaying on the screen, consider this prototype code.
+
+        let realm = Realm.user()
+
+        let event = Event.by(id: id)!
+
+        let data : [String: Any] = [
+            "title": event.title,
+            "event": event,
+            "startTime": event.startTime,
+            "endTime": event.endTime
+        ]
+
+        let reminder: Reminder = Reminder(value: data)
+        try! realm.write {
+            reminder.insert(into: realm)
+            event.status = .archived
         }
     }
 
