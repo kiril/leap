@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import IGListKit
 
 class ReminderSurface: Surface, ModelLoadable {
     override var type: String { return "reminder" }
@@ -38,8 +39,21 @@ class ReminderSurface: Surface, ModelLoadable {
 
 }
 
-
-
 extension ReminderSurface: Hashable {
     var hashValue: Int { return id.hashValue }
+}
+
+
+extension ReminderSurface: IGListDiffable {
+    func diffIdentifier() -> NSObjectProtocol { return NSNumber(value: id.hashValue) }
+
+    func isEqual(toDiffableObject object: IGListDiffable?) -> Bool {
+        guard   let reminder = object as? ReminderSurface,
+                self != reminder else {
+            return false
+        }
+
+        return  (reminder.startTime.value == startTime.value) &&
+                (reminder.title.value == reminder.title.value)
+    }
 }
