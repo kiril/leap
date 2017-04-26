@@ -12,7 +12,7 @@ import Foundation
 import IGListKit
 
 class ReminderSectionController: IGListSectionController, IGListSectionType {
-    var reminder: ReminderSurface?
+    var reminder: ReminderCellDisplayable?
 
     override init() {
         super.init()
@@ -24,9 +24,9 @@ class ReminderSectionController: IGListSectionController, IGListSectionType {
     }
 
     func sizeForItem(at index: Int) -> CGSize {
-        let targetSize = CGSize(width: targetCellWidth, height: 100000000)
         guard let reminder = reminder else { return CGSize.zero }
 
+        let targetSize = CGSize(width: targetCellWidth, height: 100000000)
         configureCellWidth(prototypeReminderCell)
         prototypeReminderCell.configure(with: reminder)
         let size = prototypeReminderCell.systemLayoutSizeFitting(targetSize)
@@ -34,7 +34,8 @@ class ReminderSectionController: IGListSectionController, IGListSectionType {
     }
 
     func didUpdate(to object: Any) {
-        reminder = object as? ReminderSurface
+        // if a NoRemindersPlaceholderObject was passed in, this will be set to nil
+        reminder = object as? ReminderCellDisplayable
     }
 
     func cellForItem(at index: Int) -> UICollectionViewCell {

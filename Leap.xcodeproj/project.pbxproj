@@ -40,6 +40,10 @@
 		8366F11A1EAFAD4A00E3A448 /* ReminderSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8366F1191EAFAD4A00E3A448 /* ReminderSectionController.swift */; };
 		8366F11D1EAFAE1100E3A448 /* ReminderCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8366F11B1EAFAE1100E3A448 /* ReminderCollectionViewCell.swift */; };
 		8366F11E1EAFAE1100E3A448 /* ReminderCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8366F11C1EAFAE1100E3A448 /* ReminderCollectionViewCell.xib */; };
+		8366F1201EB0F63A00E3A448 /* VerticalSpacingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8366F11F1EB0F63A00E3A448 /* VerticalSpacingCollectionViewCell.swift */; };
+		8366F1221EB0F6FB00E3A448 /* SpacingSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8366F1211EB0F6FB00E3A448 /* SpacingSectionController.swift */; };
+		8366F1241EB0F80C00E3A448 /* VerticalSpacingPlaceholderObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8366F1231EB0F80C00E3A448 /* VerticalSpacingPlaceholderObject.swift */; };
+		8366F1261EB114AD00E3A448 /* NoRemindersPlaceholderObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8366F1251EB114AD00E3A448 /* NoRemindersPlaceholderObject.swift */; };
 		8372067B1E9EAEBF0010B914 /* UIFont+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8372067A1E9EAEBF0010B914 /* UIFont+Extensions.swift */; };
 		8372067D1E9F3EDE0010B914 /* RealmExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8372067C1E9F3EDE0010B914 /* RealmExtensions.swift */; };
 		8393621D1E8FF51E00543CFC /* WeekOverview.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8393621C1E8FF51E00543CFC /* WeekOverview.storyboard */; };
@@ -196,6 +200,10 @@
 		8366F1191EAFAD4A00E3A448 /* ReminderSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderSectionController.swift; sourceTree = "<group>"; };
 		8366F11B1EAFAE1100E3A448 /* ReminderCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderCollectionViewCell.swift; sourceTree = "<group>"; };
 		8366F11C1EAFAE1100E3A448 /* ReminderCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReminderCollectionViewCell.xib; sourceTree = "<group>"; };
+		8366F11F1EB0F63A00E3A448 /* VerticalSpacingCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalSpacingCollectionViewCell.swift; sourceTree = "<group>"; };
+		8366F1211EB0F6FB00E3A448 /* SpacingSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpacingSectionController.swift; sourceTree = "<group>"; };
+		8366F1231EB0F80C00E3A448 /* VerticalSpacingPlaceholderObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalSpacingPlaceholderObject.swift; sourceTree = "<group>"; };
+		8366F1251EB114AD00E3A448 /* NoRemindersPlaceholderObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoRemindersPlaceholderObject.swift; sourceTree = "<group>"; };
 		8372067A1E9EAEBF0010B914 /* UIFont+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Extensions.swift"; sourceTree = "<group>"; };
 		8372067C1E9F3EDE0010B914 /* RealmExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmExtensions.swift; sourceTree = "<group>"; };
 		8393621C1E8FF51E00543CFC /* WeekOverview.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WeekOverview.storyboard; sourceTree = "<group>"; };
@@ -369,6 +377,9 @@
 				8366F11C1EAFAE1100E3A448 /* ReminderCollectionViewCell.xib */,
 				834FBEBB1EA8882C004D9302 /* OpenTimeViewCell.xib */,
 				834FBEBD1EA8F335004D9302 /* OpenTimeViewCell.swift */,
+				8366F11F1EB0F63A00E3A448 /* VerticalSpacingCollectionViewCell.swift */,
+				8366F1231EB0F80C00E3A448 /* VerticalSpacingPlaceholderObject.swift */,
+				8366F1251EB114AD00E3A448 /* NoRemindersPlaceholderObject.swift */,
 				831444C51E7B020700A5EF06 /* DayScheduleViewController.swift */,
 				8366F1161EAFACD800E3A448 /* SectionControllers */,
 				831444CB1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift */,
@@ -498,6 +509,7 @@
 			children = (
 				8366F1191EAFAD4A00E3A448 /* ReminderSectionController.swift */,
 				8366F1171EAFAD0200E3A448 /* ScheduleSectionController.swift */,
+				8366F1211EB0F6FB00E3A448 /* SpacingSectionController.swift */,
 			);
 			name = SectionControllers;
 			sourceTree = "<group>";
@@ -1050,8 +1062,10 @@
 				8351BDD11E807C4C001221AF /* WeekOverviewSurface.swift in Sources */,
 				831444CC1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift in Sources */,
 				FB39ADB51E93EF2D00B79A7B /* Calendar+Leap.swift in Sources */,
+				8366F1201EB0F63A00E3A448 /* VerticalSpacingCollectionViewCell.swift in Sources */,
 				FB4208701E89855D007F4DBD /* Group.swift in Sources */,
 				FB39ADB31E92D40800B79A7B /* Date+Leap.swift in Sources */,
+				8366F1221EB0F6FB00E3A448 /* SpacingSectionController.swift in Sources */,
 				FB2046A81E82E28800F130C8 /* EKCalendar+Realm.swift in Sources */,
 				833617601E8C1D3A009A97FF /* DayScheduleTitleView.swift in Sources */,
 				FB42085D1E896847007F4DBD /* Resource.swift in Sources */,
@@ -1068,6 +1082,7 @@
 				FB2046B21E82E7BF00F130C8 /* Reminder.swift in Sources */,
 				FB42086E1E89816B007F4DBD /* EKRecurrenceRule+Realm.swift in Sources */,
 				FB4503D31EA579F8001D9F51 /* SwiftyLRU.swift in Sources */,
+				8366F1241EB0F80C00E3A448 /* VerticalSpacingPlaceholderObject.swift in Sources */,
 				FB1869D61EA01CBC007642F4 /* List+Leap.swift in Sources */,
 				FB4208471E857984007F4DBD /* Recurrence.swift in Sources */,
 				839362211E8FF5F200543CFC /* WeekOverviewPageViewDataSource.swift in Sources */,
@@ -1085,6 +1100,7 @@
 				834FBEBE1EA8F335004D9302 /* OpenTimeViewCell.swift in Sources */,
 				FB39ADA91E8C65AF00B79A7B /* Object+Leap.swift in Sources */,
 				FB166B571E8ABE1C00CB95EC /* RealmUtil.swift in Sources */,
+				8366F1261EB114AD00E3A448 /* NoRemindersPlaceholderObject.swift in Sources */,
 				FBD614561E7F38D4001F4050 /* Schema.swift in Sources */,
 				8336176B1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */,
 				8393621F1E8FF53B00543CFC /* WeekOverviewViewController.swift in Sources */,
