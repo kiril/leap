@@ -115,7 +115,6 @@ extension EKEvent {
         return alarms
     }
 
-
     func getParticipants() -> [Participant] {
         var participants: [Participant] = []
 

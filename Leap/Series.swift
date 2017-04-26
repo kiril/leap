@@ -12,7 +12,7 @@ import RealmSwift
 let reminderQueue = DispatchQueue(label: "reminder.materialize")
 let eventQueue = DispatchQueue(label: "event.materialize")
 
-class Series: LeapModel {
+class Series: LeapModel, Fuzzy {
     static let reminderCache = SwiftlyLRU<String,Reminder>(capacity: 100)
     static let eventCache = SwiftlyLRU<String,Event>(capacity: 100)
 
@@ -28,6 +28,14 @@ class Series: LeapModel {
 
     static func by(id: String) -> Series? {
         return fetch(id: id)
+    }
+
+    func calculateFuzzyHash() -> Int {
+        return "\(title)_\(startTime)_\(template.startHour)_\(template.startMinute)_\(template.durationMinutes)_\(template.participants)".hashValue
+    }
+
+    func calculateFuzzyHash(from event: Event) -> Int {
+        return "\(event.title)_\(event.startTime)_\(event.startHour)_\(event.startMinute)_\(event.durationMinutes)_\(event.participants)".hashValue
     }
 
     var startDate: Date {
@@ -310,7 +318,7 @@ class Series: LeapModel {
     }
 
     override static func indexedProperties() -> [String] {
-        return ["statusString", "startTime", "endTime"]
+        return ["statusString", "startTime", "endTime", "hash"]
     }
 
     static func by(title: String) -> Series? {

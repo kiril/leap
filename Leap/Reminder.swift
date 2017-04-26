@@ -9,7 +9,7 @@
 import Foundation
 import RealmSwift
 
-class Reminder: _TemporalBase, Temporality, CalendarLinkable, Alarmable {
+class Reminder: _TemporalBase, Temporality, CalendarLinkable, Alarmable, Fuzzy {
     dynamic var event: Event?
     dynamic var location: Location?
     dynamic var geoFence: GeoFence?
@@ -23,7 +23,7 @@ class Reminder: _TemporalBase, Temporality, CalendarLinkable, Alarmable {
     var startDate: Date { return Date(timeIntervalSinceReferenceDate: Double(startTime)) }
 
     override static func indexedProperties() -> [String] {
-        return ["location.id", "startTime", "participants", "statusString"]
+        return ["location.id", "startTime", "participants", "statusString", "hash"]
     }
 
     var duration: TimeInterval {
@@ -36,6 +36,10 @@ class Reminder: _TemporalBase, Temporality, CalendarLinkable, Alarmable {
     static func between(_ starting: Date, and before: Date) -> Results<Reminder> {
         let predicate = NSPredicate(format: "statusString = %@ AND startTime >= %d AND startTime < %d", ObjectStatus.active.rawValue, starting.secondsSinceReferenceDate, before.secondsSinceReferenceDate)
         return Realm.user().objects(Reminder.self).filter(predicate).sorted(byKeyPath: "startTime")
+    }
+
+    func calculateFuzzyHash() -> Int {
+        return "\(title)_\(startTime)_\(endTime)_\(participants)".hashValue
     }
 
     func isDuplicateOfExisting() -> Bool {
