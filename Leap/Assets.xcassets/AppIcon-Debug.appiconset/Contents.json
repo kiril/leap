@@ -56,13 +56,13 @@
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "debug_icon_120-1.png",
+      "filename" : "debug_120.png",
       "scale" : "2x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "debug_icon_180.png",
+      "filename" : "debug_180.png",
       "scale" : "3x"
     },
     {
