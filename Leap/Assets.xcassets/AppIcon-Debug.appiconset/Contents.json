@@ -3,25 +3,25 @@
     {
       "size" : "20x20",
       "idiom" : "iphone",
-      "filename" : "debug_icon_40.png",
+      "filename" : "40 Retina Notification.png",
       "scale" : "2x"
     },
     {
       "size" : "20x20",
       "idiom" : "iphone",
-      "filename" : "debug_icon_60.png",
+      "filename" : "60 Home Screen (iOS 7+).png",
       "scale" : "3x"
     },
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "debug_icon_29.png",
+      "filename" : "29 Settings (iOS 5+).png",
       "scale" : "1x"
     },
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "debug_icon_58.png",
+      "filename" : "58 Retina Setting (iOS 5+).png",
       "scale" : "2x"
     },
     {
@@ -32,115 +32,115 @@
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "debug_icon_80-1.png",
+      "filename" : "80 Retina Spotlight (iOS 7+).png",
       "scale" : "2x"
     },
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "debug_icon_120.png",
+      "filename" : "120 Retina Home Screen (iOS 7+).png",
       "scale" : "3x"
     },
     {
       "size" : "57x57",
       "idiom" : "iphone",
-      "filename" : "debug_57.png",
+      "filename" : "57 Home Screen (iOS 7+).png",
       "scale" : "1x"
     },
     {
       "size" : "57x57",
       "idiom" : "iphone",
-      "filename" : "debug_114.png",
+      "filename" : "114 Retina Home Screen (iOS 7+).png",
       "scale" : "2x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "debug_120.png",
+      "filename" : "120 Retina Home Screen (iOS 7+)-1.png",
       "scale" : "2x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "debug_180.png",
+      "filename" : "180 Retina HD Home Screen (iOS 7+).png",
       "scale" : "3x"
     },
     {
       "size" : "20x20",
       "idiom" : "ipad",
-      "filename" : "debug_icon_20.png",
+      "filename" : "20 Notification.png",
       "scale" : "1x"
     },
     {
       "size" : "20x20",
       "idiom" : "ipad",
-      "filename" : "debug_icon_40-1.png",
+      "filename" : "40 Retina Notification-1.png",
       "scale" : "2x"
     },
     {
       "size" : "29x29",
       "idiom" : "ipad",
-      "filename" : "debug_icon_29-1.png",
+      "filename" : "29 Settings (iOS 5+)-1.png",
       "scale" : "1x"
     },
     {
       "size" : "29x29",
       "idiom" : "ipad",
-      "filename" : "debug_icon_58-1.png",
+      "filename" : "58 Retina Setting (iOS 5+)-1.png",
       "scale" : "2x"
     },
     {
       "size" : "40x40",
       "idiom" : "ipad",
-      "filename" : "debug_icon_40-2.png",
+      "filename" : "40 Spotlight (iOS 7+).png",
       "scale" : "1x"
     },
     {
       "size" : "40x40",
       "idiom" : "ipad",
-      "filename" : "debug_icon_80-2.png",
+      "filename" : "80 Retina Spotlight (iOS 7+)-1.png",
       "scale" : "2x"
     },
     {
       "size" : "50x50",
       "idiom" : "ipad",
-      "filename" : "debug_icon_50.png",
+      "filename" : "50 Retina Spotlight (iOS 5_6).png",
       "scale" : "1x"
     },
     {
       "size" : "50x50",
       "idiom" : "ipad",
-      "filename" : "debug_icon_100.png",
+      "filename" : "100 Retina Spotlight (iOS 5_6).png",
       "scale" : "2x"
     },
     {
       "size" : "72x72",
       "idiom" : "ipad",
-      "filename" : "debug_icon_72.png",
+      "filename" : "72 Home Screen (iOS 5_6).png",
       "scale" : "1x"
     },
     {
       "size" : "72x72",
       "idiom" : "ipad",
-      "filename" : "debug_icon_144.png",
+      "filename" : "144 Retina Home Screen (iOS 5_6).png",
       "scale" : "2x"
     },
     {
       "size" : "76x76",
       "idiom" : "ipad",
-      "filename" : "debug_icon_76.png",
+      "filename" : "76 Home Screen (iOS 7+).png",
       "scale" : "1x"
     },
     {
       "size" : "76x76",
       "idiom" : "ipad",
-      "filename" : "debug_icon_152.png",
+      "filename" : "152 Retina Home Screen (iOS 7+.png",
       "scale" : "2x"
     },
     {
       "size" : "83.5x83.5",
       "idiom" : "ipad",
-      "filename" : "debug_icon_167.png",
+      "filename" : "167 Retina Home Screen (iPad Pro).png",
       "scale" : "2x"
     }
   ],
