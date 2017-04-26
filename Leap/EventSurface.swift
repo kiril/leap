@@ -210,18 +210,22 @@ class EventSurface: Surface, ModelLoadable {
                     }
 
                     guard let fromName = from else {
-                        return "-> \(to)"
+                        return "→ \(to)"
                     }
 
                     if event.me != nil && to == "Me" {
-                        return "from \(fromName)"
+                        if event.me!.engagement == .engaged {
+                            return "with \(fromName)"
+                        } else {
+                            return "from \(fromName)"
+                        }
                     }
 
                     guard !to.characters.isEmpty else {
                         return "from \(fromName)"
                     }
 
-                    return "\(fromName) -> \(to)"
+                    return "\(fromName) → \(to)"
 
                 case .subscription:
                     return "via \(event.linkedCalendars.first?.title ?? someCalendar)"
