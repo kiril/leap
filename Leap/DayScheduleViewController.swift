@@ -98,8 +98,12 @@ extension DayScheduleViewController: IGListAdapterDataSource {
         if object is ScheduleEntryWrapper {
             return ScheduleSectionController()
         }
-        else if object is ReminderSurface {
+        else if object is ReminderSurface ||
+                object is NoRemindersPlaceholderObject {
             return ReminderSectionController()
+        }
+        else if object is VerticalSpacingPlaceholderObject {
+            return SpacingSectionController()
         }
         else {
             fatalError("Can't find an appropriate listAdapter for: \(object)")
@@ -108,9 +112,16 @@ extension DayScheduleViewController: IGListAdapterDataSource {
 
     func objects(for listAdapter: IGListAdapter) -> [IGListDiffable] {
         let reminders = (surface.reminders.value as [IGListDiffable])
+
+        var emptyReminderPlaceholder = [IGListDiffable]()
+        if reminders.isEmpty {
+            emptyReminderPlaceholder = [NoRemindersPlaceholderObject()]
+        }
+
+        let spacing = [VerticalSpacingPlaceholderObject(height: 15)] as [IGListDiffable]
         let entries = (surface.entries.diffable() as [IGListDiffable])
 
-        return reminders + entries
+        return emptyReminderPlaceholder + reminders + spacing + entries
     }
 
     func emptyView(for listAdapter: IGListAdapter) -> UIView? {

@@ -18,14 +18,33 @@ class ReminderCollectionViewCell: UICollectionViewCell {
         setup()
     }
 
-    func configure(with reminder: ReminderSurface) {
-        titleLabel.text = reminder.title.value
+    func configure(with reminder: ReminderCellDisplayable) {
+        titleLabel.text = reminder.titleForCell
+
+        if reminder is ReminderSurface {
+            // ugh. hacky way to detect this, but this whole reminder vs. placeholder thing is feeling a bit cobbled together...
+            titleLabel.textColor = UIColor.projectDarkGray
+        } else {
+            titleLabel.textColor = UIColor.projectLightGray
+        }
     }
 
     private func setup() {
         self.contentView.translatesAutoresizingMaskIntoConstraints = false
         self.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.textColor = UIColor.projectDarkGray
     }
 
 }
+
+protocol ReminderCellDisplayable {
+    var titleForCell: String { get }
+}
+
+extension ReminderSurface: ReminderCellDisplayable {
+    var titleForCell: String { return title.value }
+}
+
+extension NoRemindersPlaceholderObject: ReminderCellDisplayable {
+    var titleForCell: String { return "No Reminders" }
+}
+

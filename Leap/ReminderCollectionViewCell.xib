@@ -18,8 +18,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="212" height="130"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Liz's Birthday" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mst-Dh-BuR">
-                        <rect key="frame" x="62.5" y="0.0" width="87.5" height="130"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Liz's Birthday" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mst-Dh-BuR">
+                        <rect key="frame" x="10" y="0.0" width="192" height="130"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -30,8 +30,8 @@
                 <constraint firstItem="Mst-Dh-BuR" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="Ffe-zS-LPU"/>
                 <constraint firstItem="Mst-Dh-BuR" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="dcd-yB-afg"/>
                 <constraint firstItem="Mst-Dh-BuR" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="dv6-th-QNq"/>
-                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Mst-Dh-BuR" secondAttribute="trailing" id="eze-u5-0nV"/>
-                <constraint firstItem="Mst-Dh-BuR" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gTV-IL-0wX" secondAttribute="leading" id="smr-Nb-pwA"/>
+                <constraint firstAttribute="trailing" secondItem="Mst-Dh-BuR" secondAttribute="trailing" constant="10" id="eze-u5-0nV"/>
+                <constraint firstItem="Mst-Dh-BuR" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="smr-Nb-pwA"/>
             </constraints>
             <size key="customSize" width="212" height="130"/>
             <connections>
