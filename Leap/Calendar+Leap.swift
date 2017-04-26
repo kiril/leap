@@ -22,13 +22,15 @@ class DayIterator: IteratorProtocol {
     let calendar: Calendar
     let test: DateTest
     let start: Date
+    let reversed: Bool
     var date: Date
 
-    init(calendar: Calendar, start: Date, while test: @escaping DateTest) {
+    init(calendar: Calendar, start: Date, while test: @escaping DateTest, reversed: Bool) {
         self.calendar = calendar
         self.start = start
         self.date = start
         self.test = test
+        self.reversed = reversed
     }
 
     func next() -> Date? {
@@ -37,7 +39,7 @@ class DayIterator: IteratorProtocol {
             return nil
         }
 
-        self.date = calendar.dayAfter(self.date)
+        self.date = reversed ? calendar.dayBefore(self.date) : calendar.dayAfter(self.date)
         return ret
     }
 
@@ -170,12 +172,20 @@ extension Calendar {
         return date(byAdding: DateComponents(day: 1), to: d)!
     }
 
-    func theNext(weekday: Int, onOrAfter date: Date) -> Date {
-        var d = date
-        while component(.weekday, from: d) != weekday {
-            d = dayAfter(d)
+    func dayBefore(_ d: Date) -> Date {
+        return date(byAdding: DateComponents(day: -1), to: d)!
+    }
+
+    func theNext(weekday desired: Int, onOrAfter date: Date) -> Date {
+        let weekday = component(.weekday, from: date)
+        if weekday == desired {
+            return date
         }
-        return d
+        if desired > weekday {
+            return self.date(byAdding: .day, value: (desired-weekday), to: date)!
+        }
+        let delta = 7 - (weekday - desired)
+        return self.date(byAdding: .day, value: delta, to: date)!
     }
 
     func theNext(weekday: Int, after date: Date) -> Date {
@@ -214,7 +224,11 @@ extension Calendar {
     }
 
     func sequence(from start: Date, while test: @escaping DateTest) -> DaySequence {
-        return DaySequence(DayIterator(calendar: self, start: start, while: test))
+        return sequence(from: start, while: test, reversed: false)
+    }
+
+    func sequence(from start: Date, while test: @escaping DateTest, reversed: Bool) -> DaySequence {
+        return DaySequence(DayIterator(calendar: self, start: start, while: test, reversed: reversed))
     }
 
     func allDays(inMonthOf d: Date) -> DaySequence {
@@ -230,8 +244,9 @@ extension Calendar {
     }
 
     func allDaysReversed(inYearOf d: Date) -> DaySequence {
-        let theFirst = startOfYear(including: d)
-        return sequence(from: theFirst, while: {day in return self.component(.year, from: day) == self.component(.year, from: theFirst) })
+        let lastDay = dayBefore(date(byAdding: .year, value: 1, to: startOfYear(including: d))!)
+        let year = self.component(.year, from: lastDay)
+        return sequence(from: lastDay, while: {day in return self.component(.year, from: day) == year }, reversed: true)
     }
 
     func all(weekdays day: Int, inYearOf date: Date) -> [Date] {
@@ -322,5 +337,10 @@ extension Calendar {
 
     func negativeOrdinal(ordinal: Int, total: Int) -> Int {
         return (ordinal - total) - 1
+    }
+
+    func daysInYear(including date: Date) -> Int {
+        let daysInFebruary = self.range(of: .day, in: .month, for: self.date(bySetting: .month, value: 2, of: date)!)!.upperBound - 1
+        return 365 + (daysInFebruary - 28)
     }
 }

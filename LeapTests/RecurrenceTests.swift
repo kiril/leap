@@ -223,20 +223,22 @@ class RecurrenceTests: XCTestCase {
             rec.setPositions.append(-1)
 
             let startOfYear = self.calendar.startOfYear(onOrAfter: self.now)
-
-            let days = Array(self.calendar.allDays(inYearOf: startOfYear))
+            let daysInFebruary = self.calendar.range(of: .day, in: .month, for: self.calendar.date(bySetting: .month, value: 2, of: startOfYear)!)!.upperBound - 1
+            let daysInYear = 365 + (daysInFebruary - 28)
 
             var finalWeekdayIndex = 0
-            for (i, day) in days.reversed().enumerated() {
+            var i = 0
+            for day in self.calendar.allDaysReversed(inYearOf: startOfYear) {
                 if self.calendar.isWeekday(day) {
-                    finalWeekdayIndex = days.count - i - 1
+                    finalWeekdayIndex = daysInYear - i - 1
                     break
                 }
+                i += 1
             }
             assert(finalWeekdayIndex != 0)
 
             var matchCount = 0
-            var i = 0
+            i = 0
             for day in self.calendar.allDays(inYearOf: startOfYear) {
                 if self.calendar.isWeekday(day) {
                     if i == finalWeekdayIndex {

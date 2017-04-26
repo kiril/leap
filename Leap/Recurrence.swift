@@ -237,46 +237,65 @@ class Recurrence: LeapModel {
             }
 
             if setPositions.count > 0 && daysOfWeek.count > 0 {
-                // we know that we match one of these days...
-                // but now we have to see if we're one of the 'nth' ones for a given position
-                // so...
-                // let's figure out what index this date is within this month
-                // that requires counting all the matching weekdays in this month until we find this date
-                let positions = setPositions.map { return $0.raw }
-                var haveNegative = false
-                for position in positions {
-                    if position < 0 {
-                        haveNegative = true
-                        break
+                let daysInYear = calendar.daysInYear(including: date)
+                let weekdays = daysOfWeek.map({ $0.raw }).sorted()
+
+                var positivePositions = setPositions.map({ $0.raw }).filter({ $0 >= 0 }).sorted()
+                let negativePositions = setPositions.map({ $0.raw }).filter({ $0 < 0 }).sorted()
+
+                let start = calendar.startOfYear(including: date)
+                let startWeekday = calendar.component(.weekday, from: start)
+
+                let firstWeekday = weekdays.filter({ $0 >= startWeekday }).first ?? weekdays.first!
+                let firstMatch = calendar.theNext(weekday: firstWeekday, onOrAfter: start)
+
+                let matchesPerWeek = weekdays.count
+                let dayOfYearForFirstMatch = calendar.component(.day, from: firstMatch) // valid because January! :)
+                let fullWeeksRemaining = (daysInYear - dayOfYearForFirstMatch) / 7
+                let dayInYearOfLastFullWeek = dayOfYearForFirstMatch + (fullWeeksRemaining * 7)
+                let daysRemainingInYear = daysInYear - dayInYearOfLastFullWeek
+
+                var matchesInTrailingWeek = 0
+                for weekday in weekdays {
+                    let daysTilNext = (weekday > firstWeekday) ? weekday - firstWeekday : 7 - (firstWeekday - weekday)
+                    if daysTilNext <= daysRemainingInYear {
+                        matchesInTrailingWeek += 1
                     }
                 }
-                var matchIndices: [Int] = []
-                var myPosition = -1
-
-                let allYear = calendar.allDays(inYearOf: date)
-
-                var i = 0
-                for aDay in allYear {
-                    if dayOfWeekMatches(for: aDay) {
-                        matchIndices.append(i)
-                        if calendar.isDate(aDay, theSameDayAs: date) {
-                            myPosition = matchIndices.count
-                            if positions.contains(myPosition) {
-                                return true
-                            }
-                        }
-                    } else if !haveNegative && myPosition != -1 {
-                        return false
-                    }
-                    i += 1
+                let totalMatchesInYear = 1 + (fullWeeksRemaining * matchesPerWeek) + matchesInTrailingWeek
+                negativePositions.forEach {
+                    let positiveTranslation = totalMatchesInYear + $0 + 1 // 1-indexed
+                    if !positivePositions.contains(positiveTranslation) { positivePositions.append(positiveTranslation) }
                 }
+                positivePositions.sort()
 
-                for position in positions {
-                    if position < 0 {
-                        let adjusted = matchIndices.count + position + 1
-                        if adjusted == myPosition {
+                for position in positivePositions {
+                    if position == 1 {
+                        if calendar.isDate(date, inSameDayAs: firstMatch) {
                             return true
                         }
+                    } else {
+                        let deltaToPosition = position - 1
+                        let weekOffset = deltaToPosition / matchesPerWeek
+                        let matchOffset = deltaToPosition % matchesPerWeek
+                        var d = calendar.date(byAdding: .day, value: weekOffset * 7, to: firstMatch)!
+                        if matchOffset == 0 {
+                            return weekdays.contains(calendar.component(.weekday, from: d)) && calendar.isDate(date, inSameDayAs: d)
+                        }
+
+                        var matches = 0
+                        repeat {
+                            d = calendar.dayAfter(d)
+                            if d > date {
+                                return false
+                            }
+                            if weekdays.contains(calendar.component(.weekday, from: d)) {
+                                matches += 1
+                                if matches == matchOffset && calendar.isDate(date, inSameDayAs: d) {
+                                    return true
+                                }
+                            }
+                        } while matches < matchOffset
                     }
                 }
 
