@@ -27,7 +27,7 @@ enum Firmness: String {
 /**
  * Here's our core!
  */
-class Event: _TemporalBase, Temporality, CalendarLinkable, Alarmable {
+class Event: _TemporalBase, Temporality, CalendarLinkable, Alarmable, Fuzzy {
     dynamic var startTime: Int = 0
     dynamic var endTime: Int = 0
     dynamic var modalityString: String = EventModality.unknown.rawValue
@@ -55,11 +55,23 @@ class Event: _TemporalBase, Temporality, CalendarLinkable, Alarmable {
     var time: TimeInterval { return Double(startTime) }
 
     override static func indexedProperties() -> [String] {
-        return ["venue", "room", "startTime", "endTime", "participants", "statusString"]
+        return ["venue", "room", "startTime", "endTime", "participants", "statusString", "hash"]
     }
 
     var duration: TimeInterval {
         return Double(self.endTime - self.startTime)
+    }
+
+    var startHour: Int { return Calendar.current.component(.hour, from: self.startDate) }
+    var startMinute: Int { return Calendar.current.component(.minute, from: self.startDate) }
+
+    var durationMinutes: Int {
+        let durationInSeconds = endDate.secondsSinceReferenceDate - startDate.secondsSinceReferenceDate
+        return durationInSeconds / 60
+    }
+
+    func calculateFuzzyHash() -> Int {
+        return "\(title)_\(startTime)_\(endTime)_\(participants)".hashValue
     }
 
     func isDuplicateOfExisting() -> Bool {

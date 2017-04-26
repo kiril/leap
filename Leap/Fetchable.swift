@@ -13,6 +13,8 @@ protocol Fetchable {
     var id: String { get }
     var isReal: Bool { get }
     static func by(id: String) -> LeapModel?
+    static func by(_ key: String, is string: String) -> LeapModel?
+    static func by(_ key: String, is int: Int) -> LeapModel?
 }
 
 
@@ -24,6 +26,14 @@ extension Fetchable where Self:LeapModel {
 
     static func by(id: String) -> Self? {
         return Realm.user().objects(Self.self).filter("id = %@", id).first// ?? Realm.temp().objects(Self.self).filter("id = %@", id).first
+    }
+
+    static func by(_ key: String, is string: String) -> Self? {
+        return Realm.user().objects(Self.self).filter("\(key) = %@", string).first
+    }
+
+    static func by(_ key: String, is int: Int) -> Self? {
+        return Realm.user().objects(Self.self).filter("\(key) = %d", int).first
     }
 }
 

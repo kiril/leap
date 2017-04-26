@@ -70,6 +70,7 @@
 		FB166B571E8ABE1C00CB95EC /* RealmUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B561E8ABE1C00CB95EC /* RealmUtil.swift */; };
 		FB166B5C1E8AC3CA00CB95EC /* Fetchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B5B1E8AC3CA00CB95EC /* Fetchable.swift */; };
 		FB166B5E1E8AC6DB00CB95EC /* ModelReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B5D1E8AC6DB00CB95EC /* ModelReference.swift */; };
+		FB180C481EB10EA800FE1CF4 /* FuzzyHashable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB180C471EB10EA700FE1CF4 /* FuzzyHashable.swift */; };
 		FB1869D41E9FF88A007642F4 /* RecurrenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1869D31E9FF88A007642F4 /* RecurrenceTests.swift */; };
 		FB1869D61EA01CBC007642F4 /* List+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1869D51EA01CBC007642F4 /* List+Leap.swift */; };
 		FB2046A31E82DA2200F130C8 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A21E82DA2200F130C8 /* Event.swift */; };
@@ -230,6 +231,7 @@
 		FB166B561E8ABE1C00CB95EC /* RealmUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmUtil.swift; sourceTree = "<group>"; };
 		FB166B5B1E8AC3CA00CB95EC /* Fetchable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fetchable.swift; sourceTree = "<group>"; };
 		FB166B5D1E8AC6DB00CB95EC /* ModelReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelReference.swift; sourceTree = "<group>"; };
+		FB180C471EB10EA700FE1CF4 /* FuzzyHashable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FuzzyHashable.swift; sourceTree = "<group>"; };
 		FB1869D31E9FF88A007642F4 /* RecurrenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecurrenceTests.swift; sourceTree = "<group>"; };
 		FB1869D51EA01CBC007642F4 /* List+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "List+Leap.swift"; sourceTree = "<group>"; };
 		FB2046A21E82DA2200F130C8 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
@@ -596,6 +598,7 @@
 				FB1869D51EA01CBC007642F4 /* List+Leap.swift */,
 				FB7ECD1D1EAE602600163AD5 /* CalendarLinkable.swift */,
 				FB7ECD1F1EAE64F900163AD5 /* Alarmable.swift */,
+				FB180C471EB10EA700FE1CF4 /* FuzzyHashable.swift */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -1104,6 +1107,7 @@
 				FBD614561E7F38D4001F4050 /* Schema.swift in Sources */,
 				8336176B1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */,
 				8393621F1E8FF53B00543CFC /* WeekOverviewViewController.swift in Sources */,
+				FB180C481EB10EA800FE1CF4 /* FuzzyHashable.swift in Sources */,
 				FB2046B81E830E4600F130C8 /* Temporality.swift in Sources */,
 				FB42085F1E896C40007F4DBD /* Reservation.swift in Sources */,
 				FB42086C1E897AD1007F4DBD /* ChecklistItem.swift in Sources */,

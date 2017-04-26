@@ -66,12 +66,14 @@ class EventKit {
             } else {
 
                 if ekEvent.isRecurring && !ekEvent.isDetached {
-                    self.importAsSeries(ekEvent, in: calendar, given: Series.by(id: ekEvent.cleanId))
+                    let existing = Series.by(id: ekEvent.cleanId)
+                    self.importAsSeries(ekEvent, in: calendar, given: existing)
 
                 } else {
                     switch ekEvent.type {
                     case .event:
-                        self.importAsEvent(ekEvent, in: calendar, given: Event.by(id: ekEvent.cleanId))
+                        let existing = Event.by(id: ekEvent.cleanId)
+                        self.importAsEvent(ekEvent, in: calendar, given: existing)
 
                     case .reminder:
                         if let series = Series.by(title: ekEvent.title),
@@ -80,7 +82,8 @@ class EventKit {
                             self.importAsSeries(ekEvent, in: calendar, given: series)
 
                         } else {
-                            self.importAsReminder(ekEvent, in: calendar, given: Reminder.by(id: ekEvent.cleanId))
+                            let existing = Reminder.by(id: ekEvent.cleanId)
+                            self.importAsReminder(ekEvent, in: calendar, given: existing)
                         }
                     }
                 }
@@ -88,59 +91,83 @@ class EventKit {
         }
     }
 
-    func importAsEvent(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: Event? = nil) {
+    func merge(_ ekEvent: EKEvent, into another: Temporality, in calendar: EKCalendar) {
+        var existing = another
         let realm = Realm.user()
-
-        if let existing = existing {
-            if existing.participants.isEmpty && ekEvent.hasAttendees {
-                try! realm.safeWrite {
-                    existing.addParticipants(ekEvent.getParticipants())
-                }
-                if let me = existing.me, me.engagement == .disengaged, existing.status != .archived {
-                    try! realm.safeWrite {
-                        existing.status = .archived
-                    }
-                }
-            }
+        if existing.participants.isEmpty && ekEvent.hasAttendees {
             try! realm.safeWrite {
-                existing.addLink(to: calendar)
+                existing.addParticipants(ekEvent.getParticipants())
             }
-            print("event UPDATE \(ekEvent.title)")
+            if let me = existing.me, me.engagement == .disengaged, existing.status != .archived {
+                try! realm.safeWrite {
+                    existing.status = .archived
+                }
+            }
+        }
+        if let linkable = existing as? CalendarLinkable {
+            try! realm.safeWrite {
+                linkable.addLink(to: calendar)
+            }
+        }
+        print("\(type(of:existing)) UPDATE \(ekEvent.title)")
+    }
+
+    func importAsEvent(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: Event? = nil) {
+        if let existing = existing {
+            merge(ekEvent, into: existing, in: calendar)
 
         } else {
             let event = ekEvent.asEvent(in: calendar)
-            if let me = event.me, me.engagement == .disengaged {
-                event.status = .archived
-            }
-            event.insert()
-            print("event INSERT \(ekEvent.title) from \(calendar.title)")
-            if ekEvent.title.contains("Eleni") {
-                print("    Calendar: \(calendar.title) - \(calendar.calendarIdentifier)")
-                print("    Source: \(calendar.source.title) - \(calendar.source.sourceIdentifier)")
-                print("    ID: \(ekEvent.eventIdentifier)")
+            if let duplicate = Event.by(fuzzyHash: event.calculateFuzzyHash()) {
+                print("event DUPLICATE \(ekEvent.title)")
+                merge(ekEvent, into: duplicate, in: calendar)
+
+            } else {
+                if let me = event.me, me.engagement == .disengaged {
+                    event.status = .archived
+                }
+                event.insert()
+                print("event INSERT \(ekEvent.title) from \(calendar.title)")
+                if ekEvent.title.contains("Eleni") {
+                    print("    Calendar: \(calendar.title) - \(calendar.calendarIdentifier)")
+                    print("    Source: \(calendar.source.title) - \(calendar.source.sourceIdentifier)")
+                    print("    ID: \(ekEvent.eventIdentifier)")
+                }
             }
         }
     }
 
     func importAsReminder(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: Reminder? = nil) {
-        let realm = Realm.user()
-
         if let existing = existing {
-            if existing.participants.isEmpty && ekEvent.hasAttendees {
-                try! realm.safeWrite {
-                    existing.addParticipants(ekEvent.getParticipants())
-                }
-            }
-            try! realm.safeWrite {
-                existing.addLink(to: calendar)
-            }
-            print("reminder UPDATE \(ekEvent.title)")
+            merge(ekEvent, into: existing, in: calendar)
 
         } else {
             let reminder = ekEvent.asReminder(in: calendar)
-            reminder.insert()
-            print("reminder INSERT \(ekEvent.title)")
+            if let duplicate = Reminder.by(fuzzyHash: reminder.calculateFuzzyHash()) {
+                print("reminder DUPLICATE \(ekEvent.title)")
+                merge(ekEvent, into: duplicate, in: calendar)
+            } else {
+                reminder.insert()
+                print("reminder INSERT \(ekEvent.title)")
+            }
         }
+    }
+
+    func merge(_ ekEvent: EKEvent, into existing: Series, in calendar: EKCalendar) {
+        guard ekEvent.startDate < existing.startDate else {
+            return
+        }
+
+        try! Realm.user().safeWrite {
+            existing.updateStartTimeIfEarlier(ekEvent.startDate.secondsSinceReferenceDate)
+            existing.template.addParticipants(ekEvent.getParticipants())
+            existing.template.addLink(to: calendar)
+            existing.template.addAlarms(ekEvent.getAlarms())
+            if let me = existing.template.me, me.engagement == .disengaged, existing.status != .archived {
+                existing.status = .archived
+            }
+        }
+        print("series UPDATE \(ekEvent.title)")
     }
 
     func importAsSeries(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: Series? = nil) {
@@ -154,28 +181,20 @@ class EventKit {
         }
 
         if let existing = existing {
-            guard ekEvent.startDate < existing.startDate else {
-                return
-            }
-
-            try! Realm.user().safeWrite {
-                existing.updateStartTimeIfEarlier(ekEvent.startDate.secondsSinceReferenceDate)
-                existing.template.addParticipants(ekEvent.getParticipants())
-                existing.template.addLink(to: calendar)
-                existing.template.addAlarms(ekEvent.getAlarms())
-                if let me = existing.template.me, me.engagement == .disengaged, existing.status != .archived {
-                    existing.status = .archived
-                }
-            }
-            print("series UPDATE \(ekEvent.title)")
+            merge(ekEvent, into: existing, in: calendar)
 
         } else if let rule = ekEvent.rule {
             let series = rule.asSeries(for: ekEvent, in: calendar)
-            if let me = series.template.me, me.engagement == .disengaged {
-                series.status = .archived
+            if let duplicate = Series.by(fuzzyHash: series.calculateFuzzyHash()) {
+                print("series DUPLICATE \(duplicate.title)")
+                merge(ekEvent, into: duplicate, in: calendar)
+            } else {
+                if let me = series.template.me, me.engagement == .disengaged {
+                    series.status = .archived
+                }
+                series.insert()
+                print("series INSERT \(ekEvent.title)")
             }
-            series.insert()
-            print("series INSERT \(ekEvent.title)")
         }
     }
 }

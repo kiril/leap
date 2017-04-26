@@ -17,6 +17,7 @@ class LeapModel: Object, Auditable {
     dynamic var updated: Date?
     dynamic var deleted: Date?
     dynamic var statusString: String = ObjectStatus.active.rawValue
+    dynamic var fuzzyHash: Int = 0
 
     override static func primaryKey() -> String? {
         return "id"
@@ -37,6 +38,9 @@ class LeapModel: Object, Auditable {
     func insert(into aRealm: Realm? = nil) {
         let realm = aRealm ?? Realm.user()
         try! realm.safeWrite {
+            if self is Fuzzy {
+                self.storeFuzzyHash()
+            }
             realm.add(self)
         }
     }
@@ -44,6 +48,9 @@ class LeapModel: Object, Auditable {
     func update(into aRealm: Realm? = nil) {
         let realm = aRealm ?? Realm.user()
         try! realm.safeWrite {
+            if self is Fuzzy {
+                self.storeFuzzyHash()
+            }
             realm.add(self, update: true)
         }
     }
