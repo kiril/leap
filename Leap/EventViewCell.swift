@@ -91,6 +91,11 @@ class EventViewCell: UICollectionViewCell {
                 button?.isHidden = true
             }
         }
+
+        remindButton.addTarget(self, action: #selector(remindMe), for: .touchUpInside)
+    }
+    @objc private func remindMe() {
+        event?.hackyCreateReminderFromEvent()
     }
 
     private func responseType(forButton button: UIButton) -> EventResponse {
