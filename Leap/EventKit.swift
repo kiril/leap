@@ -22,13 +22,19 @@ class EventKit {
     func importAll() {
         let startOfDay = Calendar.current.startOfDay(for: Date())
         let endOfDay = Calendar.current.startOfDay(for: Calendar.current.dayAfter(startOfDay))
+        let aWeekAway = Calendar.current.date(byAdding: .day, value: 7, to: endOfDay)!
+
+        // some future first, because recurring events are annoying, and this stops some thrash
+        store.calendars(for: EKEntityType.event).forEach { self.importEvents(in: $0, from: endOfDay, to: aWeekAway) }
+        store.calendars(for: EKEntityType.reminder).forEach { self.importEvents(in: $0, from: endOfDay, to: aWeekAway) }
+
         // get today's stuff flowing in fast
         store.calendars(for: EKEntityType.event).forEach { self.importEvents(in: $0, from: startOfDay, to: endOfDay) }
         store.calendars(for: EKEntityType.reminder).forEach { self.importEvents(in: $0, from: startOfDay, to: endOfDay) }
 
         // future, because you're more likely to look there soon
-        store.calendars(for: EKEntityType.event).forEach { self.importEvents(in: $0, from: endOfDay, to: farOffFuture()) }
-        store.calendars(for: EKEntityType.reminder).forEach { self.importEvents(in: $0, from: endOfDay, to: farOffFuture()) }
+        store.calendars(for: EKEntityType.event).forEach { self.importEvents(in: $0, from: aWeekAway, to: farOffFuture()) }
+        store.calendars(for: EKEntityType.reminder).forEach { self.importEvents(in: $0, from: aWeekAway, to: farOffFuture()) }
 
         // then get the past (which cleans up some stuff about event recurrence, too)
         store.calendars(for: EKEntityType.event).forEach { self.importEvents(in: $0, from: longAgo(), to: startOfDay) }
