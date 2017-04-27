@@ -9,19 +9,19 @@
     {
       "size" : "20x20",
       "idiom" : "iphone",
-      "filename" : "60 Home Screen (iOS 7+).png",
+      "filename" : "60 Retina Notification.png",
       "scale" : "3x"
     },
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "29 Settings (iOS 5+).png",
+      "filename" : "29 Spotlight (iOS 5_6)-1.png",
       "scale" : "1x"
     },
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "58 Retina Setting (iOS 5+).png",
+      "filename" : "58 Retina Spotlight (iOS 5_6).png",
       "scale" : "2x"
     },
     {
@@ -32,13 +32,13 @@
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "80 Retina Spotlight (iOS 7+).png",
+      "filename" : "80 Retina Spotlight (iOS 7+)-1.png",
       "scale" : "2x"
     },
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "120 Retina Home Screen (iOS 7+).png",
+      "filename" : "120 Retina HD Spotlight (iOS 7+).png",
       "scale" : "3x"
     },
     {
@@ -56,7 +56,7 @@
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "120 Retina Home Screen (iOS 7+)-1.png",
+      "filename" : "120 Retina Home Screen (iOS 7+).png",
       "scale" : "2x"
     },
     {
@@ -74,19 +74,19 @@
     {
       "size" : "20x20",
       "idiom" : "ipad",
-      "filename" : "40 Retina Notification-1.png",
+      "filename" : "40 Spotlight (iOS 7+)-1.png",
       "scale" : "2x"
     },
     {
       "size" : "29x29",
       "idiom" : "ipad",
-      "filename" : "29 Settings (iOS 5+)-1.png",
+      "filename" : "29 Settings (iOS 5+).png",
       "scale" : "1x"
     },
     {
       "size" : "29x29",
       "idiom" : "ipad",
-      "filename" : "58 Retina Setting (iOS 5+)-1.png",
+      "filename" : "58 Retina Settings (iOS 5+).png",
       "scale" : "2x"
     },
     {
@@ -98,7 +98,7 @@
     {
       "size" : "40x40",
       "idiom" : "ipad",
-      "filename" : "80 Retina Spotlight (iOS 7+)-1.png",
+      "filename" : "80 Retina Spotlight (iOS 7+).png",
       "scale" : "2x"
     },
     {
