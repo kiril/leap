@@ -50,6 +50,7 @@ class EventSurface: Surface, ModelLoadable {
     let perspective            = ComputedSurfaceProperty<TimePerspective,EventSurface>(by: TimePerspective.compute)
     let percentElapsed         = ComputedSurfaceFloat<EventSurface>(by: EventSurface.computeElapsed)
     let invitationSummary      = SurfaceString()
+    let locationSummary        = SurfaceString()
     let isRecurring            = SurfaceBool()
     let origin                 = SurfaceProperty<Origin>()
 
@@ -196,6 +197,13 @@ class EventSurface: Surface, ModelLoadable {
                 return false
             }
             return me.ownership == .invitee
+        }
+
+        bridge.readonlyBind(surface.locationSummary) { (model:LeapModel) -> String? in
+            guard let event = model as? Event, let location = event.locationString, location.characters.count > 0 else {
+                return nil
+            }
+            return location
         }
 
         bridge.readonlyBind(surface.invitationSummary) { (model:LeapModel) -> String? in

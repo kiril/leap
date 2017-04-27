@@ -9,17 +9,25 @@
 import UIKit
 
 class EventViewCell: UICollectionViewCell {
+    // header
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var recurringIcon: UILabel!
+
+    // detail
     @IBOutlet weak var invitationSummaryLabel: UILabel!
     @IBOutlet weak var invitationActionContainer: UIStackView!
 
+    // location
+    @IBOutlet weak var locationContainer: UIStackView!
+    @IBOutlet weak var locationIconLabel: UILabel!
+    @IBOutlet weak var locationButton: UIButton!
+
+    // response actions
     @IBOutlet weak var yesButton: UIButton!
     @IBOutlet weak var noButton: UIButton!
     @IBOutlet weak var maybeButton: UIButton!
     @IBOutlet weak var remindButton: UIButton!
-
-    @IBOutlet weak var recurringIcon: UILabel!
 
     var borderColor: UIColor = UIColor.black {
         didSet { updateBorderColor() }
@@ -60,6 +68,7 @@ class EventViewCell: UICollectionViewCell {
 
     private func updateFonts() {
         invitationSummaryLabel.textColor = UIColor.projectLightGray
+        locationIconLabel.textColor = UIColor.projectLightGray
         recurringIcon.textColor = UIColor.projectLightGray
         
         titleLabel.textColor = UIColor.projectDarkGray
@@ -93,6 +102,7 @@ class EventViewCell: UICollectionViewCell {
         }
 
         remindButton.addTarget(self, action: #selector(remindMe), for: .touchUpInside)
+        locationButton.addTarget(self, action: #selector(launchMaps), for: .touchUpInside)
     }
     @objc private func remindMe() {
         event?.hackyCreateReminderFromEvent()
@@ -122,6 +132,21 @@ class EventViewCell: UICollectionViewCell {
         try! event.flush()
     }
 
+    @objc private func launchMaps(sender: UIButton) {
+        guard let title = sender.currentTitle else { return }
+        guard let q = title.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
+        let googleString = "comgooglemaps://?q=\(q)"
+        let appleString = "http://maps.apple.com/?q=\(q)"
+
+        if let google = URL(string: googleString), UIApplication.shared.canOpenURL(google) {
+            UIApplication.shared.open(google)
+        }
+        if let apple = URL(string: appleString), UIApplication.shared.canOpenURL(apple) {
+            UIApplication.shared.open(apple)
+        }
+        print("Aw man")
+    }
+
     func configure(with event: EventSurface) {
         // move out of here to seperate helper classes
         // if this needs to be different
@@ -133,6 +158,13 @@ class EventViewCell: UICollectionViewCell {
         timeLabel.text = event.timeRange.value
         titleLabel.text = event.title.value
         invitationSummaryLabel.text = event.invitationSummary.value
+
+        if let location = event.locationSummary.rawValue {
+            locationContainer.isHidden = false
+            locationButton.setTitle(location, for: .normal)
+        } else {
+            locationContainer.isHidden = true
+        }
 
         if event.isConfirmed.value {
             backgroundColor = UIColor.white
