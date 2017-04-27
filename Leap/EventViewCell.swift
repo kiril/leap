@@ -117,7 +117,7 @@ class EventViewCell: UICollectionViewCell {
         try! event.flush()
     }
 
-    func configure(with event: EventSurface, forceDisplayResponses: Bool = false) {
+    func configure(with event: EventSurface) {
         // move out of here to seperate helper classes
         // if this needs to be different
         // for different contexts
