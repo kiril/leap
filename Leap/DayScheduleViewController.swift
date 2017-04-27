@@ -45,41 +45,6 @@ class DayScheduleViewController: UIViewController, StoryboardLoadable {
         collectionView!.alwaysBounceVertical = true
     }
 
-    // MARK: UICollectionViewDelegate
-}
-
-extension DayScheduleViewController {
-    static func mockedEntriesFor(dayId: String) -> DayScheduleSurface {
-        // mocking out entries
-
-        let events = [
-            EventSurface(mockData: ["timeRange": "8 - 9am",
-                                    "title": "Breakfast with John",
-                                    "perspective": TimePerspective.past,
-                                    "unresolved": false
-                ]),
-            EventSurface(mockData: ["timeRange": "10:30am - 12:30am",
-                                    "title": "Important Meeting",
-                                    "perspective": TimePerspective.current,
-                                    "invitation_summary": "Eric Skiff ➝ You and 3 others",
-                                    "unresolved": true,
-                                    "elapsed": 0.67
-                ]),
-            EventSurface(mockData: ["timeRange": "3 - 4:30pm",
-                                    "title": "Afternoon Meeting with a very long title this is a long title how big is it?! SO BIG",
-                                    "perspective": TimePerspective.future,
-                                    "unresolved": false
-                ]),
-            EventSurface(mockData: ["timeRange": "7 - 11:30pm",
-                                    "title": "PARTY TIME 🎉",
-                                    "perspective": TimePerspective.future,
-                                    "invitation_summary": "Elizabeth Ricca ➝ You and 23 others",
-                                    "unresolved": true
-                ])
-        ]
-
-        return DayScheduleSurface(mockData: ["events": events], id: dayId)
-    }
 }
 
 extension DayScheduleViewController: SourceIdentifiable {

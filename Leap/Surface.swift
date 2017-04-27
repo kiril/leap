@@ -254,7 +254,13 @@ extension Surface: Updateable {
                 if let source = source {
                     guard observerSourceId != source.sourceId else { continue }
                 }
-                observer.surfaceDidChange(self)
+                // Guaranteeing observers are always notified on the main thread. (and then make them
+                // switch threads if necessary). This probably avoids more SUPER annoying bugs more often,
+                // so doing it for now, even though it could tie up the main thread accidentally.
+                DispatchQueue.main.async { [weak self, observer] in
+                    guard let _self = self else { return }
+                    observer.surfaceDidChange(_self)
+                }
             }
         }
     }

@@ -34,6 +34,7 @@ class EventSurface: Surface, ModelLoadable {
     override var type: String { return "event" }
 
     var isInConflict = false
+    var temporarilyForceDisplayResponseOptions = false
 
     // validation
     // change detection!! (because need to know when fields are dirty)

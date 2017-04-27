@@ -110,23 +110,14 @@ class EventViewCell: UICollectionViewCell {
         }
 
         event.userResponse.update(to: response)
+        event.temporarilyForceDisplayResponseOptions = true
+        configure(with: event)
 
-        if response == .yes {
-            // hacky, but just trying to show yes briefly
-            configure(with: event, forceDisplayResponses: true)
-            let halfSecond = DispatchTime.now() + DispatchTimeInterval.milliseconds(500)
-            DispatchQueue.main.asyncAfter(deadline: halfSecond) { [weak self] in
-                self?.configure(with: event)
-            }
-        } else {
-            configure(with: event)
-        }
-        // Eventually, may want to replace this by having the cell observe the EventSurface directly
 
         try! event.flush()
     }
 
-    func configure(with event: EventSurface, forceDisplayResponses: Bool = false) {
+    func configure(with event: EventSurface) {
         // move out of here to seperate helper classes
         // if this needs to be different
         // for different contexts
@@ -155,7 +146,7 @@ class EventViewCell: UICollectionViewCell {
             contentView.alpha = 1.0
         }
 
-        invitationActionContainer.isHidden = event.isConfirmed.value && !forceDisplayResponses
+        invitationActionContainer.isHidden = event.isConfirmed.value && !event.temporarilyForceDisplayResponseOptions
         recurringIcon.isHidden = !event.isRecurring.value
 
         updateActionButtons(forEvent: event)

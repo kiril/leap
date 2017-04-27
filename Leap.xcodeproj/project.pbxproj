@@ -373,6 +373,7 @@
 			isa = PBXGroup;
 			children = (
 				831444C01E7AF77700A5EF06 /* DaySchedule.storyboard */,
+				831444C51E7B020700A5EF06 /* DayScheduleViewController.swift */,
 				831444C71E7B034A00A5EF06 /* EventViewCell.xib */,
 				831444C91E7B072600A5EF06 /* EventViewCell.swift */,
 				8366F11B1EAFAE1100E3A448 /* ReminderCollectionViewCell.swift */,
@@ -382,7 +383,6 @@
 				8366F11F1EB0F63A00E3A448 /* VerticalSpacingCollectionViewCell.swift */,
 				8366F1231EB0F80C00E3A448 /* VerticalSpacingPlaceholderObject.swift */,
 				8366F1251EB114AD00E3A448 /* NoRemindersPlaceholderObject.swift */,
-				831444C51E7B020700A5EF06 /* DayScheduleViewController.swift */,
 				8366F1161EAFACD800E3A448 /* SectionControllers */,
 				831444CB1E7B099C00A5EF06 /* CalendarViewFlowLayout.swift */,
 				835456191E8C09A100A03B34 /* DayScheduleTitleView.xib */,
