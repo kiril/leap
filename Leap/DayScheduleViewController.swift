@@ -47,6 +47,14 @@ class DayScheduleViewController: UIViewController, StoryboardLoadable {
 
 }
 
+extension DayScheduleViewController: EventViewCellDelegate {
+    func tapReceived(on: EventViewCell, for event: EventSurface) {
+        let eventViewController = EventDetailViewController()
+        eventViewController.event = event
+        self.navigationController?.pushViewController(eventViewController, animated: true)
+    }
+}
+
 extension DayScheduleViewController: SourceIdentifiable {
     var sourceId: String { return "DayScheduleVC" }
 }
@@ -61,7 +69,7 @@ extension DayScheduleViewController: SurfaceObserver {
 extension DayScheduleViewController: IGListAdapterDataSource {
     func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
         if object is ScheduleEntryWrapper {
-            return ScheduleSectionController()
+            return ScheduleSectionController(eventViewCellDelegate: self)
         }
         else if object is ReminderSurface ||
                 object is NoRemindersPlaceholderObject {

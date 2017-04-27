@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="FontAwesome.otf">
+            <string>FontAwesome</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="EventDetailView" customModule="Leap" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="Mc6-Fo-C7r">
+                    <rect key="frame" x="20" y="80" width="335" height="567"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="0Qp-Ef-WLB" userLabel="Time Stack">
+                            <rect key="frame" x="0.0" y="0.0" width="335" height="21.5"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10am-12pm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s66-FN-ge1">
+                                    <rect key="frame" x="0.0" y="0.0" width="309.5" height="21.5"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IBm-Ih-Zmm">
+                                    <rect key="frame" x="319.5" y="0.0" width="15.5" height="21.5"/>
+                                    <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="18"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                        </stackView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0up-fm-j76">
+                            <rect key="frame" x="0.0" y="23.5" width="335" height="521.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Epb-bp-oAf">
+                            <rect key="frame" x="0.0" y="547" width="335" height="20"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="70F-gQ-gfU">
+                                    <rect key="frame" x="0.0" y="0.0" width="32" height="20"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                    <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="5" maxY="0.0"/>
+                                    <state key="normal" title="Yes"/>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pYO-Ao-6Gp">
+                                    <rect key="frame" x="37" y="0.0" width="31" height="20"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                    <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
+                                    <state key="normal" title="No"/>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fil-t9-8fJ">
+                                    <rect key="frame" x="73" y="0.0" width="59" height="20"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                    <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
+                                    <state key="normal" title="Maybe"/>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="laU-py-sqt" userLabel="Remind Me">
+                                    <rect key="frame" x="137" y="0.0" width="198" height="20"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <state key="normal" title="Save as Reminder"/>
+                                </button>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="height" relation="lessThanOrEqual" constant="20" id="cqB-No-rsh"/>
+                            </constraints>
+                        </stackView>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Mc6-Fo-C7r" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="80" id="1DO-uI-r96"/>
+                <constraint firstItem="Mc6-Fo-C7r" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="4XV-Ea-FCS"/>
+                <constraint firstAttribute="trailing" secondItem="Mc6-Fo-C7r" secondAttribute="trailing" constant="20" id="Ahw-aZ-sSo"/>
+                <constraint firstAttribute="bottom" secondItem="Mc6-Fo-C7r" secondAttribute="bottom" constant="20" id="Xq8-Io-zZg"/>
+            </constraints>
+            <connections>
+                <outlet property="maybeButton" destination="Fil-t9-8fJ" id="xjc-qs-XK5"/>
+                <outlet property="noButton" destination="pYO-Ao-6Gp" id="09T-Ti-pp3"/>
+                <outlet property="recurringIcon" destination="IBm-Ih-Zmm" id="1cV-v9-dYO"/>
+                <outlet property="remindButton" destination="laU-py-sqt" id="tSa-T7-cS3"/>
+                <outlet property="timeLabel" destination="s66-FN-ge1" id="YcW-tQ-w49"/>
+                <outlet property="yesButton" destination="70F-gQ-gfU" id="S4w-9z-nmE"/>
+            </connections>
+        </view>
+    </objects>
+</document>

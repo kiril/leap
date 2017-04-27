@@ -12,8 +12,11 @@ import IGListKit
 class ScheduleSectionController: IGListSectionController, IGListSectionType {
     var scheduleEntry: ScheduleEntry?
 
-    override init() {
+    weak var eventViewCellDelegate: EventViewCellDelegate?
+
+    init(eventViewCellDelegate: EventViewCellDelegate) {
         super.init()
+        self.eventViewCellDelegate = eventViewCellDelegate
         inset = UIEdgeInsets(top: 0, left: 0, bottom: 15, right: 0)
     }
 
@@ -54,7 +57,9 @@ class ScheduleSectionController: IGListSectionController, IGListSectionType {
                                                           bundle: nil,
                                                           for: self,
                                                           at: index)
-            (cell as! EventViewCell).configure(with: event)
+            let eventCell = cell as! EventViewCell
+            eventCell.configure(with: event)
+            eventCell.delegate = self.eventViewCellDelegate
 
         case .openTime(let openTime):
             cell = collectionContext!.dequeueReusableCell(withNibName: "OpenTimeViewCell",

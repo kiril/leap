@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol EventViewCellDelegate: class {
+    func tapReceived(on: EventViewCell, for event: EventSurface)
+}
+
 class EventViewCell: UICollectionViewCell {
     // header
     @IBOutlet weak var timeLabel: UILabel!
@@ -28,6 +32,8 @@ class EventViewCell: UICollectionViewCell {
     @IBOutlet weak var noButton: UIButton!
     @IBOutlet weak var maybeButton: UIButton!
     @IBOutlet weak var remindButton: UIButton!
+
+    weak var delegate: EventViewCellDelegate?
 
     var borderColor: UIColor = UIColor.black {
         didSet { updateBorderColor() }
@@ -104,6 +110,15 @@ class EventViewCell: UICollectionViewCell {
         remindButton.addTarget(self, action: #selector(remindMe), for: .touchUpInside)
         locationButton.addTarget(self, action: #selector(launchMaps), for: .touchUpInside)
     }
+
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let event = event, let touches = event.allTouches, touches.count == 1 {
+            if let delegate = self.delegate {
+                delegate.tapReceived(on: self, for: self.event!)
+            }
+        }
+    }
+
     @objc private func remindMe() {
         event?.hackyCreateReminderFromEvent()
     }
