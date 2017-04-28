@@ -9,7 +9,12 @@
 import Foundation
 
 extension String {
+    func matches(regex: String) throws -> Bool {
+        let re = try NSRegularExpression(pattern: regex, options: .caseInsensitive)
+        return re.matches(in: self, options: .anchored, range: NSMakeRange(0,  self.characters.count)).count > 0
+    }
+
     var looksLikeAnAddress: Bool {
-        return false
+        return try! self.matches(regex: "^\\d{1,4}[a-zA-Z]*\\s+\\w|\\s+\\d{5}(-\\d{4})?$")
     }
 }
