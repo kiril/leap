@@ -45,7 +45,10 @@ class EventViewCell: UICollectionViewCell {
     }
 
     private var event: EventSurface? {
-        didSet { setupButtons() }
+        didSet {
+            event?.register(observer: self)
+            setupButtons()
+        }
     }
 
     private func updateBorderColor() {
@@ -269,4 +272,13 @@ class EventViewCell: UICollectionViewCell {
 
         updateShadow()
     }
+}
+
+extension EventViewCell: SurfaceObserver {
+    func surfaceDidChange(_ surface: Surface) {
+        guard let event = surface as? EventSurface else { return }
+        self.configure(with: event)
+    }
+
+    var sourceId: String { return "EventViewCell" }
 }
