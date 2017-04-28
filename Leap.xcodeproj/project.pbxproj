@@ -53,10 +53,10 @@
 		839A8AF61EA1300A00893F6F /* DayNavigationWrapperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839A8AF51EA1300A00893F6F /* DayNavigationWrapperViewController.swift */; };
 		83A72D741E82DAE0005EB213 /* TimePerspective.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A72D731E82DAE0005EB213 /* TimePerspective.swift */; };
 		83A72D771E82DF95005EB213 /* DayScheduleSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A72D761E82DF95005EB213 /* DayScheduleSurface.swift */; };
-		83B5DB701E91D7F400A0CA7E /* (null) in Sources */ = {isa = PBXBuildFile; };
-		83B5DB721E91D7F400A0CA7E /* (null) in Sources */ = {isa = PBXBuildFile; };
-		83B5DB781E91D7F500A0CA7E /* (null) in Sources */ = {isa = PBXBuildFile; };
-		83B5DB7A1E91D7F500A0CA7E /* (null) in Sources */ = {isa = PBXBuildFile; };
+		83B5DB701E91D7F400A0CA7E /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		83B5DB721E91D7F400A0CA7E /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		83B5DB781E91D7F500A0CA7E /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		83B5DB7A1E91D7F500A0CA7E /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		83B5DBEE1E91E4CC00A0CA7E /* GregorianDayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B5DBED1E91E4CC00A0CA7E /* GregorianDayTests.swift */; };
 		83B6C6B31E92B850002DCDA2 /* UIPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B6C6B21E92B850002DCDA2 /* UIPageViewController.swift */; };
 		83B6C6B51E92BC6E002DCDA2 /* DayNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B6C6B41E92BC6E002DCDA2 /* DayNavigationViewController.swift */; };
@@ -176,6 +176,8 @@
 		2A6B5D6A4DA6E20A7F42B13F /* Pods-Leap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leap.release.xcconfig"; path = "Pods/Target Support Files/Pods-Leap/Pods-Leap.release.xcconfig"; sourceTree = "<group>"; };
 		386ABDADBBC48EDACA0896BE /* Pods_LeapUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeapUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A18F5F3F7D9C4C8FBFD38A6 /* Pods-Leap.internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leap.internal.xcconfig"; path = "Pods/Target Support Files/Pods-Leap/Pods-Leap.internal.xcconfig"; sourceTree = "<group>"; };
+		4064410923DB8CD4AB855B19 /* Pods-LeapTests.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapTests.demo.xcconfig"; path = "Pods/Target Support Files/Pods-LeapTests/Pods-LeapTests.demo.xcconfig"; sourceTree = "<group>"; };
+		5FDE24585A3846DC32BEBBA3 /* Pods-Leap.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leap.demo.xcconfig"; path = "Pods/Target Support Files/Pods-Leap/Pods-Leap.demo.xcconfig"; sourceTree = "<group>"; };
 		60E8617E6FAACB8E29AA34F7 /* Pods_Leap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Leap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		726DA31B7DBD3655C83BFA3D /* Pods_LeapTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeapTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		831444BE1E7AF4E200A5EF06 /* AuthFlow.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AuthFlow.storyboard; sourceTree = "<group>"; };
@@ -230,6 +232,7 @@
 		83F4B1601E7C383F000FCB8D /* ScheduleEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleEntry.swift; sourceTree = "<group>"; };
 		8EED8FB993394DE5707CFED0 /* Pods-LeapUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LeapUITests/Pods-LeapUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		A45CD1F1585C39E38E93EEDC /* Pods-LeapTests.internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapTests.internal.xcconfig"; path = "Pods/Target Support Files/Pods-LeapTests/Pods-LeapTests.internal.xcconfig"; sourceTree = "<group>"; };
+		B57968AEEF898FF1680D04C0 /* Pods-LeapUITests.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapUITests.demo.xcconfig"; path = "Pods/Target Support Files/Pods-LeapUITests/Pods-LeapUITests.demo.xcconfig"; sourceTree = "<group>"; };
 		EFE6A6E5DCCA6A604F469F66 /* Pods-Leap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Leap/Pods-Leap.debug.xcconfig"; sourceTree = "<group>"; };
 		F7F894F8D14B57D7372FF854 /* Pods-LeapTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LeapTests/Pods-LeapTests.release.xcconfig"; sourceTree = "<group>"; };
 		FB0762DA1E142FBF0035EF8F /* ScheduleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
@@ -367,6 +370,9 @@
 				3A18F5F3F7D9C4C8FBFD38A6 /* Pods-Leap.internal.xcconfig */,
 				A45CD1F1585C39E38E93EEDC /* Pods-LeapTests.internal.xcconfig */,
 				274B7F58648B6E4512CDCCA3 /* Pods-LeapUITests.internal.xcconfig */,
+				5FDE24585A3846DC32BEBBA3 /* Pods-Leap.demo.xcconfig */,
+				4064410923DB8CD4AB855B19 /* Pods-LeapTests.demo.xcconfig */,
+				B57968AEEF898FF1680D04C0 /* Pods-LeapUITests.demo.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -802,7 +808,7 @@
 				TargetAttributes = {
 					FBE0EFDF1DFBBB80007BD8DF = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = W8PY5MD3RJ;
+						DevelopmentTeam = SHR79YU44T;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Push = {
@@ -1157,7 +1163,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB39ADAD1E8EC5A800B79A7B /* BridgeTest.swift in Sources */,
-				83B5DB701E91D7F400A0CA7E /* (null) in Sources */,
+				83B5DB701E91D7F400A0CA7E /* BuildFile in Sources */,
 				FB8BB6231E89A76A00A30315 /* EventKitMigrationTests.swift in Sources */,
 				FBD1045F1E80717E00DDF65B /* SurfaceTests.swift in Sources */,
 				834FBEBA1EA86BD4004D9302 /* TimeRangeTests.swift in Sources */,
@@ -1166,7 +1172,7 @@
 				FB1869D41E9FF88A007642F4 /* RecurrenceTests.swift in Sources */,
 				FB39ADB71E93F1EA00B79A7B /* CalendarTests.swift in Sources */,
 				FB39ADAF1E8EC6B700B79A7B /* TestUtil.swift in Sources */,
-				83B5DB721E91D7F400A0CA7E /* (null) in Sources */,
+				83B5DB721E91D7F400A0CA7E /* BuildFile in Sources */,
 				83B5DBEE1E91E4CC00A0CA7E /* GregorianDayTests.swift in Sources */,
 				FBE0EFFC1DFBBB80007BD8DF /* LeapTests.swift in Sources */,
 			);
@@ -1176,8 +1182,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				83B5DB781E91D7F500A0CA7E /* (null) in Sources */,
-				83B5DB7A1E91D7F500A0CA7E /* (null) in Sources */,
+				83B5DB781E91D7F500A0CA7E /* BuildFile in Sources */,
+				83B5DB7A1E91D7F500A0CA7E /* BuildFile in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1197,6 +1203,139 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		8311B4CE1EB2BFEF00F77FF7 /* Demo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = HNRVQL94Y9;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(inherited)";
+			};
+			name = Demo;
+		};
+		8311B4CF1EB2BFEF00F77FF7 /* Demo */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5FDE24585A3846DC32BEBBA3 /* Pods-Leap.demo.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CONFIG_BUNDLE_IDENTIFIER = com.singleleap.leap.demo;
+				CONFIG_DISPLAY_NAME = "Leap Demo";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = SHR79YU44T;
+				INFOPLIST_FILE = Leap/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "$(CONFIG_BUNDLE_IDENTIFIER)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "2e72a62f-f3e6-4986-99fe-225546ef79ba";
+				PROVISIONING_PROFILE_SPECIFIER = "Leap Demo Distribution";
+				SWIFT_OBJC_BRIDGING_HEADER = "Leap-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Demo;
+		};
+		8311B4D01EB2BFEF00F77FF7 /* Demo */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4064410923DB8CD4AB855B19 /* Pods-LeapTests.demo.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = LeapTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-framework",
+					"\"Auth0\"",
+					"-framework",
+					"\"Lock\"",
+					"-framework",
+					"\"Realm\"",
+					"-framework",
+					"\"RealmSwift\"",
+					"-framework",
+					"\"SwiftyJSON\"",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.singleleap.LeapTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Leap.app/Leap";
+			};
+			name = Demo;
+		};
+		8311B4D11EB2BFEF00F77FF7 /* Demo */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B57968AEEF898FF1680D04C0 /* Pods-LeapUITests.demo.xcconfig */;
+			buildSettings = {
+				INFOPLIST_FILE = LeapUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-framework",
+					"\"Auth0\"",
+					"-framework",
+					"\"Lock\"",
+					"-framework",
+					"\"Realm\"",
+					"-framework",
+					"\"RealmSwift\"",
+					"-framework",
+					"\"SwiftyJSON\"",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.singleleap.LeapUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = Leap;
+			};
+			name = Demo;
+		};
 		837A93881E9BE7930015406D /* Internal */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1222,7 +1361,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = HNRVQL94Y9;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -1595,6 +1734,7 @@
 			buildConfigurations = (
 				FBE0F0091DFBBB80007BD8DF /* Debug */,
 				837A93881E9BE7930015406D /* Internal */,
+				8311B4CE1EB2BFEF00F77FF7 /* Demo */,
 				FBE0F00A1DFBBB80007BD8DF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1605,6 +1745,7 @@
 			buildConfigurations = (
 				FBE0F00C1DFBBB80007BD8DF /* Debug */,
 				837A93891E9BE7930015406D /* Internal */,
+				8311B4CF1EB2BFEF00F77FF7 /* Demo */,
 				FBE0F00D1DFBBB80007BD8DF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1615,6 +1756,7 @@
 			buildConfigurations = (
 				FBE0F00F1DFBBB80007BD8DF /* Debug */,
 				837A938A1E9BE7930015406D /* Internal */,
+				8311B4D01EB2BFEF00F77FF7 /* Demo */,
 				FBE0F0101DFBBB80007BD8DF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1625,6 +1767,7 @@
 			buildConfigurations = (
 				FBE0F0121DFBBB80007BD8DF /* Debug */,
 				837A938B1E9BE7930015406D /* Internal */,
+				8311B4D11EB2BFEF00F77FF7 /* Demo */,
 				FBE0F0131DFBBB80007BD8DF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
