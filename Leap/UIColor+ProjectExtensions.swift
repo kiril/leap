@@ -75,4 +75,10 @@ extension UIColor {
                        b: 66)
     }
 
+    public static var projectTint: UIColor {
+        return UIColor(r: 235,
+                       g: 68,
+                       b: 90)
+    }
+
 }

@@ -37,9 +37,9 @@ class DayScheduleTitleView: UIView {
         case .normal:
             color = UIColor.projectDarkerGray
         case .bold:
-            color = UIColor.projectPurple
+            color = UIColor.projectTint
         case .light:
-            color = UIColor.projectLightGray;
+            color = UIColor.projectLightGray
         }
 
         titleLabel.textColor = UIColor.projectDarkerGray

@@ -45,7 +45,10 @@ class EventViewCell: UICollectionViewCell {
     }
 
     private var event: EventSurface? {
-        didSet { setupButtons() }
+        didSet {
+            event?.register(observer: self)
+            setupButtons()
+        }
     }
 
     private func updateBorderColor() {
@@ -212,8 +215,7 @@ class EventViewCell: UICollectionViewCell {
             contentView.alpha = 1.0
         }
 
-        // always showing now to deal with a few issues
-        invitationActionContainer.isHidden = false // event.isConfirmed.value && !event.temporarilyForceDisplayResponseOptions
+        invitationActionContainer.isHidden = event.isConfirmed.value && !event.temporarilyForceDisplayResponseOptions
 
         recurringIcon.isHidden = !event.isRecurring.value
 
@@ -270,4 +272,13 @@ class EventViewCell: UICollectionViewCell {
 
         updateShadow()
     }
+}
+
+extension EventViewCell: SurfaceObserver {
+    func surfaceDidChange(_ surface: Surface) {
+        guard let event = surface as? EventSurface else { return }
+        self.configure(with: event)
+    }
+
+    var sourceId: String { return "EventViewCell" }
 }
