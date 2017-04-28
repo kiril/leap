@@ -212,7 +212,9 @@ class EventViewCell: UICollectionViewCell {
             contentView.alpha = 1.0
         }
 
-        invitationActionContainer.isHidden = event.isConfirmed.value && !event.temporarilyForceDisplayResponseOptions
+        // always showing now to deal with a few issues
+        invitationActionContainer.isHidden = false // event.isConfirmed.value && !event.temporarilyForceDisplayResponseOptions
+
         recurringIcon.isHidden = !event.isRecurring.value
 
         updateActionButtons(forEvent: event)
