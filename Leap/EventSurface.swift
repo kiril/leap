@@ -40,6 +40,7 @@ class EventSurface: Surface, ModelLoadable {
     // change detection!! (because need to know when fields are dirty)
     // next: change this to NSObject, use KVO and 'public private (set) var xxx' for properties
     let title                  = SurfaceString(minLength: 1)
+    let detail                 = SurfaceString()
     let startTime              = SurfaceDate()
     let endTime                = SurfaceDate()
     let timeRange              = ComputedSurfaceString<EventSurface>(by: EventSurface.eventTimeRange)
@@ -146,6 +147,7 @@ class EventSurface: Surface, ModelLoadable {
         bridge.reference(event, as: "event")
 
         bridge.bind(surface.title)
+        bridge.bind(surface.detail)
         bridge.readonlyBind(surface.origin) { (m) -> Any? in
             if let e = m as? Event {
                 return e.origin
