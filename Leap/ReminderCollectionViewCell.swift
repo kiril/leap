@@ -41,7 +41,9 @@ protocol ReminderCellDisplayable {
 }
 
 extension ReminderSurface: ReminderCellDisplayable {
-    var titleForCell: String { return title.value }
+    var titleForCell: String {
+        return self.refersToEvent.value ? "\(eventTime.value) \(title.value)" : title.value
+    }
 }
 
 extension NoRemindersPlaceholderObject: ReminderCellDisplayable {
