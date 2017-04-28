@@ -122,7 +122,8 @@ class EventSurface: Surface, ModelLoadable {
             "title": event.title,
             "event": event,
             "startTime": event.startTime,
-            "endTime": event.endTime
+            "endTime": event.endTime,
+            "typeString": ReminderType.event.rawValue,
         ]
 
         let reminder: Reminder = Reminder(value: data)
