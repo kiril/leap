@@ -49,6 +49,7 @@ class DayScheduleViewController: UIViewController, StoryboardLoadable {
 
 extension DayScheduleViewController: EventViewCellDelegate {
     func tapReceived(on: EventViewCell, for event: EventSurface) {
+        return // ignore event taps for now
         let eventViewController = EventDetailViewController()
         eventViewController.event = event
         self.navigationController?.pushViewController(eventViewController, animated: true)
