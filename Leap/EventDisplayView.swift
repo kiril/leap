@@ -1,34 +1,67 @@
 //
-//  EventInterface.swift
+//  EventDisplayView.swift
 //  Leap
 //
 //  Created by Kiril Savino on 4/27/17.
 //  Copyright © 2017 Single Leap, Inc. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
-protocol EventInterface {
-    var event: EventSurface? { get }
+class EventDisplayView: UIView {
+    // header
+    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var recurringIcon: UILabel!
 
-    var remindButton: UIButton! { get }
-    var maybeButton: UIButton! { get }
-    var noButton: UIButton! { get }
-    var yesButton: UIButton! { get }
+    // detail
+    @IBOutlet weak var invitationSummaryLabel: UILabel!
+    @IBOutlet weak var invitationActionContainer: UIStackView!
 
-    func responseType(forButton button: UIButton) -> EventResponse
-    func setEventResponse(sender: UIButton)
-    func remindMe()
-    func updateActionButtons(forEvent event: EventSurface)
-    func setupEventButtons()
+    // location
+    @IBOutlet weak var locationContainer: UIStackView!
+    @IBOutlet weak var locationIconLabel: UILabel!
+    @IBOutlet weak var locationButton: UIButton!
 
-    func configure(with event: EventSurface)
-    func setResponseTarget(for button: UIButton?)
-    func setRemindTarget(for button: UIButton?)
-}
+    // response actions
+    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet weak var maybeButton: UIButton!
+    @IBOutlet weak var remindButton: UIButton!
 
-extension EventInterface {
+    var event: EventSurface?
+
+    private func updateFonts() {
+        recurringIcon.textColor = UIColor.projectLightGray
+        timeLabel.textColor = UIColor.projectLightGray
+    }
+
+    func setup() {
+        updateFonts()
+        setupEventButtons()
+    }
+
+    func configure(with event: EventSurface) {
+        self.event = event
+        recurringIcon.isHidden = !event.isRecurring.value
+        timeLabel.text = event.timeRange.value
+
+        updateActionButtons(forEvent: event)
+        setup()
+    }
+
+    override func awakeFromNib() {
+        setup()
+    }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
 
     func responseType(forButton button: UIButton) -> EventResponse {
         if button == yesButton { return .yes }
@@ -50,11 +83,10 @@ extension EventInterface {
         event.temporarilyForceDisplayResponseOptions = true
         configure(with: event)
 
-
         try! event.flush()
     }
 
-    func remindMe() {
+    @objc func remindMe() {
         event?.hackyCreateReminderFromEvent()
     }
 
@@ -93,7 +125,7 @@ extension EventInterface {
 
     func setupEventButtons() {
         for button in [yesButton, noButton, maybeButton] {
-            setResponseTarget(for: button)
+            button?.addTarget(self, action: #selector(setEventResponse), for: .touchUpInside)
 
             if  let button = button,
                 let text = event?.buttonText(forResponse: self.responseType(forButton: button)) {
@@ -104,17 +136,19 @@ extension EventInterface {
             }
         }
 
-        setRemindTarget(for: remindButton)
+        remindButton.addTarget(self, action: #selector(remindMe), for: .touchUpInside)
     }
 
     func applyActionButtonFormat(to button: UIButton,
-                                         color: UIColor = UIColor.projectDarkGray,
-                                         bold: Bool = true,
-                                         backgroundColor: UIColor = UIColor.clear) {
+                                 color: UIColor = UIColor.projectDarkGray,
+                                 bold: Bool = true,
+                                 backgroundColor: UIColor = UIColor.clear) {
         button.tintColor = color
         button.titleLabel?.font = button.titleLabel?.font.toSystemVersion(withBold: bold)
         button.backgroundColor = backgroundColor
         button.layer.cornerRadius = 5
         button.layer.masksToBounds = true
     }
+
+
 }
