@@ -8,6 +8,8 @@
 
 import Foundation
 
+import EventKit
+
 let GregorianSunday = 1
 let GregorianMonday = 2
 let GregorianTuesday = 3
@@ -15,6 +17,78 @@ let GregorianWednesday = 4
 let GregorianThursday = 5
 let GregorianFriday = 6
 let GregorianSaturday = 7
+
+let GregorianWeekdays = [GregorianMonday, GregorianTuesday, GregorianWednesday, GregorianThursday, GregorianFriday]
+let GregorianWeekends = [GregorianSunday, GregorianSaturday]
+
+extension Int {
+    var weekdayString: String {
+        switch self {
+        case GregorianSunday:
+            return "Sunday"
+        case GregorianMonday:
+            return "Monday"
+        case GregorianTuesday:
+            return "Tuesday"
+        case GregorianWednesday:
+            return "Wednesday"
+        case GregorianThursday:
+            return "Thursday"
+        case GregorianFriday:
+            return "Friday"
+        case GregorianSaturday:
+            return "Saturday"
+        default:
+            fatalError()
+        }
+    }
+}
+
+extension EKWeekday {
+    static func from(gregorian: Int) -> EKWeekday {
+        switch gregorian {
+        case 1:
+            return .sunday
+        case 2:
+            return .monday
+        case 3:
+            return .tuesday
+        case 4:
+            return .wednesday
+        case 5:
+            return .thursday
+        case 6:
+            return .friday
+        case 7:
+            return .saturday
+        default:
+            fatalError()
+        }
+    }
+
+    var gregorianWeekday: Int {
+        return self.rawValue
+    }
+
+    var stringValue: String {
+        switch self {
+        case .sunday:
+            return "Sunday"
+        case .monday:
+            return "Monday"
+        case .tuesday:
+            return "Tuesday"
+        case .wednesday:
+            return "Wednesday"
+        case .thursday:
+            return "Thursday"
+        case .friday:
+            return "Friday"
+        case .saturday:
+            return "Saturday"
+        }
+    }
+}
 
 typealias DateTest = (Date) -> Bool
 

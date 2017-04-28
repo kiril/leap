@@ -54,18 +54,19 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
         daySchedulePageViewController.view.translatesAutoresizingMaskIntoConstraints = false // HELPS
         daySchedulePageViewController.view.backgroundColor = UIColor.white
 
-        let initialDayVC = dayScheduleViewController(forDayId: Calendar.current.today.id)
-        daySchedulePageViewController.setViewControllers([initialDayVC],
+        let dayVC = dayScheduleViewController(forDayId: Calendar.current.today.id)
+        daySchedulePageViewController.setViewControllers([dayVC],
                                                           direction: .forward,
                                                           animated: false, completion: nil)
 
-        updateLabelsFor(vc: initialDayVC)
+        updateLabelsFor(vc: dayVC)
     }
 
     fileprivate func dayScheduleViewController(forDayId dayId: Int) -> DayScheduleViewController {
         let daySchedule = DayScheduleSurface.load(dayId: dayId)
         let dayVC = DayScheduleViewController.loadFromStoryboard()
         dayVC.surface = daySchedule
+        dayVC.navigationItem.title = self.titleView.titleLabel.text
         daySchedule.register(observer: dayVC)
         daySchedule.register(observer: self)
         return dayVC
@@ -82,6 +83,8 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
             barButtonItemFor(navView: arrowView),
             barButtonItemFor(navView: titleView)
         ]
+
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: self.titleView.titleLabel.text, style: .plain, target: nil, action: nil)
     }
 
     private func setupHiddenEventsButton() {
@@ -147,6 +150,7 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
 
 
         let dayVC = dayScheduleViewController(forDayId: Int(dayId)!)
+        dayVC.title = self.titleView.titleLabel.text
         daySchedulePageViewController.setViewControllers([dayVC],
                                                          direction: direction,
                                                          animated: true) {[weak self] _ in

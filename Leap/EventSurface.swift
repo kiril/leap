@@ -43,6 +43,7 @@ class EventSurface: Surface, ModelLoadable {
     let startTime              = SurfaceDate()
     let endTime                = SurfaceDate()
     let timeRange              = ComputedSurfaceString<EventSurface>(by: EventSurface.eventTimeRange)
+    let recurringTimeRange     = SurfaceString()
     let userIsInvited          = SurfaceBool()
     let userResponse           = SurfaceProperty<EventResponse>()
     let needsResponse          = ComputedSurfaceBool<EventSurface>(by: EventSurface.computeNeedsResponse)
@@ -128,10 +129,6 @@ class EventSurface: Surface, ModelLoadable {
             reminder.insert(into: realm)
             event.status = .archived
         }
-    }
-
-    static func formatInvitationSummary(event: EventSurface) -> String {
-        return "" // TODO: format Invitation Summary
     }
 
     static func load(fromModel event: LeapModel) -> Surface? {
@@ -327,6 +324,68 @@ class EventSurface: Surface, ModelLoadable {
                     populateWith: getEventResponse,
                     on: "event",
                     persistWith: setEventResponse)
+
+        bridge.readonlyBind(surface.recurringTimeRange) { (model:LeapModel) -> String? in
+            guard let event = model as? Event else { return nil }
+            guard let seriesId = event.seriesId, let series = Series.by(id: seriesId) else { return nil }
+
+            var recurrence = "Repeating"
+            switch series.recurrence.frequency {
+            case .daily:
+                recurrence = "Daily"
+
+            case .weekly:
+                recurrence = "Weekly"
+                if series.recurrence.daysOfWeek.count > 0 {
+                    let weekdays = series.recurrence.daysOfWeek.map({ $0.raw }).sorted()
+                    if weekdays == GregorianWeekdays {
+                        recurrence = "Weekdays"
+                    } else if weekdays == GregorianWeekends {
+                        recurrence = "Weekends"
+                    } else {
+                        recurrence = ""
+
+                        for (i, weekday) in weekdays.enumerated() {
+                            if i > 0 {
+                                if i == weekdays.count-1 {
+                                    recurrence += " and "
+                                } else {
+                                    recurrence += ", "
+                                }
+                            }
+                            recurrence += "\(weekday.weekdayString)s"
+                        }
+                    }
+                }
+
+            case .monthly:
+                recurrence = "Monthly"
+
+            case .yearly:
+                recurrence = "Yearly"
+
+            case .unknown:
+                return nil
+            }
+
+            let calendar = Calendar.current
+            let startHour = calendar.component(.hour, from: event.startDate)
+            let endHour = calendar.component(.hour, from: event.endDate)
+
+            let spansDays = calendar.areOnDifferentDays(event.startDate, event.endDate)
+            let crossesNoon = spansDays || ( startHour < 12 && endHour >= 12 )
+
+            let from = calendar.formatDisplayTime(from: event.startDate, needsAMPM: crossesNoon)
+            let to = calendar.formatDisplayTime(from: event.endDate, needsAMPM: true)
+            var more = ""
+            if spansDays {
+                let days = calendar.daysBetween(event.startDate, and: event.endDate)
+                let ess = days == 1 ? "" : "s"
+                more = " \(days) day\(ess) later"
+            }
+            
+            return "\(recurrence) from \(from) - \(to)\(more)"
+        }
 
         surface.store = bridge
         bridge.populate(surface)
