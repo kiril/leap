@@ -53,10 +53,10 @@
 		839A8AF61EA1300A00893F6F /* DayNavigationWrapperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839A8AF51EA1300A00893F6F /* DayNavigationWrapperViewController.swift */; };
 		83A72D741E82DAE0005EB213 /* TimePerspective.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A72D731E82DAE0005EB213 /* TimePerspective.swift */; };
 		83A72D771E82DF95005EB213 /* DayScheduleSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A72D761E82DF95005EB213 /* DayScheduleSurface.swift */; };
-		83B5DB701E91D7F400A0CA7E /* (null) in Sources */ = {isa = PBXBuildFile; };
-		83B5DB721E91D7F400A0CA7E /* (null) in Sources */ = {isa = PBXBuildFile; };
-		83B5DB781E91D7F500A0CA7E /* (null) in Sources */ = {isa = PBXBuildFile; };
-		83B5DB7A1E91D7F500A0CA7E /* (null) in Sources */ = {isa = PBXBuildFile; };
+		83B5DB701E91D7F400A0CA7E /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		83B5DB721E91D7F400A0CA7E /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		83B5DB781E91D7F500A0CA7E /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		83B5DB7A1E91D7F500A0CA7E /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		83B5DBEE1E91E4CC00A0CA7E /* GregorianDayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B5DBED1E91E4CC00A0CA7E /* GregorianDayTests.swift */; };
 		83B6C6B31E92B850002DCDA2 /* UIPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B6C6B21E92B850002DCDA2 /* UIPageViewController.swift */; };
 		83B6C6B51E92BC6E002DCDA2 /* DayNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B6C6B41E92BC6E002DCDA2 /* DayNavigationViewController.swift */; };
@@ -170,6 +170,8 @@
 		2A6B5D6A4DA6E20A7F42B13F /* Pods-Leap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leap.release.xcconfig"; path = "Pods/Target Support Files/Pods-Leap/Pods-Leap.release.xcconfig"; sourceTree = "<group>"; };
 		386ABDADBBC48EDACA0896BE /* Pods_LeapUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeapUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A18F5F3F7D9C4C8FBFD38A6 /* Pods-Leap.internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leap.internal.xcconfig"; path = "Pods/Target Support Files/Pods-Leap/Pods-Leap.internal.xcconfig"; sourceTree = "<group>"; };
+		4064410923DB8CD4AB855B19 /* Pods-LeapTests.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapTests.demo.xcconfig"; path = "Pods/Target Support Files/Pods-LeapTests/Pods-LeapTests.demo.xcconfig"; sourceTree = "<group>"; };
+		5FDE24585A3846DC32BEBBA3 /* Pods-Leap.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leap.demo.xcconfig"; path = "Pods/Target Support Files/Pods-Leap/Pods-Leap.demo.xcconfig"; sourceTree = "<group>"; };
 		60E8617E6FAACB8E29AA34F7 /* Pods_Leap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Leap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		726DA31B7DBD3655C83BFA3D /* Pods_LeapTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LeapTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		831444BE1E7AF4E200A5EF06 /* AuthFlow.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AuthFlow.storyboard; sourceTree = "<group>"; };
@@ -224,6 +226,7 @@
 		83F4B1601E7C383F000FCB8D /* ScheduleEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleEntry.swift; sourceTree = "<group>"; };
 		8EED8FB993394DE5707CFED0 /* Pods-LeapUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LeapUITests/Pods-LeapUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		A45CD1F1585C39E38E93EEDC /* Pods-LeapTests.internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapTests.internal.xcconfig"; path = "Pods/Target Support Files/Pods-LeapTests/Pods-LeapTests.internal.xcconfig"; sourceTree = "<group>"; };
+		B57968AEEF898FF1680D04C0 /* Pods-LeapUITests.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapUITests.demo.xcconfig"; path = "Pods/Target Support Files/Pods-LeapUITests/Pods-LeapUITests.demo.xcconfig"; sourceTree = "<group>"; };
 		EFE6A6E5DCCA6A604F469F66 /* Pods-Leap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Leap/Pods-Leap.debug.xcconfig"; sourceTree = "<group>"; };
 		F7F894F8D14B57D7372FF854 /* Pods-LeapTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeapTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LeapTests/Pods-LeapTests.release.xcconfig"; sourceTree = "<group>"; };
 		FB0762DA1E142FBF0035EF8F /* ScheduleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
@@ -355,6 +358,9 @@
 				3A18F5F3F7D9C4C8FBFD38A6 /* Pods-Leap.internal.xcconfig */,
 				A45CD1F1585C39E38E93EEDC /* Pods-LeapTests.internal.xcconfig */,
 				274B7F58648B6E4512CDCCA3 /* Pods-LeapUITests.internal.xcconfig */,
+				5FDE24585A3846DC32BEBBA3 /* Pods-Leap.demo.xcconfig */,
+				4064410923DB8CD4AB855B19 /* Pods-LeapTests.demo.xcconfig */,
+				B57968AEEF898FF1680D04C0 /* Pods-LeapUITests.demo.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1133,7 +1139,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB39ADAD1E8EC5A800B79A7B /* BridgeTest.swift in Sources */,
-				83B5DB701E91D7F400A0CA7E /* (null) in Sources */,
+				83B5DB701E91D7F400A0CA7E /* BuildFile in Sources */,
 				FB8BB6231E89A76A00A30315 /* EventKitMigrationTests.swift in Sources */,
 				FBD1045F1E80717E00DDF65B /* SurfaceTests.swift in Sources */,
 				834FBEBA1EA86BD4004D9302 /* TimeRangeTests.swift in Sources */,
@@ -1142,7 +1148,7 @@
 				FB1869D41E9FF88A007642F4 /* RecurrenceTests.swift in Sources */,
 				FB39ADB71E93F1EA00B79A7B /* CalendarTests.swift in Sources */,
 				FB39ADAF1E8EC6B700B79A7B /* TestUtil.swift in Sources */,
-				83B5DB721E91D7F400A0CA7E /* (null) in Sources */,
+				83B5DB721E91D7F400A0CA7E /* BuildFile in Sources */,
 				83B5DBEE1E91E4CC00A0CA7E /* GregorianDayTests.swift in Sources */,
 				FBE0EFFC1DFBBB80007BD8DF /* LeapTests.swift in Sources */,
 			);
@@ -1152,8 +1158,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				83B5DB781E91D7F500A0CA7E /* (null) in Sources */,
-				83B5DB7A1E91D7F500A0CA7E /* (null) in Sources */,
+				83B5DB781E91D7F500A0CA7E /* BuildFile in Sources */,
+				83B5DB7A1E91D7F500A0CA7E /* BuildFile in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1231,7 +1237,7 @@
 		};
 		8311B4CF1EB2BFEF00F77FF7 /* Demo */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3A18F5F3F7D9C4C8FBFD38A6 /* Pods-Leap.internal.xcconfig */;
+			baseConfigurationReference = 5FDE24585A3846DC32BEBBA3 /* Pods-Leap.demo.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1253,7 +1259,7 @@
 		};
 		8311B4D01EB2BFEF00F77FF7 /* Demo */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A45CD1F1585C39E38E93EEDC /* Pods-LeapTests.internal.xcconfig */;
+			baseConfigurationReference = 4064410923DB8CD4AB855B19 /* Pods-LeapTests.demo.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = LeapTests/Info.plist;
@@ -1281,7 +1287,7 @@
 		};
 		8311B4D11EB2BFEF00F77FF7 /* Demo */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 274B7F58648B6E4512CDCCA3 /* Pods-LeapUITests.internal.xcconfig */;
+			baseConfigurationReference = B57968AEEF898FF1680D04C0 /* Pods-LeapUITests.demo.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = LeapUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
