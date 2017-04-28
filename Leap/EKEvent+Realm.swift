@@ -217,6 +217,7 @@ extension EKEvent {
             "remoteModified": self.lastModifiedDate,
             "externalURL": self.url?.absoluteString,
             "wasDetached": self.isDetached,
+            "typeString": (self.isAllDay ? ReminderType.day : ReminderType.time).rawValue,
             ], in: calendar)
 
         return Reminder(value: data)

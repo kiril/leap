@@ -9,6 +9,13 @@
 import Foundation
 import RealmSwift
 
+enum ReminderType: String {
+    case day
+    case time
+    case event
+    case unknown
+}
+
 class Reminder: _TemporalBase, Temporality, CalendarLinkable, Alarmable, Fuzzy {
     dynamic var event: Event?
     dynamic var location: Location?
@@ -16,11 +23,18 @@ class Reminder: _TemporalBase, Temporality, CalendarLinkable, Alarmable, Fuzzy {
     dynamic var startTime: Int = 0
     dynamic var endTime: Int = 0
     dynamic var timeUTC: Int = 0
+    dynamic var typeString: String = ReminderType.unknown.rawValue
+
+    var type: ReminderType {
+        get { return ReminderType(rawValue: typeString)! }
+        set { typeString = newValue.rawValue }
+    }
 
     var date: Date? { return Date(timeIntervalSinceReferenceDate: Double(startTime)) }
     var time: TimeInterval { return Double(startTime) }
 
     var startDate: Date { return Date(timeIntervalSinceReferenceDate: Double(startTime)) }
+    var endDate: Date? { return endTime != 0 ? Date(timeIntervalSinceReferenceDate: Double(endTime)) : nil }
 
     override static func indexedProperties() -> [String] {
         return ["location.id", "startTime", "participants", "statusString", "hash"]

@@ -42,7 +42,16 @@ protocol ReminderCellDisplayable {
 
 extension ReminderSurface: ReminderCellDisplayable {
     var titleForCell: String {
-        return self.refersToEvent.value ? "\(eventTime.value) \(title.value)" : title.value
+        switch self.reminderType.value {
+        case .day:
+            return title.value
+        case .time:
+            return "\(timeRange.value) \(title.value)"
+        case .event:
+            return "\(eventTime.value) \(title.value)"
+        default:
+            fatalError()
+        }
     }
 }
 

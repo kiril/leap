@@ -14,17 +14,45 @@ class ReminderSurface: Surface, ModelLoadable {
 
     let title                  = SurfaceString(minLength: 1)
     let startTime              = SurfaceInt()
+    let endTime                = SurfaceInt()
     let refersToEvent          = SurfaceBool()
     let eventTime              = SurfaceString()
+    let timeRange              = SurfaceString()
+    let reminderType           = SurfaceProperty<ReminderType>()
 
     static func load(fromModel reminder: LeapModel) -> Surface? {
         return load(byId: reminder.id)
     }
 
 
-    static func eventTimeRange(event: Event) -> String {
+    static func timeRange(event: Event) -> String {
         let start = event.startDate
         let end = event.endDate
+
+        let calendar = Calendar.current
+        let startHour = calendar.component(.hour, from: start)
+        let endHour = calendar.component(.hour, from: end)
+
+        let spansDays = calendar.areOnDifferentDays(start, end)
+        let crossesNoon = spansDays || ( startHour < 12 && endHour >= 12 )
+
+        let from = calendar.formatDisplayTime(from: start, needsAMPM: crossesNoon)
+        let to = calendar.formatDisplayTime(from: end, needsAMPM: true)
+        var more = ""
+        if spansDays {
+            let days = calendar.daysBetween(start, and: end)
+            let ess = days == 1 ? "" : "s"
+            more = " \(days) day\(ess) later"
+        }
+
+        return "\(from) - \(to)\(more)"
+    }
+
+    static func timeRange(reminder: Reminder) -> String? {
+        let start = reminder.startDate
+        guard let end = reminder.endDate else {
+            return nil
+        }
 
         let calendar = Calendar.current
         let startHour = calendar.component(.hour, from: start)
@@ -57,6 +85,7 @@ class ReminderSurface: Surface, ModelLoadable {
 
         bridge.bind(surface.title)
         bridge.bind(surface.startTime)
+        bridge.bind(surface.endTime)
         bridge.readonlyBind(surface.refersToEvent) { (model:LeapModel) -> Bool in
             guard let reminder = model as? Reminder else { return false }
             return reminder.event != nil
@@ -66,7 +95,15 @@ class ReminderSurface: Surface, ModelLoadable {
                 let event = reminder.event else {
                     return nil
             }
-            return eventTimeRange(event: event)
+            return timeRange(event: event)
+        }
+        bridge.readonlyBind(surface.timeRange) { (model:LeapModel) -> String? in
+            guard let reminder = model as? Reminder else { return nil }
+            return timeRange(reminder: reminder)
+        }
+        bridge.readonlyBind(surface.reminderType) { (model:LeapModel) -> ReminderType in
+            guard let reminder = model as? Reminder else { fatalError() }
+            return reminder.type
         }
 
         surface.store = bridge
