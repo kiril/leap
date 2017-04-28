@@ -784,7 +784,7 @@
 				TargetAttributes = {
 					FBE0EFDF1DFBBB80007BD8DF = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = W8PY5MD3RJ;
+						DevelopmentTeam = SHR79YU44T;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Push = {
@@ -1239,13 +1239,13 @@
 				CONFIG_BUNDLE_IDENTIFIER = com.singleleap.leap.demo;
 				CONFIG_DISPLAY_NAME = "Leap Demo";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = W8PY5MD3RJ;
+				DEVELOPMENT_TEAM = SHR79YU44T;
 				INFOPLIST_FILE = Leap/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(CONFIG_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9c435fef-fcc6-466d-81de-adaa104b61e1";
-				PROVISIONING_PROFILE_SPECIFIER = "Temporary Leap Internal (Chris Account)";
+				PROVISIONING_PROFILE = "2e72a62f-f3e6-4986-99fe-225546ef79ba";
+				PROVISIONING_PROFILE_SPECIFIER = "Leap Demo Distribution";
 				SWIFT_OBJC_BRIDGING_HEADER = "Leap-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
