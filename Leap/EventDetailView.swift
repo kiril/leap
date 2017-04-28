@@ -9,10 +9,28 @@
 import UIKit
 
 class EventDetailView: EventDisplayView {
-
     override func configure(with event: EventSurface) {
         super.configure(with: event)
-        timeLabel.text = event.isRecurring.value ? event.recurringTimeRange.value : event.timeRange.value
+        timeLabel.text = event.isRecurring.value ? event.recurringTimeRange.value : "From \(event.timeRange.value)"
+        if let location = event.locationSummary.rawValue {
+            locationContainer.isHidden = false
+            locationLabel.text = location
+        } else {
+            locationContainer.isHidden = true
+        }
+        invitationSummaryLabel.text = event.invitationSummary.value
+        var detail = event.detail.value
+        if detail.characters.isEmpty {
+            detailLabel.text = "No Detail Available"
+            detailLabel.font = UIFont.italicSystemFont(ofSize: detailLabel.font.pointSize)
+            detailLabel.textAlignment = NSTextAlignment.center
+            detailLabel.textColor = UIColor.projectLightGray
+        } else {
+            detailLabel.font = UIFont.systemFont(ofSize: detailLabel.font.pointSize)
+            detailLabel.textAlignment = NSTextAlignment.left
+            detailLabel.textColor = UIColor.projectDarkGray
+            detailLabel.text = detail
+        }
     }
 
     class func instanceFromNib() -> EventDetailView {

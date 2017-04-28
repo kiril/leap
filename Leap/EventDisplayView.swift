@@ -17,11 +17,13 @@ class EventDisplayView: UIView {
     // detail
     @IBOutlet weak var invitationSummaryLabel: UILabel!
     @IBOutlet weak var invitationActionContainer: UIStackView!
+    @IBOutlet weak var detailLabel: UILabel!
 
     // location
     @IBOutlet weak var locationContainer: UIStackView!
     @IBOutlet weak var locationIconLabel: UILabel!
     @IBOutlet weak var locationButton: UIButton!
+    @IBOutlet weak var locationLabel: UILabel!
 
     // response actions
     @IBOutlet weak var yesButton: UIButton!
@@ -32,8 +34,12 @@ class EventDisplayView: UIView {
     var event: EventSurface?
 
     private func updateFonts() {
-        recurringIcon.textColor = UIColor.projectLightGray
-        timeLabel.textColor = UIColor.projectLightGray
+        recurringIcon?.textColor = UIColor.projectLightGray
+        timeLabel?.textColor = UIColor.projectDarkGray
+        locationLabel?.textColor = UIColor.projectDarkGray
+        locationIconLabel?.textColor = UIColor.projectLightGray
+        invitationSummaryLabel?.textColor = UIColor.projectLightGray
+        detailLabel?.textColor = UIColor.projectDarkGray
     }
 
     func setup() {
