@@ -64,10 +64,16 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G9x-8m-nDy">
-                                                <rect key="frame" x="17" y="0.0" width="397" height="20"/>
+                                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G9x-8m-nDy">
+                                                <rect key="frame" x="17" y="0.0" width="334" height="20"/>
                                                 <state key="normal" title="Location"/>
                                             </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" ambiguous="YES" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HYr-g4-l3X">
+                                                <rect key="frame" x="355" y="0.0" width="59" height="20"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="lessThanOrEqual" constant="20" id="uHP-wM-P3W"/>
@@ -135,6 +141,7 @@
                 <outlet property="locationButton" destination="G9x-8m-nDy" id="0ZN-Wa-PBD"/>
                 <outlet property="locationContainer" destination="928-uO-peQ" id="Ng7-u6-vbS"/>
                 <outlet property="locationIconLabel" destination="YSX-hG-iHI" id="cMV-Nz-Z2M"/>
+                <outlet property="locationLabel" destination="HYr-g4-l3X" id="6r7-7z-AVZ"/>
                 <outlet property="maybeButton" destination="zII-07-TYH" id="s84-Gp-aXB"/>
                 <outlet property="noButton" destination="OCC-lH-cVP" id="C0I-6Z-X1N"/>
                 <outlet property="recurringIcon" destination="FlJ-fs-Idr" id="c3z-dy-9Fe"/>

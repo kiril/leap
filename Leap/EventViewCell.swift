@@ -26,6 +26,7 @@ class EventViewCell: UICollectionViewCell {
     @IBOutlet weak var locationContainer: UIStackView!
     @IBOutlet weak var locationIconLabel: UILabel!
     @IBOutlet weak var locationButton: UIButton!
+    @IBOutlet weak var locationLabel: UILabel!
 
     // response actions
     @IBOutlet weak var yesButton: UIButton!
@@ -75,6 +76,7 @@ class EventViewCell: UICollectionViewCell {
     private func updateFonts() {
         invitationSummaryLabel.textColor = UIColor.projectLightGray
         locationIconLabel.textColor = UIColor.projectLightGray
+        locationLabel.textColor = UIColor.projectLightGray
         recurringIcon.textColor = UIColor.projectLightGray
         
         titleLabel.textColor = UIColor.projectDarkGray
@@ -162,6 +164,23 @@ class EventViewCell: UICollectionViewCell {
         print("Aw man")
     }
 
+    private func configure(location: String?) {
+        if let location = location, !location.isEmpty {
+            locationContainer.isHidden = false
+            if location.looksLikeAnAddress {
+                locationButton.isHidden = false
+                locationLabel.isHidden = true
+                locationButton.setTitle(location, for: .normal)
+            } else {
+                locationButton.isHidden = true
+                locationLabel.isHidden = false
+                locationLabel.text = location
+            }
+        } else {
+            locationContainer.isHidden = true
+        }
+    }
+
     func configure(with event: EventSurface) {
         // move out of here to seperate helper classes
         // if this needs to be different
@@ -174,12 +193,7 @@ class EventViewCell: UICollectionViewCell {
         titleLabel.text = event.title.value
         invitationSummaryLabel.text = event.invitationSummary.value
 
-        if let location = event.locationSummary.rawValue {
-            locationContainer.isHidden = false
-            locationButton.setTitle(location, for: .normal)
-        } else {
-            locationContainer.isHidden = true
-        }
+        configure(location: event.locationSummary.rawValue)
 
         if event.isConfirmed.value {
             backgroundColor = UIColor.white
