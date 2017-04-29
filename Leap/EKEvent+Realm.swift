@@ -189,6 +189,7 @@ extension EKEvent {
                                   "startMinute": minute,
                                   "durationMinutes": durationInMinutes,
                                   "seriesId": cleanId,
+                                  "reminderTypeString": self.reminderType.rawValue,
                                   "isTentative": self.isTentative], in: calendar)
         return Template(value: data)
     }
@@ -212,14 +213,20 @@ extension EKEvent {
     func asReminder(in calendar: EKCalendar) -> Reminder {
         let data = addCommonData([
             "startTime": self.startDate.secondsSinceReferenceDate,
+            "endTime": self.reminderType == .time ? self.endDate.secondsSinceReferenceDate : 0,
             "legacyTimeZone": TimeZone.from(self.timeZone),
             "remoteCreated": self.creationDate,
             "remoteModified": self.lastModifiedDate,
             "externalURL": self.url?.absoluteString,
             "wasDetached": self.isDetached,
-            "typeString": (self.isAllDay ? ReminderType.day : ReminderType.time).rawValue,
+            "typeString": self.reminderType.rawValue,
             ], in: calendar)
 
-        return Reminder(value: data)
+        let reminder = Reminder(value: data)
+        return reminder
+    }
+
+    var reminderType: ReminderType {
+        return self.isAllDay ? .day : .time
     }
 }

@@ -154,7 +154,7 @@ class EventKit {
                 merge(ekEvent, into: duplicate, in: calendar)
             } else {
                 reminder.insert()
-                print("reminder INSERT \(ekEvent.title)")
+                print("reminder INSERT \(ekEvent.title) \(reminder.type)")
             }
         }
     }

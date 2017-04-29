@@ -23,6 +23,7 @@ class Template: LeapModel, Particible, Alarmable, CalendarLinkable {
     dynamic var isTentative: Bool = false
     dynamic var originString: String = Origin.unknown.rawValue
     dynamic var seriesId: String?
+    dynamic var reminderTypeString: String?
 
     let channels = List<Channel>()
 
@@ -56,6 +57,7 @@ class Template: LeapModel, Particible, Alarmable, CalendarLinkable {
                                    "participants": participants,
                                    "alarms": alarms,
                                    "linkedCalendarIds": linkedCalendarIds,
+                                   "typeString": reminderTypeString,
                                    "originString": originString]
         return Reminder(value: data)
     }
