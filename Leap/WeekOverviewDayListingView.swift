@@ -13,6 +13,9 @@ class WeekOverviewDayListingView: UIView, NibLoadableView {
     @IBOutlet weak var dayNameLabel: UILabel!
     @IBOutlet weak var borderView: UIView!
 
+    @IBOutlet weak var daytimeBusynessIndicator: NestedCircleView!
+    @IBOutlet weak var eveningBusynessIndicator: NestedCircleView!
+
     var labelColor: UIColor = UIColor.black {
         didSet { updateColors() }
     }

@@ -20,6 +20,8 @@ class WeekOverviewSurface: Surface, IntIdInitable {
 
     convenience required init(intId: Int) {
         self.init(id: String(intId))
+
+        daySchedules = days.map { DayScheduleSurface.load(dayId: $0.id) }
     }
     var intId: Int { return Int(id!)! }
 
@@ -87,4 +89,6 @@ class WeekOverviewSurface: Surface, IntIdInitable {
 
         return days
     }
+
+    var daySchedules: [DayScheduleSurface]!
 }

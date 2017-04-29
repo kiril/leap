@@ -32,6 +32,7 @@ class WeekOverviewViewController: UIViewController, StoryboardLoadable {
     private func setupDays() {
         for (index, dayView) in dayListingViews.enumerated() {
             guard let day = surface?.days[index] else { continue }
+            guard let schedule = surface?.daySchedules[index] else { continue }
 
             dayView.isUserInteractionEnabled = true
             dayView.dayNameLabel.text = day.weekdayNameShort
@@ -51,6 +52,15 @@ class WeekOverviewViewController: UIViewController, StoryboardLoadable {
             case .past:
                 dayView.labelColor = UIColor.projectLightGray
             }
+
+            dayView.daytimeBusynessIndicator.topCircleComplete = schedule.percentBooked(forType: .commited,
+                                                                                        during: .day)
+            dayView.daytimeBusynessIndicator.bottomCircleComplete = schedule.percentBooked(forType: .committedAndUnresolved,
+                                                                                           during: .day)
+            dayView.eveningBusynessIndicator.topCircleComplete = schedule.percentBooked(forType: .commited,
+                                                                                        during: .evening)
+            dayView.eveningBusynessIndicator.bottomCircleComplete = schedule.percentBooked(forType: .committedAndUnresolved,
+                                                                                           during: .evening)
         }
 
         updateSelected()
