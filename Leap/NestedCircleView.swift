@@ -13,7 +13,7 @@ import UIKit
 class NestedCircleView: UIView {
 
     var topCircleColor = UIColor.projectBlue { didSet { updateCircleViews() } }
-    var bottomCircleColor = UIColor.projectDarkGray { didSet { updateCircleViews() } }
+    var bottomCircleColor = UIColor.projectLightGray { didSet { updateCircleViews() } }
     var backgroundCircleColor = UIColor.projectLighterGray { didSet { updateCircleViews() } }
 
     var topCircleComplete: CGFloat = 0.0 { didSet { updateCircleCompleteness() } }
