@@ -46,9 +46,9 @@ extension ReminderSurface: ReminderCellDisplayable {
         case .day:
             return title.value
         case .time:
-            return "\(timeRange.value) \(title.value)"
+            return "\(timeRange.value)  \(title.value)"
         case .event:
-            return "\(eventTime.value) \(title.value)"
+            return "\(eventTime.value)  \(title.value)"
         default:
             fatalError()
         }
