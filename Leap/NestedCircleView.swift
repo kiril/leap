@@ -15,6 +15,7 @@ class NestedCircleView: UIView {
     var topCircleColor = UIColor.projectBlue { didSet { updateCircleViews() } }
     var bottomCircleColor = UIColor.projectLightGray { didSet { updateCircleViews() } }
     var backgroundCircleColor = UIColor.projectLighterGray { didSet { updateCircleViews() } }
+    var backgroundFillColor = UIColor.white { didSet { updateCircleViews() } }
 
     var topCircleComplete: CGFloat = 0.0 { didSet { updateCircleCompleteness() } }
     var bottomCircleComplete: CGFloat = 0.0 { didSet { updateCircleCompleteness() } }
@@ -51,7 +52,9 @@ class NestedCircleView: UIView {
     private func updateCircleViews() {
         setupCircleShapeLayer(topCircleLayer, withColor: topCircleColor.cgColor)
         setupCircleShapeLayer(bottomCircleLayer, withColor: bottomCircleColor.cgColor)
-        setupCircleShapeLayer(backgroundCircleLayer, withColor: backgroundCircleColor.cgColor)
+        setupCircleShapeLayer(backgroundCircleLayer,
+                              withColor: backgroundCircleColor.cgColor,
+                              fillColor: backgroundFillColor.cgColor)
     }
 
     private func updateCircleCompleteness() {
@@ -60,7 +63,8 @@ class NestedCircleView: UIView {
     }
 
     private func setupCircleShapeLayer(_ shape: CAShapeLayer,
-                                       withColor color: CGColor) {
+                                       withColor color: CGColor,
+                                       fillColor: CGColor = UIColor.clear.cgColor) {
         // Use UIBezierPath as an easy way to create the CGPath for the layer.
         // The path should be the entire circle.
         let circlePath = UIBezierPath(arcCenter: CGPoint(x: frame.size.width / 2.0,
@@ -72,7 +76,7 @@ class NestedCircleView: UIView {
 
         // Setup the CAShapeLayer with the path, colors, and line width
         shape.path = circlePath.cgPath
-        shape.fillColor = UIColor.clear.cgColor
+        shape.fillColor = fillColor
         shape.strokeColor = color
         shape.lineWidth = circleWidth;
     }

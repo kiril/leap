@@ -16,6 +16,10 @@ class WeekOverviewDayListingView: UIView, NibLoadableView {
     @IBOutlet weak var daytimeBusynessIndicator: NestedCircleView!
     @IBOutlet weak var eveningBusynessIndicator: NestedCircleView!
 
+    @IBOutlet weak var daytimeIconLabel: UILabel!
+    @IBOutlet weak var eveningIconLabel: UILabel!
+
+
     var labelColor: UIColor = UIColor.black {
         didSet { updateColors() }
     }
@@ -40,6 +44,8 @@ class WeekOverviewDayListingView: UIView, NibLoadableView {
 
     private func setup() {
         setupUsingNibContent()
+        daytimeIconLabel.textColor = UIColor.projectLighterGray
+        eveningIconLabel.textColor = UIColor.projectLighterGray
     }
 
     private func updateColors() {
