@@ -231,31 +231,31 @@ class DayScheduleSurface: Surface {
         }
     }
 
-    private var normalScheduleRange: TimeRange {
-        let scheduleStartHour = 9 // 9am
-        let scheduleEndHour = 22 // 10pm
+    private var fullScheduleRange: TimeRange {
+        return timeRanges(from: 9, to: 22)! // 9am - 10pm
+    }
+    private var daytimeScheduleRange: TimeRange {
+        return timeRanges(from: 9, to: 18)! // 9am - 6pm
+    }
+    private var eveningScheduleRange: TimeRange {
+        return timeRanges(from: 18, to: 24)! // 6am - midnight
+    }
 
+    private func timeRanges(from startHour: Int, to endHour: Int) -> TimeRange? {
         let dayStart = Calendar.current.startOfDay(for: self.day.gregorianDay)
-        let scheduleStart = Calendar.current.date(byAdding: DateComponents(hour: scheduleStartHour),
+        let rangeStart = Calendar.current.date(byAdding: DateComponents(hour: startHour),
                                                   to: dayStart,
                                                   wrappingComponents: false)!
-        let scheduleEnd = Calendar.current.date(byAdding: DateComponents(hour: scheduleEndHour),
+        let rangeEnd = Calendar.current.date(byAdding: DateComponents(hour: endHour),
                                                 to: dayStart,
                                                 wrappingComponents: false)!
 
-        return TimeRange(start: scheduleStart,
-                         end: scheduleEnd)!
+        return TimeRange(start: rangeStart,
+                         end: rangeEnd)
     }
 
     private func scheduleEntries(events: [EventSurface]) -> [ScheduleEntry] {
-        var openTimeRanges = [normalScheduleRange]
-
-        for event in events {
-            guard let range = event.range else { continue }
-            openTimeRanges = openTimeRanges.timeRangesByExcluding(timeRange: range)
-        }
-
-        openTimeRanges = openTimeRanges.filter { (timeRange) -> Bool in
+        let openTimeRanges = events.openTimes(in: fullScheduleRange).filter { (timeRange) -> Bool in
             return timeRange.durationInSeconds >= (60 * 30) // only keep ranges > 30 minutes
         }
 
@@ -267,6 +267,25 @@ class DayScheduleSurface: Surface {
         theEntries.sort()
 
         return theEntries
+    }
+
+    enum DayBusynessSection { case day, evening }
+    enum DayBusynessEventType { case commited, committedAndUnresolved }
+    // returns 0.0 - 1.0 for percent booked display
+    func percentBooked(forType eventType: DayBusynessEventType,
+                       during daySection: DayBusynessSection) -> CGFloat {
+
+        let totalTimeRange = daySection == .day ? daytimeScheduleRange : eveningScheduleRange
+        let events = self.events.value.filter { (event) -> Bool in
+            switch eventType {
+            case .committedAndUnresolved:
+                return displayableType(forEvent: event) == .always
+            case .commited:
+                return event.userResponse.value == .yes
+            }
+        }
+        let openTimeInSeconds = events.openTimes(in: totalTimeRange).combinedDurationInSeconds
+        return CGFloat(1.0 - (openTimeInSeconds / totalTimeRange.durationInSeconds))
     }
 
     var hideableEventsCount: Int {

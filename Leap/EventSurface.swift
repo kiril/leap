@@ -497,3 +497,15 @@ extension EventSurface {
                          end: endTime.value)
     }
 }
+
+extension Array where Element: EventSurface {
+    func openTimes(in timeRange: TimeRange) -> [TimeRange] {
+        var openTimeRanges = [timeRange]
+        for event in self {
+            guard let range = event.range else { continue }
+            openTimeRanges = openTimeRanges.timeRangesByExcluding(timeRange: range)
+            if openTimeRanges.isEmpty { break }
+        }
+        return openTimeRanges
+    }
+}
