@@ -86,17 +86,13 @@ class EventDetailView: UIView {
 
         invitationSummaryLabel.text = event.invitationSummary.value
 
-        var detail = event.detail.value
-        if detail.characters.isEmpty {
-            detailLabel.text = "No Detail Available"
-            detailLabel.font = UIFont.italicSystemFont(ofSize: detailLabel.font.pointSize)
-            detailLabel.textAlignment = NSTextAlignment.center
-            detailLabel.textColor = UIColor.projectLightGray
+        detailLabel.text = event.detail.value
+        if detailLabel.text!.isEmpty {
+            detailLabel.isHidden = true
+            detailSeparator.isHidden = true
         } else {
-            detailLabel.font = UIFont.systemFont(ofSize: detailLabel.font.pointSize)
-            detailLabel.textAlignment = NSTextAlignment.left
-            detailLabel.textColor = UIColor.projectDarkGray
-            detailLabel.text = detail
+            detailLabel.isHidden = false
+            detailSeparator.isHidden = false
         }
 
         separator1.backgroundColor = UIColor.projectLighterGray
