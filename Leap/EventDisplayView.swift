@@ -143,6 +143,7 @@ class EventDisplayView: UIView {
         }
 
         remindButton.addTarget(self, action: #selector(remindMe), for: .touchUpInside)
+        locationButton.addTarget(self, action: #selector(launchMaps), for: .touchUpInside)
     }
 
     func applyActionButtonFormat(to button: UIButton,
@@ -156,5 +157,17 @@ class EventDisplayView: UIView {
         button.layer.masksToBounds = true
     }
 
+    @objc private func launchMaps(sender: UIButton) {
+        guard let title = sender.currentTitle else { return }
+        guard let q = title.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
+        let googleString = "comgooglemaps://?q=\(q)"
+        let appleString = "http://maps.apple.com/?q=\(q)"
 
+        if let google = URL(string: googleString), UIApplication.shared.canOpenURL(google) {
+            UIApplication.shared.open(google)
+        }
+        if let apple = URL(string: appleString), UIApplication.shared.canOpenURL(apple) {
+            UIApplication.shared.open(apple)
+        }
+    }
 }

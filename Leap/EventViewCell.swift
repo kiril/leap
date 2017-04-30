@@ -164,7 +164,6 @@ class EventViewCell: UICollectionViewCell {
         if let apple = URL(string: appleString), UIApplication.shared.canOpenURL(apple) {
             UIApplication.shared.open(apple)
         }
-        print("Aw man")
     }
 
     private func configure(location: String?) {
