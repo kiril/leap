@@ -156,7 +156,7 @@ class EventSurface: Surface, ModelLoadable {
         }
         bridge.readonlyBind(surface.alarmSummary) { (m:LeapModel) -> String? in
             guard let event = m as? Event, event.alarms.count > 0 else { return nil }
-            var summary = "Alert "
+            var summary = "Alarm "
             let initialLength = summary.characters.count
             for alarm in event.alarms {
                 if summary.characters.count > initialLength {
