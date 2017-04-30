@@ -15,13 +15,27 @@ class EventDetailView: EventDisplayView {
         super.configure(with: event)
         titleLabel.text = event.title.value
         timeLabel.text = event.isRecurring.value ? event.recurringTimeRange.value : "From \(event.timeRange.value)"
+
         if let location = event.locationSummary.rawValue {
             locationContainer?.isHidden = false
-            locationLabel.text = location
+            if location.looksLikeAnAddress {
+                locationLabel.isHidden = true
+                locationButton.isHidden = false
+                locationButton.setTitle(location, for: .normal)
+                locationButton.titleLabel?.numberOfLines = 0
+            } else {
+                locationLabel.text = location
+                locationButton.isHidden = true
+                locationLabel.isHidden = false
+            }
         } else {
             locationContainer?.isHidden = true
+            locationButton.isHidden = true
+            locationLabel.isHidden = true
         }
+
         invitationSummaryLabel.text = event.invitationSummary.value
+
         var detail = event.detail.value
         if detail.characters.isEmpty {
             detailLabel.text = "No Detail Available"
@@ -35,7 +49,7 @@ class EventDetailView: EventDisplayView {
             detailLabel.text = detail
         }
 
-        separator1.backgroundColor = UIColor.projectLightGray
+        separator1.backgroundColor = UIColor.projectLighterGray
     }
 
     class func instanceFromNib() -> EventDetailView {
