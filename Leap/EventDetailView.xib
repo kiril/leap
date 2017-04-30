@@ -21,7 +21,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Mc6-Fo-C7r">
-                    <rect key="frame" x="20" y="80" width="335" height="567"/>
+                    <rect key="frame" x="20" y="80" width="335" height="321.5"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WSI-Hw-Hew">
                             <rect key="frame" x="0.0" y="0.0" width="335" height="21.5"/>
@@ -41,16 +41,16 @@
                             <state key="normal" title="Location Button"/>
                         </button>
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="0Qp-Ef-WLB" userLabel="Time Stack">
-                            <rect key="frame" x="0.0" y="105" width="335" height="17"/>
+                            <rect key="frame" x="0.0" y="105" width="335" height="20.5"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="252" verticalHuggingPriority="252" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IBm-Ih-Zmm">
-                                    <rect key="frame" x="0.0" y="0.0" width="15" height="17"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="15" height="20.5"/>
                                     <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="749" text="10am - 12pm" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.75" adjustsLetterSpacingToFitWidth="YES" preferredMaxLayoutWidth="162.5" translatesAutoresizingMaskIntoConstraints="NO" id="s66-FN-ge1">
-                                    <rect key="frame" x="25" y="0.0" width="310" height="17"/>
+                                    <rect key="frame" x="25" y="0.0" width="310" height="20.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
@@ -61,48 +61,80 @@
                             </constraints>
                         </stackView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Invitation Summary" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.75" translatesAutoresizingMaskIntoConstraints="NO" id="oXm-1a-vvU">
-                            <rect key="frame" x="0.0" y="132" width="335" height="20.5"/>
+                            <rect key="frame" x="0.0" y="135.5" width="335" height="20.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" verticalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="aie-Ne-9RX">
-                            <rect key="frame" x="0.0" y="162.5" width="335" height="1"/>
+                            <rect key="frame" x="0.0" y="166" width="335" height="1"/>
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="qRm-nj-uzv"/>
                             </constraints>
                         </view>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0up-fm-j76" userLabel="Detail">
-                            <rect key="frame" x="0.0" y="173.5" width="335" height="383.5"/>
-                            <edgeInsets key="layoutMargins" top="8" left="20" bottom="8" right="20"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="749" text="Detail" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.75" translatesAutoresizingMaskIntoConstraints="NO" id="0up-fm-j76" userLabel="Detail">
+                            <rect key="frame" x="0.0" y="177" width="335" height="20.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <view contentMode="scaleToFill" verticalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="Hr4-An-7cf" userLabel="DetailSeparator">
+                            <rect key="frame" x="0.0" y="207.5" width="335" height="1"/>
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="r8k-AT-PV5"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Before Info" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2sw-bG-IGK">
+                            <rect key="frame" x="0.0" y="218.5" width="335" height="20.5"/>
+                            <fontDescription key="fontDescription" type="italicSystem" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" verticalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="IPp-Mo-5DK" userLabel="Separator 3">
+                            <rect key="frame" x="0.0" y="249" width="335" height="1"/>
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="3H9-ES-xHI"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="After Info" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v4X-JQ-4Wx">
+                            <rect key="frame" x="0.0" y="260" width="335" height="20.5"/>
+                            <fontDescription key="fontDescription" type="italicSystem" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" verticalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="XSx-I1-ETL" userLabel="Separator 4">
+                            <rect key="frame" x="0.0" y="290.5" width="335" height="1"/>
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="Lie-MA-lDD"/>
+                            </constraints>
+                        </view>
                         <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Epb-bp-oAf">
-                            <rect key="frame" x="0.0" y="567" width="335" height="0.0"/>
+                            <rect key="frame" x="0.0" y="301.5" width="335" height="20"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="70F-gQ-gfU">
-                                    <rect key="frame" x="0.0" y="0.0" width="32" height="0.0"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="32" height="20"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                     <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="5" maxY="0.0"/>
                                     <state key="normal" title="Yes"/>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pYO-Ao-6Gp">
-                                    <rect key="frame" x="37" y="0.0" width="31" height="0.0"/>
+                                    <rect key="frame" x="37" y="0.0" width="31" height="20"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                     <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
                                     <state key="normal" title="No"/>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fil-t9-8fJ">
-                                    <rect key="frame" x="73" y="0.0" width="59" height="0.0"/>
+                                    <rect key="frame" x="73" y="0.0" width="59" height="20"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                     <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
                                     <state key="normal" title="Maybe"/>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="laU-py-sqt" userLabel="Remind Me">
-                                    <rect key="frame" x="137" y="0.0" width="198" height="0.0"/>
+                                    <rect key="frame" x="137" y="0.0" width="198" height="20"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                     <state key="normal" title="Save as Reminder"/>
                                 </button>
@@ -119,10 +151,12 @@
                 <constraint firstItem="Mc6-Fo-C7r" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="80" id="1DO-uI-r96"/>
                 <constraint firstItem="Mc6-Fo-C7r" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="4XV-Ea-FCS"/>
                 <constraint firstAttribute="trailing" secondItem="Mc6-Fo-C7r" secondAttribute="trailing" constant="20" id="Ahw-aZ-sSo"/>
-                <constraint firstAttribute="bottom" secondItem="Mc6-Fo-C7r" secondAttribute="bottom" constant="20" id="Xq8-Io-zZg"/>
             </constraints>
             <connections>
+                <outlet property="afterLabel" destination="v4X-JQ-4Wx" id="XZg-yU-1oK"/>
+                <outlet property="beforeLabel" destination="2sw-bG-IGK" id="x1U-v4-yu3"/>
                 <outlet property="detailLabel" destination="0up-fm-j76" id="YQW-Wn-iCZ"/>
+                <outlet property="detailSeparator" destination="Hr4-An-7cf" id="OYe-B6-lD2"/>
                 <outlet property="invitationSummaryLabel" destination="oXm-1a-vvU" id="js7-nR-II0"/>
                 <outlet property="locationButton" destination="qqg-aA-5db" id="K3X-Eo-FcV"/>
                 <outlet property="locationLabel" destination="toS-pQ-DoM" id="HtS-cb-THe"/>
@@ -131,6 +165,8 @@
                 <outlet property="recurringIcon" destination="IBm-Ih-Zmm" id="1cV-v9-dYO"/>
                 <outlet property="remindButton" destination="laU-py-sqt" id="tSa-T7-cS3"/>
                 <outlet property="separator1" destination="aie-Ne-9RX" id="bQT-Q4-asn"/>
+                <outlet property="separator3" destination="IPp-Mo-5DK" id="Wfw-q9-uSt"/>
+                <outlet property="separator4" destination="XSx-I1-ETL" id="iXg-P9-MqG"/>
                 <outlet property="timeLabel" destination="s66-FN-ge1" id="YcW-tQ-w49"/>
                 <outlet property="titleLabel" destination="WSI-Hw-Hew" id="UEf-wN-dTe"/>
                 <outlet property="yesButton" destination="70F-gQ-gfU" id="S4w-9z-nmE"/>

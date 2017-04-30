@@ -51,6 +51,7 @@ extension DayScheduleViewController: EventViewCellDelegate {
     func tapReceived(on: EventViewCell, for event: EventSurface) {
         let eventViewController = EventDetailViewController()
         eventViewController.event = event
+        eventViewController.entries = self.surface.entries
         self.navigationController?.pushViewController(eventViewController, animated: true)
     }
 }

@@ -11,9 +11,11 @@ import UIKit
 class EventDetailViewController: UIViewController {
 
     var event: EventSurface!
+    var entries: [ScheduleEntry]!
 
     override func loadView() {
         let eventDetail = EventDetailView.instanceFromNib()
+        eventDetail.entries = entries
         eventDetail.configure(with: self.event)
         self.view = eventDetail
         self.title = "Details"
