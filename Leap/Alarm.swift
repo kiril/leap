@@ -27,6 +27,11 @@ class Alarm: LeapModel {
     dynamic var geoFence: GeoFence?
     dynamic var geoTriggerString: String?
 
+    var type: AlarmType {
+        get { return AlarmType(rawValue: typeString)! }
+        set { typeString = newValue.rawValue }
+    }
+
     var geoTrigger: ProximityTrigger? {
         get { return ProximityTrigger(rawValue: geoTriggerString ?? "") }
         set { geoTriggerString = newValue?.rawValue }

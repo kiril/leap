@@ -17,6 +17,15 @@ class DaySurface: Surface, IntIdInitable {
     var intId: Int { return Int(id!)! }
     var gregorianDay: GregorianDay { return GregorianDay.by(id: intId) }
 
+
+    var shortDateString: String {
+        let date = Calendar.universalGregorian.date(from: gregorianDay.components)!
+        let formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.setLocalizedDateFormatFromTemplate("MMMd")
+        return formatter.string(from: date)
+    }
+
     var weekdayName: String {
         return Calendar.current.weekdaySymbols[weekdayIndex] // force gregorian here but change the locale? Maybe... maybe.
     }

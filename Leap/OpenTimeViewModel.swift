@@ -11,6 +11,9 @@ import Foundation
 struct OpenTimeViewModel: Equatable {
     let startTime: Date?
     let endTime: Date?
+    var durationSeconds: Int {
+        return (endTime!.secondsSinceReferenceDate - startTime!.secondsSinceReferenceDate)
+    }
 
     init(startTime: Date?, endTime: Date?) {
         self.startTime = startTime

@@ -55,6 +55,9 @@ class EventSurface: Surface, ModelLoadable {
     let locationSummary        = SurfaceString()
     let isRecurring            = SurfaceBool()
     let origin                 = SurfaceProperty<Origin>()
+    let hasAlarms              = SurfaceBool()
+    let alarmSummary           = SurfaceString()
+    let participants           = SurfaceProperty<[ParticipantSurface]>()
 
 
     func intersectsWith(_ other: EventSurface) -> Bool {
@@ -149,6 +152,42 @@ class EventSurface: Surface, ModelLoadable {
 
         bridge.bind(surface.title)
         bridge.bind(surface.detail)
+        bridge.readonlyBind(surface.hasAlarms) { (m:LeapModel) -> Bool in
+            return (m as! Event).alarms.count > 0
+        }
+        bridge.readonlyBind(surface.alarmSummary) { (m:LeapModel) -> String? in
+            guard let event = m as? Event, event.alarms.count > 0 else { return nil }
+            var summary = "Alarm "
+            let initialLength = summary.characters.count
+            for alarm in event.alarms {
+                if summary.characters.count > initialLength {
+                    summary += ", "
+                }
+
+                switch alarm.type {
+                case .absolute:
+                    let formatter = DateFormatter()
+                    formatter.locale = Locale.current
+                    formatter.setLocalizedDateFormatFromTemplate("MMMdy")
+                    let dateString = formatter.string(from: alarm.absoluteTime!)
+                    summary += dateString
+
+                case .location:
+                    summary += "on a certain location"
+
+                case .relative:
+                    let seconds = alarm.relativeOffset
+                    if seconds > 0 {
+                        summary += "\(seconds.durationString) after"
+                    } else if seconds == 0 {
+                        summary += "at time of event"
+                    } else {
+                        summary += "\(abs(seconds).durationString) before"
+                    }
+                }
+            }
+            return summary
+        }
         bridge.readonlyBind(surface.origin) { (m) -> Any? in
             if let e = m as? Event {
                 return e.origin
@@ -388,6 +427,20 @@ class EventSurface: Surface, ModelLoadable {
             }
             
             return "\(recurrence) from \(from) - \(to)\(more)"
+        }
+
+        bridge.readonlyBind(surface.participants) { (m:LeapModel) -> [ParticipantSurface] in
+            var participants: [ParticipantSurface] = []
+
+            guard let event = m as? Event else { return participants }
+
+            for participant in event.participants {
+                if let participantSurface = ParticipantSurface.load(fromModel: participant) as? ParticipantSurface {
+                    participants.append(participantSurface)
+                }
+            }
+
+            return participants
         }
 
         surface.store = bridge
