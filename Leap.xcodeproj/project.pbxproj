@@ -53,10 +53,10 @@
 		839A8AF61EA1300A00893F6F /* DayNavigationWrapperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839A8AF51EA1300A00893F6F /* DayNavigationWrapperViewController.swift */; };
 		83A72D741E82DAE0005EB213 /* TimePerspective.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A72D731E82DAE0005EB213 /* TimePerspective.swift */; };
 		83A72D771E82DF95005EB213 /* DayScheduleSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A72D761E82DF95005EB213 /* DayScheduleSurface.swift */; };
-		83B5DB701E91D7F400A0CA7E /* BuildFile in Sources */ = {isa = PBXBuildFile; };
-		83B5DB721E91D7F400A0CA7E /* BuildFile in Sources */ = {isa = PBXBuildFile; };
-		83B5DB781E91D7F500A0CA7E /* BuildFile in Sources */ = {isa = PBXBuildFile; };
-		83B5DB7A1E91D7F500A0CA7E /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		83B5DB701E91D7F400A0CA7E /* (null) in Sources */ = {isa = PBXBuildFile; };
+		83B5DB721E91D7F400A0CA7E /* (null) in Sources */ = {isa = PBXBuildFile; };
+		83B5DB781E91D7F500A0CA7E /* (null) in Sources */ = {isa = PBXBuildFile; };
+		83B5DB7A1E91D7F500A0CA7E /* (null) in Sources */ = {isa = PBXBuildFile; };
 		83B5DBEE1E91E4CC00A0CA7E /* GregorianDayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B5DBED1E91E4CC00A0CA7E /* GregorianDayTests.swift */; };
 		83B6C6B31E92B850002DCDA2 /* UIPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B6C6B21E92B850002DCDA2 /* UIPageViewController.swift */; };
 		83B6C6B51E92BC6E002DCDA2 /* DayNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B6C6B41E92BC6E002DCDA2 /* DayNavigationViewController.swift */; };
@@ -74,8 +74,6 @@
 		FB180C4A1EB260F800FE1CF4 /* EventDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB180C491EB260F800FE1CF4 /* EventDetailViewController.swift */; };
 		FB180C4E1EB261B200FE1CF4 /* EventDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB180C4D1EB261B200FE1CF4 /* EventDetailView.xib */; };
 		FB180C501EB261DB00FE1CF4 /* EventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB180C4F1EB261DB00FE1CF4 /* EventDetailView.swift */; };
-		FB180C541EB2803700FE1CF4 /* EventDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB180C531EB2803700FE1CF4 /* EventDisplayView.swift */; };
-		FB180C561EB28BEA00FE1CF4 /* EventDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB180C551EB28BEA00FE1CF4 /* EventDelegate.swift */; };
 		FB180C581EB2D57E00FE1CF4 /* String+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB180C571EB2D57E00FE1CF4 /* String+Leap.swift */; };
 		FB1869D41E9FF88A007642F4 /* RecurrenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1869D31E9FF88A007642F4 /* RecurrenceTests.swift */; };
 		FB1869D61EA01CBC007642F4 /* List+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1869D51EA01CBC007642F4 /* List+Leap.swift */; };
@@ -244,8 +242,6 @@
 		FB180C491EB260F800FE1CF4 /* EventDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDetailViewController.swift; sourceTree = "<group>"; };
 		FB180C4D1EB261B200FE1CF4 /* EventDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventDetailView.xib; sourceTree = "<group>"; };
 		FB180C4F1EB261DB00FE1CF4 /* EventDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDetailView.swift; sourceTree = "<group>"; };
-		FB180C531EB2803700FE1CF4 /* EventDisplayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDisplayView.swift; sourceTree = "<group>"; };
-		FB180C551EB28BEA00FE1CF4 /* EventDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDelegate.swift; sourceTree = "<group>"; };
 		FB180C571EB2D57E00FE1CF4 /* String+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Leap.swift"; sourceTree = "<group>"; };
 		FB1869D31E9FF88A007642F4 /* RecurrenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecurrenceTests.swift; sourceTree = "<group>"; };
 		FB1869D51EA01CBC007642F4 /* List+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "List+Leap.swift"; sourceTree = "<group>"; };
@@ -413,8 +409,6 @@
 				FB180C491EB260F800FE1CF4 /* EventDetailViewController.swift */,
 				FB180C4D1EB261B200FE1CF4 /* EventDetailView.xib */,
 				FB180C4F1EB261DB00FE1CF4 /* EventDetailView.swift */,
-				FB180C531EB2803700FE1CF4 /* EventDisplayView.swift */,
-				FB180C551EB28BEA00FE1CF4 /* EventDelegate.swift */,
 			);
 			name = LocalCalendar;
 			sourceTree = "<group>";
@@ -808,7 +802,7 @@
 				TargetAttributes = {
 					FBE0EFDF1DFBBB80007BD8DF = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = SHR79YU44T;
+						DevelopmentTeam = W8PY5MD3RJ;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Push = {
@@ -1054,7 +1048,6 @@
 				FB4208531E85948A007F4DBD /* Channel.swift in Sources */,
 				FB180C581EB2D57E00FE1CF4 /* String+Leap.swift in Sources */,
 				FB7ECD1C1EAE5C5500163AD5 /* Particible.swift in Sources */,
-				FB180C561EB28BEA00FE1CF4 /* EventDelegate.swift in Sources */,
 				FBCA4D1E1E84490A003E7AB7 /* Location.swift in Sources */,
 				FB934F241E7EDF670068CDEF /* Persistence.swift in Sources */,
 				83B6C6B51E92BC6E002DCDA2 /* DayNavigationViewController.swift in Sources */,
@@ -1080,7 +1073,6 @@
 				8366F11A1EAFAD4A00E3A448 /* ReminderSectionController.swift in Sources */,
 				FB166B5C1E8AC3CA00CB95EC /* Fetchable.swift in Sources */,
 				FB166B5E1E8AC6DB00CB95EC /* ModelReference.swift in Sources */,
-				FB180C541EB2803700FE1CF4 /* EventDisplayView.swift in Sources */,
 				833617781E8C4756009A97FF /* StoryboardLoadable.swift in Sources */,
 				FB4208661E8976B1007F4DBD /* Series.swift in Sources */,
 				FBD614541E7F3370001F4050 /* EventSurface.swift in Sources */,
@@ -1163,7 +1155,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB39ADAD1E8EC5A800B79A7B /* BridgeTest.swift in Sources */,
-				83B5DB701E91D7F400A0CA7E /* BuildFile in Sources */,
+				83B5DB701E91D7F400A0CA7E /* (null) in Sources */,
 				FB8BB6231E89A76A00A30315 /* EventKitMigrationTests.swift in Sources */,
 				FBD1045F1E80717E00DDF65B /* SurfaceTests.swift in Sources */,
 				834FBEBA1EA86BD4004D9302 /* TimeRangeTests.swift in Sources */,
@@ -1172,7 +1164,7 @@
 				FB1869D41E9FF88A007642F4 /* RecurrenceTests.swift in Sources */,
 				FB39ADB71E93F1EA00B79A7B /* CalendarTests.swift in Sources */,
 				FB39ADAF1E8EC6B700B79A7B /* TestUtil.swift in Sources */,
-				83B5DB721E91D7F400A0CA7E /* BuildFile in Sources */,
+				83B5DB721E91D7F400A0CA7E /* (null) in Sources */,
 				83B5DBEE1E91E4CC00A0CA7E /* GregorianDayTests.swift in Sources */,
 				FBE0EFFC1DFBBB80007BD8DF /* LeapTests.swift in Sources */,
 			);
@@ -1182,8 +1174,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				83B5DB781E91D7F500A0CA7E /* BuildFile in Sources */,
-				83B5DB7A1E91D7F500A0CA7E /* BuildFile in Sources */,
+				83B5DB781E91D7F500A0CA7E /* (null) in Sources */,
+				83B5DB7A1E91D7F500A0CA7E /* (null) in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
