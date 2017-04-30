@@ -17,4 +17,13 @@ extension Int {
     var durationString: String {
         return TimeInterval(self).durationString
     }
+
+    func pluralize(string: String, suffix: String = "s") -> String {
+        switch self {
+        case 1:
+            return string
+        default:
+            return "\(string)\(suffix)"
+        }
+    }
 }
