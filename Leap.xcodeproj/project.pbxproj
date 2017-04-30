@@ -79,6 +79,7 @@
 		FB1869D61EA01CBC007642F4 /* List+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1869D51EA01CBC007642F4 /* List+Leap.swift */; };
 		FB1E5FFC1EB685DB00FFF60C /* TimeInterval+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1E5FFB1EB685DB00FFF60C /* TimeInterval+Leap.swift */; };
 		FB1E5FFE1EB68CFB00FFF60C /* ParticipantSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1E5FFD1EB68CFB00FFF60C /* ParticipantSurface.swift */; };
+		FB1E60001EB6A77700FFF60C /* DateFormatter+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1E5FFF1EB6A77700FFF60C /* DateFormatter+Leap.swift */; };
 		FB2046A31E82DA2200F130C8 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A21E82DA2200F130C8 /* Event.swift */; };
 		FB2046A61E82E20100F130C8 /* EKEventStore+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A51E82E20100F130C8 /* EKEventStore+Realm.swift */; };
 		FB2046A81E82E28800F130C8 /* EKCalendar+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A71E82E28800F130C8 /* EKCalendar+Realm.swift */; };
@@ -249,6 +250,7 @@
 		FB1869D51EA01CBC007642F4 /* List+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "List+Leap.swift"; sourceTree = "<group>"; };
 		FB1E5FFB1EB685DB00FFF60C /* TimeInterval+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TimeInterval+Leap.swift"; sourceTree = "<group>"; };
 		FB1E5FFD1EB68CFB00FFF60C /* ParticipantSurface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantSurface.swift; sourceTree = "<group>"; };
+		FB1E5FFF1EB6A77700FFF60C /* DateFormatter+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Leap.swift"; sourceTree = "<group>"; };
 		FB2046A21E82DA2200F130C8 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		FB2046A51E82E20100F130C8 /* EKEventStore+Realm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EKEventStore+Realm.swift"; sourceTree = "<group>"; };
 		FB2046A71E82E28800F130C8 /* EKCalendar+Realm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EKCalendar+Realm.swift"; sourceTree = "<group>"; };
@@ -484,6 +486,7 @@
 				834FBEB71EA86957004D9302 /* TimeRange.swift */,
 				FB180C571EB2D57E00FE1CF4 /* String+Leap.swift */,
 				FB1E5FFB1EB685DB00FFF60C /* TimeInterval+Leap.swift */,
+				FB1E5FFF1EB6A77700FFF60C /* DateFormatter+Leap.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -1110,6 +1113,7 @@
 				FB39ADB11E92B9F400B79A7B /* Ignorance.swift in Sources */,
 				FB39ADBD1E94154A00B79A7B /* DaySurface.swift in Sources */,
 				FB180C501EB261DB00FE1CF4 /* EventDetailView.swift in Sources */,
+				FB1E60001EB6A77700FFF60C /* DateFormatter+Leap.swift in Sources */,
 				FBD614581E7F57B0001F4050 /* Validation.swift in Sources */,
 				FB2046B21E82E7BF00F130C8 /* Reminder.swift in Sources */,
 				FB42086E1E89816B007F4DBD /* EKRecurrenceRule+Realm.swift in Sources */,

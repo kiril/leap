@@ -25,7 +25,7 @@
                     <rect key="frame" x="20" y="28" width="335" height="639"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Mc6-Fo-C7r">
-                            <rect key="frame" x="0.0" y="0.0" width="335" height="438"/>
+                            <rect key="frame" x="0.0" y="0.0" width="335" height="418"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WSI-Hw-Hew">
                                     <rect key="frame" x="0.0" y="0.0" width="335" height="21.5"/>
@@ -90,50 +90,88 @@
                                         <constraint firstAttribute="height" constant="1" id="r8k-AT-PV5"/>
                                     </constraints>
                                 </view>
-                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Before Info" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2sw-bG-IGK">
-                                    <rect key="frame" x="0.0" y="218.5" width="335" height="20.5"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <nil key="textColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9vs-fG-hn2">
-                                    <rect key="frame" x="0.0" y="249" width="335" height="33"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <state key="normal" title="Before Button"/>
-                                </button>
+                                <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Uj1-6v-hfH">
+                                    <rect key="frame" x="0.0" y="218.5" width="335" height="53.5"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xUv-WB-JSM">
+                                            <rect key="frame" x="0.0" y="0.0" width="18" height="53.5"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="18" id="tEs-hp-J01"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="tg7-tU-FXv">
+                                            <rect key="frame" x="26" y="0.0" width="309" height="53.5"/>
+                                            <subviews>
+                                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Before Info" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2sw-bG-IGK">
+                                                    <rect key="frame" x="0.0" y="0.0" width="309" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9vs-fG-hn2">
+                                                    <rect key="frame" x="0.0" y="20.5" width="309" height="33"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <state key="normal" title="Before Button"/>
+                                                </button>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                </stackView>
                                 <view contentMode="scaleToFill" verticalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="IPp-Mo-5DK" userLabel="Separator 3">
-                                    <rect key="frame" x="0.0" y="292" width="335" height="1"/>
+                                    <rect key="frame" x="0.0" y="282" width="335" height="1"/>
                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="3H9-ES-xHI"/>
                                     </constraints>
                                 </view>
-                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="After Info" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v4X-JQ-4Wx">
-                                    <rect key="frame" x="0.0" y="303" width="335" height="20.5"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <nil key="textColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ub1-VW-hya">
-                                    <rect key="frame" x="0.0" y="333.5" width="335" height="33"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <state key="normal" title="After Button"/>
-                                </button>
+                                <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Q3K-bu-Z5v">
+                                    <rect key="frame" x="0.0" y="293" width="335" height="53.5"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FsZ-4r-7JH">
+                                            <rect key="frame" x="0.0" y="0.0" width="18" height="53.5"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="18" id="EuN-bi-H6a"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="74p-4k-zVi">
+                                            <rect key="frame" x="26" y="0.0" width="309" height="53.5"/>
+                                            <subviews>
+                                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="After Info" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v4X-JQ-4Wx">
+                                                    <rect key="frame" x="0.0" y="0.0" width="309" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ub1-VW-hya">
+                                                    <rect key="frame" x="0.0" y="20.5" width="309" height="33"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <state key="normal" title="After Button"/>
+                                                </button>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                </stackView>
                                 <view contentMode="scaleToFill" verticalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="XSx-I1-ETL" userLabel="Separator 4">
-                                    <rect key="frame" x="0.0" y="376.5" width="335" height="1"/>
+                                    <rect key="frame" x="0.0" y="356.5" width="335" height="1"/>
                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="Lie-MA-lDD"/>
                                     </constraints>
                                 </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Invitation Summary" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.75" translatesAutoresizingMaskIntoConstraints="NO" id="oXm-1a-vvU">
-                                    <rect key="frame" x="0.0" y="387.5" width="335" height="20.5"/>
+                                    <rect key="frame" x="0.0" y="367.5" width="335" height="20.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Epb-bp-oAf">
-                                    <rect key="frame" x="0.0" y="418" width="335" height="20"/>
+                                    <rect key="frame" x="0.0" y="398" width="335" height="20"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="70F-gQ-gfU">
                                             <rect key="frame" x="0.0" y="0.0" width="32" height="20"/>
@@ -183,9 +221,11 @@
                 <constraint firstItem="HEt-e8-ONh" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" constant="20" id="v9a-Xm-f22"/>
             </constraints>
             <connections>
+                <outlet property="afterAlertIcon" destination="FsZ-4r-7JH" id="Lxh-ZG-rT7"/>
                 <outlet property="afterButton" destination="Ub1-VW-hya" id="w8g-CN-8Gl"/>
                 <outlet property="afterLabel" destination="v4X-JQ-4Wx" id="XZg-yU-1oK"/>
                 <outlet property="alertsLabel" destination="naH-Rz-sPj" id="oHZ-st-JEU"/>
+                <outlet property="beforeAlertIcon" destination="xUv-WB-JSM" id="Hl2-sw-4Ey"/>
                 <outlet property="beforeButton" destination="9vs-fG-hn2" id="7MD-3z-Xih"/>
                 <outlet property="beforeLabel" destination="2sw-bG-IGK" id="x1U-v4-yu3"/>
                 <outlet property="detailLabel" destination="0up-fm-j76" id="YQW-Wn-iCZ"/>

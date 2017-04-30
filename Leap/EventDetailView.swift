@@ -44,6 +44,8 @@ class EventDetailView: UIView {
     @IBOutlet weak var remindButton: UIButton!
 
     // context
+    @IBOutlet weak var beforeAlertIcon: UILabel!
+    @IBOutlet weak var afterAlertIcon: UILabel!
     @IBOutlet weak var afterLabel: UILabel!
     @IBOutlet weak var beforeLabel: UILabel!
     @IBOutlet weak var beforeButton: UIButton!
@@ -110,6 +112,8 @@ class EventDetailView: UIView {
         beforeButton.titleLabel?.textColor = UIColor.projectDarkGray
         afterButton.titleLabel?.numberOfLines = 0
         beforeButton.titleLabel?.numberOfLines = 0
+        beforeAlertIcon.textColor = UIColor.orange
+        afterAlertIcon.textColor = UIColor.orange
 
         configureBeforeAndAfter()
         configureAlerts()
@@ -128,13 +132,13 @@ class EventDetailView: UIView {
             response.text = {
                 switch participant.engagement.value {
                 case .engaged:
-                    return "Yes"
+                    return "Attending"
                 case .disengaged:
-                    return "No"
+                    return "Declined"
                 case Engagement.tracking:
                     return "Maybe"
                 default:
-                    return "Unknown"
+                    return "No Response"
                 }
             }()
             response.textColor = {
@@ -227,8 +231,11 @@ class EventDetailView: UIView {
         self.nextEvent = afterEvent
         self.priorEvent = priorEvent
 
+        beforeAlertIcon.isHidden = true
+        afterAlertIcon.isHidden = true
+
         if let event = priorEvent, let open = priorOpen {
-            let beforeString = "\(event.title.value) ends \(open.durationSeconds.durationString) before"
+            let beforeString = "\(event.title.value) ends \(open.durationSeconds.durationString) before this at \(DateFormatter.shortTime(date: event.endTime.value))"
             let beforeText = NSMutableAttributedString(string: beforeString)
             beforeText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectTint, range: NSRange(location: 0, length: event.title.value.utf16.count))
 
@@ -242,26 +249,30 @@ class EventDetailView: UIView {
             beforeButton.isHidden = false
 
         } else if let event = priorEvent {
-            let beforeString = "Immediately follows \(event.title.value)"
+            let beforeString = "This event immediately follows \(event.title.value)."
             let beforeText = NSMutableAttributedString(string: beforeString)
             let lengthOfTitle = event.title.value.utf16.count
-            let titleRange = NSRange(location: beforeString.utf16.count - lengthOfTitle, length: lengthOfTitle)
+            let titleRange = NSRange(location: beforeString.utf16.count - lengthOfTitle - 1, length: lengthOfTitle)
             beforeText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectTint, range: titleRange)
-            let preTitleRange = NSRange(location: 0, length: beforeString.utf16.count - lengthOfTitle)
+            let preTitleRange = NSRange(location: 0, length: beforeString.utf16.count - lengthOfTitle - 1)
             beforeText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectDarkGray, range: preTitleRange)
+            let periodRange = NSRange(location: beforeString.utf16.count - 1, length: 1)
+            beforeText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectDarkGray, range: periodRange)
+
             beforeButton.setAttributedTitle(beforeText, for: .normal)
 
             beforeLabel.isHidden = true
             beforeButton.isHidden = false
+            beforeAlertIcon.isHidden = false
 
         } else {
-            beforeLabel.text = "First event of the day"
+            beforeLabel.text = "This is the first event of the day."
             beforeLabel.isHidden = false
             beforeButton.isHidden = true
         }
 
         if let event = afterEvent, let open = afterOpen {
-            let afterString = "\(event.title.value) starts \(open.durationSeconds.durationString) after"
+            let afterString = "\(event.title.value) starts \(open.durationSeconds.durationString) after this at \(DateFormatter.shortTime(date: event.startTime.value))."
             let afterText = NSMutableAttributedString(string: afterString)
             afterText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectTint, range: NSRange(location: 0, length: event.title.value.utf16.count))
             let lengthOfTitle = event.title.value.utf16.count
@@ -275,16 +286,21 @@ class EventDetailView: UIView {
             let afterString = "Followed immediately by \(event.title.value)"
             let afterText = NSMutableAttributedString(string: afterString)
             let lengthOfTitle = event.title.value.utf16.count
-            let titleRange = NSRange(location: afterString.utf16.count - lengthOfTitle, length: lengthOfTitle)
+            let titleRange = NSRange(location: afterString.utf16.count - lengthOfTitle - 1, length: lengthOfTitle)
             afterText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectTint, range: titleRange)
             let preTitleRange = NSRange(location: 0, length: afterString.utf16.count - lengthOfTitle)
             afterText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectDarkGray, range: preTitleRange)
+            let periodRange = NSRange(location: afterString.utf16.count - 1, length: 1)
+            afterText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectDarkGray, range: periodRange)
+
             afterButton.setAttributedTitle(afterText, for: .normal)
+
             afterLabel.isHidden = true
             afterButton.isHidden = false
+            afterAlertIcon.isHidden = false
 
         } else {
-            afterLabel.text = "Last event of the day"
+            afterLabel.text = "This is the last event of the day."
             afterButton.isHidden = true
             afterLabel.isHidden = false
         }
