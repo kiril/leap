@@ -9,14 +9,17 @@
 import UIKit
 
 class EventDetailView: EventDisplayView {
+    @IBOutlet weak var separator1: UIView!
+
     override func configure(with event: EventSurface) {
         super.configure(with: event)
+        titleLabel.text = event.title.value
         timeLabel.text = event.isRecurring.value ? event.recurringTimeRange.value : "From \(event.timeRange.value)"
         if let location = event.locationSummary.rawValue {
-            locationContainer.isHidden = false
+            locationContainer?.isHidden = false
             locationLabel.text = location
         } else {
-            locationContainer.isHidden = true
+            locationContainer?.isHidden = true
         }
         invitationSummaryLabel.text = event.invitationSummary.value
         var detail = event.detail.value
@@ -31,6 +34,8 @@ class EventDetailView: EventDisplayView {
             detailLabel.textColor = UIColor.projectDarkGray
             detailLabel.text = detail
         }
+
+        separator1.backgroundColor = UIColor.projectLightGray
     }
 
     class func instanceFromNib() -> EventDetailView {

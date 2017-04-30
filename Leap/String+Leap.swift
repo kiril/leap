@@ -9,12 +9,19 @@
 import Foundation
 
 extension String {
-    func matches(regex: String) throws -> Bool {
-        let re = try NSRegularExpression(pattern: regex, options: .caseInsensitive)
-        return re.matches(in: self, options: .anchored, range: NSMakeRange(0,  self.characters.count)).count > 0
+    static let addressPattern = "^\\d{1,4}[a-zA-Z]*\\s+\\w|\\s+\\d{5}(-\\d{4})?\\s*$|^(\\w+\\b\\s*)+,\\s+\\d{1,4}[a-zA-Z]*\\s+\\w.*(\\w+\\b\\s*)+,\\s+\\w{2}\\b"
+    static let addressRegexp = try! NSRegularExpression(pattern: String.addressPattern, options: .caseInsensitive)
+
+    func matches(pattern: String) throws -> Bool {
+        let regex = try NSRegularExpression(pattern: pattern, options: .caseInsensitive)
+        return regex.matches(in: self, options: .anchored, range: NSMakeRange(0,  self.characters.count)).count > 0
+    }
+
+    func matches(regex: NSRegularExpression) -> Bool {
+        return regex.matches(in: self, options: .anchored, range: NSMakeRange(0,  self.characters.count)).count > 0
     }
 
     var looksLikeAnAddress: Bool {
-        return try! self.matches(regex: "^\\d{1,4}[a-zA-Z]*\\s+\\w|\\s+\\d{5}(-\\d{4})?$")
+        return self.matches(regex: String.addressRegexp)
     }
 }

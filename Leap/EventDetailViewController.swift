@@ -16,7 +16,7 @@ class EventDetailViewController: UIViewController {
         let eventDetail = EventDetailView.instanceFromNib()
         eventDetail.configure(with: self.event)
         self.view = eventDetail
-        self.title = self.event.title.value
+        self.title = "Details"
     }
 
     override func viewDidLoad() {
