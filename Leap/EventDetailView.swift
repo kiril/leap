@@ -174,8 +174,14 @@ class EventDetailView: UIView {
         self.priorEvent = priorEvent
 
         if let event = priorEvent, let open = priorOpen {
-            let beforeText = NSMutableAttributedString(string: "\(event.title.value) ends \(open.durationMinutes) minutes before")
+            let beforeString = "\(event.title.value) ends \(open.durationMinutes) minutes before"
+            let beforeText = NSMutableAttributedString(string: beforeString)
             beforeText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectTint, range: NSRange(location: 0, length: event.title.value.utf16.count))
+
+            let lengthOfTitle = event.title.value.utf16.count
+            let postTitleRange = NSRange(location: lengthOfTitle, length: beforeString.utf16.count - lengthOfTitle)
+            beforeText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectDarkGray, range: postTitleRange)
+
             beforeButton.setAttributedTitle(beforeText, for: .normal)
 
             beforeLabel.isHidden = true
@@ -185,8 +191,10 @@ class EventDetailView: UIView {
             let beforeString = "Immediately follows \(event.title.value)"
             let beforeText = NSMutableAttributedString(string: beforeString)
             let lengthOfTitle = event.title.value.utf16.count
-            let range = NSRange(location: beforeString.utf16.count - lengthOfTitle, length: lengthOfTitle)
-            beforeText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectTint, range: range)
+            let titleRange = NSRange(location: beforeString.utf16.count - lengthOfTitle, length: lengthOfTitle)
+            beforeText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectTint, range: titleRange)
+            let preTitleRange = NSRange(location: 0, length: beforeString.utf16.count - lengthOfTitle)
+            beforeText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectDarkGray, range: preTitleRange)
             beforeButton.setAttributedTitle(beforeText, for: .normal)
 
             beforeLabel.isHidden = true
@@ -199,8 +207,12 @@ class EventDetailView: UIView {
         }
 
         if let event = afterEvent, let open = afterOpen {
-            let afterText = NSMutableAttributedString(string: "\(event.title.value) starts \(open.durationMinutes) minutes after")
+            let afterString = "\(event.title.value) starts \(open.durationMinutes) minutes after"
+            let afterText = NSMutableAttributedString(string: afterString)
             afterText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectTint, range: NSRange(location: 0, length: event.title.value.utf16.count))
+            let lengthOfTitle = event.title.value.utf16.count
+            let postTitleRange = NSRange(location: lengthOfTitle, length: afterString.utf16.count - lengthOfTitle)
+            afterText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectDarkGray, range: postTitleRange)
             afterButton.setAttributedTitle(afterText, for: .normal)
             afterLabel.isHidden = true
             afterButton.isHidden = false
@@ -209,8 +221,10 @@ class EventDetailView: UIView {
             let afterString = "Followed immediately by \(event.title.value)"
             let afterText = NSMutableAttributedString(string: afterString)
             let lengthOfTitle = event.title.value.utf16.count
-            let range = NSRange(location: afterString.utf16.count - lengthOfTitle, length: lengthOfTitle)
-            afterText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectTint, range: range)
+            let titleRange = NSRange(location: afterString.utf16.count - lengthOfTitle, length: lengthOfTitle)
+            afterText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectTint, range: titleRange)
+            let preTitleRange = NSRange(location: 0, length: afterString.utf16.count - lengthOfTitle)
+            afterText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectDarkGray, range: preTitleRange)
             afterButton.setAttributedTitle(afterText, for: .normal)
             afterLabel.isHidden = true
             afterButton.isHidden = false
