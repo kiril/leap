@@ -11,6 +11,10 @@ import Foundation
 extension TimeInterval {
     var durationString: String {
         // I'm in seconds
+        let hourText = "hour"
+        let minuteText = "minute"
+        let dayText = "day"
+
         var minutes = Int(self / 60)
 
         let minutesPerDay = 60 * 24
@@ -21,7 +25,7 @@ extension TimeInterval {
         minutes = minutes - (days * minutesPerDay)
 
         if days > 0 {
-            duration += "\(days) days"
+            duration += "\(days) \(days.pluralize(string: dayText))"
         }
 
         let hours = minutes / 60
@@ -31,14 +35,14 @@ extension TimeInterval {
             if duration.characters.count > 0 {
                 duration += " "
             }
-            duration += "\(hours) hours"
+            duration += "\(hours) \(hours.pluralize(string: hourText))"
         }
 
         if minutes > 0 {
             if duration.characters.count > 0 {
                 duration += " "
             }
-            duration += "\(minutes) minutes"
+            duration += "\(minutes) \(minutes.pluralize(string: minuteText))"
         }
 
         return duration
