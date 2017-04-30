@@ -8,15 +8,15 @@
 
 import UIKit
 
-protocol EventDetailViewDelegate {
-    func nextEventTapped(with event: EventSurface)
-    func priorEventTapped(with event: EventSurface)
+protocol EventDetailViewDelegate: class {
+    func eventTapped(with event: EventSurface)
 }
 
 class EventDetailView: UIView {
     var event: EventSurface?
     var nextEvent: EventSurface?
     var priorEvent: EventSurface?
+    weak var delegate: EventDetailViewDelegate?
 
     // header
     @IBOutlet weak var timeLabel: UILabel!
@@ -114,6 +114,18 @@ class EventDetailView: UIView {
 
         configureBeforeAndAfter()
         configureAlerts()
+    }
+
+    @objc func afterButtonTapped(sender: UIButton) {
+        if let delegate = self.delegate, let event = nextEvent {
+            delegate.eventTapped(with: event)
+        }
+    }
+
+    @objc func beforeButtonTapped(sender: UIButton) {
+        if let delegate = self.delegate, let event = priorEvent {
+            delegate.eventTapped(with: event)
+        }
     }
 
     func configureAlerts() {
@@ -316,6 +328,8 @@ class EventDetailView: UIView {
 
         remindButton.addTarget(self, action: #selector(remindMe), for: .touchUpInside)
         locationButton.addTarget(self, action: #selector(launchMaps), for: .touchUpInside)
+        afterButton.addTarget(self, action: #selector(afterButtonTapped), for: .touchUpInside)
+        beforeButton.addTarget(self, action: #selector(beforeButtonTapped), for: .touchUpInside)
     }
 
     func applyActionButtonFormat(to button: UIButton,
