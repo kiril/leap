@@ -122,7 +122,7 @@ class EventDetailView: UIView {
             let name = UILabel()
             name.textColor = UIColor.projectDarkGray
             name.text = participant.name.value
-            name.font = UIFont.boldSystemFont(ofSize: 15)
+            name.font = UIFont.systemFont(ofSize: 15)
 
             let response = UILabel()
             response.text = {
