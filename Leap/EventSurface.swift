@@ -162,10 +162,30 @@ class EventSurface: Surface, ModelLoadable {
                 if summary.characters.count > initialLength {
                     summary += ", "
                 }
-                if let when = alarm.absoluteTime {
+
+                switch alarm.type {
+                case .absolute:
+                    let formatter = DateFormatter()
+                    formatter.locale = Locale.current
+                    formatter.setLocalizedDateFormatFromTemplate("MMMdy")
+                    let dateString = formatter.string(from: alarm.absoluteTime!)
+                    summary += dateString
+
+                case .location:
+                    summary += "on a certain location"
+
+                case .relative:
+                    let seconds = alarm.relativeOffset
+                    if seconds > 0 {
+                        summary += "\(seconds.durationString) after"
+                    } else if seconds == 0 {
+                        summary += "at time of event"
+                    } else {
+                        summary += "\(abs(seconds).durationString) before"
+                    }
                 }
             }
-            return "Woo Alarms"
+            return summary
         }
         bridge.readonlyBind(surface.origin) { (m) -> Any? in
             if let e = m as? Event {

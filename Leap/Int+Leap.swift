@@ -13,4 +13,8 @@ extension Int {
     static func random(_ upperBound: Int) -> Int {
         return Int(arc4random_uniform(UInt32(upperBound)))
     }
+
+    var durationString: String {
+        return TimeInterval(self).durationString
+    }
 }

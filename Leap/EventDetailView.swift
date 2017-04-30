@@ -174,7 +174,7 @@ class EventDetailView: UIView {
         self.priorEvent = priorEvent
 
         if let event = priorEvent, let open = priorOpen {
-            let beforeString = "\(event.title.value) ends \(open.durationMinutes) minutes before"
+            let beforeString = "\(event.title.value) ends \(open.durationSeconds.durationString) before"
             let beforeText = NSMutableAttributedString(string: beforeString)
             beforeText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectTint, range: NSRange(location: 0, length: event.title.value.utf16.count))
 
@@ -207,7 +207,7 @@ class EventDetailView: UIView {
         }
 
         if let event = afterEvent, let open = afterOpen {
-            let afterString = "\(event.title.value) starts \(open.durationMinutes) minutes after"
+            let afterString = "\(event.title.value) starts \(open.durationSeconds.durationString) after"
             let afterText = NSMutableAttributedString(string: afterString)
             afterText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectTint, range: NSRange(location: 0, length: event.title.value.utf16.count))
             let lengthOfTitle = event.title.value.utf16.count

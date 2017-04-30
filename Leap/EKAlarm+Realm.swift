@@ -11,7 +11,7 @@ import EventKit
 import RealmSwift
 
 extension EKAlarm {
-    func alarmType() -> AlarmType {
+    var alarmType: AlarmType {
         if self.structuredLocation != nil {
             return AlarmType.location
         } else if self.absoluteDate != nil {
@@ -20,11 +20,12 @@ extension EKAlarm {
             return AlarmType.relative
         }
     }
+
     func asAlarm() -> Alarm {
         let data: [String:Any?] = ["absoluteTime": self.absoluteDate,
                                    "relativeOffset": self.relativeOffset,
                                    "geoFence": GeoFence.from(location: self.structuredLocation),
-                                   "type": alarmType()]
+                                   "typeString": alarmType.rawValue]
         return Alarm(value: data)
     }
 }

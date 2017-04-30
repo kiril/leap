@@ -77,6 +77,7 @@
 		FB180C581EB2D57E00FE1CF4 /* String+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB180C571EB2D57E00FE1CF4 /* String+Leap.swift */; };
 		FB1869D41E9FF88A007642F4 /* RecurrenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1869D31E9FF88A007642F4 /* RecurrenceTests.swift */; };
 		FB1869D61EA01CBC007642F4 /* List+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1869D51EA01CBC007642F4 /* List+Leap.swift */; };
+		FB1E5FFC1EB685DB00FFF60C /* TimeInterval+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1E5FFB1EB685DB00FFF60C /* TimeInterval+Leap.swift */; };
 		FB2046A31E82DA2200F130C8 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A21E82DA2200F130C8 /* Event.swift */; };
 		FB2046A61E82E20100F130C8 /* EKEventStore+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A51E82E20100F130C8 /* EKEventStore+Realm.swift */; };
 		FB2046A81E82E28800F130C8 /* EKCalendar+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A71E82E28800F130C8 /* EKCalendar+Realm.swift */; };
@@ -245,6 +246,7 @@
 		FB180C571EB2D57E00FE1CF4 /* String+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Leap.swift"; sourceTree = "<group>"; };
 		FB1869D31E9FF88A007642F4 /* RecurrenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecurrenceTests.swift; sourceTree = "<group>"; };
 		FB1869D51EA01CBC007642F4 /* List+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "List+Leap.swift"; sourceTree = "<group>"; };
+		FB1E5FFB1EB685DB00FFF60C /* TimeInterval+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TimeInterval+Leap.swift"; sourceTree = "<group>"; };
 		FB2046A21E82DA2200F130C8 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		FB2046A51E82E20100F130C8 /* EKEventStore+Realm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EKEventStore+Realm.swift"; sourceTree = "<group>"; };
 		FB2046A71E82E28800F130C8 /* EKCalendar+Realm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EKCalendar+Realm.swift"; sourceTree = "<group>"; };
@@ -479,6 +481,7 @@
 				FB3895771EA7C0DE000FC103 /* Thread+Leap.swift */,
 				834FBEB71EA86957004D9302 /* TimeRange.swift */,
 				FB180C571EB2D57E00FE1CF4 /* String+Leap.swift */,
+				FB1E5FFB1EB685DB00FFF60C /* TimeInterval+Leap.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -1087,6 +1090,7 @@
 				FB39ADB51E93EF2D00B79A7B /* Calendar+Leap.swift in Sources */,
 				8366F1201EB0F63A00E3A448 /* VerticalSpacingCollectionViewCell.swift in Sources */,
 				FB4208701E89855D007F4DBD /* Group.swift in Sources */,
+				FB1E5FFC1EB685DB00FFF60C /* TimeInterval+Leap.swift in Sources */,
 				FB39ADB31E92D40800B79A7B /* Date+Leap.swift in Sources */,
 				8366F1221EB0F6FB00E3A448 /* SpacingSectionController.swift in Sources */,
 				FB2046A81E82E28800F130C8 /* EKCalendar+Realm.swift in Sources */,
