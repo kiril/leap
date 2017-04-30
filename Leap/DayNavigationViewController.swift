@@ -30,6 +30,8 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
         setupPageViewController()
         setupHiddenEventsButton()
         // Do any additional setup after loading the view.
+
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: currentlySelectedDay!.shortDateString, style: .plain, target: nil, action: nil)
     }
 
     private func setupPageViewController() {
@@ -66,7 +68,7 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
         let daySchedule = DayScheduleSurface.load(dayId: dayId)
         let dayVC = DayScheduleViewController.loadFromStoryboard()
         dayVC.surface = daySchedule
-        dayVC.navigationItem.title = self.titleView.titleLabel.text
+        dayVC.navigationItem.title = daySchedule.day.shortDateString
         daySchedule.register(observer: dayVC)
         daySchedule.register(observer: self)
         return dayVC
@@ -83,8 +85,6 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
             barButtonItemFor(navView: arrowView),
             barButtonItemFor(navView: titleView)
         ]
-
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: self.titleView.titleLabel.text, style: .plain, target: nil, action: nil)
     }
 
     private func setupHiddenEventsButton() {
@@ -150,7 +150,6 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
 
 
         let dayVC = dayScheduleViewController(forDayId: Int(dayId)!)
-        dayVC.title = self.titleView.titleLabel.text
         daySchedulePageViewController.setViewControllers([dayVC],
                                                          direction: direction,
                                                          animated: true) {[weak self] _ in
