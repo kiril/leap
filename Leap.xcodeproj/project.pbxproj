@@ -78,6 +78,7 @@
 		FB1869D41E9FF88A007642F4 /* RecurrenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1869D31E9FF88A007642F4 /* RecurrenceTests.swift */; };
 		FB1869D61EA01CBC007642F4 /* List+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1869D51EA01CBC007642F4 /* List+Leap.swift */; };
 		FB1E5FFC1EB685DB00FFF60C /* TimeInterval+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1E5FFB1EB685DB00FFF60C /* TimeInterval+Leap.swift */; };
+		FB1E5FFE1EB68CFB00FFF60C /* ParticipantSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1E5FFD1EB68CFB00FFF60C /* ParticipantSurface.swift */; };
 		FB2046A31E82DA2200F130C8 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A21E82DA2200F130C8 /* Event.swift */; };
 		FB2046A61E82E20100F130C8 /* EKEventStore+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A51E82E20100F130C8 /* EKEventStore+Realm.swift */; };
 		FB2046A81E82E28800F130C8 /* EKCalendar+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2046A71E82E28800F130C8 /* EKCalendar+Realm.swift */; };
@@ -247,6 +248,7 @@
 		FB1869D31E9FF88A007642F4 /* RecurrenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecurrenceTests.swift; sourceTree = "<group>"; };
 		FB1869D51EA01CBC007642F4 /* List+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "List+Leap.swift"; sourceTree = "<group>"; };
 		FB1E5FFB1EB685DB00FFF60C /* TimeInterval+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TimeInterval+Leap.swift"; sourceTree = "<group>"; };
+		FB1E5FFD1EB68CFB00FFF60C /* ParticipantSurface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantSurface.swift; sourceTree = "<group>"; };
 		FB2046A21E82DA2200F130C8 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		FB2046A51E82E20100F130C8 /* EKEventStore+Realm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EKEventStore+Realm.swift"; sourceTree = "<group>"; };
 		FB2046A71E82E28800F130C8 /* EKCalendar+Realm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EKCalendar+Realm.swift"; sourceTree = "<group>"; };
@@ -547,6 +549,7 @@
 				83F4B1601E7C383F000FCB8D /* ScheduleEntry.swift */,
 				FB39ADBC1E94154A00B79A7B /* DaySurface.swift */,
 				FBBE56981EA1692800B9647C /* SeriesSurface.swift */,
+				FB1E5FFD1EB68CFB00FFF60C /* ParticipantSurface.swift */,
 			);
 			name = Surfaces;
 			sourceTree = "<group>";
@@ -1083,6 +1086,7 @@
 				FB42084B1E857DAF007F4DBD /* Participant.swift in Sources */,
 				FB934F201E7E01DF0068CDEF /* Surface.swift in Sources */,
 				FB39ADAB1E8C69BB00B79A7B /* SurfaceModelBridge.swift in Sources */,
+				FB1E5FFE1EB68CFB00FFF60C /* ParticipantSurface.swift in Sources */,
 				8366F1151EAE66C400E3A448 /* ReminderSurface.swift in Sources */,
 				FBB4BFD81E8ACED1001679BF /* Operation.swift in Sources */,
 				8351BDD11E807C4C001221AF /* WeekOverviewSurface.swift in Sources */,

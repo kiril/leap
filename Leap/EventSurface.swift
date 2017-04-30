@@ -57,6 +57,7 @@ class EventSurface: Surface, ModelLoadable {
     let origin                 = SurfaceProperty<Origin>()
     let hasAlarms              = SurfaceBool()
     let alarmSummary           = SurfaceString()
+    let participants           = SurfaceProperty<[ParticipantSurface]>()
 
 
     func intersectsWith(_ other: EventSurface) -> Bool {
@@ -426,6 +427,20 @@ class EventSurface: Surface, ModelLoadable {
             }
             
             return "\(recurrence) from \(from) - \(to)\(more)"
+        }
+
+        bridge.readonlyBind(surface.participants) { (m:LeapModel) -> [ParticipantSurface] in
+            var participants: [ParticipantSurface] = []
+
+            guard let event = m as? Event else { return participants }
+
+            for participant in event.participants {
+                if let participantSurface = ParticipantSurface.load(fromModel: participant) as? ParticipantSurface {
+                    participants.append(participantSurface)
+                }
+            }
+
+            return participants
         }
 
         surface.store = bridge

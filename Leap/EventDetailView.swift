@@ -18,6 +18,9 @@ class EventDetailView: UIView {
     var priorEvent: EventSurface?
     weak var delegate: EventDetailViewDelegate?
 
+    // container
+    @IBOutlet weak var stackView: UIStackView!
+
     // header
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
@@ -110,6 +113,61 @@ class EventDetailView: UIView {
 
         configureBeforeAndAfter()
         configureAlerts()
+        configureAttendees()
+    }
+
+    func configureAttendees() {
+        for participant in event!.participants.value {
+            guard !participant.isMe.value else { continue }
+            let name = UILabel()
+            name.textColor = UIColor.projectDarkGray
+            name.text = participant.name.value
+            name.font = UIFont.boldSystemFont(ofSize: 15)
+
+            let response = UILabel()
+            response.text = {
+                switch participant.engagement.value {
+                case .engaged:
+                    return "Yes"
+                case .disengaged:
+                    return "No"
+                case Engagement.tracking:
+                    return "Maybe"
+                default:
+                    return "Unknown"
+                }
+            }()
+            response.textColor = {
+                switch participant.engagement.value {
+                case .engaged:
+                    return UIColor.projectBlue
+                case .disengaged:
+                    return UIColor.projectRed
+                case Engagement.tracking:
+                    return UIColor.projectPurple
+                default:
+                    return UIColor.projectLightGray
+                }
+            }()
+            response.textAlignment = NSTextAlignment.right
+            response.font = UIFont.boldSystemFont(ofSize: 15)
+
+            let stack = UIStackView()
+            stack.axis = .horizontal
+            stack.addArrangedSubview(name)
+            stack.addArrangedSubview(response)
+            stack.tag = 9000
+
+            var i = 0
+            for view in stackView.arrangedSubviews {
+                if view == invitationSummaryLabel {
+                    break
+                }
+                i += 1
+            }
+
+            stackView.insertArrangedSubview(stack, at: i+1)
+        }
     }
 
     @objc func afterButtonTapped(sender: UIButton) {
