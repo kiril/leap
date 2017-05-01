@@ -14,6 +14,8 @@ protocol EventViewCellDelegate: class {
 }
 
 class EventViewCell: UICollectionViewCell {
+    @IBOutlet weak var topBorderView: UIView!
+
     // header
     @IBOutlet weak var timeWarningLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
@@ -56,8 +58,9 @@ class EventViewCell: UICollectionViewCell {
     }
 
     private func updateBorderColor() {
-        self.layer.borderColor = borderColor.cgColor
-        self.layer.borderWidth = 1.0
+        self.backgroundColor = borderColor
+        //self.layer.borderColor = borderColor.cgColor
+        //self.layer.borderWidth = 1.0
     }
 
     private func updateShadow() {
@@ -90,6 +93,8 @@ class EventViewCell: UICollectionViewCell {
         timeWarningLabel.textColor = UIColor.orange
         titleLabel.textColor = UIColor.projectDarkGray
         timeLabel.textColor = UIColor.projectDarkGray
+
+        topBorderView.backgroundColor = UIColor.projectWarning
     }
 
     override func awakeFromNib() {
@@ -217,8 +222,10 @@ class EventViewCell: UICollectionViewCell {
             }
             arrivalDepartureLabel.text = custom
             arrivalDepartureLabel.isHidden = false
+            topBorderView.isHidden = false
         } else {
             arrivalDepartureLabel.isHidden = true
+            topBorderView.isHidden = true
         }
 
         configure(location: event.locationSummary.rawValue)
@@ -234,7 +241,7 @@ class EventViewCell: UICollectionViewCell {
         }
 
         if event.perspective.value == .past {
-            contentView.alpha = 0.5
+            contentView.alpha = 0.8
             borderColor = UIColor.projectLightGray
         } else {
             contentView.alpha = 1.0
