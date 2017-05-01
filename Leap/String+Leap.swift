@@ -24,4 +24,19 @@ extension String {
     var looksLikeAnAddress: Bool {
         return self.matches(regex: String.addressRegexp)
     }
+
+    var hasNonWhitespaceCharacters: Bool {
+        if self.characters.count == 0 {
+            return false
+        }
+        for c in self.characters {
+            switch c {
+            case "\n", "\r", " ", "\t":
+                continue
+            default:
+                return true
+            }
+        }
+        return false
+    }
 }

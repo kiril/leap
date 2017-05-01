@@ -27,6 +27,7 @@ class EventDetailView: UIView {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var recurringIcon: UILabel!
     @IBOutlet weak var timeAlertLabel: UILabel!
+    @IBOutlet weak var conflictLabel: UILabel!
 
     // detail
     @IBOutlet weak var invitationSummaryLabel: UILabel!
@@ -71,8 +72,35 @@ class EventDetailView: UIView {
 
         titleLabel.text = event.title.value
         timeLabel.text = event.isRecurring.value ? event.recurringTimeRange.value : "From \(event.timeRange.value)"
-        timeLabel.textColor = UIColor.projectLightGray
         timeAlertLabel.isHidden = !event.isInConflict
+
+        if event.isInConflict {
+            var conflicts: [EventSurface] = []
+            for entry in entries {
+                switch entry {
+                case let .event(other):
+                    if other.intersectsWith(event) && other != event {
+                        conflicts.append(other)
+                    }
+                default:
+                    continue
+                }
+            }
+            var conflictText = ""
+            for conflictingEvent in conflicts {
+                if !conflictText.isEmpty {
+                    conflictText += "; "
+                }
+                let eventDescription = "\(conflictingEvent.title.value) at \(DateFormatter.shortTime(date: conflictingEvent.startTime.value))"
+                conflictText += eventDescription
+            }
+            conflictText = "Conflicts with: \(conflictText)"
+            conflictLabel.text = conflictText
+            conflictLabel.isHidden = false
+
+        } else {
+            conflictLabel.isHidden = true
+        }
 
         if let location = event.locationSummary.rawValue {
             locationContainer?.isHidden = false
@@ -95,7 +123,7 @@ class EventDetailView: UIView {
         invitationSummaryLabel.text = event.invitationSummary.value
 
         detailLabel.text = event.detail.value
-        if detailLabel.text!.isEmpty {
+        if !detailLabel.text!.hasNonWhitespaceCharacters {
             detailLabel.isHidden = true
             detailSeparator.isHidden = true
         } else {
@@ -115,8 +143,10 @@ class EventDetailView: UIView {
         beforeButton.titleLabel?.textColor = UIColor.projectDarkGray
         afterButton.titleLabel?.numberOfLines = 0
         beforeButton.titleLabel?.numberOfLines = 0
-        beforeAlertIcon.textColor = UIColor.orange
-        afterAlertIcon.textColor = UIColor.orange
+        beforeAlertIcon.textColor = UIColor.projectWarning
+        afterAlertIcon.textColor = UIColor.projectWarning
+        timeLabel.textColor = UIColor.projectLightGray
+        conflictLabel.textColor = UIColor.projectWarning
 
         configureBeforeAndAfter()
         configureAlerts()
@@ -320,7 +350,7 @@ class EventDetailView: UIView {
         locationIconLabel?.textColor = UIColor.projectLightGray
         invitationSummaryLabel?.textColor = UIColor.projectLightGray
         detailLabel?.textColor = UIColor.projectDarkGray
-        timeAlertLabel.textColor = UIColor.orange
+        timeAlertLabel.textColor = UIColor.projectWarning
     }
 
     func setup() {
