@@ -85,8 +85,7 @@ class RecurrenceTests: XCTestCase {
 
     func testEveryOtherMonth() {
         let rec = Recurrence.every(.monthly, at: 0, past: 9, interval: 2, on: 8)
-        // need to make sure I get a real date, when not all days are valid in all months...
-        let date = Calendar.current.date(byAdding: DateComponents(day: -1*(Calendar.current.component(.day, from: now)-1)), to: now)!
+        let date = Calendar.universalGregorian.startOfMonth(including: now)
         XCTAssertTrue(rec.recursOn(date, for: series))
         let nextMonth = Calendar.current.date(byAdding: DateComponents(month: 1), to: date)!
         XCTAssertFalse(rec.recursOn(nextMonth, for: series))
