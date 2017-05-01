@@ -320,6 +320,7 @@ class EventDetailView: UIView {
         locationIconLabel?.textColor = UIColor.projectLightGray
         invitationSummaryLabel?.textColor = UIColor.projectLightGray
         detailLabel?.textColor = UIColor.projectDarkGray
+        timeAlertLabel.textColor = UIColor.orange
     }
 
     func setup() {
