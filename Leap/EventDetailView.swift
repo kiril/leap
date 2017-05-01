@@ -10,6 +10,7 @@ import UIKit
 
 protocol EventDetailViewDelegate: class {
     func eventTapped(with event: EventSurface)
+    func didChangeResponse(for event: EventSurface)
 }
 
 class EventDetailView: UIView {
@@ -360,10 +361,18 @@ class EventDetailView: UIView {
         configure(with: event)
 
         try! event.flush()
+
+        if let delegate = self.delegate {
+            delegate.didChangeResponse(for: event)
+        }
     }
 
     @objc func remindMe() {
         event?.hackyCreateReminderFromEvent()
+
+        if let delegate = self.delegate {
+            delegate.didChangeResponse(for: event!)
+        }
     }
 
     func updateActionButtons(forEvent event: EventSurface) {
