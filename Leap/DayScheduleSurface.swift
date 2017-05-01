@@ -247,6 +247,7 @@ class DayScheduleSurface: Surface {
 
         schedule.store = bridge
         bridge.populate(schedule)
+        //DispatchQueue.global(qos: .background).async { schedule.checkEventFreshness() }
         return schedule
     }
 
@@ -286,10 +287,13 @@ class DayScheduleSurface: Surface {
 
         if updatedKey == series.key || updatedKey == events.key {
             cachedCombinedEvents = nil // clear cache
+            return false
         }
         if updatedKey == series.key || updatedKey == reminders.key {
             cachedCombinedReminders = nil // clear cache
+            return false
         }
+
         return true
     }
 

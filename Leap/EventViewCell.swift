@@ -18,6 +18,7 @@ class EventViewCell: UICollectionViewCell {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var recurringIcon: UILabel!
+    @IBOutlet weak var resolveButton: UIButton!
 
     // detail
     @IBOutlet weak var invitationSummaryLabel: UILabel!
@@ -82,6 +83,7 @@ class EventViewCell: UICollectionViewCell {
         locationIconLabel.textColor = UIColor.projectLightGray
         locationLabel.textColor = UIColor.projectLightGray
         recurringIcon.textColor = UIColor.projectLightGray
+        resolveButton.titleLabel?.textColor = UIColor.projectWarning
 
         timeWarningLabel.textColor = UIColor.orange
         titleLabel.textColor = UIColor.projectDarkGray
@@ -116,6 +118,7 @@ class EventViewCell: UICollectionViewCell {
 
         remindButton.addTarget(self, action: #selector(remindMe), for: .touchUpInside)
         locationButton.addTarget(self, action: #selector(launchMaps), for: .touchUpInside)
+        resolveButton.addTarget(self, action: #selector(resolveConflict), for: .touchUpInside)
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -135,6 +138,9 @@ class EventViewCell: UICollectionViewCell {
         if button == noButton { return .no }
         if button == maybeButton { return .maybe }
         return .none
+    }
+
+    @objc private func resolveConflict(sender: UIButton) {
     }
 
     @objc private func setEventResponse(sender: UIButton) {
@@ -197,6 +203,7 @@ class EventViewCell: UICollectionViewCell {
         titleLabel.text = event.title.value
         invitationSummaryLabel.text = event.invitationSummary.value
         timeWarningLabel.isHidden = !event.isInConflict
+        resolveButton.isHidden = !event.isInConflict
 
         configure(location: event.locationSummary.rawValue)
 
