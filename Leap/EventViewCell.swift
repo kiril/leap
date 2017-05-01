@@ -151,17 +151,9 @@ class EventViewCell: UICollectionViewCell {
         let event = self.event!
         let response = self.responseType(forButton: sender)
 
-        guard response != event.userResponse.value else {
-            // selected button was tapped
-            return
-        }
+        guard response != event.userResponse.value else { return }
 
-        event.userResponse.update(to: response)
-        event.temporarilyForceDisplayResponseOptions = true
-        configure(with: event)
-
-
-        try! event.flush()
+        event.respond(with: response, forceDisplay: true)
     }
 
     @objc private func launchMaps(sender: UIButton) {

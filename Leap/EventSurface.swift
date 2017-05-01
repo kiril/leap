@@ -17,6 +17,18 @@ enum EventResponse {
     maybe
 }
 
+enum Handedness {
+    case left
+    case right
+}
+
+enum Overlap {
+    case identical
+    case staggered
+    case justified(direction:Handedness)
+    case none
+}
+
 extension TimePerspective {
     static func compute(fromEvent event: EventSurface) -> TimePerspective {
         let now = Date()
@@ -58,15 +70,75 @@ class EventSurface: Surface, ModelLoadable {
     let hasAlarms              = SurfaceBool()
     let alarmSummary           = SurfaceString()
     let participants           = SurfaceProperty<[ParticipantSurface]>()
+    let arrivalTime            = SurfaceDate()
+    let departureTime          = SurfaceDate()
+    let arrivalReferenceEvent  = SurfaceProperty<EventSurface>()
+    let departureReferenceEvent = SurfaceProperty<EventSurface>()
 
     var isEligibleForConflict: Bool { return isConfirmed.value }
 
 
     func intersectsWith(_ other: EventSurface) -> Bool {
-        if endTime.value <= other.startTime.value || other.endTime.value <= startTime.value {
+        if departureTime.value <= other.arrivalTime.value || other.departureTime.value <= arrivalTime.value {
             return false
         }
         return true
+    }
+
+    func intersection(with other: EventSurface) -> Overlap {
+        if endTime.value <= other.startTime.value || other.endTime.value <= startTime.value {
+            return .none
+        }
+
+        if endTime.value == other.endTime.value && startTime.value == other.startTime.value {
+            return .identical
+        }
+
+        if endTime.value == other.endTime.value {
+            return .justified(direction: .right)
+        }
+
+        if startTime.value == other.startTime.value {
+            return .justified(direction: .left)
+        }
+
+        return .staggered
+    }
+
+    func leaveEarly(for other: EventSurface) {
+        let otherStart = other.startTime.value
+        guard otherStart > startTime.value && otherStart < endTime.value else { return }
+        departureTime.update(to: otherStart)
+        try! flush()
+    }
+
+    func joinLate(for other: EventSurface) {
+        let otherEnd = other.endTime.value
+        guard otherEnd > startTime.value && otherEnd < endTime.value else { return }
+        arrivalTime.update(to: otherEnd)
+        try! flush()
+    }
+
+    func splitTime(with other: EventSurface) {
+        let first = startTime.value < other.startTime.value ? self : other
+        let second = first == self ? other : self
+        // gotta leave first early, AND join second late...
+        let endOfFirst = first.endTime.value
+        let startOfSecond = second.startTime.value
+        guard endOfFirst < startOfSecond else { return }
+        let diff = startOfSecond.timeIntervalSince(endOfFirst)
+        let midpoint = Date(timeIntervalSinceReferenceDate: endOfFirst.timeIntervalSinceReferenceDate + diff/2)
+
+        first.departureTime.update(to: midpoint)
+        try! first.flush()
+        second.arrivalTime.update(to: midpoint)
+        try! second.flush()
+    }
+
+    func respond(with response: EventResponse, forceDisplay: Bool = false) {
+        userResponse.update(to: response)
+        temporarilyForceDisplayResponseOptions = forceDisplay
+        try! flush()
     }
 
     static func computeNeedsResponse(event: EventSurface) -> Bool {
@@ -151,6 +223,7 @@ class EventSurface: Surface, ModelLoadable {
 
         bridge.bind(surface.title)
         bridge.bind(surface.detail)
+
         bridge.readonlyBind(surface.hasAlarms) { (m:LeapModel) -> Bool in
             return (m as! Event).alarms.count > 0
         }
@@ -229,6 +302,35 @@ class EventSurface: Surface, ModelLoadable {
             event.endTime = date.secondsSinceReferenceDate
         }
         bridge.bind(surface.endTime, populateWith: getEndTime, on: "event", persistWith: setEndTime)
+
+        func getArrivalTime(model: LeapModel) -> Any? {
+            let event = model as! Event
+            guard event.arrivalOffset != 0 else {
+                return event.startDate
+            }
+            return Date(timeIntervalSinceReferenceDate: TimeInterval(event.startTime + event.arrivalOffset))
+        }
+        func setArrivalTime(model: LeapModel, value: Any?) {
+            let event = model as! Event
+            guard let arrivalTime = value as? Date else { return }
+            event.arrivalOffset = arrivalTime.secondsSinceReferenceDate - event.startTime
+        }
+        bridge.bind(surface.arrivalTime, populateWith: getArrivalTime, on: "event", persistWith: setArrivalTime)
+
+
+        func getDepartureTime(model: LeapModel) -> Any? {
+            let event = model as! Event
+            guard event.departureOffset != 0 else {
+                return event.endDate
+            }
+            return Date(timeIntervalSinceReferenceDate: TimeInterval(event.endTime + event.departureOffset))
+        }
+        func setDepartureTime(model: LeapModel, value: Any?) {
+            let event = model as! Event
+            guard let departureTime = value as? Date else { return }
+            event.departureOffset = departureTime.secondsSinceReferenceDate - event.endTime
+        }
+        bridge.bind(surface.departureTime, populateWith: getDepartureTime, on: "event", persistWith: setDepartureTime)
 
         bridge.readonlyBind(surface.userIsInvited) { (model:LeapModel) in
             guard let thing = model as? Temporality, let me = thing.me else {
