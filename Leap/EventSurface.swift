@@ -59,6 +59,8 @@ class EventSurface: Surface, ModelLoadable {
     let alarmSummary           = SurfaceString()
     let participants           = SurfaceProperty<[ParticipantSurface]>()
 
+    var isEligibleForConflict: Bool { return isConfirmed.value }
+
 
     func intersectsWith(_ other: EventSurface) -> Bool {
         if endTime.value <= other.startTime.value || other.endTime.value <= startTime.value {
@@ -72,11 +74,7 @@ class EventSurface: Surface, ModelLoadable {
     }
 
     static func computeIsConfirmed(event: EventSurface) -> Bool {
-        if event.userResponse.value == .yes {
-            return true
-        } else {
-            return false
-        }
+        return event.userResponse.value == .yes
     }
 
     static func eventTimeRange(event: EventSurface) -> String {
