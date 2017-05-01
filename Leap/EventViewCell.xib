@@ -29,11 +29,17 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="xj8-ev-Gzs">
                                 <rect key="frame" x="10" y="10" width="414" height="105"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Y9n-0L-JzR" userLabel="Time Stack">
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Y9n-0L-JzR" userLabel="Time Stack">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="18"/>
                                         <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oFA-wl-htA">
+                                                <rect key="frame" x="0.0" y="0.0" width="15" height="18"/>
+                                                <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="15"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10am-12pm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rSm-Ad-vKa">
-                                                <rect key="frame" x="0.0" y="0.0" width="391" height="18"/>
+                                                <rect key="frame" x="19" y="0.0" width="378" height="18"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -64,12 +70,12 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G9x-8m-nDy">
-                                                <rect key="frame" x="17" y="0.0" width="334" height="20"/>
+                                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G9x-8m-nDy">
+                                                <rect key="frame" x="17" y="0.0" width="59" height="20"/>
                                                 <state key="normal" title="Location"/>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" ambiguous="YES" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HYr-g4-l3X">
-                                                <rect key="frame" x="355" y="0.0" width="59" height="20"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HYr-g4-l3X">
+                                                <rect key="frame" x="80" y="0.0" width="334" height="20"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -147,6 +153,7 @@
                 <outlet property="recurringIcon" destination="FlJ-fs-Idr" id="c3z-dy-9Fe"/>
                 <outlet property="remindButton" destination="pUw-eQ-tcj" id="IOO-gT-hgr"/>
                 <outlet property="timeLabel" destination="rSm-Ad-vKa" id="7Xd-vy-1Fo"/>
+                <outlet property="timeWarningLabel" destination="oFA-wl-htA" id="hOW-pf-2GB"/>
                 <outlet property="titleLabel" destination="Qnk-55-lVk" id="uce-Ya-ah4"/>
                 <outlet property="yesButton" destination="xly-Xe-mCV" id="BZo-HF-yTx"/>
             </connections>

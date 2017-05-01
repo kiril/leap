@@ -25,6 +25,7 @@ class EventDetailView: UIView {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var recurringIcon: UILabel!
+    @IBOutlet weak var timeAlertLabel: UILabel!
 
     // detail
     @IBOutlet weak var invitationSummaryLabel: UILabel!
@@ -70,6 +71,7 @@ class EventDetailView: UIView {
         titleLabel.text = event.title.value
         timeLabel.text = event.isRecurring.value ? event.recurringTimeRange.value : "From \(event.timeRange.value)"
         timeLabel.textColor = UIColor.projectLightGray
+        timeAlertLabel.isHidden = !event.isInConflict
 
         if let location = event.locationSummary.rawValue {
             locationContainer?.isHidden = false

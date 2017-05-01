@@ -14,6 +14,7 @@ protocol EventViewCellDelegate: class {
 
 class EventViewCell: UICollectionViewCell {
     // header
+    @IBOutlet weak var timeWarningLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var recurringIcon: UILabel!
@@ -81,7 +82,8 @@ class EventViewCell: UICollectionViewCell {
         locationIconLabel.textColor = UIColor.projectLightGray
         locationLabel.textColor = UIColor.projectLightGray
         recurringIcon.textColor = UIColor.projectLightGray
-        
+
+        timeWarningLabel.textColor = UIColor.orange
         titleLabel.textColor = UIColor.projectDarkGray
         timeLabel.textColor = UIColor.projectDarkGray
     }
@@ -194,6 +196,7 @@ class EventViewCell: UICollectionViewCell {
         timeLabel.text = event.timeRange.value
         titleLabel.text = event.title.value
         invitationSummaryLabel.text = event.invitationSummary.value
+        timeWarningLabel.isHidden = !event.isInConflict
 
         configure(location: event.locationSummary.rawValue)
 

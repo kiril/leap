@@ -47,14 +47,20 @@
                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="0Qp-Ef-WLB" userLabel="Time Stack">
                                     <rect key="frame" x="0.0" y="105" width="335" height="20.5"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="252" verticalHuggingPriority="252" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IBm-Ih-Zmm">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ac0-gI-EJu">
                                             <rect key="frame" x="0.0" y="0.0" width="15" height="20.5"/>
+                                            <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="15"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="252" verticalHuggingPriority="252" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IBm-Ih-Zmm">
+                                            <rect key="frame" x="25" y="0.0" width="15" height="20.5"/>
                                             <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="749" text="10am - 12pm" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.75" adjustsLetterSpacingToFitWidth="YES" preferredMaxLayoutWidth="162.5" translatesAutoresizingMaskIntoConstraints="NO" id="s66-FN-ge1">
-                                            <rect key="frame" x="25" y="0.0" width="310" height="20.5"/>
+                                            <rect key="frame" x="50" y="0.0" width="285" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -241,6 +247,7 @@
                 <outlet property="separator3" destination="IPp-Mo-5DK" id="Wfw-q9-uSt"/>
                 <outlet property="separator4" destination="XSx-I1-ETL" id="iXg-P9-MqG"/>
                 <outlet property="stackView" destination="Mc6-Fo-C7r" id="a6G-kG-pXn"/>
+                <outlet property="timeAlertLabel" destination="Ac0-gI-EJu" id="J8d-Ck-1fW"/>
                 <outlet property="timeLabel" destination="s66-FN-ge1" id="YcW-tQ-w49"/>
                 <outlet property="titleLabel" destination="WSI-Hw-Hew" id="UEf-wN-dTe"/>
                 <outlet property="yesButton" destination="70F-gQ-gfU" id="S4w-9z-nmE"/>

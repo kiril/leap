@@ -93,9 +93,16 @@ class DayScheduleSurface: Surface {
 
         var priorEvent: EventSurface? = nil
         for event in events {
+            event.isInConflict = false
+
+            guard displayableType(forEvent: event) == .always else { continue }
             if let prior = priorEvent, prior.intersectsWith(event) {
-                prior.isInConflict = true
-                event.isInConflict = true
+                if !prior.isRecurring.value || event.isRecurring.value {
+                    prior.isInConflict = true
+                }
+                if !event.isRecurring.value || prior.isRecurring.value {
+                    event.isInConflict = true
+                }
             }
             priorEvent = event
         }
