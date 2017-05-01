@@ -61,7 +61,7 @@ class EventSurface: Surface, ModelLoadable {
 
 
     func intersectsWith(_ other: EventSurface) -> Bool {
-        if endTime.value < other.startTime.value || other.endTime.value < startTime.value {
+        if endTime.value <= other.startTime.value || other.endTime.value <= startTime.value {
             return false
         }
         return true
