@@ -50,4 +50,8 @@ extension EventDetailViewController: EventDetailViewDelegate {
         detail.entries = self.entries
         self.navigationController?.pushViewController(detail, animated: true)
     }
+
+    func didChangeResponse(for event: EventSurface) {
+        self.navigationController!.popViewController(animated: true)
+    }
 }
