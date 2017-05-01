@@ -10,6 +10,7 @@ import UIKit
 
 protocol EventViewCellDelegate: class {
     func tapReceived(on: EventViewCell, for event: EventSurface)
+    func fixConflictTapped(on: EventViewCell, for event: EventSurface)
 }
 
 class EventViewCell: UICollectionViewCell {

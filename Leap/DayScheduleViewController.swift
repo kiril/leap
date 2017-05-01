@@ -48,6 +48,38 @@ class DayScheduleViewController: UIViewController, StoryboardLoadable {
 }
 
 extension DayScheduleViewController: EventViewCellDelegate {
+    func fixConflictTapped(on: EventViewCell, for event: EventSurface) {
+        let alert = UIAlertController(title: "Fix Conflict",
+                                      message: "OMG",
+                                      preferredStyle: .actionSheet)
+
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+
+        var conflictingEvent: EventSurface!
+        for entry in surface.entries {
+            switch entry {
+            case let .event(other):
+                if other.isEligibleForConflict && other.intersectsWith(event) {
+                    conflictingEvent = other
+                    break
+                }
+            default:
+                break
+            }
+        }
+
+        let declineOther = UIAlertAction(title: "Decline \(conflictingEvent.title.value)", style: .destructive)
+        let declineThis = UIAlertAction(title: "Decline \(event.title.value)", style: .destructive)
+        let split = UIAlertAction(title: "Split Time Between Events", style: .default)
+
+        alert.addAction(declineOther)
+        alert.addAction(declineThis)
+        alert.addAction(split)
+        alert.addAction(cancel)
+
+        self.present(alert, animated: true)
+    }
+
     func tapReceived(on: EventViewCell, for event: EventSurface) {
         let eventViewController = EventDetailViewController()
         eventViewController.event = event
