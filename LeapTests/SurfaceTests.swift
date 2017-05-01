@@ -17,6 +17,7 @@ class SurfaceTests: XCTestCase {
     override func setUp() {
         super.setUp()
         testSurface = TestSurface(data: ["title": "A Title", "anotherfield": 2])
+        testSurface.notifySynchronously = true
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     

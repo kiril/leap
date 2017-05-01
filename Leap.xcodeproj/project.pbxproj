@@ -136,6 +136,7 @@
 		FB934F241E7EDF670068CDEF /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F231E7EDF670068CDEF /* Persistence.swift */; };
 		FB934F261E7EDFA80068CDEF /* Lifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB934F251E7EDFA80068CDEF /* Lifecycle.swift */; };
 		FBB4BFD81E8ACED1001679BF /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB4BFD71E8ACED1001679BF /* Operation.swift */; };
+		FBBB60E51EB7E861009E67AD /* StringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBB60E41EB7E861009E67AD /* StringTests.swift */; };
 		FBBE56991EA1692800B9647C /* SeriesSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBE56981EA1692800B9647C /* SeriesSurface.swift */; };
 		FBCA4D1E1E84490A003E7AB7 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBCA4D1D1E84490A003E7AB7 /* Location.swift */; };
 		FBCA4D201E844924003E7AB7 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBCA4D1F1E844924003E7AB7 /* Room.swift */; };
@@ -308,6 +309,7 @@
 		FB934F231E7EDF670068CDEF /* Persistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		FB934F251E7EDFA80068CDEF /* Lifecycle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lifecycle.swift; sourceTree = "<group>"; };
 		FBB4BFD71E8ACED1001679BF /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
+		FBBB60E41EB7E861009E67AD /* StringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringTests.swift; sourceTree = "<group>"; };
 		FBBE56981EA1692800B9647C /* SeriesSurface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeriesSurface.swift; sourceTree = "<group>"; };
 		FBCA4D1D1E84490A003E7AB7 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		FBCA4D1F1E844924003E7AB7 /* Room.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
@@ -723,6 +725,7 @@
 				FB39ADB81E94067200B79A7B /* EventSurfaceTests.swift */,
 				FB1869D31E9FF88A007642F4 /* RecurrenceTests.swift */,
 				FB268B6B1EA5332D006510A7 /* WrapperTest.swift */,
+				FBBB60E41EB7E861009E67AD /* StringTests.swift */,
 			);
 			path = LeapTests;
 			sourceTree = "<group>";
@@ -1181,6 +1184,7 @@
 				FB1869D41E9FF88A007642F4 /* RecurrenceTests.swift in Sources */,
 				FB39ADB71E93F1EA00B79A7B /* CalendarTests.swift in Sources */,
 				FB39ADAF1E8EC6B700B79A7B /* TestUtil.swift in Sources */,
+				FBBB60E51EB7E861009E67AD /* StringTests.swift in Sources */,
 				83B5DB721E91D7F400A0CA7E /* (null) in Sources */,
 				83B5DBEE1E91E4CC00A0CA7E /* GregorianDayTests.swift in Sources */,
 				FBE0EFFC1DFBBB80007BD8DF /* LeapTests.swift in Sources */,

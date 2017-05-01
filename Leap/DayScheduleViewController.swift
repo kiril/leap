@@ -69,7 +69,7 @@ extension DayScheduleViewController: EventViewCellDelegate {
                 let first = event.startTime.value < other.startTime.value ? event : other
                 let second = first == event ? other : event
 
-                let leaveEarly = UIAlertAction(title: "Leave \"\(first.title.value)\" early", style: .destructive) {
+                let leaveEarly = UIAlertAction(title: "Leave \"\(first.title.value.truncate(to: 15, in: .middle))\" early", style: .destructive) {
                     action in
                     first.leaveEarly(for: second)
                 }

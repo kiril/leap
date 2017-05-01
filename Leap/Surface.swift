@@ -51,6 +51,7 @@ internal class WeakObserver {
  * to the data this Surface holds.
  */
 open class Surface: Equatable {
+    public var notifySynchronously = false
     public let id: String!
 
     public var type: String { fatalError("Must override type") }
@@ -257,9 +258,13 @@ extension Surface: Updateable {
                 // Guaranteeing observers are always notified on the main thread. (and then make them
                 // switch threads if necessary). This probably avoids more SUPER annoying bugs more often,
                 // so doing it for now, even though it could tie up the main thread accidentally.
-                DispatchQueue.main.async { [weak self, observer] in
-                    guard let _self = self else { return }
-                    observer.surfaceDidChange(_self)
+                if notifySynchronously {
+                    observer.surfaceDidChange(self)
+                } else {
+                    DispatchQueue.main.async { [weak self, observer] in
+                        guard let _self = self else { return }
+                        observer.surfaceDidChange(_self)
+                    }
                 }
             }
         }

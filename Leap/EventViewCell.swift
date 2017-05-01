@@ -205,17 +205,15 @@ class EventViewCell: UICollectionViewCell {
         if !event.isInConflict && (event.hasCustomArrival || event.hasCustomDeparture) {
             var custom = ""
             if event.hasCustomArrival {
-                let start = event.startTime.value
                 let arrival = event.arrivalTime.value
-                custom = "Arriving \(arrival.timeIntervalSince(start).durationStringShort) late"
+                custom = "Arrive at \(DateFormatter.shortTime(date: arrival, appendAMPM: false))"
             }
             if event.hasCustomDeparture {
-                let end = event.endTime.value
                 let departure = event.departureTime.value
                 if !custom.isEmpty {
                     custom += "; "
                 }
-                custom += "Leaving \(end.timeIntervalSince(departure).durationStringShort) early"
+                custom += "Leave by \(DateFormatter.shortTime(date: departure, appendAMPM: false))"
             }
             arrivalDepartureLabel.text = custom
             arrivalDepartureLabel.isHidden = false
