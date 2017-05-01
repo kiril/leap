@@ -15,19 +15,19 @@ class ParticipantSurface: Surface, ModelLoadable {
     let engagement = SurfaceProperty<Engagement>()
     let isMe       = SurfaceBool()
 
-    static func load(fromModel event: LeapModel) -> Surface? {
-        return load(byId: event.id)
-    }
 
     static func load(byId participantId: String) -> ParticipantSurface? {
-        guard let part = Participant.by(id: participantId) else {
-            return nil
-        }
+        guard let part = Participant.by(id: participantId) else { return nil }
+        return load(with: part) as? ParticipantSurface
+    }
 
-        let surface = ParticipantSurface(id: participantId)
-        let bridge = SurfaceModelBridge(id: participantId, surface: surface)
+    static func load(with model: LeapModel) -> Surface? {
+        guard let participant = model as? Participant else { return nil }
 
-        bridge.reference(part, as: "participant")
+        let surface = ParticipantSurface(id: participant.id)
+        let bridge = SurfaceModelBridge(id: participant.id, surface: surface)
+
+        bridge.reference(participant, as: "participant")
 
         bridge.readonlyBind(surface.name) { (m:LeapModel) -> String? in
             guard let participant = m as? Participant else { return nil }
@@ -45,7 +45,7 @@ class ParticipantSurface: Surface, ModelLoadable {
         }
 
         surface.store = bridge
-        bridge.populate(surface)
+        bridge.populate(surface, with: participant, as: "participant")
         return surface
     }
 }

@@ -17,21 +17,22 @@ protocol IntIdInitable {
 class WeekOverviewSurface: Surface, IntIdInitable {
     var delegate: ViewModelDelegate?
     let daysInAWeek = 7
+    var intId: Int = 0
 
     convenience required init(intId: Int) {
         self.init(id: String(intId))
+        self.intId = intId
 
         daySchedules = days.map { DayScheduleSurface.load(dayId: $0.id) }
     }
-    var intId: Int { return Int(id!)! }
 
     // The id of a week points to the id of the first day of the week (which might be a Sunday or Monday, depending
     // on the preferences of the observing user. But this id is transient so that's okay
 
-    convenience init(containingDayId dayId: String) {
-        let targetDay = DaySurface(id: dayId)
+    convenience init(containingDayId dayId: Int) {
+        let targetDay = DaySurface(id: String(dayId))
 
-        let beginningOfWeekId = targetDay.intId - targetDay.weekdayIndex
+        let beginningOfWeekId = dayId - targetDay.weekdayIndex
 
         self.init(intId: beginningOfWeekId)
     }
@@ -54,8 +55,8 @@ class WeekOverviewSurface: Surface, IntIdInitable {
     }
 
     var weekRelativeDescription: String {
-        let today = Calendar.current.today
-        let thisWeek = WeekOverviewSurface(containingDayId: String(today.id))
+        let dayId = Calendar.current.today.id
+        let thisWeek = containsDay(dayId: dayId) ? self : WeekOverviewSurface(containingDayId: dayId)
 
         let weeksApart = ((intId - thisWeek.intId) / daysInAWeek)
 
@@ -91,4 +92,8 @@ class WeekOverviewSurface: Surface, IntIdInitable {
     }
 
     var daySchedules: [DayScheduleSurface]!
+
+    func containsDay(dayId: Int) -> Bool {
+        return dayId >= self.intId && dayId < self.intId + 7
+    }
 }

@@ -132,15 +132,22 @@ class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
     }
 
     func populate(_ surface: Surface) {
-        _populate(surface as! SomeSurface)
+        populate(surface, with: nil, as: nil)
+    }
+
+    func populate(_ surface: Surface, with model: LeapModel?, as key: String?) {
+        _populate(surface as! SomeSurface, with: model, as: key)
     }
 
     private func populateOnly(_ surface: SomeSurface, restrictTo onlyName: String) {
         _populate(surface, restrictTo: onlyName)
     }
 
-    func _populate(_ surface: SomeSurface, restrictTo onlyName: String? = nil) {
+    func _populate(_ surface: SomeSurface, restrictTo onlyName: String? = nil, with model: LeapModel? = nil, as key: String? = nil) {
         var modelCache: [String:LeapModel] = [:]
+        if let m = model, let k = key {
+            modelCache[k] = m
+        }
         var arrayCache: [String:[Surface]] = [:]
         func getModel(_ name: String) -> LeapModel? {
             var ret = modelCache[name]
@@ -251,7 +258,7 @@ class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
 
 
 protocol ModelLoadable {
-    static func load(fromModel: LeapModel) -> Surface?
+    static func load(with model: LeapModel) -> Surface?
 }
 
 protocol ArrayMaterializable {
@@ -268,7 +275,7 @@ class QueryBridge<Model:LeapModel,SomeSurface:Surface>: ArrayMaterializable wher
     func materialize() -> [Surface] {
         var results: [Surface] = []
         for object:Model in query {
-            if let s = SomeSurface.load(fromModel: object) {
+            if let s = SomeSurface.load(with: object) {
                 results.append(s)
             }
         }

@@ -18,7 +18,7 @@ class SeriesSurface: Surface, ModelLoadable {
         let start = Calendar.current.startOfDay(for: day)
         let end = Calendar.current.startOfDay(for: day.dayAfter)
         if let event = Series.by(id: id)?.event(between: start, and: end) {
-            return EventSurface.load(fromModel: event) as? EventSurface
+            return EventSurface.load(with: event) as? EventSurface
         }
         return nil
     }
@@ -27,7 +27,7 @@ class SeriesSurface: Surface, ModelLoadable {
         let start = Calendar.current.startOfDay(for: day)
         let end = Calendar.current.startOfDay(for: day.dayAfter)
         if let reminder = Series.by(id: id)?.reminder(between: start, and: end) {
-            return ReminderSurface.load(fromModel: reminder) as? ReminderSurface
+            return ReminderSurface.load(with: reminder) as? ReminderSurface
         }
         return nil
     }
@@ -41,17 +41,11 @@ class SeriesSurface: Surface, ModelLoadable {
         return series.recursBetween(start, and: end)
     }
 
-    static func load(fromModel series: LeapModel) -> Surface? {
-        return load(byId: series.id)
-    }
+    static func load(with model: LeapModel) -> Surface? {
+        guard let series = model as? Series else { return nil }
 
-    static func load(byId seriesId: String) -> SeriesSurface? {
-        guard let series:Series = Series.by(id: seriesId) else {
-            return nil
-        }
-
-        let surface = SeriesSurface(id: seriesId)
-        let bridge = SurfaceModelBridge(id: seriesId, surface: surface)
+        let surface = SeriesSurface(id: series.id)
+        let bridge = SurfaceModelBridge(id: series.id, surface: surface)
         bridge.reference(series, as: "series")
         bridge.bind(surface.title, to: "title", on: "series")
         bridge.readonlyBind(surface.seriesType) { (model:LeapModel) in
@@ -60,7 +54,14 @@ class SeriesSurface: Surface, ModelLoadable {
             }
             return nil
         }
-        bridge.populate(surface)
+        bridge.populate(surface, with: series, as: "series")
         return surface
+    }
+
+    static func load(byId seriesId: String) -> SeriesSurface? {
+        guard let series:Series = Series.by(id: seriesId) else {
+            return nil
+        }
+        return load(with: series) as? SeriesSurface
     }
 }

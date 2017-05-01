@@ -101,7 +101,7 @@ class WeekNavigationViewController: UIViewController, StoryboardLoadable {
         weekOverviewPageViewController.view.translatesAutoresizingMaskIntoConstraints = false // HELPS
         weekOverviewPageViewController.view.backgroundColor = UIColor.clear
 
-        let initialWeek = WeekOverviewSurface(containingDayId: selectedDayId)
+        let initialWeek = WeekOverviewSurface(containingDayId: Int(selectedDayId)!)
         let initialWeekVC = WeekOverviewViewController.loadFromStoryboard()
         initialWeekVC.surface = initialWeek
         initialWeekVC.delegate = self

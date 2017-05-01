@@ -136,17 +136,18 @@ class EventSurface: Surface, ModelLoadable {
         }
     }
 
-    static func load(fromModel event: LeapModel) -> Surface? {
-        return load(byId: event.id)
-    }
-
     static func load(byId eventId: String) -> EventSurface? {
         guard let event:Event = Event.by(id: eventId) else {
             return nil
         }
+        return load(with: event) as? EventSurface
+    }
 
-        let surface = EventSurface(id: eventId)
-        let bridge = SurfaceModelBridge(id: eventId, surface: surface)
+    static func load(with model: LeapModel) -> Surface? {
+        guard let event = model as? Event else { return nil }
+
+        let surface = EventSurface(id: event.id)
+        let bridge = SurfaceModelBridge(id: event.id, surface: surface)
 
         bridge.reference(event, as: "event")
 
@@ -239,7 +240,7 @@ class EventSurface: Surface, ModelLoadable {
         }
 
         bridge.readonlyBind(surface.locationSummary) { (model:LeapModel) -> String? in
-            guard let event = model as? Event, let location = event.locationString, location.characters.count > 0 else {
+            guard let event = model as? Event, let location = event.locationString, !location.isEmpty else {
                 return nil
             }
             return location
@@ -272,7 +273,7 @@ class EventSurface: Surface, ModelLoadable {
                             continue
                         }
                         let name = participant.isMe ? "Me" : participant.nameOrEmail ?? someone
-                        if !to.characters.isEmpty {
+                        if !to.isEmpty {
                             to += ", "
                         }
                         to += name
@@ -290,7 +291,7 @@ class EventSurface: Surface, ModelLoadable {
                         }
                     }
 
-                    guard !to.characters.isEmpty else {
+                    guard !to.isEmpty else {
                         return "from \(fromName)"
                     }
 
@@ -435,7 +436,7 @@ class EventSurface: Surface, ModelLoadable {
             guard let event = m as? Event else { return participants }
 
             for participant in event.participants {
-                if let participantSurface = ParticipantSurface.load(fromModel: participant) as? ParticipantSurface {
+                if let participantSurface = ParticipantSurface.load(with: participant) as? ParticipantSurface {
                     participants.append(participantSurface)
                 }
             }
@@ -444,7 +445,7 @@ class EventSurface: Surface, ModelLoadable {
         }
 
         surface.store = bridge
-        bridge.populate(surface)
+        bridge.populate(surface, with: event, as: "event")
         return surface
     }
 

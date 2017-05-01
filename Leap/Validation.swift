@@ -23,6 +23,9 @@ func validIfNot(string badString: String) -> Validator<String> {
 
 func validIfAtLeast(characters: Int) -> Validator<String> {
     return {(value: String) in
+        if characters == 1 {
+            return !value.isEmpty
+        }
         return value.characters.count >= characters
     }
 }
