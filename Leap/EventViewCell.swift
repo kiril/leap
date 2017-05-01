@@ -20,6 +20,7 @@ class EventViewCell: UICollectionViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var recurringIcon: UILabel!
     @IBOutlet weak var resolveButton: UIButton!
+    @IBOutlet weak var arrivalDepartureLabel: UILabel!
 
     // detail
     @IBOutlet weak var invitationSummaryLabel: UILabel!
@@ -84,7 +85,7 @@ class EventViewCell: UICollectionViewCell {
         locationIconLabel.textColor = UIColor.projectLightGray
         locationLabel.textColor = UIColor.projectLightGray
         recurringIcon.textColor = UIColor.projectLightGray
-        resolveButton.titleLabel?.textColor = UIColor.projectWarning
+        arrivalDepartureLabel.textColor = UIColor.projectWarning
 
         timeWarningLabel.textColor = UIColor.orange
         titleLabel.textColor = UIColor.projectDarkGray
@@ -200,6 +201,27 @@ class EventViewCell: UICollectionViewCell {
         invitationSummaryLabel.text = event.invitationSummary.value
         timeWarningLabel.isHidden = !event.isInConflict
         resolveButton.isHidden = !event.isInConflict
+
+        if !event.isInConflict && (event.hasCustomArrival || event.hasCustomDeparture) {
+            var custom = ""
+            if event.hasCustomArrival {
+                let start = event.startTime.value
+                let arrival = event.arrivalTime.value
+                custom = "Arriving \(arrival.timeIntervalSince(start).durationStringShort) late"
+            }
+            if event.hasCustomDeparture {
+                let end = event.endTime.value
+                let departure = event.departureTime.value
+                if !custom.isEmpty {
+                    custom += "; "
+                }
+                custom += "Leaving \(end.timeIntervalSince(departure).durationStringShort) early"
+            }
+            arrivalDepartureLabel.text = custom
+            arrivalDepartureLabel.isHidden = false
+        } else {
+            arrivalDepartureLabel.isHidden = true
+        }
 
         configure(location: event.locationSummary.rawValue)
 

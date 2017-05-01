@@ -77,6 +77,9 @@ class EventSurface: Surface, ModelLoadable {
 
     var isEligibleForConflict: Bool { return isConfirmed.value }
 
+    var hasCustomArrival: Bool { return arrivalTime.value != startTime.value }
+    var hasCustomDeparture: Bool { return departureTime.value != endTime.value }
+
 
     func intersectsWith(_ other: EventSurface) -> Bool {
         if departureTime.value <= other.arrivalTime.value || other.departureTime.value <= arrivalTime.value {
