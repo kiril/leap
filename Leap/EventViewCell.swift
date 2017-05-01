@@ -142,6 +142,9 @@ class EventViewCell: UICollectionViewCell {
     }
 
     @objc private func resolveConflict(sender: UIButton) {
+        if let delegate = self.delegate {
+            delegate.fixConflictTapped(on: self, for: event!)
+        }
     }
 
     @objc private func setEventResponse(sender: UIButton) {
