@@ -38,9 +38,9 @@ class DayScheduleViewController: UIViewController, StoryboardLoadable {
 
         collectionView!.collectionViewLayout = layout
         collectionView!.contentInset = UIEdgeInsets(top:    15.0,
-                                                         left:   15.0,
-                                                         bottom: 75.0,
-                                                         right:  15.0)
+                                                    left:   15.0,
+                                                    bottom: 75.0,
+                                                    right:  15.0)
 
         collectionView!.alwaysBounceVertical = true
     }
@@ -186,10 +186,21 @@ extension DayScheduleViewController: EventViewCellDelegate {
     }
 
     func tapReceived(on: EventViewCell, for event: EventSurface) {
+        presentEvent(event: event)
+    }
+
+    func presentEvent(event: EventSurface) {
         let eventViewController = EventDetailViewController()
         eventViewController.event = event
         eventViewController.entries = self.surface.entries
         self.navigationController?.pushViewController(eventViewController, animated: true)
+    }
+}
+
+extension DayScheduleViewController: OpenTimeSectionControllerDelegate {
+    func didTapEvent(eventId: String, on openTimeSection: OpenTimeSectionController) {
+        guard let event = EventSurface.load(byId: eventId) else { return }
+        presentEvent(event: event)
     }
 }
 
@@ -206,8 +217,13 @@ extension DayScheduleViewController: SurfaceObserver {
 
 extension DayScheduleViewController: IGListAdapterDataSource {
     func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
-        if object is ScheduleEntryWrapper {
-            return ScheduleSectionController(eventViewCellDelegate: self)
+        if let scheduleWrapper = object as? ScheduleEntryWrapper {
+            switch scheduleWrapper.scheduleEntry {
+            case .openTime:
+                return OpenTimeSectionController(delegate: self)
+            case .event:
+                return EventSectionController(eventViewCellDelegate: self)
+            }
         }
         else if object is ReminderSurface ||
                 object is NoRemindersPlaceholderObject {
@@ -239,4 +255,3 @@ extension DayScheduleViewController: IGListAdapterDataSource {
         return nil
     }
 }
-
