@@ -35,8 +35,11 @@
 		835456151E8AF9EA00A03B34 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835456141E8AF9EA00A03B34 /* InitialViewController.swift */; };
 		835456181E8AFD7200A03B34 /* UIColor+ProjectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835456171E8AFD7200A03B34 /* UIColor+ProjectExtensions.swift */; };
 		8354561A1E8C09A100A03B34 /* DayScheduleTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 835456191E8C09A100A03B34 /* DayScheduleTitleView.xib */; };
+		8358CFC31EB90577003AB343 /* EventSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8358CFC21EB90577003AB343 /* EventSectionController.swift */; };
+		8358CFC51EB90E9D003AB343 /* OpenTimeSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8358CFC41EB90E9D003AB343 /* OpenTimeSectionController.swift */; };
+		8358CFC81EB91533003AB343 /* OpenTimePossibleEventCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8358CFC61EB91533003AB343 /* OpenTimePossibleEventCollectionViewCell.swift */; };
+		8358CFC91EB91533003AB343 /* OpenTimePossibleEventCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8358CFC71EB91533003AB343 /* OpenTimePossibleEventCollectionViewCell.xib */; };
 		8366F1151EAE66C400E3A448 /* ReminderSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8366F1141EAE66C400E3A448 /* ReminderSurface.swift */; };
-		8366F1181EAFAD0200E3A448 /* ScheduleSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8366F1171EAFAD0200E3A448 /* ScheduleSectionController.swift */; };
 		8366F11A1EAFAD4A00E3A448 /* ReminderSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8366F1191EAFAD4A00E3A448 /* ReminderSectionController.swift */; };
 		8366F11D1EAFAE1100E3A448 /* ReminderCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8366F11B1EAFAE1100E3A448 /* ReminderCollectionViewCell.swift */; };
 		8366F11E1EAFAE1100E3A448 /* ReminderCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8366F11C1EAFAE1100E3A448 /* ReminderCollectionViewCell.xib */; };
@@ -208,8 +211,11 @@
 		835456141E8AF9EA00A03B34 /* InitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
 		835456171E8AFD7200A03B34 /* UIColor+ProjectExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+ProjectExtensions.swift"; sourceTree = "<group>"; };
 		835456191E8C09A100A03B34 /* DayScheduleTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DayScheduleTitleView.xib; sourceTree = "<group>"; };
+		8358CFC21EB90577003AB343 /* EventSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventSectionController.swift; sourceTree = "<group>"; };
+		8358CFC41EB90E9D003AB343 /* OpenTimeSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenTimeSectionController.swift; sourceTree = "<group>"; };
+		8358CFC61EB91533003AB343 /* OpenTimePossibleEventCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenTimePossibleEventCollectionViewCell.swift; sourceTree = "<group>"; };
+		8358CFC71EB91533003AB343 /* OpenTimePossibleEventCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OpenTimePossibleEventCollectionViewCell.xib; sourceTree = "<group>"; };
 		8366F1141EAE66C400E3A448 /* ReminderSurface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderSurface.swift; sourceTree = "<group>"; };
-		8366F1171EAFAD0200E3A448 /* ScheduleSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleSectionController.swift; sourceTree = "<group>"; };
 		8366F1191EAFAD4A00E3A448 /* ReminderSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderSectionController.swift; sourceTree = "<group>"; };
 		8366F11B1EAFAE1100E3A448 /* ReminderCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderCollectionViewCell.swift; sourceTree = "<group>"; };
 		8366F11C1EAFAE1100E3A448 /* ReminderCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReminderCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -405,6 +411,8 @@
 				8366F11C1EAFAE1100E3A448 /* ReminderCollectionViewCell.xib */,
 				834FBEBB1EA8882C004D9302 /* OpenTimeViewCell.xib */,
 				834FBEBD1EA8F335004D9302 /* OpenTimeViewCell.swift */,
+				8358CFC61EB91533003AB343 /* OpenTimePossibleEventCollectionViewCell.swift */,
+				8358CFC71EB91533003AB343 /* OpenTimePossibleEventCollectionViewCell.xib */,
 				8366F11F1EB0F63A00E3A448 /* VerticalSpacingCollectionViewCell.swift */,
 				8366F1231EB0F80C00E3A448 /* VerticalSpacingPlaceholderObject.swift */,
 				8366F1251EB114AD00E3A448 /* NoRemindersPlaceholderObject.swift */,
@@ -540,8 +548,9 @@
 			isa = PBXGroup;
 			children = (
 				8366F1191EAFAD4A00E3A448 /* ReminderSectionController.swift */,
-				8366F1171EAFAD0200E3A448 /* ScheduleSectionController.swift */,
 				8366F1211EB0F6FB00E3A448 /* SpacingSectionController.swift */,
+				8358CFC21EB90577003AB343 /* EventSectionController.swift */,
+				8358CFC41EB90E9D003AB343 /* OpenTimeSectionController.swift */,
 			);
 			name = SectionControllers;
 			sourceTree = "<group>";
@@ -876,6 +885,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				833617701E8C2C75009A97FF /* WeekNavigation.storyboard in Resources */,
+				8358CFC91EB91533003AB343 /* OpenTimePossibleEventCollectionViewCell.xib in Resources */,
 				834FBEBC1EA8882C004D9302 /* OpenTimeViewCell.xib in Resources */,
 				FBE4DEA31E6CB9F10062507B /* Auth0.plist in Resources */,
 				83D5B85F1E9441A600D5F1C6 /* WeekOverviewDayListingView.xib in Resources */,
@@ -1075,7 +1085,6 @@
 				FB180C581EB2D57E00FE1CF4 /* String+Leap.swift in Sources */,
 				FB7ECD1C1EAE5C5500163AD5 /* Particible.swift in Sources */,
 				83ABFB6E1EB446740009FF32 /* NestedCircleView.swift in Sources */,
-				FB180C561EB28BEA00FE1CF4 /* EventDelegate.swift in Sources */,
 				FBCA4D1E1E84490A003E7AB7 /* Location.swift in Sources */,
 				FB934F241E7EDF670068CDEF /* Persistence.swift in Sources */,
 				83B6C6B51E92BC6E002DCDA2 /* DayNavigationViewController.swift in Sources */,
@@ -1150,16 +1159,17 @@
 				83D5B8611E9444C400D5F1C6 /* NibLoadableView.swift in Sources */,
 				835456151E8AF9EA00A03B34 /* InitialViewController.swift in Sources */,
 				FB2046A61E82E20100F130C8 /* EKEventStore+Realm.swift in Sources */,
-				8366F1181EAFAD0200E3A448 /* ScheduleSectionController.swift in Sources */,
 				83B6C6B31E92B850002DCDA2 /* UIPageViewController.swift in Sources */,
 				FB2046B41E82E7DD00F130C8 /* LeapModel.swift in Sources */,
 				834FBEBE1EA8F335004D9302 /* OpenTimeViewCell.swift in Sources */,
+				8358CFC81EB91533003AB343 /* OpenTimePossibleEventCollectionViewCell.swift in Sources */,
 				FB39ADA91E8C65AF00B79A7B /* Object+Leap.swift in Sources */,
 				FB166B571E8ABE1C00CB95EC /* RealmUtil.swift in Sources */,
 				8366F1261EB114AD00E3A448 /* NoRemindersPlaceholderObject.swift in Sources */,
 				FBD614561E7F38D4001F4050 /* Schema.swift in Sources */,
 				8336176B1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */,
 				FB180C4A1EB260F800FE1CF4 /* EventDetailViewController.swift in Sources */,
+				8358CFC51EB90E9D003AB343 /* OpenTimeSectionController.swift in Sources */,
 				8393621F1E8FF53B00543CFC /* WeekOverviewViewController.swift in Sources */,
 				FB180C481EB10EA800FE1CF4 /* FuzzyHashable.swift in Sources */,
 				FB2046B81E830E4600F130C8 /* Temporality.swift in Sources */,
@@ -1170,6 +1180,7 @@
 				8351BDCD1E7C596C001221AF /* GregorianDay.swift in Sources */,
 				834FBEB81EA86957004D9302 /* TimeRange.swift in Sources */,
 				8351BDC91E7C58FD001221AF /* OpenTimeViewModel.swift in Sources */,
+				8358CFC31EB90577003AB343 /* EventSectionController.swift in Sources */,
 				FB0762DB1E142FBF0035EF8F /* ScheduleViewController.swift in Sources */,
 				FB7ECD1E1EAE602600163AD5 /* CalendarLinkable.swift in Sources */,
 				FB3895781EA7C0DE000FC103 /* Thread+Leap.swift in Sources */,

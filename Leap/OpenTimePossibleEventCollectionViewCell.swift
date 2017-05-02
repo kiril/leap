@@ -1,18 +1,22 @@
 //
-//  OpenTimeViewCell.swift
+//  OpenTimePossibleEventCollectionViewCell.swift
 //  Leap
 //
-//  Created by Chris Ricca on 4/20/17.
+//  Created by Chris Ricca on 5/2/17.
 //  Copyright © 2017 Single Leap, Inc. All rights reserved.
 //
 
 import UIKit
 
-class OpenTimeViewCell: UICollectionViewCell {
+class OpenTimePossibleEventCollectionViewCell: UICollectionViewCell {
+
     @IBOutlet weak var titleLabel: UILabel!
 
-    func configure(with openTime: OpenTimeViewModel) {
-        titleLabel.text = openTime.timeRange + "    open"
+    func configure(with event: EventSurface) {
+        let timeText = event.timeRange.value
+        let eventName = event.title.value
+
+        titleLabel.text = "\(timeText): \(eventName)"
     }
 
     override func awakeFromNib() {
@@ -37,4 +41,5 @@ class OpenTimeViewCell: UICollectionViewCell {
 
         titleLabel.textColor = UIColor.projectDarkGray
     }
+
 }

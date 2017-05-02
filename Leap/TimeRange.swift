@@ -36,6 +36,11 @@ struct TimeRange: TimeRangeExcludable {
             // this will return 0,1, or 2 ranges, depending on how many valid ranges remain after the intersection
         }
     }
+
+    func isWithin(timeRange: TimeRange) -> Bool {
+        return  (start >= timeRange.start) &&
+                (end <= timeRange.end)
+    }
 }
 
 protocol TimeRangeExcludable {

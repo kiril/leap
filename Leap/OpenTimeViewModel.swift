@@ -53,4 +53,22 @@ struct OpenTimeViewModel: Equatable {
         return "\(from) - \(to)"
     }
 
+    var range: TimeRange? {
+        guard   let start = startTime,
+                let end = endTime else { return nil }
+        return TimeRange(start: start, end: end)
+    }
+    var possibleEventIds = [String]()
+
+    var possibleEventCount: Int {
+        return possibleEventIds.count
+    }
+    
+    var possibleEvents: [EventSurface] {
+        return possibleEventIds.flatMap() { EventSurface.load(byId: $0) }
+    }
+
+    func possibleEvent(atIndex index: Int) -> EventSurface? {
+        return EventSurface.load(byId: possibleEventIds[index])
+    }
 }

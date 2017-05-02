@@ -108,7 +108,14 @@ class DayScheduleSurface: Surface {
 
     var entries: [ScheduleEntry] {
         let events = self.events(showingHidden: displayHiddenEvents)
-        return scheduleEntries(events: events)
+        var hiddenEvents = [EventSurface]()
+
+        if !displayHiddenEvents {
+            // events to possibly display in open time
+            hiddenEvents = hideableEvents()
+        }
+        return scheduleEntries(displayedEvents: events,
+                               possibleEvents: hiddenEvents)
     }
 
     var reminderList: [ReminderSurface] {
@@ -125,6 +132,12 @@ class DayScheduleSurface: Surface {
             case .never:
                 return false
             }
+        }
+    }
+
+    private func hideableEvents() -> [EventSurface] {
+        return combinedEvents.filter() { (event) -> Bool in
+            return self.displayableType(forEvent: event) == .sometimes
         }
     }
 
@@ -164,13 +177,27 @@ class DayScheduleSurface: Surface {
                          end: rangeEnd)
     }
 
-    private func scheduleEntries(events: [EventSurface]) -> [ScheduleEntry] {
-        let openTimeRanges = events.openTimes(in: fullScheduleRange).filter { (timeRange) -> Bool in
+    private func scheduleEntries(displayedEvents: [EventSurface],
+                                 possibleEvents: [EventSurface] = [EventSurface]()) -> [ScheduleEntry] {
+        let openTimeRanges = displayedEvents.openTimes(in: fullScheduleRange).filter { (timeRange) -> Bool in
             return timeRange.durationInSeconds >= (60 * 30) // only keep ranges > 30 minutes
         }
 
-        let openTimeEntries = openTimeRanges.map{ ScheduleEntry.from(openTimeStart: $0.start, end: $0.end) }
-        let eventEntries = events.map { ScheduleEntry.from(event: $0) }
+        var openTimeEntries = [ScheduleEntry]()
+        let sortedPossibleEvents = possibleEvents.sorted()
+        for openRange in openTimeRanges {
+            var openTime = OpenTimeViewModel(startTime: openRange.start, endTime: openRange.end)
+            for possibleEvent in sortedPossibleEvents {
+                guard let eventRange = possibleEvent.range else { continue }
+
+                if eventRange.isWithin(timeRange: openRange) {
+                    openTime.possibleEventIds.append(possibleEvent.id)
+                }
+            }
+            openTimeEntries.append(ScheduleEntry.from(openTime: openTime))
+        }
+
+        let eventEntries = displayedEvents.map { ScheduleEntry.from(event: $0) }
 
         var theEntries = openTimeEntries + eventEntries
 

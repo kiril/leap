@@ -691,3 +691,9 @@ extension Array where Element: EventSurface {
         return openTimeRanges
     }
 }
+
+extension EventSurface: Comparable {
+    static func < (lhs: EventSurface, rhs: EventSurface) -> Bool {
+        return lhs.startTime.value < lhs.startTime.value
+    }
+}

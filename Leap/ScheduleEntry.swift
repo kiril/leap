@@ -9,11 +9,12 @@
 import Foundation
 import IGListKit
 
-
 protocol Schedulable {
 }
 
-
+/* Right now, the only reason we're still using this is to quickly sort the events + open times before display.
+ * We can do that some other way and get rid of this (IGListKit handles that pretty well).
+ */
 enum ScheduleEntry: Comparable, Schedulable {
     case event(entry: EventSurface)
     case openTime(entry: OpenTimeViewModel)
@@ -28,7 +29,20 @@ enum ScheduleEntry: Comparable, Schedulable {
 
     static func from(openTimeStart start: Date?, end: Date?) -> ScheduleEntry {
         let openTime = OpenTimeViewModel(startTime: start, endTime: end)
+        return from(openTime: openTime)
+    }
+
+    static func from(openTime: OpenTimeViewModel) -> ScheduleEntry {
         return .openTime(entry: openTime)
+    }
+
+    var openTime: OpenTimeViewModel? {
+        switch self {
+        case let .openTime(openTime):
+            return openTime
+        default:
+            return nil
+        }
     }
 
     static func == (lhs: ScheduleEntry, rhs: ScheduleEntry) -> Bool {
@@ -100,9 +114,14 @@ class ScheduleEntryWrapper: IGListDiffable {
 
         switch (scheduleEntry, otherEntry) {
         case let (.event(a), .event(b)):
-            return (a == b) && (a.userResponse.value == b.userResponse.value) && (a.isInConflict == b.isInConflict) && (a.temporarilyForceDisplayResponseOptions == b.temporarilyForceDisplayResponseOptions) // this is horrible, but that transient state of the temporary thing lets me make sure we re-render
+            return  (a == b) &&
+                    (a.userResponse.value == b.userResponse.value) &&
+                    (a.isInConflict == b.isInConflict) &&
+                    (a.temporarilyForceDisplayResponseOptions == b.temporarilyForceDisplayResponseOptions) // this is horrible, but that transient state of the temporary thing lets me make sure we re-render
         case let (.openTime(a), .openTime(b)):
-            return a.timeRange == b.timeRange
+            return  (a.timeRange == b.timeRange) &&
+                    (a.possibleEventIds == b.possibleEventIds) &&
+                    (a.possibleEvents == b.possibleEvents) // will this trigger every time?
         default:
             return false
         }
