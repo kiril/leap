@@ -9,8 +9,9 @@
 import UIKit
 
 protocol EventViewCellDelegate: class {
-    func tapReceived(on: EventViewCell, for event: EventSurface)
-    func fixConflictTapped(on: EventViewCell, for event: EventSurface)
+    func tapReceived(on cell: EventViewCell, for event: EventSurface)
+    func fixConflictTapped(on cell: EventViewCell, for event: EventSurface)
+    func selectedNewEventResponse(_ response: EventResponse, on cell: EventViewCell, for event: EventSurface)
 }
 
 class EventViewCell: UICollectionViewCell {
@@ -157,7 +158,9 @@ class EventViewCell: UICollectionViewCell {
 
         guard response != event.userResponse.value else { return }
 
-        event.respond(with: response, forceDisplay: true)
+        if let delegate = self.delegate {
+            delegate.selectedNewEventResponse(response, on: self, for: event)
+        }
     }
 
     @objc private func launchMaps(sender: UIButton) {

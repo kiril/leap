@@ -88,16 +88,16 @@ class EventSurface: Surface, ModelLoadable {
         return true
     }
 
-    func conflict(with other: EventSurface) -> Overlap {
-        guard other != self && isEligibleForConflict && other.isEligibleForConflict else { return .none }
+    func conflict(with other: EventSurface, assumingCommitted: Bool = false) -> Overlap {
+        guard other != self && (isEligibleForConflict || assumingCommitted) && other.isEligibleForConflict else { return .none }
         return intersection(with: other)
     }
 
-    func conflicts(in others: [EventSurface]) -> [(Overlap,EventSurface)] {
+    func conflicts(in others: [EventSurface], assumingCommitted: Bool = false) -> [(Overlap,EventSurface)] {
         var ret: [(Overlap,EventSurface)] = []
 
         for event in others {
-            let overlap = conflict(with: event)
+            let overlap = conflict(with: event, assumingCommitted: assumingCommitted)
 
             switch overlap {
             case .none:
@@ -111,9 +111,9 @@ class EventSurface: Surface, ModelLoadable {
         return ret
     }
 
-    func firstConflict(in others: [EventSurface]) -> (Overlap,EventSurface)? {
+    func firstConflict(in others: [EventSurface], assumingCommitted: Bool = false) -> (Overlap,EventSurface)? {
         for event in others {
-            let overlap = conflict(with: event)
+            let overlap = conflict(with: event, assumingCommitted: assumingCommitted)
 
             switch overlap {
             case .none:

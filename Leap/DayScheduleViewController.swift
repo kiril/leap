@@ -126,13 +126,11 @@ extension DayScheduleViewController: EventViewCellDelegate {
         self.present(alert, animated: true)
     }
 
-    func fixConflictTapped(on: EventViewCell, for event: EventSurface) {
-
-        guard let (overlap, other) = event.firstConflict(in: surface.entries.events) else { return }
-
-        let alert = UIAlertController(title: "Fix Conflicting Events",
+    func resolve(overlap: Overlap, between event: EventSurface, and other: EventSurface, respondingTo respondee: EventSurface? = nil, with response: EventResponse? = nil) {
+        let title = respondingTo == nil ? "Fix Conflicting Events" : "Event Conflict"
+        let alert = UIAlertController(title: title,
                                       message: "\"\(event.title.value)\" and \"\(other.title.value)\" overlap.",
-                                      preferredStyle: .actionSheet)
+            preferredStyle: .actionSheet)
 
         let declineOther = UIAlertAction(title: "Decline \"\(other.title.value.truncate(to: 15, in: .middle))\"", style: .destructive) {
             action in
@@ -158,10 +156,33 @@ extension DayScheduleViewController: EventViewCellDelegate {
         }
         alert.addAction(split)
 
+        if let respondee = respondee, let response = response {
+            let keep = UIAlertAction(title: "Join without fixing conflict", style: .destructive) {
+                action in
+                respondee.respond(with: response)
+            }
+            alert.addAction(keep)
+        }
+
         let cancel = UIAlertAction(title: "Cancel", style: .cancel)
         alert.addAction(cancel)
 
         self.present(alert, animated: true)
+    }
+
+    func fixConflictTapped(on: EventViewCell, for event: EventSurface) {
+
+        guard let (overlap, other) = event.firstConflict(in: surface.entries.events) else { return }
+        resolve(overlap: overlap, between: event, and: other)
+    }
+
+    func selectedNewEventResponse(_ response: EventResponse, on cell: EventViewCell, for event: EventSurface) {
+        if response == .yes, let (overlap, other) = event.firstConflict(in: surface.entries.events, assumingCommitted: true) {
+            resolve(overlap: overlap, between: event, and: other, respondingTo: event, with: response)
+
+        } else {
+            event.respond(with: response, forceDisplay: true)
+        }
     }
 
     func tapReceived(on: EventViewCell, for event: EventSurface) {
