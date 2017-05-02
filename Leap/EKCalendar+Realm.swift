@@ -50,6 +50,28 @@ extension EKCalendar {
                                       "editable": !self.isImmutable,
                                       "relationshipString": self.isSubscribed ? CalendarRelationship.follower.rawValue : CalendarRelationship.owner.rawValue])
     }
+
+    var isGmailPrimary: Bool {
+        return try! title.matches(pattern: "([\\w\\-]+\\.)*[\\w\\-]+@\\w+.com")
+    }
+
+    var isYahooPrimary: Bool {
+        return try! title.matches(pattern: "\\w+_\\w+")
+    }
+
+    var isGmailSecondary: Bool {
+        if self.isGmailPrimary {
+            return false
+        }
+
+        for calendar in source.calendars(for: .event) {
+            if calendar.isGmailPrimary {
+                return true
+            }
+        }
+
+        return false
+    }
 }
 
 extension LegacyCalendar {
