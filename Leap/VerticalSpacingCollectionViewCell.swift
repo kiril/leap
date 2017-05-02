@@ -13,6 +13,8 @@ class VerticalSpacingCollectionViewCell: UICollectionViewCell {
         didSet { updateHeightConstraint() }
     }
 
+    private var heightConstraint: NSLayoutConstraint?
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
 
@@ -32,6 +34,8 @@ class VerticalSpacingCollectionViewCell: UICollectionViewCell {
     }
 
     private func updateHeightConstraint() {
-        self.contentView.heightAnchor.constraint(equalToConstant: height).isActive = true
+        heightConstraint?.isActive = false
+        heightConstraint = self.contentView.heightAnchor.constraint(equalToConstant: height)
+        heightConstraint?.isActive = true
     }
 }
