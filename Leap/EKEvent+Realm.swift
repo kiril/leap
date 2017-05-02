@@ -62,8 +62,13 @@ extension EKEvent {
         } else {
             if calendar.isSubscribed {
                 return .subscription
-            } else if calendar.isImmutable {
+
+            } else if calendar.isGmailPrimary || calendar.isYahooPrimary {
+                return .personal
+
+            } else if calendar.isGmailSecondary {
                 return .share
+
             } else {
                 switch calendar.type {
                 case .birthday:
@@ -115,7 +120,7 @@ extension EKEvent {
         return alarms
     }
 
-    func getParticipants() -> [Participant] {
+    func getParticipants(origin: Origin) -> [Participant] {
         var participants: [Participant] = []
 
         let availability: EKEventAvailability = self.availability
@@ -154,6 +159,15 @@ extension EKEvent {
             }
         }
 
+        if participants.isEmpty && origin == .personal {
+            let me = Participant.makeMe()
+            me.engagement = .engaged
+            me.importance = .critical
+            me.ownership = .organizer
+            me.type = .unknown
+            participants.append(me)
+        }
+
         if let me = me, me.ownership == .organizer && me.engagement == .undecided {
             me.engagement = .engaged
         }
@@ -162,14 +176,15 @@ extension EKEvent {
     }
 
     func addCommonData(_ data: ModelInitData, in calendar: EKCalendar) -> ModelInitData {
+        let origin = getOrigin(in: calendar)
         var common: ModelInitData = [
             "id": self.cleanId,
             "title": self.title,
             "detail": self.notes,
             "locationString": self.location,
             "modalityString": self.modality.rawValue,
-            "originString": self.getOrigin(in: calendar).rawValue,
-            "participants": self.getParticipants(),
+            "originString": origin.rawValue,
+            "participants": self.getParticipants(origin: origin),
             "linkedCalendarIds": [calendar.asLinkId()],
             "alarms": self.getAlarms(),
         ]

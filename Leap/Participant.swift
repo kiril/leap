@@ -71,6 +71,11 @@ class Participant: LeapModel {
     dynamic var typeString: String = ParticipationType.unknown.rawValue
     dynamic var ownershipString: String = Ownership.unknown.rawValue
 
+    static func makeMe() -> Participant {
+        let value: ModelInitData = ["person": Person.me() ?? Person.makeMe()]
+        return Participant(value: value)
+    }
+
     var engagement: Engagement {
         get { return Engagement(rawValue: engagementString)! }
         set { engagementString = newValue.rawValue }

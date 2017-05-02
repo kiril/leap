@@ -41,6 +41,10 @@ class Person: LeapModel {
     let numbers = List<Phone>()
     let addresses = List<Address>()
 
+    static func makeMe() -> Person {
+        return Person(value: ["isMe": true])
+    }
+
     var name: String? {
         if let f = givenName, let l = familyName {
             return "\(f) \(l)"

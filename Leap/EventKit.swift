@@ -102,7 +102,7 @@ class EventKit {
         let realm = Realm.user()
         if existing.participants.isEmpty && ekEvent.hasAttendees {
             try! realm.safeWrite {
-                existing.addParticipants(ekEvent.getParticipants())
+                existing.addParticipants(ekEvent.getParticipants(origin: ekEvent.getOrigin(in: calendar)))
             }
             if let me = existing.me, me.engagement == .disengaged, existing.status != .archived {
                 try! realm.safeWrite {
@@ -133,7 +133,7 @@ class EventKit {
                     event.status = .archived
                 }
                 event.insert()
-                print("event INSERT \(ekEvent.title) from \(calendar.title)")
+                print("event INSERT \(ekEvent.title) \(event.origin) from \(calendar.title)")
                 if ekEvent.title.contains("Eleni") {
                     print("    Calendar: \(calendar.title) - \(calendar.calendarIdentifier)")
                     print("    Source: \(calendar.source.title) - \(calendar.source.sourceIdentifier)")
@@ -166,7 +166,7 @@ class EventKit {
 
         try! Realm.user().safeWrite {
             existing.updateStartTimeIfEarlier(ekEvent.startDate.secondsSinceReferenceDate)
-            existing.template.addParticipants(ekEvent.getParticipants())
+            existing.template.addParticipants(ekEvent.getParticipants(origin: ekEvent.getOrigin(in: calendar)))
             existing.template.addLink(to: calendar)
             existing.template.addAlarms(ekEvent.getAlarms())
             if let me = existing.template.me, me.engagement == .disengaged, existing.status != .archived {
