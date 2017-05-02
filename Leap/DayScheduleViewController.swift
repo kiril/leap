@@ -54,12 +54,14 @@ extension DayScheduleViewController: EventViewCellDelegate {
                                       message: "Between \"\(event.title.value)\" and \"\(other.title.value)\" overlap.",
             preferredStyle: .actionSheet)
 
-        switch event.intersection(with: other) {
+        let overlap = event.intersection(with: other)
+
+        switch overlap {
         case .identical:
 
             let split = UIAlertAction(title: "Split the difference", style: .default) {
                 action in
-                event.splitTime(with: other)
+                event.splitTime(with: other, for: overlap)
             }
             alert.addAction(split)
 
@@ -69,7 +71,7 @@ extension DayScheduleViewController: EventViewCellDelegate {
                 let first = event.startTime.value < other.startTime.value ? event : other
                 let second = first == event ? other : event
 
-                let leaveEarly = UIAlertAction(title: "Leave \"\(first.title.value.truncate(to: 20, in: .middle))\" early", style: .destructive) {
+                let leaveEarly = UIAlertAction(title: "Leave \"\(first.title.value.truncate(to: 25, in: .end))\" early", style: .destructive) {
                     action in
                     first.leaveEarly(for: second)
                 }
@@ -77,7 +79,7 @@ extension DayScheduleViewController: EventViewCellDelegate {
 
                 let split = UIAlertAction(title: "Split the difference", style: .default) {
                     action in
-                    event.splitTime(with: other)
+                    event.splitTime(with: other, for: overlap)
                 }
                 alert.addAction(split)
 
@@ -85,7 +87,7 @@ extension DayScheduleViewController: EventViewCellDelegate {
                 let first = event.endTime.value < other.endTime.value ? event : other
                 let second = first == event ? other : event
 
-                let joinLate = UIAlertAction(title: "Join \"\(second.title.value.truncate(to: 20, in: .middle))\" late", style: .destructive) {
+                let joinLate = UIAlertAction(title: "Join \"\(second.title.value.truncate(to: 25, in: .end))\" late", style: .destructive) {
                     action in
                     second.joinLate(for: first)
                 }
@@ -93,7 +95,7 @@ extension DayScheduleViewController: EventViewCellDelegate {
 
                 let split = UIAlertAction(title: "Split the difference", style: .default) {
                     action in
-                    event.splitTime(with: other)
+                    event.splitTime(with: other, for: overlap)
                 }
                 alert.addAction(split)
 
@@ -103,11 +105,11 @@ extension DayScheduleViewController: EventViewCellDelegate {
             let first = event.startTime.value < other.startTime.value ? event : other
             let second = first == event ? other : event
 
-            let leaveEarly = UIAlertAction(title: "Leave \"\(first.title.value.truncate(to: 20, in: .middle))\" early", style: .destructive) {
+            let leaveEarly = UIAlertAction(title: "Leave \"\(first.title.value.truncate(to: 25, in: .end))\" early", style: .destructive) {
                 action in
                 first.leaveEarly(for: second)
             }
-            let joinLate = UIAlertAction(title: "Join \"\(second.title.value.truncate(to: 20, in: .middle))\" late", style: .destructive) {
+            let joinLate = UIAlertAction(title: "Join \"\(second.title.value.truncate(to: 25, in: .end))\" late", style: .destructive) {
                 action in
                 second.joinLate(for: first)
             }
@@ -126,40 +128,37 @@ extension DayScheduleViewController: EventViewCellDelegate {
 
     func fixConflictTapped(on: EventViewCell, for event: EventSurface) {
 
-        var conflictingEvent: EventSurface!
-        for entry in surface.entries {
-            switch entry {
-            case let .event(other):
-                if other != event && other.isEligibleForConflict && other.intersectsWith(event) {
-                    conflictingEvent = other
-                    break
-                }
-            default:
-                break
-            }
-        }
+        guard let (overlap, other) = event.firstConflict(in: surface.entries.events) else { return }
 
         let alert = UIAlertController(title: "Fix Conflicting Events",
-                                      message: "\"\(event.title.value)\" and \"\(conflictingEvent.title.value)\" overlap.",
+                                      message: "\"\(event.title.value)\" and \"\(other.title.value)\" overlap.",
                                       preferredStyle: .actionSheet)
 
-        let declineOther = UIAlertAction(title: "Decline \"\(conflictingEvent.title.value.truncate(to: 15, in: .middle))\"", style: .destructive) {
+        let declineOther = UIAlertAction(title: "Decline \"\(other.title.value.truncate(to: 15, in: .middle))\"", style: .destructive) {
             action in
-            conflictingEvent.respond(with: .no)
+            other.respond(with: .no)
         }
         let declineThis = UIAlertAction(title: "Decline \"\(event.title.value.truncate(to: 15, in: .middle))\"", style: .destructive) {
             action in
             event.respond(with: .no)
         }
-        let split = UIAlertAction(title: "Split time between events", style: .default) {
-            action in
-            self.presentSplitOptions(for: event, and: conflictingEvent)
-        }
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
 
         alert.addAction(declineOther)
         alert.addAction(declineThis)
+
+        let split = UIAlertAction(title: "Split time between events", style: .default) {
+            action in
+            switch overlap {
+            case .identical: // there are no other option
+                event.splitTime(with: other, for: overlap)
+
+            default:
+                self.presentSplitOptions(for: event, and: other)
+            }
+        }
         alert.addAction(split)
+
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
         alert.addAction(cancel)
 
         self.present(alert, animated: true)

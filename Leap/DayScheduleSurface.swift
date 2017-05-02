@@ -58,7 +58,7 @@ class DayScheduleSurface: Surface {
 
         events = Array(Set<EventSurface>(events))
 
-        events.sort { $0.startTime.value == $1.startTime.value ? $0.endTime.value < $1.endTime.value : $0.startTime.value < $1.startTime.value }
+        events.sort { $0.arrivalTime.value == $1.arrivalTime.value ? $0.departureTime.value < $1.departureTime.value : $0.arrivalTime.value < $1.arrivalTime.value }
 
         var secondPriorEvent: EventSurface? = nil
         var priorEvent: EventSurface? = nil
@@ -310,5 +310,20 @@ class DayScheduleSurface: Surface {
 
     private enum EventDisplayableType {
         case always, sometimes, never
+    }
+}
+
+extension Array where Element: Schedulable {
+    var events: [EventSurface] {
+        var ret: [EventSurface] = []
+        for entry in (self as! [ScheduleEntry]) {
+            switch entry {
+            case let .event(event):
+                ret.append(event)
+            default:
+                continue
+            }
+        }
+        return ret
     }
 }

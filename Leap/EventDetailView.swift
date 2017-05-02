@@ -65,6 +65,7 @@ class EventDetailView: UIView {
     func configure(with event: EventSurface) {
         self.event = event
         recurringIcon.isHidden = !event.isRecurring.value
+        recurringIcon.superview?.isHidden = !event.isRecurring.value
         timeLabel.text = event.timeRange.value
 
         updateActionButtons(forEvent: event)
@@ -73,6 +74,7 @@ class EventDetailView: UIView {
         titleLabel.text = event.title.value
         timeLabel.text = event.isRecurring.value ? event.recurringTimeRange.value : "From \(event.timeRange.value)"
         timeAlertLabel.isHidden = !event.isInConflict
+        timeAlertLabel.superview?.isHidden = !event.isInConflict
 
         if event.isInConflict {
             var conflicts: [EventSurface] = []
@@ -265,17 +267,12 @@ class EventDetailView: UIView {
             beforeButton.isHidden = false
 
         } else if let event = priorEvent {
-            let beforeString = "This event immediately follows \(event.title.value)."
-            let beforeText = NSMutableAttributedString(string: beforeString)
-            let lengthOfTitle = event.title.value.utf16.count
-            let titleRange = NSRange(location: beforeString.utf16.count - lengthOfTitle - 1, length: lengthOfTitle)
-            beforeText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectTint, range: titleRange)
-            let preTitleRange = NSRange(location: 0, length: beforeString.utf16.count - lengthOfTitle - 1)
-            beforeText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectDarkGray, range: preTitleRange)
-            let periodRange = NSRange(location: beforeString.utf16.count - 1, length: 1)
-            beforeText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectDarkGray, range: periodRange)
+            let string = NSMutableAttributedString()
+            string.append(string: "This event immediately follows ", attributes: [NSForegroundColorAttributeName: UIColor.projectDarkGray])
+            string.append(string: event.title.value, attributes: [NSForegroundColorAttributeName: UIColor.projectTint])
+            string.append(string: ".", attributes: [NSForegroundColorAttributeName: UIColor.projectDarkGray])
 
-            beforeButton.setAttributedTitle(beforeText, for: .normal)
+            beforeButton.setAttributedTitle(string, for: .normal)
 
             beforeLabel.isHidden = true
             beforeButton.isHidden = false
@@ -347,8 +344,8 @@ class EventDetailView: UIView {
         beforeButton.titleLabel?.textColor = UIColor.projectDarkGray
         afterButton.titleLabel?.numberOfLines = 0
         beforeButton.titleLabel?.numberOfLines = 0
-        beforeAlertIcon.textColor = UIColor.projectWarning
-        afterAlertIcon.textColor = UIColor.projectWarning
+        beforeAlertIcon.textColor = UIColor.projectLightWarning
+        afterAlertIcon.textColor = UIColor.projectLightWarning
         timeLabel.textColor = UIColor.projectLightGray
         conflictLabel.textColor = UIColor.projectWarning
     }

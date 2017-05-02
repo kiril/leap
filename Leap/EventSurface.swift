@@ -88,6 +88,45 @@ class EventSurface: Surface, ModelLoadable {
         return true
     }
 
+    func conflict(with other: EventSurface) -> Overlap {
+        guard other != self && isEligibleForConflict && other.isEligibleForConflict else { return .none }
+        return intersection(with: other)
+    }
+
+    func conflicts(in others: [EventSurface]) -> [(Overlap,EventSurface)] {
+        var ret: [(Overlap,EventSurface)] = []
+
+        for event in others {
+            let overlap = conflict(with: event)
+
+            switch overlap {
+            case .none:
+                continue
+
+            default:
+                ret.append((overlap, event))
+            }
+        }
+
+        return ret
+    }
+
+    func firstConflict(in others: [EventSurface]) -> (Overlap,EventSurface)? {
+        for event in others {
+            let overlap = conflict(with: event)
+
+            switch overlap {
+            case .none:
+                continue
+
+            default:
+                return (overlap, event)
+            }
+        }
+
+        return nil
+    }
+
     func intersection(with other: EventSurface) -> Overlap {
         if endTime.value <= other.startTime.value || other.endTime.value <= startTime.value {
             return .none
@@ -122,20 +161,59 @@ class EventSurface: Surface, ModelLoadable {
         try! flush()
     }
 
-    func splitTime(with other: EventSurface) {
-        let first = startTime.value < other.startTime.value ? self : other
-        let second = first == self ? other : self
-        // gotta leave first early, AND join second late...
-        let endOfFirst = first.endTime.value
-        let startOfSecond = second.startTime.value
-        guard endOfFirst < startOfSecond else { return }
-        let diff = startOfSecond.timeIntervalSince(endOfFirst)
-        let midpoint = Date(timeIntervalSinceReferenceDate: endOfFirst.timeIntervalSinceReferenceDate + diff/2)
+    func splitTime(with other: EventSurface, for overlap: Overlap) {
+        switch overlap {
+        case .identical:
+            let diff = endTime.value.timeIntervalSince(startTime.value)
+            let midpoint = Date(timeIntervalSinceReferenceDate: startTime.value.timeIntervalSinceReferenceDate + diff/2)
 
-        first.departureTime.update(to: midpoint)
-        try! first.flush()
-        second.arrivalTime.update(to: midpoint)
-        try! second.flush()
+            self.departureTime.update(to: midpoint)
+            try! self.flush()
+            other.arrivalTime.update(to: midpoint)
+            try! other.flush()
+
+        case .staggered:
+            let first = startTime.value < other.startTime.value ? self : other
+            let second = first == self ? other : self
+            let startOfSecond = second.startTime.value
+            let endOfFirst = first.endTime.value
+
+            guard endOfFirst < startOfSecond else { return }
+
+            let diff = startOfSecond.timeIntervalSince(endOfFirst)
+            let midpoint = Date(timeIntervalSinceReferenceDate: endOfFirst.timeIntervalSinceReferenceDate + diff/2)
+
+            first.departureTime.update(to: midpoint)
+            try! first.flush()
+            second.arrivalTime.update(to: midpoint)
+            try! second.flush()
+
+        case let .justified(direction):
+            switch direction {
+            case .left:
+                let shorter = endTime.value < other.endTime.value ? self : other
+                let longer = shorter == self ? other : self
+                let amount = shorter.endTime.value.timeIntervalSince(shorter.startTime.value) / 2
+                let midpoint = Date(timeIntervalSinceReferenceDate: shorter.startTime.value.timeIntervalSinceReferenceDate + amount)
+                shorter.departureTime.update(to: midpoint)
+                try! shorter.flush()
+                longer.arrivalTime.update(to: midpoint)
+                try! longer.flush()
+
+            case .right:
+                let shorter = endTime.value < other.endTime.value ? self : other
+                let longer = shorter == self ? other : self
+                let amount = shorter.endTime.value.timeIntervalSince(shorter.startTime.value) / 2
+                let midpoint = Date(timeIntervalSinceReferenceDate: shorter.startTime.value.timeIntervalSinceReferenceDate + amount)
+                shorter.arrivalTime.update(to: midpoint)
+                try! shorter.flush()
+                longer.departureTime.update(to: midpoint)
+                try! longer.flush()
+            }
+
+        case .none:
+            return
+        }
     }
 
     func respond(with response: EventResponse, forceDisplay: Bool = false) {

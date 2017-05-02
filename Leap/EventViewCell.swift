@@ -212,7 +212,7 @@ class EventViewCell: UICollectionViewCell {
             let custom = NSMutableAttributedString()
             if event.hasCustomArrival {
                 let arrival = event.arrivalTime.value
-                let time = DateFormatter.shortTime(date: arrival, appendAMPM: false)
+                let time = DateFormatter.shortTime(date: arrival, appendAMPM: true)
                 custom.append(string: time, attributes: bold)
                 custom.append(string: " arrival", attributes: normal)
             }
@@ -221,9 +221,9 @@ class EventViewCell: UICollectionViewCell {
                 if custom.length > 0 {
                     custom.append(string: "; ", attributes: normal)
                 }
-                let time = DateFormatter.shortTime(date: departure, appendAMPM: false)
+                let time = DateFormatter.shortTime(date: departure, appendAMPM: true)
+                custom.append(string: "depart ", attributes: normal)
                 custom.append(string: time, attributes: bold)
-                custom.append(string: " depart", attributes: normal)
             }
             arrivalDepartureLabel.attributedText = custom
             arrivalDepartureLabel.isHidden = false

@@ -10,7 +10,11 @@ import Foundation
 import IGListKit
 
 
-enum ScheduleEntry: Comparable {
+protocol Schedulable {
+}
+
+
+enum ScheduleEntry: Comparable, Schedulable {
     case event(entry: EventSurface)
     case openTime(entry: OpenTimeViewModel)
 

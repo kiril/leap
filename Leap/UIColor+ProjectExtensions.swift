@@ -85,8 +85,16 @@ extension UIColor {
         return UIColor.orange
     }
 
+    public static var projectYellow: UIColor {
+        return UIColor.yellow
+    }
+
     public static var projectWarning: UIColor {
         return UIColor.projectOrange
+    }
+
+    public static var projectLightWarning: UIColor {
+        return UIColor.projectYellow
     }
 
 }

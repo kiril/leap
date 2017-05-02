@@ -395,13 +395,12 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		831444C21E7AF7AD00A5EF06 /* LocalCalendar */ = {
+		831444C21E7AF7AD00A5EF06 /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
+				FBBB60E81EB8F351009E67AD /* Events */,
 				831444C01E7AF77700A5EF06 /* DaySchedule.storyboard */,
 				831444C51E7B020700A5EF06 /* DayScheduleViewController.swift */,
-				831444C71E7B034A00A5EF06 /* EventViewCell.xib */,
-				831444C91E7B072600A5EF06 /* EventViewCell.swift */,
 				8366F11B1EAFAE1100E3A448 /* ReminderCollectionViewCell.swift */,
 				8366F11C1EAFAE1100E3A448 /* ReminderCollectionViewCell.xib */,
 				834FBEBB1EA8882C004D9302 /* OpenTimeViewCell.xib */,
@@ -418,11 +417,8 @@
 				83B6C6B41E92BC6E002DCDA2 /* DayNavigationViewController.swift */,
 				83B6C6B61E92BC7A002DCDA2 /* DayNavigation.storyboard */,
 				839A8AF51EA1300A00893F6F /* DayNavigationWrapperViewController.swift */,
-				FB180C491EB260F800FE1CF4 /* EventDetailViewController.swift */,
-				FB180C4D1EB261B200FE1CF4 /* EventDetailView.xib */,
-				FB180C4F1EB261DB00FE1CF4 /* EventDetailView.swift */,
 			);
-			name = LocalCalendar;
+			name = Schedule;
 			sourceTree = "<group>";
 		};
 		831444CD1E7B462500A5EF06 /* ViewModels */ = {
@@ -505,7 +501,7 @@
 				835456131E8AF9BE00A03B34 /* InitialNavigation */,
 				8351BDCF1E7C5D45001221AF /* Auth */,
 				8336176E1E8C2C1F009A97FF /* WeekNavigation */,
-				831444C21E7AF7AD00A5EF06 /* LocalCalendar */,
+				831444C21E7AF7AD00A5EF06 /* Schedule */,
 			);
 			name = Flows;
 			sourceTree = "<group>";
@@ -662,6 +658,18 @@
 				FBB4BFD71E8ACED1001679BF /* Operation.swift */,
 			);
 			name = Surface;
+			sourceTree = "<group>";
+		};
+		FBBB60E81EB8F351009E67AD /* Events */ = {
+			isa = PBXGroup;
+			children = (
+				831444C71E7B034A00A5EF06 /* EventViewCell.xib */,
+				831444C91E7B072600A5EF06 /* EventViewCell.swift */,
+				FB180C491EB260F800FE1CF4 /* EventDetailViewController.swift */,
+				FB180C4D1EB261B200FE1CF4 /* EventDetailView.xib */,
+				FB180C4F1EB261DB00FE1CF4 /* EventDetailView.swift */,
+			);
+			name = Events;
 			sourceTree = "<group>";
 		};
 		FBE0EFD71DFBBB80007BD8DF = {
