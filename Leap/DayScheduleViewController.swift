@@ -48,6 +48,143 @@ class DayScheduleViewController: UIViewController, StoryboardLoadable {
 }
 
 extension DayScheduleViewController: EventViewCellDelegate {
+    func presentSplitOptions(for event: EventSurface, and other: EventSurface) {
+
+        let alert = UIAlertController(title: "Split Time",
+                                      message: "Between \"\(event.title.value)\" and \"\(other.title.value)\" overlap.",
+            preferredStyle: .actionSheet)
+
+        let overlap = event.intersection(with: other)
+
+        switch overlap {
+        case .identical:
+
+            let split = UIAlertAction(title: "Split the difference", style: .default) {
+                action in
+                event.splitTime(with: other, for: overlap)
+            }
+            alert.addAction(split)
+
+        case let .justified(direction):
+            switch direction {
+            case .right:
+                let first = event.startTime.value < other.startTime.value ? event : other
+                let second = first == event ? other : event
+
+                let leaveEarly = UIAlertAction(title: "Leave \"\(first.title.value.truncate(to: 35, in: .end))\" early", style: .destructive) {
+                    action in
+                    first.leaveEarly(for: second)
+                }
+                alert.addAction(leaveEarly)
+
+                let split = UIAlertAction(title: "Split the difference", style: .default) {
+                    action in
+                    event.splitTime(with: other, for: overlap)
+                }
+                alert.addAction(split)
+
+            case .left:
+                let first = event.endTime.value < other.endTime.value ? event : other
+                let second = first == event ? other : event
+
+                let joinLate = UIAlertAction(title: "Join \"\(second.title.value.truncate(to: 35, in: .end))\" late", style: .destructive) {
+                    action in
+                    second.joinLate(for: first)
+                }
+                alert.addAction(joinLate)
+
+                let split = UIAlertAction(title: "Split the difference", style: .default) {
+                    action in
+                    event.splitTime(with: other, for: overlap)
+                }
+                alert.addAction(split)
+
+            }
+
+        case .staggered:
+            let first = event.startTime.value < other.startTime.value ? event : other
+            let second = first == event ? other : event
+
+            let leaveEarly = UIAlertAction(title: "Leave \"\(first.title.value.truncate(to: 35, in: .end))\" early", style: .destructive) {
+                action in
+                first.leaveEarly(for: second)
+            }
+            let joinLate = UIAlertAction(title: "Join \"\(second.title.value.truncate(to: 35, in: .end))\" late", style: .destructive) {
+                action in
+                second.joinLate(for: first)
+            }
+
+            alert.addAction(leaveEarly)
+            alert.addAction(joinLate)
+
+        case .none:
+            return // wtf...?
+        }
+
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        self.present(alert, animated: true)
+    }
+
+    func resolve(overlap: Overlap, between event: EventSurface, and other: EventSurface, respondingTo respondee: EventSurface? = nil, with response: EventResponse? = nil) {
+        let title = respondee == nil ? "Fix Conflicting Events" : "Event Conflict"
+        let alert = UIAlertController(title: title,
+                                      message: "\"\(event.title.value)\" and \"\(other.title.value)\" overlap.",
+            preferredStyle: .actionSheet)
+
+        let declineOther = UIAlertAction(title: "Decline \"\(other.title.value.truncate(to: 35, in: .middle))\"", style: .destructive) {
+            action in
+            other.respond(with: .no)
+        }
+        let declineThis = UIAlertAction(title: "Decline \"\(event.title.value.truncate(to: 35, in: .middle))\"", style: .destructive) {
+            action in
+            event.respond(with: .no)
+        }
+
+        alert.addAction(declineOther)
+        alert.addAction(declineThis)
+
+        let split = UIAlertAction(title: "Split time between events", style: .default) {
+            action in
+            switch overlap {
+            case .identical: // there are no other option
+                event.splitTime(with: other, for: overlap)
+
+            default:
+                self.presentSplitOptions(for: event, and: other)
+            }
+        }
+        alert.addAction(split)
+
+        if let respondee = respondee, let response = response {
+            let keep = UIAlertAction(title: "Join without fixing conflict", style: .destructive) {
+                action in
+                respondee.respond(with: response)
+            }
+            alert.addAction(keep)
+        }
+
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+        alert.addAction(cancel)
+
+        self.present(alert, animated: true)
+    }
+
+    func fixConflictTapped(on: EventViewCell, for event: EventSurface) {
+
+        guard let (overlap, other) = event.firstConflict(in: surface.entries.events) else { return }
+        resolve(overlap: overlap, between: event, and: other)
+    }
+
+    func selectedNewEventResponse(_ response: EventResponse, on cell: EventViewCell, for event: EventSurface) {
+        if response == .yes, let (overlap, other) = event.firstConflict(in: surface.entries.events, assumingCommitted: true) {
+            resolve(overlap: overlap, between: event, and: other, respondingTo: event, with: response)
+
+        } else {
+            event.respond(with: response, forceDisplay: true)
+        }
+    }
+
     func tapReceived(on: EventViewCell, for event: EventSurface) {
         let eventViewController = EventDetailViewController()
         eventViewController.event = event

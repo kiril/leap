@@ -34,6 +34,10 @@ class Event: _TemporalBase, Temporality, CalendarLinkable, Alarmable, Fuzzy {
     dynamic var agenda: Checklist? = nil
     dynamic var firmnessString: String = Firmness.firm.rawValue
     dynamic var isTentative: Bool = false
+    dynamic var arrivalOffset: Int = 0
+    dynamic var arrivalRefefence: Event? = nil
+    dynamic var departureOffset: Int = 0
+    dynamic var departureReference: Event? = nil
 
     let channels = List<Channel>()
     let venues = List<Venue>()

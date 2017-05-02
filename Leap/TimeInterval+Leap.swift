@@ -9,11 +9,11 @@
 import Foundation
 
 extension TimeInterval {
-    var durationString: String {
+    func toString(short: Bool = false) -> String {
         // I'm in seconds
-        let hourText = "hour"
-        let minuteText = "minute"
-        let dayText = "day"
+        let hourText = short ? "h" : "hour"
+        let minuteText = short ? "m" : "minute"
+        let dayText = short ? "d" : "day"
 
         var minutes = Int(self / 60)
 
@@ -25,7 +25,11 @@ extension TimeInterval {
         minutes = minutes - (days * minutesPerDay)
 
         if days > 0 {
-            duration += "\(days) \(days.pluralize(string: dayText))"
+            if short {
+                duration += "\(days)\(dayText)"
+            } else {
+                duration += "\(days) \(days.pluralize(string: dayText))"
+            }
         }
 
         let hours = minutes / 60
@@ -35,16 +39,28 @@ extension TimeInterval {
             if !duration.isEmpty {
                 duration += " "
             }
-            duration += "\(hours) \(hours.pluralize(string: hourText))"
+            if short {
+                duration += "\(hours)\(hourText)"
+            } else {
+                duration += "\(hours) \(hours.pluralize(string: hourText))"
+            }
         }
 
         if minutes > 0 {
             if !duration.isEmpty {
                 duration += " "
             }
-            duration += "\(minutes) \(minutes.pluralize(string: minuteText))"
+            if short {
+                duration += "\(minutes)\(minuteText)"
+            } else {
+                duration += "\(minutes) \(minutes.pluralize(string: minuteText))"
+            }
         }
 
         return duration
     }
+
+    var durationString: String { return toString() }
+
+    var durationStringShort: String { return toString(short: true) }
 }

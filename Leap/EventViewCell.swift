@@ -9,15 +9,21 @@
 import UIKit
 
 protocol EventViewCellDelegate: class {
-    func tapReceived(on: EventViewCell, for event: EventSurface)
+    func tapReceived(on cell: EventViewCell, for event: EventSurface)
+    func fixConflictTapped(on cell: EventViewCell, for event: EventSurface)
+    func selectedNewEventResponse(_ response: EventResponse, on cell: EventViewCell, for event: EventSurface)
 }
 
 class EventViewCell: UICollectionViewCell {
+    @IBOutlet weak var topBorderView: UIView!
+
     // header
     @IBOutlet weak var timeWarningLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var recurringIcon: UILabel!
+    @IBOutlet weak var resolveButton: UIButton!
+    @IBOutlet weak var arrivalDepartureLabel: UILabel!
 
     // detail
     @IBOutlet weak var invitationSummaryLabel: UILabel!
@@ -53,8 +59,7 @@ class EventViewCell: UICollectionViewCell {
     }
 
     private func updateBorderColor() {
-        self.layer.borderColor = borderColor.cgColor
-        self.layer.borderWidth = 1.0
+        self.backgroundColor = borderColor
     }
 
     private func updateShadow() {
@@ -82,10 +87,13 @@ class EventViewCell: UICollectionViewCell {
         locationIconLabel.textColor = UIColor.projectLightGray
         locationLabel.textColor = UIColor.projectLightGray
         recurringIcon.textColor = UIColor.projectLightGray
+        arrivalDepartureLabel.textColor = UIColor.projectWarning
 
         timeWarningLabel.textColor = UIColor.orange
         titleLabel.textColor = UIColor.projectDarkGray
         timeLabel.textColor = UIColor.projectDarkGray
+
+        topBorderView.backgroundColor = UIColor.projectWarning
     }
 
     override func awakeFromNib() {
@@ -116,6 +124,7 @@ class EventViewCell: UICollectionViewCell {
 
         remindButton.addTarget(self, action: #selector(remindMe), for: .touchUpInside)
         locationButton.addTarget(self, action: #selector(launchMaps), for: .touchUpInside)
+        resolveButton.addTarget(self, action: #selector(resolveConflict), for: .touchUpInside)
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -137,21 +146,21 @@ class EventViewCell: UICollectionViewCell {
         return .none
     }
 
+    @objc private func resolveConflict(sender: UIButton) {
+        if let delegate = self.delegate {
+            delegate.fixConflictTapped(on: self, for: event!)
+        }
+    }
+
     @objc private func setEventResponse(sender: UIButton) {
         let event = self.event!
         let response = self.responseType(forButton: sender)
 
-        guard response != event.userResponse.value else {
-            // selected button was tapped
-            return
+        guard response != event.userResponse.value else { return }
+
+        if let delegate = self.delegate {
+            delegate.selectedNewEventResponse(response, on: self, for: event)
         }
-
-        event.userResponse.update(to: response)
-        event.temporarilyForceDisplayResponseOptions = true
-        configure(with: event)
-
-
-        try! event.flush()
     }
 
     @objc private func launchMaps(sender: UIButton) {
@@ -197,6 +206,35 @@ class EventViewCell: UICollectionViewCell {
         titleLabel.text = event.title.value
         invitationSummaryLabel.text = event.invitationSummary.value
         timeWarningLabel.isHidden = !event.isInConflict
+        resolveButton.isHidden = !event.isInConflict
+
+        if !event.isInConflict && (event.hasCustomArrival || event.hasCustomDeparture) {
+            let bold = [NSFontAttributeName: timeLabel.font!]
+            let normal = [NSFontAttributeName: arrivalDepartureLabel.font!]
+
+            let custom = NSMutableAttributedString()
+            if event.hasCustomArrival {
+                let arrival = event.arrivalTime.value
+                let time = DateFormatter.shortTime(date: arrival, appendAMPM: true)
+                custom.append(string: time, attributes: bold)
+                custom.append(string: " arrival", attributes: normal)
+            }
+            if event.hasCustomDeparture {
+                let departure = event.departureTime.value
+                if custom.length > 0 {
+                    custom.append(string: "; ", attributes: normal)
+                }
+                let time = DateFormatter.shortTime(date: departure, appendAMPM: true)
+                custom.append(string: "depart ", attributes: normal)
+                custom.append(string: time, attributes: bold)
+            }
+            arrivalDepartureLabel.attributedText = custom
+            arrivalDepartureLabel.isHidden = false
+            topBorderView.isHidden = false
+        } else {
+            arrivalDepartureLabel.isHidden = true
+            topBorderView.isHidden = true
+        }
 
         configure(location: event.locationSummary.rawValue)
 
@@ -211,7 +249,7 @@ class EventViewCell: UICollectionViewCell {
         }
 
         if event.perspective.value == .past {
-            contentView.alpha = 0.5
+            contentView.alpha = 0.8
             borderColor = UIColor.projectLightGray
         } else {
             contentView.alpha = 1.0

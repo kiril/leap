@@ -58,21 +58,29 @@ class DayScheduleSurface: Surface {
 
         events = Array(Set<EventSurface>(events))
 
-        events.sort { $0.startTime.value == $1.startTime.value ? $0.endTime.value < $1.endTime.value : $0.startTime.value < $1.startTime.value }
+        events.sort { $0.arrivalTime.value == $1.arrivalTime.value ? $0.departureTime.value < $1.departureTime.value : $0.arrivalTime.value < $1.arrivalTime.value }
 
+        var secondPriorEvent: EventSurface? = nil
         var priorEvent: EventSurface? = nil
+
         for event in events {
             event.isInConflict = false
 
-            guard displayableType(forEvent: event) == .always else { continue }
-            if let prior = priorEvent, prior.intersectsWith(event) {
-                if !prior.isRecurring.value || event.isRecurring.value {
-                    prior.isInConflict = true
-                }
-                if !event.isRecurring.value || prior.isRecurring.value {
-                    event.isInConflict = true
-                }
+            guard event.isEligibleForConflict else { continue }
+
+            var priorToUse: EventSurface? = nil
+            if let p = priorEvent, p.isEligibleForConflict {
+                priorToUse = p
+            } else if let p = secondPriorEvent, p.isEligibleForConflict {
+                priorToUse = p
             }
+
+            if let prior = priorToUse, prior.intersectsWith(event) {
+                prior.isInConflict = true
+                event.isInConflict = true
+            }
+
+            secondPriorEvent = priorEvent
             priorEvent = event
         }
 
@@ -247,6 +255,7 @@ class DayScheduleSurface: Surface {
 
         schedule.store = bridge
         bridge.populate(schedule)
+
         return schedule
     }
 
@@ -286,14 +295,32 @@ class DayScheduleSurface: Surface {
 
         if updatedKey == series.key || updatedKey == events.key {
             cachedCombinedEvents = nil // clear cache
+            return false
         }
         if updatedKey == series.key || updatedKey == reminders.key {
             cachedCombinedReminders = nil // clear cache
+            return false
         }
+
         return true
     }
 
     private enum EventDisplayableType {
         case always, sometimes, never
+    }
+}
+
+extension Array where Element: Schedulable {
+    var events: [EventSurface] {
+        var ret: [EventSurface] = []
+        for entry in (self as! [ScheduleEntry]) {
+            switch entry {
+            case let .event(event):
+                ret.append(event)
+            default:
+                continue
+            }
+        }
+        return ret
     }
 }
