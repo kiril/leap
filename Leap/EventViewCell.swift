@@ -59,8 +59,6 @@ class EventViewCell: UICollectionViewCell {
 
     private func updateBorderColor() {
         self.backgroundColor = borderColor
-        //self.layer.borderColor = borderColor.cgColor
-        //self.layer.borderWidth = 1.0
     }
 
     private func updateShadow() {
@@ -208,19 +206,26 @@ class EventViewCell: UICollectionViewCell {
         resolveButton.isHidden = !event.isInConflict
 
         if !event.isInConflict && (event.hasCustomArrival || event.hasCustomDeparture) {
-            var custom = ""
+            let bold = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: arrivalDepartureLabel.font.pointSize)]
+            let normal = [NSFontAttributeName: arrivalDepartureLabel.font!]
+
+            let custom = NSMutableAttributedString()
             if event.hasCustomArrival {
                 let arrival = event.arrivalTime.value
-                custom = "Arrive at \(DateFormatter.shortTime(date: arrival, appendAMPM: false))"
+                let time = DateFormatter.shortTime(date: arrival, appendAMPM: false)
+                custom.append(string: time, attributes: bold)
+                custom.append(string: " arrival", attributes: normal)
             }
             if event.hasCustomDeparture {
                 let departure = event.departureTime.value
-                if !custom.isEmpty {
-                    custom += "; "
+                if custom.length > 0 {
+                    custom.append(string: "; ", attributes: normal)
                 }
-                custom += "Leave by \(DateFormatter.shortTime(date: departure, appendAMPM: false))"
+                let time = DateFormatter.shortTime(date: departure, appendAMPM: false)
+                custom.append(string: time, attributes: bold)
+                custom.append(string: " depart", attributes: normal)
             }
-            arrivalDepartureLabel.text = custom
+            arrivalDepartureLabel.attributedText = custom
             arrivalDepartureLabel.isHidden = false
             topBorderView.isHidden = false
         } else {

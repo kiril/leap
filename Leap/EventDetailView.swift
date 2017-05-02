@@ -131,23 +131,6 @@ class EventDetailView: UIView {
             detailSeparator.isHidden = false
         }
 
-        separator1.backgroundColor = UIColor.projectLighterGray
-        detailSeparator.backgroundColor = UIColor.projectLighterGray
-        separator3.backgroundColor = UIColor.projectLighterGray
-        separator4.backgroundColor = UIColor.projectLighterGray
-
-        beforeLabel.textColor = UIColor.projectDarkGray
-        afterLabel.textColor = UIColor.projectDarkGray
-        alertsLabel.textColor = UIColor.projectLightGray
-        afterButton.titleLabel?.textColor = UIColor.projectDarkGray
-        beforeButton.titleLabel?.textColor = UIColor.projectDarkGray
-        afterButton.titleLabel?.numberOfLines = 0
-        beforeButton.titleLabel?.numberOfLines = 0
-        beforeAlertIcon.textColor = UIColor.projectWarning
-        afterAlertIcon.textColor = UIColor.projectWarning
-        timeLabel.textColor = UIColor.projectLightGray
-        conflictLabel.textColor = UIColor.projectWarning
-
         configureBeforeAndAfter()
         configureAlerts()
         configureAttendees()
@@ -343,7 +326,7 @@ class EventDetailView: UIView {
         return UINib(nibName: "EventDetailView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! EventDetailView
     }
 
-    private func updateFonts() {
+    private func updateStyle() {
         recurringIcon?.textColor = UIColor.projectLightGray
         timeLabel?.textColor = UIColor.projectDarkGray
         locationLabel?.textColor = UIColor.projectDarkGray
@@ -351,10 +334,27 @@ class EventDetailView: UIView {
         invitationSummaryLabel?.textColor = UIColor.projectLightGray
         detailLabel?.textColor = UIColor.projectDarkGray
         timeAlertLabel.textColor = UIColor.projectWarning
+
+        separator1.backgroundColor = UIColor.projectLighterGray
+        detailSeparator.backgroundColor = UIColor.projectLighterGray
+        separator3.backgroundColor = UIColor.projectLighterGray
+        separator4.backgroundColor = UIColor.projectLighterGray
+
+        beforeLabel.textColor = UIColor.projectDarkGray
+        afterLabel.textColor = UIColor.projectDarkGray
+        alertsLabel.textColor = UIColor.projectLightGray
+        afterButton.titleLabel?.textColor = UIColor.projectDarkGray
+        beforeButton.titleLabel?.textColor = UIColor.projectDarkGray
+        afterButton.titleLabel?.numberOfLines = 0
+        beforeButton.titleLabel?.numberOfLines = 0
+        beforeAlertIcon.textColor = UIColor.projectWarning
+        afterAlertIcon.textColor = UIColor.projectWarning
+        timeLabel.textColor = UIColor.projectLightGray
+        conflictLabel.textColor = UIColor.projectWarning
     }
 
     func setup() {
-        updateFonts()
+        updateStyle()
         setupEventButtons()
     }
 
