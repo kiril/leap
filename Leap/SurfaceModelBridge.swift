@@ -61,14 +61,22 @@ class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
         references[name] = refer(to: model, as: name)
     }
 
-    func referenceArray<M:LeapModel,S:Surface>(_ query: Results<M>, using: S.Type, as name: String) where S:ModelLoadable {
+    func referenceArray<M:LeapModel,S:Surface>(
+                        _ query: Results<M>,
+                        using: S.Type,
+                        as name: String,
+                        withNotifications: Bool = true) where S:ModelLoadable {
+        
         references[name] = QueryBridge<M,S>(query)
-        let token = query.addNotificationBlock { [weak self] (_: RealmCollectionChange<Results<M>>) in
-            if let bridge = self {
-                bridge.updateReceived(forSource: name)
+
+        if withNotifications {
+            let token = query.addNotificationBlock { [weak self] (_: RealmCollectionChange<Results<M>>) in
+                if let bridge = self {
+                    bridge.updateReceived(forSource: name)
+                }
             }
+            notificationTokens.append(token)
         }
-        notificationTokens.append(token)
     }
 
     func addReferenceDirectly(_ reference: Reference) {

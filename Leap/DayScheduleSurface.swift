@@ -46,40 +46,9 @@ class DayScheduleSurface: Surface {
         return matches
     }
 
-    private var _events: [EventSurface] = [] {
-        didSet { _didLoadInitialEvents = true }
-    }
-    private var _didLoadInitialEvents = false
-
-
-    private var _reminders: [ReminderSurface] = [] {
-        didSet { _didLoadInitialReminders = true }
-    }
-    private var _didLoadInitialReminders = false
-
-    private var _didLoadInitialData: Bool { return _didLoadInitialEvents && _didLoadInitialReminders }
-
-
-    private var _freshEvents: [EventSurface]? = nil
-    private var _freshReminders: [ReminderSurface]? = nil
-
-    private var _lastCachedEvents: TimeInterval = 0
-    private var _eventRefreshStarted: TimeInterval? = nil
-
-    private var _lastCachedReminders: TimeInterval = 0
-    private var _reminderRefreshStarted: TimeInterval? = nil
-
-    private func updateData() {
-        if let events = _freshEvents {
-            _events = events
-        }
-        if let reminders = _freshReminders {
-            _reminders = reminders
-        }
-        self.notifyObserversOfChange()
-    }
-
-    private func refreshEvents(async: Bool = true) {
+    private var cachedCombinedEvents: [EventSurface]? = nil
+    private var combinedEvents: [EventSurface] {
+        if let cache = cachedCombinedEvents { return cache }
         var events = self.events.value
         for seriesSurface in filteredEventSeries {
             if let eventSurface = seriesSurface.event(for: self.day.gregorianDay) {
@@ -107,19 +76,14 @@ class DayScheduleSurface: Surface {
             priorEvent = event
         }
 
-        _freshEvents = events
-        _lastCachedEvents = Date.timeIntervalSinceReferenceDate
-
-        if async {
-            DispatchQueue.main.async {
-                self.updateData()
-            }
-        } else {
-            self.updateData()
-        }
+        return events
     }
 
-    private func refreshReminders(async: Bool = true) {
+
+    private var cachedCombinedReminders: [ReminderSurface]?
+    private var combinedReminders: [ReminderSurface] {
+        if let cache = cachedCombinedReminders { return cache }
+
         var reminders = self.reminders.value
         for seriesSurface in filteredReminderSeries {
             if let reminderSurface = seriesSurface.reminder(for: self.day.gregorianDay) {
@@ -131,82 +95,20 @@ class DayScheduleSurface: Surface {
 
         reminders.sort { $0.startTime.value < $1.startTime.value }
 
-        _freshReminders = reminders
-        _lastCachedReminders = Date.timeIntervalSinceReferenceDate
-
-        if async {
-            DispatchQueue.main.async {
-                self.updateData()
-            }
-        } else {
-            self.updateData()
-        }
-    }
-
-    private func checkEventFreshness(async: Bool = true) {
-        if let startTime = _eventRefreshStarted, Date.timeIntervalSinceReferenceDate - startTime < 500.0 {
-            return
-        }
-
-        if let updateTime = lastPersisted, _lastCachedEvents < updateTime {
-            _eventRefreshStarted = Date.timeIntervalSinceReferenceDate
-            if async {
-                DispatchQueue.global(qos: .background).async {
-                    if self._lastCachedEvents > 0 { // if we have never done so, don't wait, it slows down the UI
-                        usleep(100*1000) // sleep 100ms to de-bounce this function being called
-                    }
-                    self.refreshEvents()
-                    self._eventRefreshStarted = nil
-                }
-            } else {
-                refreshEvents(async: false)
-                _eventRefreshStarted = nil
-            }
-        }
-    }
-
-    private func checkReminderFreshness(async: Bool = true) {
-        if let startTime = _reminderRefreshStarted, Date.timeIntervalSinceReferenceDate - startTime < 500.0 {
-            return
-        }
-
-        if let updateTime = lastPersisted, _lastCachedReminders < updateTime {
-            _reminderRefreshStarted = Date.timeIntervalSinceReferenceDate
-            if async {
-                DispatchQueue.global(qos: .background).async {
-                    if self._lastCachedReminders > 0 { // if we have never done so, don't wait, it slows down the UI
-                        usleep(100*1000) // sleep 100ms to de-bounce this function being called
-                    }
-                    self.refreshReminders()
-                    self._reminderRefreshStarted = nil
-                }
-            } else {
-                refreshReminders(async: false)
-                _reminderRefreshStarted = nil
-            }
-        }
+        return reminders
     }
 
     var entries: [ScheduleEntry] {
-        guard _didLoadInitialEvents else { return [ScheduleEntry]() }
-        
-        DispatchQueue.global(qos: .background).async { self.checkEventFreshness() }
-
         let events = self.events(showingHidden: displayHiddenEvents)
-
         return scheduleEntries(events: events)
     }
 
     var reminderList: [ReminderSurface] {
-        guard _didLoadInitialReminders else { return [ReminderSurface]() }
-
-        DispatchQueue.global(qos: .background).async { self.checkReminderFreshness() }
-
-        return self.reminders(showingHidden: displayHiddenEvents)
+        return combinedReminders
     }
 
     private func events(showingHidden: Bool) -> [EventSurface] {
-        return _events.filter() { (event) -> Bool in
+        return combinedEvents.filter() { (event) -> Bool in
             switch displayableType(forEvent: event) {
             case .always:
                 return true
@@ -219,7 +121,7 @@ class DayScheduleSurface: Surface {
     }
 
     private func reminders(showingHidden: Bool) -> [ReminderSurface] {
-        return _reminders.filter() { (reminder) -> Bool in
+        return combinedReminders.filter() { (reminder) -> Bool in
             switch displayableType(forReminder: reminder) {
             case .always:
                 return true
@@ -270,17 +172,17 @@ class DayScheduleSurface: Surface {
     }
 
     enum DayBusynessSection { case day, evening }
-    enum DayBusynessEventType { case commited, committedAndUnresolved }
+    enum DayBusynessEventType { case committed, committedAndUnresolved }
     // returns 0.0 - 1.0 for percent booked display
     func percentBooked(forType eventType: DayBusynessEventType,
                        during daySection: DayBusynessSection) -> CGFloat {
 
         let totalTimeRange = daySection == .day ? daytimeScheduleRange : eveningScheduleRange
-        let events = self.events.value.filter { (event) -> Bool in
+        let events = self.combinedEvents.filter { (event) -> Bool in
             switch eventType {
             case .committedAndUnresolved:
                 return displayableType(forEvent: event) == .always
-            case .commited:
+            case .committed:
                 return event.userResponse.value == .yes
             }
         }
@@ -289,7 +191,7 @@ class DayScheduleSurface: Surface {
     }
 
     var hideableEventsCount: Int {
-        return _events.filter() { (event) -> Bool in
+        return combinedEvents.filter() { (event) -> Bool in
             return displayableType(forEvent: event) == .sometimes
         }.count
     }
@@ -324,7 +226,7 @@ class DayScheduleSurface: Surface {
         return weekday
     }
 
-    static func load<K:KeyConvertible>(dayId genericKey: K) -> DayScheduleSurface {
+    static func load<K:KeyConvertible>(dayId genericKey: K, withNotifications: Bool = true) -> DayScheduleSurface {
         let schedule = DayScheduleSurface(id: genericKey.toKey())
         let bridge = SurfaceModelBridge(id: genericKey.toKey(), surface: schedule)
 
@@ -335,9 +237,9 @@ class DayScheduleSurface: Surface {
         let series = Series.between(start, and: end)
         let reminders = Reminder.between(start, and: end)
 
-        bridge.referenceArray(events, using: EventSurface.self, as: "events")
-        bridge.referenceArray(series, using: SeriesSurface.self, as: "series")
-        bridge.referenceArray(reminders, using: ReminderSurface.self, as: "reminders")
+        bridge.referenceArray(events, using: EventSurface.self, as: "events", withNotifications: withNotifications)
+        bridge.referenceArray(series, using: SeriesSurface.self, as: "series", withNotifications: withNotifications)
+        bridge.referenceArray(reminders, using: ReminderSurface.self, as: "reminders", withNotifications: withNotifications)
 
         bridge.bindArray(schedule.events)
         bridge.bindArray(schedule.series)
@@ -345,7 +247,6 @@ class DayScheduleSurface: Surface {
 
         schedule.store = bridge
         bridge.populate(schedule)
-        DispatchQueue.global(qos: .background).async { schedule.checkEventFreshness() }
         return schedule
     }
 
@@ -384,11 +285,10 @@ class DayScheduleSurface: Surface {
         }
 
         if updatedKey == series.key || updatedKey == events.key {
-            DispatchQueue.global(qos: .background).async { self.checkEventFreshness() }
+            cachedCombinedEvents = nil // clear cache
         }
         if updatedKey == series.key || updatedKey == reminders.key {
-            DispatchQueue.global(qos: .background).async { self.checkReminderFreshness() }
-            return false
+            cachedCombinedReminders = nil // clear cache
         }
         return true
     }
