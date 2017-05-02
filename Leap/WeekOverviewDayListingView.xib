@@ -1,31 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="FontAwesome.otf">
+            <string>FontAwesome</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WeekOverviewDayListingView" customModule="Leap" customModuleProvider="target">
             <connections>
                 <outlet property="borderView" destination="GpE-hD-agr" id="oFa-iL-6JP"/>
                 <outlet property="dayNameLabel" destination="isd-Cl-VTh" id="lR8-cB-Yre"/>
                 <outlet property="dayNumberLabel" destination="BWO-Fy-Yse" id="ItZ-bY-qCb"/>
+                <outlet property="daytimeBusynessIndicator" destination="UFG-y5-zzV" id="wfs-bM-ebd"/>
+                <outlet property="daytimeIconLabel" destination="bGa-mz-Hwe" id="8lJ-3G-vKM"/>
+                <outlet property="eveningBusynessIndicator" destination="b1u-2N-2mu" id="oN4-ei-BXN"/>
+                <outlet property="eveningIconLabel" destination="RKx-pS-YmS" id="IGp-qT-nOo"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="71" height="166"/>
+            <rect key="frame" x="0.0" y="0.0" width="71" height="254"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GpE-hD-agr">
                     <rect key="frame" x="-1" y="-6" width="73" height="64.5"/>
                 </view>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="b2D-Wk-lWH">
-                    <rect key="frame" x="0.0" y="0.0" width="71" height="166"/>
+                    <rect key="frame" x="0.0" y="0.0" width="71" height="254"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BWO-Fy-Yse">
                             <rect key="frame" x="0.0" y="0.0" width="71" height="29"/>
@@ -39,10 +49,62 @@
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iog-TW-AoO">
+                            <rect key="frame" x="0.0" y="50.5" width="71" height="50"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UFG-y5-zzV" userLabel="Top Circle View" customClass="NestedCircleView" customModule="Leap" customModuleProvider="target">
+                                    <rect key="frame" x="17.5" y="15" width="35" height="35"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="35" id="jZE-vp-5ll"/>
+                                        <constraint firstAttribute="width" secondItem="UFG-y5-zzV" secondAttribute="height" id="sZu-eg-fDK"/>
+                                    </constraints>
+                                </view>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bGa-mz-Hwe">
+                                    <rect key="frame" x="26.5" y="24.5" width="17" height="17"/>
+                                    <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="UFG-y5-zzV" secondAttribute="bottom" id="Rw0-yU-lkc"/>
+                                <constraint firstItem="UFG-y5-zzV" firstAttribute="top" secondItem="iog-TW-AoO" secondAttribute="top" constant="15" id="YG1-wE-lXE"/>
+                                <constraint firstItem="bGa-mz-Hwe" firstAttribute="centerX" secondItem="UFG-y5-zzV" secondAttribute="centerX" id="v35-8L-CSb"/>
+                                <constraint firstItem="bGa-mz-Hwe" firstAttribute="centerY" secondItem="UFG-y5-zzV" secondAttribute="centerY" id="wzh-Lc-XAa"/>
+                                <constraint firstItem="UFG-y5-zzV" firstAttribute="centerX" secondItem="iog-TW-AoO" secondAttribute="centerX" id="xx5-En-7lu"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qzl-gG-IEW">
+                            <rect key="frame" x="0.0" y="100.5" width="71" height="45"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b1u-2N-2mu" userLabel="Bottom Circle View" customClass="NestedCircleView" customModule="Leap" customModuleProvider="target">
+                                    <rect key="frame" x="17.5" y="5.5" width="35" height="35"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="b1u-2N-2mu" secondAttribute="height" id="Cno-Z3-m45"/>
+                                    </constraints>
+                                </view>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RKx-pS-YmS">
+                                    <rect key="frame" x="27" y="14.5" width="15" height="17"/>
+                                    <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="b1u-2N-2mu" firstAttribute="top" secondItem="Qzl-gG-IEW" secondAttribute="top" constant="5" id="5L5-vX-Ezy"/>
+                                <constraint firstItem="RKx-pS-YmS" firstAttribute="centerX" secondItem="b1u-2N-2mu" secondAttribute="centerX" id="9sW-Z3-0ft"/>
+                                <constraint firstAttribute="bottom" secondItem="b1u-2N-2mu" secondAttribute="bottom" constant="5" id="Bhd-fo-GaN"/>
+                                <constraint firstItem="RKx-pS-YmS" firstAttribute="centerY" secondItem="b1u-2N-2mu" secondAttribute="centerY" id="Yn5-dU-dy5"/>
+                                <constraint firstItem="b1u-2N-2mu" firstAttribute="centerX" secondItem="Qzl-gG-IEW" secondAttribute="centerX" id="omv-v8-w3W"/>
+                            </constraints>
+                        </view>
                         <view contentMode="scaleToFill" horizontalHuggingPriority="248" verticalHuggingPriority="248" horizontalCompressionResistancePriority="748" verticalCompressionResistancePriority="748" translatesAutoresizingMaskIntoConstraints="NO" id="iua-Ft-aDv">
-                            <rect key="frame" x="0.0" y="50.5" width="71" height="115.5"/>
+                            <rect key="frame" x="0.0" y="145.5" width="71" height="108.5"/>
                         </view>
                     </subviews>
+                    <constraints>
+                        <constraint firstItem="b1u-2N-2mu" firstAttribute="height" secondItem="UFG-y5-zzV" secondAttribute="height" id="RzX-5r-QDk"/>
+                    </constraints>
                 </stackView>
             </subviews>
             <constraints>
@@ -57,7 +119,7 @@
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="112.5" y="-116"/>
+            <point key="canvasLocation" x="108" y="-124"/>
         </view>
     </objects>
 </document>

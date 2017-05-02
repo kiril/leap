@@ -20,10 +20,6 @@ class ReminderSurface: Surface, ModelLoadable {
     let timeRange              = SurfaceString()
     let reminderType           = SurfaceProperty<ReminderType>()
 
-    static func load(fromModel reminder: LeapModel) -> Surface? {
-        return load(byId: reminder.id)
-    }
-
 
     static func timeRange(event: Event) -> String {
         let start = event.startDate
@@ -77,9 +73,14 @@ class ReminderSurface: Surface, ModelLoadable {
         guard let reminder: Reminder = Reminder.by(id: reminderId) else {
             return nil
         }
+        return load(with: reminder) as? ReminderSurface
+    }
 
-        let surface = ReminderSurface(id: reminderId)
-        let bridge = SurfaceModelBridge(id: reminderId, surface: surface)
+    static func load(with model: LeapModel) -> Surface? {
+        guard let reminder = model as? Reminder else { return nil }
+
+        let surface = ReminderSurface(id: reminder.id)
+        let bridge = SurfaceModelBridge(id: reminder.id, surface: surface)
 
         bridge.reference(reminder, as: "reminder")
 
@@ -107,7 +108,7 @@ class ReminderSurface: Surface, ModelLoadable {
         }
 
         surface.store = bridge
-        bridge.populate(surface)
+        bridge.populate(surface, with: reminder, as: "reminder")
         return surface
     }
 

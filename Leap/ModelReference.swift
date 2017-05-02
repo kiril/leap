@@ -28,11 +28,11 @@ class ModelReference<Model:LeapModel>: Reference where Model:Fetchable {
         self.name = name
     }
 
-    func resolve() -> LeapModel? {
+    final func resolve() -> LeapModel? {
         return model()
     }
 
-    func model() -> Model? {
+    final func model() -> Model? {
         return Model.by(id: id)
     }
 }

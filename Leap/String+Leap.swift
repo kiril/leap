@@ -26,7 +26,7 @@ extension String {
     }
 
     var hasNonWhitespaceCharacters: Bool {
-        if self.characters.count == 0 {
+        if self.isEmpty {
             return false
         }
         for c in self.characters {

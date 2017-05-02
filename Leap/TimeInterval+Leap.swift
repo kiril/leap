@@ -32,14 +32,14 @@ extension TimeInterval {
         minutes = minutes - (hours * 60)
 
         if hours > 0 {
-            if duration.characters.count > 0 {
+            if !duration.isEmpty {
                 duration += " "
             }
             duration += "\(hours) \(hours.pluralize(string: hourText))"
         }
 
         if minutes > 0 {
-            if duration.characters.count > 0 {
+            if !duration.isEmpty {
                 duration += " "
             }
             duration += "\(minutes) \(minutes.pluralize(string: minuteText))"

@@ -18,7 +18,12 @@ class WeekOverviewViewController: UIViewController, StoryboardLoadable {
 
     @IBOutlet var dayListingViews: [WeekOverviewDayListingView]!
 
-    var surface: WeekOverviewSurface?
+    var surface: WeekOverviewSurface? {
+        didSet {
+            surface?.register(observer: self)
+            surface?.loadWeekBusyness()
+        }
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -52,8 +57,19 @@ class WeekOverviewViewController: UIViewController, StoryboardLoadable {
                 dayView.labelColor = UIColor.projectLightGray
             }
         }
-
+        updateBusyness()
         updateSelected()
+    }
+
+    fileprivate func updateBusyness() {
+        for (index, dayView) in dayListingViews.enumerated() {
+            guard let busyness = surface?.weekBusyness[index] else { continue }
+
+            dayView.daytimeBusynessIndicator.topCircleComplete = busyness.committedDaytime
+            dayView.daytimeBusynessIndicator.bottomCircleComplete = busyness.unresolvedDaytime
+            dayView.eveningBusynessIndicator.topCircleComplete = busyness.committedEvening
+            dayView.eveningBusynessIndicator.bottomCircleComplete = busyness.unresolvedEvening
+        }
     }
 
     private func updateSelected() {
@@ -74,5 +90,13 @@ class WeekOverviewViewController: UIViewController, StoryboardLoadable {
                 return
             }
         }
+    }
+}
+
+extension WeekOverviewViewController: SurfaceObserver {
+    var sourceId: String { return "WeekOverviewViewController" }
+
+    func surfaceDidChange(_ surface: Surface) {
+        self.updateBusyness()
     }
 }

@@ -47,4 +47,10 @@ extension Array where Element: TimeRangeExcludable {
         let a = self as! [TimeRange] // better way to explain this to compiler?
         return a.flatMap() { $0.timeRangesByExcluding(timeRange: timeRange) }
     }
+
+    var combinedDurationInSeconds: TimeInterval {
+        return (self as! [TimeRange]).reduce((0 as TimeInterval)) { (result: TimeInterval, range) -> TimeInterval in
+            return result + range.durationInSeconds
+        }
+    }
 }

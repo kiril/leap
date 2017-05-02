@@ -139,6 +139,23 @@ class TimeRangeTests: XCTestCase {
         XCTAssertEqual(25, resultingRanges[3].end.timeIntervalSinceReferenceDate)
     }
 
+    func testDuration() {
+        let firstRange = TimeRange(start:    Date(timeIntervalSinceReferenceDate: 10),
+                                   end:      Date(timeIntervalSinceReferenceDate: 20))!
+
+        XCTAssertEqual(10.0, firstRange.durationInSeconds)
+
+        let secondRange = TimeRange(start:    Date(timeIntervalSinceReferenceDate: 15),
+                                    end:      Date(timeIntervalSinceReferenceDate: 30))!
+
+
+        XCTAssertEqual(15.0, secondRange.durationInSeconds)
+
+        let totalRange = [firstRange, secondRange]
+
+        XCTAssertEqual(25.0, totalRange.combinedDurationInSeconds)
+    }
+
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measure {
