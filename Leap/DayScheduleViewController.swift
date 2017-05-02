@@ -71,7 +71,7 @@ extension DayScheduleViewController: EventViewCellDelegate {
                 let first = event.startTime.value < other.startTime.value ? event : other
                 let second = first == event ? other : event
 
-                let leaveEarly = UIAlertAction(title: "Leave \"\(first.title.value.truncate(to: 25, in: .end))\" early", style: .destructive) {
+                let leaveEarly = UIAlertAction(title: "Leave \"\(first.title.value.truncate(to: 35, in: .end))\" early", style: .destructive) {
                     action in
                     first.leaveEarly(for: second)
                 }
@@ -87,7 +87,7 @@ extension DayScheduleViewController: EventViewCellDelegate {
                 let first = event.endTime.value < other.endTime.value ? event : other
                 let second = first == event ? other : event
 
-                let joinLate = UIAlertAction(title: "Join \"\(second.title.value.truncate(to: 25, in: .end))\" late", style: .destructive) {
+                let joinLate = UIAlertAction(title: "Join \"\(second.title.value.truncate(to: 35, in: .end))\" late", style: .destructive) {
                     action in
                     second.joinLate(for: first)
                 }
@@ -105,11 +105,11 @@ extension DayScheduleViewController: EventViewCellDelegate {
             let first = event.startTime.value < other.startTime.value ? event : other
             let second = first == event ? other : event
 
-            let leaveEarly = UIAlertAction(title: "Leave \"\(first.title.value.truncate(to: 25, in: .end))\" early", style: .destructive) {
+            let leaveEarly = UIAlertAction(title: "Leave \"\(first.title.value.truncate(to: 35, in: .end))\" early", style: .destructive) {
                 action in
                 first.leaveEarly(for: second)
             }
-            let joinLate = UIAlertAction(title: "Join \"\(second.title.value.truncate(to: 25, in: .end))\" late", style: .destructive) {
+            let joinLate = UIAlertAction(title: "Join \"\(second.title.value.truncate(to: 35, in: .end))\" late", style: .destructive) {
                 action in
                 second.joinLate(for: first)
             }
@@ -127,16 +127,16 @@ extension DayScheduleViewController: EventViewCellDelegate {
     }
 
     func resolve(overlap: Overlap, between event: EventSurface, and other: EventSurface, respondingTo respondee: EventSurface? = nil, with response: EventResponse? = nil) {
-        let title = respondingTo == nil ? "Fix Conflicting Events" : "Event Conflict"
+        let title = respondee == nil ? "Fix Conflicting Events" : "Event Conflict"
         let alert = UIAlertController(title: title,
                                       message: "\"\(event.title.value)\" and \"\(other.title.value)\" overlap.",
             preferredStyle: .actionSheet)
 
-        let declineOther = UIAlertAction(title: "Decline \"\(other.title.value.truncate(to: 15, in: .middle))\"", style: .destructive) {
+        let declineOther = UIAlertAction(title: "Decline \"\(other.title.value.truncate(to: 35, in: .middle))\"", style: .destructive) {
             action in
             other.respond(with: .no)
         }
-        let declineThis = UIAlertAction(title: "Decline \"\(event.title.value.truncate(to: 15, in: .middle))\"", style: .destructive) {
+        let declineThis = UIAlertAction(title: "Decline \"\(event.title.value.truncate(to: 35, in: .middle))\"", style: .destructive) {
             action in
             event.respond(with: .no)
         }
