@@ -256,9 +256,6 @@ class DayScheduleSurface: Surface {
         schedule.store = bridge
         bridge.populate(schedule)
 
-        DispatchQueue.global(qos: .background).async { schedule.checkEventFreshness() }
-        DispatchQueue.global(qos: .background).async { schedule.checkReminderFreshness() }
-
         return schedule
     }
 
