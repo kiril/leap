@@ -206,7 +206,7 @@ class EventViewCell: UICollectionViewCell {
         resolveButton.isHidden = !event.isInConflict
 
         if !event.isInConflict && (event.hasCustomArrival || event.hasCustomDeparture) {
-            let bold = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: arrivalDepartureLabel.font.pointSize)]
+            let bold = [NSFontAttributeName: timeLabel.font!]
             let normal = [NSFontAttributeName: arrivalDepartureLabel.font!]
 
             let custom = NSMutableAttributedString()
