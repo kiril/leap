@@ -244,6 +244,10 @@ class EventDetailView: UIView {
                     afterOpen = openTime
                 }
             }
+
+            if afterEvent != nil {
+                break
+            }
         }
 
         self.nextEvent = afterEvent
