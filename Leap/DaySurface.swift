@@ -19,7 +19,7 @@ class DaySurface: Surface, IntIdInitable {
 
 
     var shortDateString: String {
-        let date = Calendar.universalGregorian.date(from: gregorianDay.components)!
+        let date = Calendar.current.date(from: gregorianDay.components)!
         let formatter = DateFormatter()
         formatter.locale = Locale.current
         formatter.setLocalizedDateFormatFromTemplate("MMMd")
