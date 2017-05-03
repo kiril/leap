@@ -17,18 +17,22 @@ protocol EventViewCellDelegate: class {
 class EventViewCell: UICollectionViewCell {
     @IBOutlet weak var topBorderView: UIView!
 
-    // header
+    // time info
+    @IBOutlet weak var subscribedIcon: UILabel!
     @IBOutlet weak var timeWarningLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var recurringIcon: UILabel!
     @IBOutlet weak var resolveButton: UIButton!
     @IBOutlet weak var arrivalDepartureLabel: UILabel!
 
     // detail
     @IBOutlet weak var invitationSummaryLabel: UILabel!
     @IBOutlet weak var invitationActionContainer: UIStackView!
+
+    // icons!!
+    @IBOutlet weak var recurringIcon: UILabel!
     @IBOutlet weak var carIcon: UILabel!
+    @IBOutlet weak var attendeeIcon: UILabel!
     @IBOutlet weak var facebookIcon: UILabel!
     @IBOutlet weak var slackIcon: UILabel!
     @IBOutlet weak var videoIcon: UILabel!
@@ -39,14 +43,14 @@ class EventViewCell: UICollectionViewCell {
     @IBOutlet weak var skypeIcon: UILabel!
     @IBOutlet weak var photoIcon: UILabel!
     @IBOutlet weak var shareIcon: UILabel!
-
-    // location
-    @IBOutlet weak var locationContainer: UIStackView!
     @IBOutlet weak var fileIcon: UILabel!
     @IBOutlet weak var commentIcon: UILabel!
     @IBOutlet weak var checklistIcon: UILabel!
     @IBOutlet weak var alarmIcon: UILabel!
     @IBOutlet weak var descriptionIcon: UILabel!
+
+    // location
+    @IBOutlet weak var locationContainer: UIStackView!
     @IBOutlet weak var locationIconLabel: UILabel!
     @IBOutlet weak var locationButton: UIButton!
     @IBOutlet weak var locationLabel: UILabel!
@@ -105,7 +109,7 @@ class EventViewCell: UICollectionViewCell {
         descriptionIcon.textColor = UIColor.projectLightGray
         arrivalDepartureLabel.textColor = UIColor.projectWarning
 
-        for icon:UILabel in [alarmIcon, recurringIcon, checklistIcon, commentIcon, locationIconLabel, fileIcon, shareIcon] {
+        for icon:UILabel in [alarmIcon, recurringIcon, checklistIcon, commentIcon, locationIconLabel, fileIcon, shareIcon, attendeeIcon, attendeesIcon, carIcon, trainIcon, phoneIcon, skypeIcon, ticketIcon, videoIcon, photoIcon, facebookIcon, slackIcon] {
             icon.textColor = UIColor.projectLightGray
         }
 
@@ -217,6 +221,7 @@ class EventViewCell: UICollectionViewCell {
     func configureOrigin(with event: EventSurface) {
 
         shareIcon.isHidden = true
+        subscribedIcon.isHidden = true
 
         switch event.origin.value {
         case .invite:
@@ -226,7 +231,7 @@ class EventViewCell: UICollectionViewCell {
             shareIcon.isHidden = false
 
         case .subscription:
-            break
+            subscribedIcon.isHidden = false
 
         case .personal:
             break
@@ -253,7 +258,10 @@ class EventViewCell: UICollectionViewCell {
         alarmIcon.isHidden = !event.hasAlarms.value
         checklistIcon.isHidden = !event.hasAgenda
 
-        attendeesIcon.isHidden = event.participants.value.count < 2
+        attendeesIcon.isHidden = event.participants.value.count < 3
+        attendeeIcon.isHidden = !(event.participants.value.count == 2 && event.participants.value.me != nil)
+
+        configureOrigin(with: event)
 
         if !event.isInConflict && (event.hasCustomArrival || event.hasCustomDeparture) {
             let bold = [NSFontAttributeName: timeLabel.font!]

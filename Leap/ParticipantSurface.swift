@@ -8,7 +8,10 @@
 
 import Foundation
 
-class ParticipantSurface: Surface, ModelLoadable {
+protocol Participantish {
+}
+
+class ParticipantSurface: Surface, ModelLoadable, Participantish {
     override var type: String { return "participant" }
 
     let name       = SurfaceString()
@@ -47,5 +50,17 @@ class ParticipantSurface: Surface, ModelLoadable {
         surface.store = bridge
         bridge.populate(surface, with: participant, as: "participant")
         return surface
+    }
+}
+
+extension Array where Element: Participantish {
+    var me: ParticipantSurface? {
+        guard let participants = self as? [ParticipantSurface] else { return nil }
+        for participant in participants {
+            if participant.isMe.value {
+                return participant
+            }
+        }
+        return nil
     }
 }
