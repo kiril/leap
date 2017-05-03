@@ -253,7 +253,7 @@ class EventDetailView: UIView {
         afterAlertIcon.isHidden = true
 
         if let event = priorEvent, let open = priorOpen {
-            let beforeString = "\(event.title.value) ends \(open.durationSeconds.durationString) before this at \(DateFormatter.shortTime(date: event.endTime.value))"
+            let beforeString = "\(event.title.value) ends \(open.durationSeconds.durationString) prior, at \(DateFormatter.shortTime(date: event.endTime.value))"
             let beforeText = NSMutableAttributedString(string: beforeString)
             beforeText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectTint, range: NSRange(location: 0, length: event.title.value.utf16.count))
 
@@ -285,7 +285,7 @@ class EventDetailView: UIView {
         }
 
         if let event = afterEvent, let open = afterOpen {
-            let afterString = "\(event.title.value) starts \(open.durationSeconds.durationString) after this at \(DateFormatter.shortTime(date: event.startTime.value))."
+            let afterString = "\(event.title.value) starts \(open.durationSeconds.durationString) later, at \(DateFormatter.shortTime(date: event.startTime.value))."
             let afterText = NSMutableAttributedString(string: afterString)
             afterText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectTint, range: NSRange(location: 0, length: event.title.value.utf16.count))
             let lengthOfTitle = event.title.value.utf16.count
@@ -296,24 +296,19 @@ class EventDetailView: UIView {
             afterButton.isHidden = false
 
         } else if let event = afterEvent {
-            let afterString = "Followed immediately by \(event.title.value)"
-            let afterText = NSMutableAttributedString(string: afterString)
-            let lengthOfTitle = event.title.value.utf16.count
-            let titleRange = NSRange(location: afterString.utf16.count - lengthOfTitle - 1, length: lengthOfTitle)
-            afterText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectTint, range: titleRange)
-            let preTitleRange = NSRange(location: 0, length: afterString.utf16.count - lengthOfTitle)
-            afterText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectDarkGray, range: preTitleRange)
-            let periodRange = NSRange(location: afterString.utf16.count - 1, length: 1)
-            afterText.addAttribute(NSForegroundColorAttributeName, value: UIColor.projectDarkGray, range: periodRange)
+            let string = NSMutableAttributedString()
+            string.append(string: "Followed immediately by ", attributes: [NSForegroundColorAttributeName: UIColor.projectDarkGray])
+            string.append(string: event.title.value, attributes: [NSForegroundColorAttributeName: UIColor.projectTint])
+            string.append(string: ".", attributes: [NSForegroundColorAttributeName: UIColor.projectDarkGray])
 
-            afterButton.setAttributedTitle(afterText, for: .normal)
+            afterButton.setAttributedTitle(string, for: .normal)
 
             afterLabel.isHidden = true
             afterButton.isHidden = false
             afterAlertIcon.isHidden = false
 
         } else {
-            afterLabel.text = "This is the last event of the day."
+            afterLabel.text = "This is the last event of the day!"
             afterButton.isHidden = true
             afterLabel.isHidden = false
         }
