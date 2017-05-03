@@ -136,26 +136,26 @@
                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Uj1-6v-hfH">
                                     <rect key="frame" x="0.0" y="295.5" width="335" height="53.5"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xUv-WB-JSM">
-                                            <rect key="frame" x="0.0" y="0.0" width="8" height="53.5"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xUv-WB-JSM">
+                                            <rect key="frame" x="0.0" y="0.0" width="15" height="53.5"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="8" id="tEs-hp-J01"/>
+                                                <constraint firstAttribute="width" constant="15" id="tEs-hp-J01"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="tg7-tU-FXv">
-                                            <rect key="frame" x="16" y="0.0" width="319" height="53.5"/>
+                                            <rect key="frame" x="23" y="0.0" width="312" height="53.5"/>
                                             <subviews>
                                                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Before Info" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2sw-bG-IGK">
-                                                    <rect key="frame" x="0.0" y="0.0" width="319" height="20.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="312" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9vs-fG-hn2">
-                                                    <rect key="frame" x="0.0" y="20.5" width="319" height="33"/>
+                                                    <rect key="frame" x="0.0" y="20.5" width="312" height="33"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <state key="normal" title="Before Button"/>
                                                 </button>
@@ -173,26 +173,26 @@
                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Q3K-bu-Z5v">
                                     <rect key="frame" x="0.0" y="370" width="335" height="53.5"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FsZ-4r-7JH">
-                                            <rect key="frame" x="0.0" y="0.0" width="8" height="53.5"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FsZ-4r-7JH">
+                                            <rect key="frame" x="0.0" y="0.0" width="15" height="53.5"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="8" id="EuN-bi-H6a"/>
+                                                <constraint firstAttribute="width" constant="15" id="EuN-bi-H6a"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="74p-4k-zVi">
-                                            <rect key="frame" x="16" y="0.0" width="319" height="53.5"/>
+                                            <rect key="frame" x="23" y="0.0" width="312" height="53.5"/>
                                             <subviews>
                                                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="After Info" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v4X-JQ-4Wx">
-                                                    <rect key="frame" x="0.0" y="0.0" width="319" height="20.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="312" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ub1-VW-hya">
-                                                    <rect key="frame" x="0.0" y="20.5" width="319" height="33"/>
+                                                    <rect key="frame" x="0.0" y="20.5" width="312" height="33"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <state key="normal" title="After Button"/>
                                                 </button>
