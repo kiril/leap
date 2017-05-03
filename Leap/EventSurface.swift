@@ -75,22 +75,24 @@ class EventSurface: Surface, ModelLoadable {
     let arrivalReferenceEvent  = SurfaceProperty<EventSurface>()
     let departureReferenceEvent = SurfaceProperty<EventSurface>()
 
-    var isEligibleForConflict: Bool { return isConfirmed.value }
+    var isEligibleForConflict: Bool { return isConfirmed.value || userResponse.value == .none }
+    var canBeConflictedWith: Bool { return isConfirmed.value }
 
     var hasCustomArrival: Bool { return arrivalTime.value != startTime.value }
     var hasCustomDeparture: Bool { return departureTime.value != endTime.value }
 
-
-    func intersectsWith(_ other: EventSurface) -> Bool {
-        if departureTime.value <= other.arrivalTime.value || other.departureTime.value <= arrivalTime.value {
-            return false
-        }
-        return true
+    func conflict(with other: EventSurface, assumingCommitted: Bool = false) -> Overlap {
+        guard other != self && (isEligibleForConflict || assumingCommitted) && other.canBeConflictedWith else { return .none }
+        return intersection(with: other)
     }
 
-    func conflict(with other: EventSurface, assumingCommitted: Bool = false) -> Overlap {
-        guard other != self && (isEligibleForConflict || assumingCommitted) && other.isEligibleForConflict else { return .none }
-        return intersection(with: other)
+    func conflicts(with other: EventSurface, assumingCommitted: Bool = false) -> Bool {
+        switch conflict(with: other, assumingCommitted: assumingCommitted) {
+        case .none:
+            return false
+        default:
+            return true
+        }
     }
 
     func conflicts(in others: [EventSurface], assumingCommitted: Bool = false) -> [(Overlap,EventSurface)] {

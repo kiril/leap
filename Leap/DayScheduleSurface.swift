@@ -75,9 +75,13 @@ class DayScheduleSurface: Surface {
                 priorToUse = p
             }
 
-            if let prior = priorToUse, prior.intersectsWith(event) {
-                prior.isInConflict = true
-                event.isInConflict = true
+            if let prior = priorToUse {
+                if event.conflicts(with: prior) {
+                    event.isInConflict = true
+                }
+                if prior.conflicts(with: event) {
+                    prior.isInConflict = true
+                }
             }
 
             secondPriorEvent = priorEvent
