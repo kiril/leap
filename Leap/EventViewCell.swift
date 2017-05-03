@@ -206,7 +206,7 @@ class EventViewCell: UICollectionViewCell {
         titleLabel.text = event.title.value
         invitationSummaryLabel.text = event.invitationSummary.value
         timeWarningLabel.isHidden = !event.isInConflict
-        resolveButton.isHidden = !event.isInConflict
+        resolveButton.isHidden = !event.isInConflict || event.needsResponse.value
 
         if !event.isInConflict && (event.hasCustomArrival || event.hasCustomDeparture) {
             let bold = [NSFontAttributeName: timeLabel.font!]

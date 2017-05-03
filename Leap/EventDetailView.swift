@@ -81,7 +81,7 @@ class EventDetailView: UIView {
             for entry in entries {
                 switch entry {
                 case let .event(other):
-                    if other.intersectsWith(event) && other != event {
+                    if event.conflicts(with: other) {
                         conflicts.append(other)
                     }
                 default:
