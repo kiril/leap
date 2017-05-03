@@ -46,6 +46,29 @@ class DayScheduleSurface: Surface {
         return matches
     }
 
+    func isLessThan(left: EventSurface, right: EventSurface) -> Bool {
+        if left.arrivalTime.value < right.arrivalTime.value {
+            return true
+        }
+        if right.arrivalTime.value < left.arrivalTime.value {
+            return false
+        }
+        if left.isConfirmed.value && !right.isConfirmed.value {
+            return true
+        }
+        if right.isConfirmed.value && !left.isConfirmed.value {
+            return false
+        }
+        if left.departureTime.value < right.departureTime.value {
+            return true
+        }
+        if right.departureTime.value < left.departureTime.value {
+            return false
+        }
+
+        return false
+    }
+
     private var cachedCombinedEvents: [EventSurface]? = nil
     private var combinedEvents: [EventSurface] {
         if let cache = cachedCombinedEvents { return cache }
@@ -58,7 +81,7 @@ class DayScheduleSurface: Surface {
 
         events = Array(Set<EventSurface>(events))
 
-        events.sort { $0.arrivalTime.value == $1.arrivalTime.value ? $0.departureTime.value < $1.departureTime.value : $0.arrivalTime.value < $1.arrivalTime.value }
+        events.sort(by: isLessThan)
 
         var secondPriorEvent: EventSurface? = nil
         var priorEvent: EventSurface? = nil
