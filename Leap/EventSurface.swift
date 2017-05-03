@@ -74,12 +74,15 @@ class EventSurface: Surface, ModelLoadable {
     let departureTime          = SurfaceDate()
     let arrivalReferenceEvent  = SurfaceProperty<EventSurface>()
     let departureReferenceEvent = SurfaceProperty<EventSurface>()
+    let agenda                 = SurfaceProperty<Checklist?>()
 
     var isEligibleForConflict: Bool { return isConfirmed.value || userResponse.value == .none }
     var canBeConflictedWith: Bool { return isConfirmed.value }
 
     var hasCustomArrival: Bool { return arrivalTime.value != startTime.value }
     var hasCustomDeparture: Bool { return departureTime.value != endTime.value }
+
+    var hasAgenda: Bool { return agenda.rawValue != nil }
 
     func conflict(with other: EventSurface, assumingCommitted: Bool = false) -> Overlap {
         guard other != self && (isEligibleForConflict || assumingCommitted) && other.canBeConflictedWith else { return .none }
@@ -355,6 +358,8 @@ class EventSurface: Surface, ModelLoadable {
             }
             return false
         })
+
+        bridge.bind(surface.agenda)
 
         func getStartTime(model:LeapModel) -> Any? {
             guard let event = model as? Event else {

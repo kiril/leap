@@ -344,8 +344,8 @@ class EventDetailView: UIView {
         beforeButton.titleLabel?.textColor = UIColor.projectDarkGray
         afterButton.titleLabel?.numberOfLines = 0
         beforeButton.titleLabel?.numberOfLines = 0
-        beforeAlertIcon.textColor = UIColor.projectLightWarning
-        afterAlertIcon.textColor = UIColor.projectLightWarning
+        beforeAlertIcon.textColor = UIColor.projectWarning
+        afterAlertIcon.textColor = UIColor.projectWarning
         timeLabel.textColor = UIColor.projectLightGray
         conflictLabel.textColor = UIColor.projectWarning
     }

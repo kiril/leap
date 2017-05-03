@@ -28,9 +28,25 @@ class EventViewCell: UICollectionViewCell {
     // detail
     @IBOutlet weak var invitationSummaryLabel: UILabel!
     @IBOutlet weak var invitationActionContainer: UIStackView!
+    @IBOutlet weak var carIcon: UILabel!
+    @IBOutlet weak var facebookIcon: UILabel!
+    @IBOutlet weak var slackIcon: UILabel!
+    @IBOutlet weak var videoIcon: UILabel!
+    @IBOutlet weak var attendeesIcon: UILabel!
+    @IBOutlet weak var trainIcon: UILabel!
+    @IBOutlet weak var ticketIcon: UILabel!
+    @IBOutlet weak var phoneIcon: UILabel!
+    @IBOutlet weak var skypeIcon: UILabel!
+    @IBOutlet weak var photoIcon: UILabel!
+    @IBOutlet weak var shareIcon: UILabel!
 
     // location
     @IBOutlet weak var locationContainer: UIStackView!
+    @IBOutlet weak var fileIcon: UILabel!
+    @IBOutlet weak var commentIcon: UILabel!
+    @IBOutlet weak var checklistIcon: UILabel!
+    @IBOutlet weak var alarmIcon: UILabel!
+    @IBOutlet weak var descriptionIcon: UILabel!
     @IBOutlet weak var locationIconLabel: UILabel!
     @IBOutlet weak var locationButton: UIButton!
     @IBOutlet weak var locationLabel: UILabel!
@@ -84,10 +100,14 @@ class EventViewCell: UICollectionViewCell {
 
     private func updateFonts() {
         invitationSummaryLabel.textColor = UIColor.projectLightGray
-        locationIconLabel.textColor = UIColor.projectLightGray
         locationLabel.textColor = UIColor.projectLightGray
         recurringIcon.textColor = UIColor.projectLightGray
+        descriptionIcon.textColor = UIColor.projectLightGray
         arrivalDepartureLabel.textColor = UIColor.projectWarning
+
+        for icon:UILabel in [alarmIcon, recurringIcon, checklistIcon, commentIcon, locationIconLabel, fileIcon, shareIcon] {
+            icon.textColor = UIColor.projectLightGray
+        }
 
         timeWarningLabel.textColor = UIColor.orange
         titleLabel.textColor = UIColor.projectDarkGray
@@ -194,6 +214,28 @@ class EventViewCell: UICollectionViewCell {
         }
     }
 
+    func configureOrigin(with event: EventSurface) {
+
+        shareIcon.isHidden = true
+
+        switch event.origin.value {
+        case .invite:
+            break
+
+        case .share:
+            shareIcon.isHidden = false
+
+        case .subscription:
+            break
+
+        case .personal:
+            break
+            
+        case .unknown:
+            break
+        }
+    }
+
     func configure(with event: EventSurface) {
         // move out of here to seperate helper classes
         // if this needs to be different
@@ -207,6 +249,11 @@ class EventViewCell: UICollectionViewCell {
         invitationSummaryLabel.text = event.invitationSummary.value
         timeWarningLabel.isHidden = !event.isInConflict
         resolveButton.isHidden = !event.isInConflict || event.needsResponse.value
+        descriptionIcon.isHidden = event.detail.rawValue == nil || !event.detail.value.hasNonWhitespaceCharacters
+        alarmIcon.isHidden = !event.hasAlarms.value
+        checklistIcon.isHidden = !event.hasAgenda
+
+        attendeesIcon.isHidden = event.participants.value.count < 2
 
         if !event.isInConflict && (event.hasCustomArrival || event.hasCustomDeparture) {
             let bold = [NSFontAttributeName: timeLabel.font!]
