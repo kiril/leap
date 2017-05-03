@@ -221,7 +221,7 @@ class EventDetailView: UIView {
 
         var isBefore = true
 
-        for entry in entries {
+        loop: for entry in entries {
             switch entry {
             case let .event(event):
                 if event == self.event! {
@@ -234,7 +234,7 @@ class EventDetailView: UIView {
 
                 } else {
                     afterEvent = event
-                    break
+                    break loop
                 }
 
             case let .openTime(openTime):
@@ -243,10 +243,6 @@ class EventDetailView: UIView {
                 } else {
                     afterOpen = openTime
                 }
-            }
-
-            if afterEvent != nil {
-                break
             }
         }
 
