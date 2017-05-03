@@ -38,7 +38,8 @@ extension FuzzyHashable where Self:LeapModel {
 extension LeapModel: FuzzyHashable {
     func storeFuzzyHash() {
         if let fuzzy = self as? Fuzzy {
-            fuzzyHash = fuzzy.calculateFuzzyHash()
+            let hash = fuzzy.calculateFuzzyHash()
+            fuzzyHash = hash
         } else {
             fuzzyHash = id.hashValue
         }
