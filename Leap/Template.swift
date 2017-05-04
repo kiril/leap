@@ -80,6 +80,12 @@ class Template: LeapModel, Particible, Alarmable, CalendarLinkable {
         return Reminder(value: data)
     }
 
+    func range(in inputRange: TimeRange) -> TimeRange? {
+        guard let start = startTime(in: inputRange) else { return nil }
+        guard let end = endTime(in: inputRange, startTime: start) else { return nil }
+        return TimeRange(start: start, end: end)
+    }
+
     func startTime(in range: TimeRange) -> Date? {
         return startTime(between: range.start, and: range.end)
     }
@@ -97,13 +103,13 @@ class Template: LeapModel, Particible, Alarmable, CalendarLinkable {
         return possibility
     }
 
-    func endTime(in range: TimeRange) -> Date? {
-        return endTime(between: range.start, and: range.end)
+    func endTime(in range: TimeRange, startTime: Date? = nil) -> Date? {
+        return endTime(between: range.start, and: range.end, startTime: startTime)
     }
 
 
-    func endTime(between start: Date, and end: Date) -> Date? {
-        if let start = startTime(between: start, and: end) {
+    func endTime(between start: Date, and end: Date, startTime: Date? = nil) -> Date? {
+        if let start = startTime ?? self.startTime(between: start, and: end) {
             return Calendar.current.date(byAdding: .minute, value: durationMinutes, to: start)!
         }
         return nil
