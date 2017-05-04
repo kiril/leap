@@ -42,9 +42,7 @@ class SeriesSurface: Surface, ModelLoadable {
         guard let series = Series.by(id: id) else {
             return false
         }
-        let start = Calendar.current.startOfDay(for: day)
-        let end = Calendar.current.startOfDay(for: day.dayAfter)
-        return series.recursBetween(start, and: end)
+        return series.recurs(in: TimeRange.of(day: day))
     }
 
     static func load(with model: LeapModel) -> Surface? {
