@@ -103,16 +103,27 @@ open class Surface: Equatable {
     }
 
     private func associateProperties() {
-        let me = Mirror(reflecting: self)
-        for child in me.children {
-            if var property = child.value as? Property {
-                property.surface = self
-                if !property.hasKey {
-                    property.setKey(child.label!)
+
+        func lookInThe(mirror: Mirror) {
+            for child in mirror.children {
+                if var property = child.value as? Property {
+                    property.surface = self
+                    if !property.hasKey {
+                        property.setKey(child.label!)
+                    }
+                    self.keys.update(with: property.key)
+                    properties[property.key] = property
                 }
-                self.keys.update(with: property.key)
-                properties[property.key] = property
             }
+        }
+
+
+        let mirror = Mirror(reflecting: self)
+        lookInThe(mirror: mirror)
+
+        // this enables you to extend a Surface subclass, and still function
+        if properties.isEmpty, let superMirror = mirror.superclassMirror {
+            lookInThe(mirror: superMirror)
         }
     }
 

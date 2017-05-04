@@ -66,13 +66,13 @@ class EventDetailView: UIView {
         self.event = event
         recurringIcon.isHidden = !event.isRecurring.value
         recurringIcon.superview?.isHidden = !event.isRecurring.value
-        timeLabel.text = event.timeRange.value
+        timeLabel.text = event.timeString.value
 
         updateActionButtons(forEvent: event)
         setup()
 
         titleLabel.text = event.title.value
-        timeLabel.text = event.isRecurring.value ? event.recurringTimeRange.value : "From \(event.timeRange.value)"
+        timeLabel.text = event.isRecurring.value ? event.recurrenceDescription.value : "From \(event.timeString.value)"
         timeAlertLabel.isHidden = !event.isInConflict
         timeAlertLabel.superview?.isHidden = !event.isInConflict
 
@@ -391,7 +391,7 @@ class EventDetailView: UIView {
     }
 
     @objc func remindMe() {
-        event?.hackyCreateReminderFromEvent()
+        event?.hackyShowAsReminder()
 
         if let delegate = self.delegate {
             delegate.didChangeResponse(for: event!)

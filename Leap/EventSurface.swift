@@ -82,8 +82,8 @@ class EventSurface: Surface, ModelLoadable {
     let detail                 = SurfaceString()
     let startTime              = SurfaceDate()
     let endTime                = SurfaceDate()
-    let timeRange              = ComputedSurfaceString<EventSurface>(by: EventSurface.eventTimeRange)
-    let recurringTimeRange     = SurfaceString()
+    let timeString             = ComputedSurfaceString<EventSurface>(by: { $0.formatDuration()! })
+    let recurrenceDescription  = SurfaceString()
     let userIsInvited          = SurfaceBool()
     let userResponse           = SurfaceProperty<EventResponse>()
     let needsResponse          = ComputedSurfaceBool<EventSurface>(by: EventSurface.computeNeedsResponse)
@@ -262,29 +262,6 @@ class EventSurface: Surface, ModelLoadable {
         return event.userResponse.value == .yes
     }
 
-    static func eventTimeRange(event: EventSurface) -> String {
-        let start = event.startTime.value
-        let end = event.endTime.value
-
-        let calendar = Calendar.current
-        let startHour = calendar.component(.hour, from: start)
-        let endHour = calendar.component(.hour, from: end)
-
-        let spansDays = calendar.areOnDifferentDays(start, end)
-        let crossesNoon = spansDays || ( startHour < 12 && endHour >= 12 )
-
-        let from = calendar.formatDisplayTime(from: start, needsAMPM: crossesNoon)
-        let to = calendar.formatDisplayTime(from: end, needsAMPM: true)
-        var more = ""
-        if spansDays {
-            let days = calendar.daysBetween(start, and: end)
-            let ess = days == 1 ? "" : "s"
-            more = " \(days) day\(ess) later"
-        }
-
-        return "\(from) - \(to)\(more)"
-    }
-
     static func computeElapsed(event: EventSurface) -> Float {
         let now = Date()
 
@@ -297,20 +274,18 @@ class EventSurface: Surface, ModelLoadable {
         }
     }
 
-    func hackyCreateReminderFromEvent() {
+    func hackyShowAsReminder() {
         // Okay, this is going to be mostly to get it displaying on the screen, consider this prototype code.
 
         let realm = Realm.user()
 
         guard let event = Event.by(id: id) else { return }
 
-        let data : [String: Any] = [
-            "title": event.title,
-            "event": event,
-            "startTime": event.startTime,
-            "endTime": event.endTime,
-            "typeString": ReminderType.event.rawValue,
-            ]
+        let data: ModelInitData = ["title": event.title,
+                                   "event": event,
+                                   "startTime": event.startTime,
+                                   "endTime": event.endTime,
+                                   "typeString": ReminderType.event.rawValue,]
 
         let reminder: Reminder = Reminder(value: data)
         try! realm.write {
@@ -470,7 +445,7 @@ class EventSurface: Surface, ModelLoadable {
                     on: "event",
                     persistWith: { ($0 as! Event).engagement = ($1 as! EventResponse).asEngagement() })
 
-        bridge.readonlyBind(surface.recurringTimeRange) { (model:LeapModel) -> String? in
+        bridge.readonlyBind(surface.recurrenceDescription) { (model:LeapModel) -> String? in
             guard let event = model as? Event else { return nil }
             guard let seriesId = event.seriesId, let series = Series.by(id: seriesId) else { return nil }
             return recurringDescription(series: series)
@@ -662,5 +637,38 @@ extension List where Element: Alarm {
             }
         }
         return summary
+    }
+}
+
+
+
+extension EventSurface: Linear {
+    var duration: TimeInterval {
+        return endTime.value.timeIntervalSinceReferenceDate - startTime.value.timeIntervalSinceReferenceDate
+    }
+    var secondsLong: Int { return Int(duration) }
+    var minutesLong: Int { return secondsLong / 60 }
+
+    func formatDuration() -> String? {
+        let start = startTime.value
+        let end = endTime.value
+
+        let calendar = Calendar.current
+        let startHour = calendar.component(.hour, from: start)
+        let endHour = calendar.component(.hour, from: end)
+
+        let spansDays = calendar.areOnDifferentDays(start, end)
+        let crossesNoon = spansDays || ( startHour < 12 && endHour >= 12 )
+
+        let from = calendar.formatDisplayTime(from: start, needsAMPM: crossesNoon)
+        let to = calendar.formatDisplayTime(from: end, needsAMPM: true)
+        var more = ""
+        if spansDays {
+            let days = calendar.daysBetween(start, and: end)
+            let ess = days == 1 ? "" : "s"
+            more = " \(days) day\(ess) later"
+        }
+
+        return "\(from) - \(to)\(more)"
     }
 }

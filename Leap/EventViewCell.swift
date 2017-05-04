@@ -160,7 +160,7 @@ class EventViewCell: UICollectionViewCell {
     }
 
     @objc private func remindMe() {
-        event?.hackyCreateReminderFromEvent()
+        event?.hackyShowAsReminder()
     }
 
     private func responseType(forButton button: UIButton) -> EventResponse {
@@ -251,7 +251,7 @@ class EventViewCell: UICollectionViewCell {
         // set values
         self.event = event
 
-        timeLabel.text = event.timeRange.value
+        timeLabel.text = event.timeString.value
         titleLabel.text = event.title.value
         invitationSummaryLabel.text = event.invitationSummary.value
         timeWarningLabel.isHidden = !event.isInConflict

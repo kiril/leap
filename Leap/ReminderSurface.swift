@@ -16,58 +16,22 @@ class ReminderSurface: Surface, ModelLoadable {
     let startTime              = SurfaceInt()
     let endTime                = SurfaceInt()
     let refersToEvent          = SurfaceBool()
-    let eventTime              = SurfaceString()
-    let timeRange              = SurfaceString()
+    let eventTimeString        = ComputedSurfaceString<ReminderSurface>(by: { $0.eventTimeDescription()! })
+    let timeString             = ComputedSurfaceString<ReminderSurface>(by: { $0.formatDuration()! })
     let reminderType           = SurfaceProperty<ReminderType>()
+    let eventId                = SurfaceString()
 
-
-    static func timeRange(event: Event) -> String {
-        let start = event.startDate
-        let end = event.endDate
-
-        let calendar = Calendar.current
-        let startHour = calendar.component(.hour, from: start)
-        let endHour = calendar.component(.hour, from: end)
-
-        let spansDays = calendar.areOnDifferentDays(start, end)
-        let crossesNoon = spansDays || ( startHour < 12 && endHour >= 12 )
-
-        let from = calendar.formatDisplayTime(from: start, needsAMPM: crossesNoon)
-        let to = calendar.formatDisplayTime(from: end, needsAMPM: true)
-        var more = ""
-        if spansDays {
-            let days = calendar.daysBetween(start, and: end)
-            let ess = days == 1 ? "" : "s"
-            more = " \(days) day\(ess) later"
-        }
-
-        return "\(from) - \(to)\(more)"
+    var event: EventSurface? {
+        guard let id = eventId.rawValue else { return nil }
+        return EventSurface.load(byId: id)
     }
 
-    static func timeRange(reminder: Reminder) -> String? {
-        let start = reminder.startDate
-        guard let end = reminder.endDate else {
-            return nil
-        }
-
-        let calendar = Calendar.current
-        let startHour = calendar.component(.hour, from: start)
-        let endHour = calendar.component(.hour, from: end)
-
-        let spansDays = calendar.areOnDifferentDays(start, end)
-        let crossesNoon = spansDays || ( startHour < 12 && endHour >= 12 )
-
-        let from = calendar.formatDisplayTime(from: start, needsAMPM: crossesNoon)
-        let to = calendar.formatDisplayTime(from: end, needsAMPM: true)
-        var more = ""
-        if spansDays {
-            let days = calendar.daysBetween(start, and: end)
-            let ess = days == 1 ? "" : "s"
-            more = " \(days) day\(ess) later"
-        }
-
-        return "\(from) - \(to)\(more)"
+    func eventTimeDescription() -> String? {
+        return event?.formatDuration()
     }
+
+    var startDate: Date { return Date(timeIntervalSinceReferenceDate: TimeInterval(startTime.value)) }
+    var endDate: Date? { return endTime.value == 0 ? nil : Date(timeIntervalSinceReferenceDate: TimeInterval(endTime.value)) }
 
     static func load(byId reminderId: String) -> ReminderSurface? {
         guard let reminder: Reminder = Reminder.by(id: reminderId) else {
@@ -87,25 +51,9 @@ class ReminderSurface: Surface, ModelLoadable {
         bridge.bind(surface.title)
         bridge.bind(surface.startTime)
         bridge.bind(surface.endTime)
-        bridge.readonlyBind(surface.refersToEvent) { (model:LeapModel) -> Bool in
-            guard let reminder = model as? Reminder else { return false }
-            return reminder.event != nil
-        }
-        bridge.readonlyBind(surface.eventTime) { (model:LeapModel) -> String? in
-            guard let reminder = model as? Reminder,
-                let event = reminder.event else {
-                    return nil
-            }
-            return timeRange(event: event)
-        }
-        bridge.readonlyBind(surface.timeRange) { (model:LeapModel) -> String? in
-            guard let reminder = model as? Reminder else { return nil }
-            return timeRange(reminder: reminder)
-        }
-        bridge.readonlyBind(surface.reminderType) { (model:LeapModel) -> ReminderType in
-            guard let reminder = model as? Reminder else { fatalError() }
-            return reminder.type
-        }
+        bridge.readonlyBind(surface.refersToEvent) { ($0 as! Reminder).event != nil }
+        bridge.readonlyBind(surface.reminderType) { ($0 as! Reminder).type }
+        bridge.readonlyBind(surface.eventId) { ($0 as! Reminder).event?.id }
 
         surface.store = bridge
         bridge.populate(surface, with: reminder, as: "reminder")
@@ -132,3 +80,37 @@ extension ReminderSurface: IGListDiffable {
                 (reminder.title.value == reminder.title.value)
     }
 }
+
+
+extension ReminderSurface: Linear {
+    var duration: TimeInterval {
+        guard endTime.value != 0 else { return 0.0 }
+        return TimeInterval(endTime.value - startTime.value)
+    }
+    var secondsLong: Int { return Int(duration) }
+    var minutesLong: Int { return secondsLong / 60 }
+
+    func formatDuration() -> String? {
+        guard let end = endDate else { return nil }
+        let start = startDate
+
+        let calendar = Calendar.current
+        let startHour = calendar.component(.hour, from: start)
+        let endHour = calendar.component(.hour, from: end)
+
+        let spansDays = calendar.areOnDifferentDays(start, end)
+        let crossesNoon = spansDays || ( startHour < 12 && endHour >= 12 )
+
+        let from = calendar.formatDisplayTime(from: start, needsAMPM: crossesNoon)
+        let to = calendar.formatDisplayTime(from: end, needsAMPM: true)
+        var more = ""
+        if spansDays {
+            let days = calendar.daysBetween(start, and: end)
+            let ess = days == 1 ? "" : "s"
+            more = " \(days) day\(ess) later"
+        }
+
+        return "\(from) - \(to)\(more)"
+    }
+}
+

@@ -21,29 +21,13 @@ class DayScheduleSurface: Surface {
     var day: DaySurface { return DaySurface(id: self.id) }
 
     var filteredEventSeries: [SeriesSurface] {
-        var matches: [SeriesSurface] = []
-        for s in series.value {
-            guard s.seriesType.value == .event else {
-                continue
-            }
-            if s.recursOn(self.day.gregorianDay) {
-                matches.append(s)
-            }
-        }
-        return matches
+        let day = self.day.gregorianDay
+        return series.value.filter({ $0.seriesType.value == .event && $0.recurs(on: day) })
     }
 
     var filteredReminderSeries: [SeriesSurface] {
-        var matches: [SeriesSurface] = []
-        for s in series.value {
-            guard s.seriesType.value == .reminder else {
-                continue
-            }
-            if s.recursOn(self.day.gregorianDay) {
-                matches.append(s)
-            }
-        }
-        return matches
+        let day = self.day.gregorianDay
+        return series.value.filter({ $0.seriesType.value == .reminder && $0.recurs(on: day) })
     }
 
     func isLessThan(left: EventSurface, right: EventSurface) -> Bool {
@@ -72,6 +56,7 @@ class DayScheduleSurface: Surface {
     private var cachedCombinedEvents: [EventSurface]? = nil
     private var combinedEvents: [EventSurface] {
         if let cache = cachedCombinedEvents { return cache }
+
         var events = self.events.value
         for seriesSurface in filteredEventSeries {
             if let eventSurface = seriesSurface.event(for: self.day.gregorianDay) {
@@ -111,11 +96,13 @@ class DayScheduleSurface: Surface {
             priorEvent = event
         }
 
+        cachedCombinedEvents = events
+
         return events
     }
 
 
-    private var cachedCombinedReminders: [ReminderSurface]?
+    private var cachedCombinedReminders: [ReminderSurface]? = nil
     private var combinedReminders: [ReminderSurface] {
         if let cache = cachedCombinedReminders { return cache }
 
@@ -129,6 +116,8 @@ class DayScheduleSurface: Surface {
         reminders = Array(Set<ReminderSurface>(reminders))
 
         reminders.sort { $0.startTime.value < $1.startTime.value }
+
+        cachedCombinedReminders = reminders
 
         return reminders
     }

@@ -7,8 +7,25 @@
 //
 
 import Foundation
+import RealmSwift
 
 class RecurringEventSurface: EventSurface {
+
+    override func hackyShowAsReminder() {
+        let realm = Realm.user()
+
+        guard let series = Series.by(id: id) else { return }
+
+        let reminderSeries = series.clone()
+        reminderSeries.referencing = series
+        reminderSeries.type = .reminder
+        reminderSeries.template.reminderTypeString = ReminderType.event.rawValue
+
+        try! realm.write {
+            reminderSeries.insert(into: realm)
+            series.status = .archived
+        }
+    }
 
     static func load(seriesId: String, in range: TimeRange) -> EventSurface? {
         guard let series:Series = Series.by(id: seriesId) else { return nil }
@@ -20,7 +37,7 @@ class RecurringEventSurface: EventSurface {
     }
 
     static func load(with series: Series, in range: TimeRange) -> EventSurface? {
-        let surface = EventSurface(id: series.id)
+        let surface = RecurringEventSurface(id: series.id)
         let bridge = SurfaceModelBridge(id: series.id, surface: surface)
 
         bridge.reference(series, as: "series")
@@ -56,7 +73,7 @@ class RecurringEventSurface: EventSurface {
                     populateWith: { (m:LeapModel) in EventResponse.from((m as! Series).engagement) },
                     on: "series",
                     persistWith: { ($0 as! Series).engagement = ($1 as! EventResponse).asEngagement() })
-        bridge.readonlyBind(surface.recurringTimeRange) { recurringDescription(series: ($0 as! Series)) }
+        bridge.readonlyBind(surface.recurrenceDescription) { recurringDescription(series: ($0 as! Series)) }
 
         bridge.readonlyBind(surface.participants) { (m:LeapModel) -> [ParticipantSurface] in
             let series = m as! Series

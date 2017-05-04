@@ -24,12 +24,19 @@ class Template: LeapModel, Particible, Alarmable, CalendarLinkable {
     dynamic var originString: String = Origin.unknown.rawValue
     dynamic var seriesId: String?
     dynamic var reminderTypeString: String?
+    dynamic var event: Event?
 
     let channels = List<Channel>()
 
     let participants = List<Participant>()
     let alarms = List<Alarm>()
     let linkedCalendarIds = List<StringWrapper>()
+
+    func clone() -> Template {
+        let copy = Template(value: self)
+        copy.id = UUID().uuidString
+        return copy
+    }
 
     var modality: EventModality {
         get { return EventModality(rawValue: modalityString)! }
@@ -39,6 +46,11 @@ class Template: LeapModel, Particible, Alarmable, CalendarLinkable {
     var origin: Origin {
         get { return Origin(rawValue: originString)! }
         set { originString = newValue.rawValue }
+    }
+
+    var reminderType: ReminderType {
+        get { return ReminderType(rawValue: reminderTypeString!)! }
+        set { reminderTypeString = newValue.rawValue }
     }
 
     func reminder(onDayOf date: Date, id: String? = nil) -> Reminder? {
@@ -63,8 +75,15 @@ class Template: LeapModel, Particible, Alarmable, CalendarLinkable {
                                    "alarms": alarms,
                                    "linkedCalendarIds": linkedCalendarIds,
                                    "typeString": reminderTypeString,
+                                   "event": event,
                                    "originString": originString]
         return Reminder(value: data)
+    }
+
+    func range(in inputRange: TimeRange) -> TimeRange? {
+        guard let start = startTime(in: inputRange) else { return nil }
+        guard let end = endTime(in: inputRange, startTime: start) else { return nil }
+        return TimeRange(start: start, end: end)
     }
 
     func startTime(in range: TimeRange) -> Date? {
@@ -84,13 +103,13 @@ class Template: LeapModel, Particible, Alarmable, CalendarLinkable {
         return possibility
     }
 
-    func endTime(in range: TimeRange) -> Date? {
-        return endTime(between: range.start, and: range.end)
+    func endTime(in range: TimeRange, startTime: Date? = nil) -> Date? {
+        return endTime(between: range.start, and: range.end, startTime: startTime)
     }
 
 
-    func endTime(between start: Date, and end: Date) -> Date? {
-        if let start = startTime(between: start, and: end) {
+    func endTime(between start: Date, and end: Date, startTime: Date? = nil) -> Date? {
+        if let start = startTime ?? self.startTime(between: start, and: end) {
             return Calendar.current.date(byAdding: .minute, value: durationMinutes, to: start)!
         }
         return nil

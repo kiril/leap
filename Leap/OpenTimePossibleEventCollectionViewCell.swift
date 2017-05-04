@@ -13,10 +13,7 @@ class OpenTimePossibleEventCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var titleLabel: UILabel!
 
     func configure(with event: EventSurface) {
-        let timeText = event.timeRange.value
-        let eventName = event.title.value
-
-        titleLabel.text = "\(timeText): \(eventName)"
+        titleLabel.text = "\(event.timeString.value): \(event.title.value)"
     }
 
     override func awakeFromNib() {
@@ -35,7 +32,6 @@ class OpenTimePossibleEventCollectionViewCell: UICollectionViewCell {
 
 
     private func setup() {
-
         self.contentView.translatesAutoresizingMaskIntoConstraints = false
         self.translatesAutoresizingMaskIntoConstraints = false
 
