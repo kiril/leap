@@ -44,14 +44,36 @@ class EventDetailViewController: UIViewController {
 }
 
 extension EventDetailViewController: EventDetailViewDelegate {
-    func eventTapped(with event: EventSurface) {
+    func tapped(on event: EventSurface) {
         let detail = EventDetailViewController()
         detail.event = event
         detail.entries = self.entries
         self.navigationController?.pushViewController(detail, animated: true)
     }
 
-    func didChangeResponse(for event: EventSurface) {
+    func selected(response: EventResponse, for event: EventSurface) {
+        if let recurring = event as? RecurringEventSurface, recurring.responseNeedsClarification {
+            let alert = recurring.recurringResponseOptions(for: response) { scope in
+                switch scope {
+                case .none:
+                    break
+                case .series:
+                    recurring.respond(with: response, forceDisplay: true)
+                    self.navigationController!.popViewController(animated: true)
+                case .event:
+                    recurring.respond(with: response, forceDisplay: true)
+                    self.navigationController!.popViewController(animated: true)
+                }
+            }
+            self.present(alert, animated: true)
+        } else {
+            event.respond(with: response, forceDisplay: true)
+            self.navigationController!.popViewController(animated: true)
+        }
+    }
+
+    func hitReminder(for event: EventSurface) {
+        event.hackyShowAsReminder()
         self.navigationController!.popViewController(animated: true)
     }
 }

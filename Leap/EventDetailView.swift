@@ -9,8 +9,9 @@
 import UIKit
 
 protocol EventDetailViewDelegate: class {
-    func eventTapped(with event: EventSurface)
-    func didChangeResponse(for event: EventSurface)
+    func tapped(on event: EventSurface)
+    func selected(response: EventResponse, for event: EventSurface)
+    func hitReminder(for: EventSurface)
 }
 
 class EventDetailView: UIView {
@@ -194,13 +195,13 @@ class EventDetailView: UIView {
 
     @objc func afterButtonTapped(sender: UIButton) {
         if let delegate = self.delegate, let event = nextEvent {
-            delegate.eventTapped(with: event)
+            delegate.tapped(on: event)
         }
     }
 
     @objc func beforeButtonTapped(sender: UIButton) {
         if let delegate = self.delegate, let event = priorEvent {
-            delegate.eventTapped(with: event)
+            delegate.tapped(on: event)
         }
     }
 
@@ -386,15 +387,13 @@ class EventDetailView: UIView {
         try! event.flush()
 
         if let delegate = self.delegate {
-            delegate.didChangeResponse(for: event)
+            delegate.selected(response: response, for: event)
         }
     }
 
     @objc func remindMe() {
-        event?.hackyShowAsReminder()
-
         if let delegate = self.delegate {
-            delegate.didChangeResponse(for: event!)
+            delegate.hitReminder(for: event!)
         }
     }
 

@@ -111,6 +111,8 @@ class EventSurface: Surface, ModelLoadable {
 
     var hasAgenda: Bool { return agenda.rawValue != nil }
 
+    var responseNeedsClarification: Bool { return false }
+
     func conflict(with other: EventSurface, assumingCommitted: Bool = false) -> Overlap {
         guard other != self && (isEligibleForConflict || assumingCommitted) && other.canBeConflictedWith else { return .none }
         return intersection(with: other)
@@ -245,6 +247,44 @@ class EventSurface: Surface, ModelLoadable {
 
         case .none:
             return
+        }
+    }
+
+    func verb(for response: EventResponse) -> String {
+        switch origin.value {
+        case .invite:
+            switch response {
+            case .yes:
+                return "Accept"
+            case .no:
+                return "Decline"
+            case .maybe:
+                return "Maybe"
+            case .none:
+                fatalError()
+            }
+        case .share, .subscription:
+            switch response {
+            case .yes:
+                return "Join"
+            case .no:
+                return "Archive"
+            case .maybe:
+                return "Maybe"
+            case .none:
+                fatalError()
+            }
+        case .personal, .unknown:
+            switch response {
+            case .yes:
+                return "Confirm"
+            case .no:
+                return "Archive"
+            case .maybe:
+                return "Maybe"
+            case .none:
+                fatalError()
+            }
         }
     }
 
