@@ -72,11 +72,11 @@ class Template: LeapModel, Particible, Alarmable, CalendarLinkable {
     }
 
     func startTime(between start: Date, and end: Date) -> Date? {
-        if Calendar.universalGregorian.component(.minute, from: start) == startMinute &&
-            Calendar.universalGregorian.component(.hour, from: start) == startHour {
+        if Calendar.current.component(.minute, from: start) == startMinute &&
+            Calendar.current.component(.hour, from: start) == startHour {
             return start < end ? start : nil
         }
-        let possibility = Calendar.universalGregorian.date(bySettingHour: startHour, minute: startMinute, second: 0, of: start)!
+        let possibility = Calendar.current.date(bySettingHour: startHour, minute: startMinute, second: 0, of: start)!
 
         guard possibility < end else {
             return nil
@@ -91,7 +91,7 @@ class Template: LeapModel, Particible, Alarmable, CalendarLinkable {
 
     func endTime(between start: Date, and end: Date) -> Date? {
         if let start = startTime(between: start, and: end) {
-            return Calendar.universalGregorian.date(byAdding: .minute, value: durationMinutes, to: start)!
+            return Calendar.current.date(byAdding: .minute, value: durationMinutes, to: start)!
         }
         return nil
     }
