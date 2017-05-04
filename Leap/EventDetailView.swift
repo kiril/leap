@@ -391,7 +391,7 @@ class EventDetailView: UIView {
     }
 
     @objc func remindMe() {
-        event?.hackyCreateReminderFromEvent()
+        event?.hackyShowAsReminder()
 
         if let delegate = self.delegate {
             delegate.didChangeResponse(for: event!)

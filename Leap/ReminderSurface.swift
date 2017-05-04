@@ -92,10 +92,7 @@ class ReminderSurface: Surface, ModelLoadable {
             return reminder.event != nil
         }
         bridge.readonlyBind(surface.eventTime) { (model:LeapModel) -> String? in
-            guard let reminder = model as? Reminder,
-                let event = reminder.event else {
-                    return nil
-            }
+            guard let reminder = model as? Reminder, let event = reminder.event else { return nil }
             return timeRange(event: event)
         }
         bridge.readonlyBind(surface.timeRange) { (model:LeapModel) -> String? in

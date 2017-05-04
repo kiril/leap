@@ -297,20 +297,18 @@ class EventSurface: Surface, ModelLoadable {
         }
     }
 
-    func hackyCreateReminderFromEvent() {
+    func hackyShowAsReminder() {
         // Okay, this is going to be mostly to get it displaying on the screen, consider this prototype code.
 
         let realm = Realm.user()
 
         guard let event = Event.by(id: id) else { return }
 
-        let data : [String: Any] = [
-            "title": event.title,
-            "event": event,
-            "startTime": event.startTime,
-            "endTime": event.endTime,
-            "typeString": ReminderType.event.rawValue,
-            ]
+        let data: ModelInitData = ["title": event.title,
+                                   "event": event,
+                                   "startTime": event.startTime,
+                                   "endTime": event.endTime,
+                                   "typeString": ReminderType.event.rawValue,]
 
         let reminder: Reminder = Reminder(value: data)
         try! realm.write {

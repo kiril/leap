@@ -160,7 +160,7 @@ class EventViewCell: UICollectionViewCell {
     }
 
     @objc private func remindMe() {
-        event?.hackyCreateReminderFromEvent()
+        event?.hackyShowAsReminder()
     }
 
     private func responseType(forButton button: UIButton) -> EventResponse {

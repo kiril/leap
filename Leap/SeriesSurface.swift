@@ -15,24 +15,27 @@ class SeriesSurface: Surface, ModelLoadable {
     let seriesType     = SurfaceProperty<CalendarItemType>()
 
     func event(for day: GregorianDay) -> EventSurface? {
-        let start = Calendar.current.startOfDay(for: day)
-        let end = Calendar.current.startOfDay(for: day.dayAfter)
-        guard let series = Series.by(id: id),
-            series.recursBetween(start, and: end),
-            series.template.startTime(between: start, and: end) != nil else {
-            return nil
+        let range = TimeRange(start: Calendar.current.startOfDay(for: day), end: Calendar.current.startOfDay(for: day.dayAfter))!
+        guard let series = Series.by(id: id), series.recurs(in: range) else { return nil }
+        guard let startTime = series.template.startTime(in: range) else { return nil }
+
+        if let event = Event.by(id: series.generateId(for: startTime)) {
+            return EventSurface.load(with: event) as? EventSurface
         }
 
-        return RecurringEventSurface.load(with: series, in: TimeRange(start: start, end: end)!)
+        return RecurringEventSurface.load(with: series, in: range)
     }
 
     func reminder(for day: GregorianDay) -> ReminderSurface? {
-        let start = Calendar.current.startOfDay(for: day)
-        let end = Calendar.current.startOfDay(for: day.dayAfter)
-        if let reminder = Series.by(id: id)?.reminder(between: start, and: end) {
+        let range = TimeRange(start: Calendar.current.startOfDay(for: day), end: Calendar.current.startOfDay(for: day.dayAfter))!
+        guard let series = Series.by(id: id), series.recurs(in: range) else { return nil }
+        guard let startTime = series.template.startTime(in: range) else { return nil }
+
+        if let reminder = Reminder.by(id: series.generateId(for: startTime)) {
             return ReminderSurface.load(with: reminder) as? ReminderSurface
         }
-        return nil
+
+        return RecurringReminderSurface.load(from: series, in: range)
     }
 
     func recursOn(_ day: GregorianDay) -> Bool {

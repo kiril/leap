@@ -26,6 +26,14 @@ class Series: LeapModel, Fuzzy {
     dynamic var lastRecurrenceDay: Date?
     dynamic var originString: String = Origin.unknown.rawValue
     dynamic var engagementString: String = Engagement.none.rawValue
+    dynamic var referencing: Series?
+
+    func clone() -> Series {
+        let copy = Series(value: self)
+        copy.id = UUID().uuidString
+        copy.template = copy.template.clone()
+        return copy
+    }
 
     var engagement: Engagement {
         get { return Engagement(rawValue: engagementString)! }
@@ -203,6 +211,10 @@ class Series: LeapModel, Fuzzy {
             self.lastRecurrenceDay = lastDay!
             realm.add(self, update: true)
         }
+    }
+
+    func recurs(in range: TimeRange) -> Bool {
+        return recursBetween(range.start, and: range.end)
     }
 
     /**

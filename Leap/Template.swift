@@ -24,12 +24,19 @@ class Template: LeapModel, Particible, Alarmable, CalendarLinkable {
     dynamic var originString: String = Origin.unknown.rawValue
     dynamic var seriesId: String?
     dynamic var reminderTypeString: String?
+    dynamic var event: Event?
 
     let channels = List<Channel>()
 
     let participants = List<Participant>()
     let alarms = List<Alarm>()
     let linkedCalendarIds = List<StringWrapper>()
+
+    func clone() -> Template {
+        let copy = Template(value: self)
+        copy.id = UUID().uuidString
+        return copy
+    }
 
     var modality: EventModality {
         get { return EventModality(rawValue: modalityString)! }
@@ -39,6 +46,11 @@ class Template: LeapModel, Particible, Alarmable, CalendarLinkable {
     var origin: Origin {
         get { return Origin(rawValue: originString)! }
         set { originString = newValue.rawValue }
+    }
+
+    var reminderType: ReminderType {
+        get { return ReminderType(rawValue: reminderTypeString!)! }
+        set { reminderTypeString = newValue.rawValue }
     }
 
     func reminder(onDayOf date: Date, id: String? = nil) -> Reminder? {
@@ -63,6 +75,7 @@ class Template: LeapModel, Particible, Alarmable, CalendarLinkable {
                                    "alarms": alarms,
                                    "linkedCalendarIds": linkedCalendarIds,
                                    "typeString": reminderTypeString,
+                                   "event": event,
                                    "originString": originString]
         return Reminder(value: data)
     }
