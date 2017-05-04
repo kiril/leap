@@ -467,7 +467,7 @@ class EventSurface: Surface, ModelLoadable {
 
         bridge.bind(surface.userResponse,
                     populateWith: { EventResponse.from(($0 as! Event).engagement) },
-                    on: "series",
+                    on: "event",
                     persistWith: { ($0 as! Event).engagement = ($1 as! EventResponse).asEngagement() })
 
         bridge.readonlyBind(surface.recurringTimeRange) { (model:LeapModel) -> String? in

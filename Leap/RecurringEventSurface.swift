@@ -53,7 +53,7 @@ class RecurringEventSurface: EventSurface {
 
         bridge.readonlyBind(surface.invitationSummary) { invitationSummary(series: ($0 as! Series)) }
         bridge.bind(surface.userResponse,
-                    populateWith: { EventResponse.from(($0 as! Series).engagement) },
+                    populateWith: { (m:LeapModel) in EventResponse.from((m as! Series).engagement) },
                     on: "series",
                     persistWith: { ($0 as! Series).engagement = ($1 as! EventResponse).asEngagement() })
         bridge.readonlyBind(surface.recurringTimeRange) { recurringDescription(series: ($0 as! Series)) }
