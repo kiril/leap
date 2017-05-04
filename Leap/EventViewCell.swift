@@ -228,7 +228,9 @@ class EventViewCell: UICollectionViewCell {
             break
 
         case .share:
-            shareIcon.isHidden = false
+            // I don't know what to use here, if anything: I have an 'eye' right now, which sucks.
+            //shareIcon.isHidden = false
+            break
 
         case .subscription:
             subscribedIcon.isHidden = false
@@ -258,8 +260,8 @@ class EventViewCell: UICollectionViewCell {
         alarmIcon.isHidden = !event.hasAlarms.value
         checklistIcon.isHidden = !event.hasAgenda
 
-        attendeesIcon.isHidden = event.participants.value.count < 3
-        attendeeIcon.isHidden = !(event.participants.value.count == 2 && event.participants.value.me != nil)
+        //attendeesIcon.isHidden = event.participants.value.count < 3
+        //attendeeIcon.isHidden = !(event.participants.value.count == 2 && event.participants.value.me != nil)
 
         configureOrigin(with: event)
 
