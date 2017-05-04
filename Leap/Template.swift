@@ -119,19 +119,18 @@ class Template: LeapModel, Particible, Alarmable, CalendarLinkable {
             return nil
         }
 
-        let data: ModelInitData = ["id": id,
-                                   "title": title,
-                                   "detail": detail,
-                                   "locationString": locationString,
-                                   "agenda": agenda?.copy(),
-                                   "modalityString": modalityString,
-                                   "startTime": startDate.secondsSinceReferenceDate,
-                                   "seriesId": seriesId,
-                                   "participants": participants,
-                                   "alarms": alarms,
-                                   "linkedCalendarIds": linkedCalendarIds,
-                                   "originString": originString,
-                                   "endTime": endDate.secondsSinceReferenceDate]
-        return Event(value: data)
+        return Event(value: ["id": id,
+                             "title": title,
+                             "detail": detail,
+                             "locationString": locationString,
+                             "agenda": agenda?.copy(),
+                             "modalityString": modalityString,
+                             "startTime": startDate.secondsSinceReferenceDate,
+                             "seriesId": seriesId,
+                             "participants": participants,
+                             "alarms": alarms,
+                             "linkedCalendarIds": linkedCalendarIds,
+                             "originString": originString,
+                             "endTime": endDate.secondsSinceReferenceDate])
     }
 }
