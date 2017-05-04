@@ -40,8 +40,8 @@ class RecurringReminderSurface: ReminderSurface {
         bridge.reference(series, as: "series")
 
         bridge.bind(surface.title)
-        bridge.readonlyBind(surface.startTime) { ($0 as! Series).template.startTime(in: range) }
-        bridge.readonlyBind(surface.endTime) { ($0 as! Series).template.endTime(in: range) }
+        bridge.readonlyBind(surface.startTime) { ($0 as! Series).template.startTime(in: range)!.secondsSinceReferenceDate }
+        bridge.readonlyBind(surface.endTime) { ($0 as! Series).template.endTime(in: range)?.secondsSinceReferenceDate ?? 0 }
         bridge.readonlyBind(surface.refersToEvent) { (model:LeapModel) in return true }
         bridge.readonlyBind(surface.reminderType) { ($0 as! Series).template.reminderType }
         bridge.readonlyBind(surface.eventId) { ($0 as! Series).referencing?.id }

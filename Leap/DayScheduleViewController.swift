@@ -238,7 +238,7 @@ extension DayScheduleViewController: IGListAdapterDataSource {
     }
 
     func objects(for listAdapter: IGListAdapter) -> [IGListDiffable] {
-        let reminders = (surface.reminders.value as [IGListDiffable])
+        let reminders = (surface.reminderList as [IGListDiffable])
 
         var emptyReminderPlaceholder = [IGListDiffable]()
         if reminders.isEmpty {
