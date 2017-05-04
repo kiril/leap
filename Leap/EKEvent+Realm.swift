@@ -177,6 +177,7 @@ extension EKEvent {
 
     func addCommonData(_ data: ModelInitData, in calendar: EKCalendar) -> ModelInitData {
         let origin = getOrigin(in: calendar)
+        let participants = self.getParticipants(origin: origin)
         var common: ModelInitData = [
             "id": self.cleanId,
             "title": self.title,
@@ -184,9 +185,10 @@ extension EKEvent {
             "locationString": self.location,
             "modalityString": self.modality.rawValue,
             "originString": origin.rawValue,
-            "participants": self.getParticipants(origin: origin),
+            "participants": participants,
             "linkedCalendarIds": [calendar.asLinkId()],
             "alarms": self.getAlarms(),
+            "engagementString": (participants.me?.engagement ?? .none).rawValue,
         ]
         for (key, value) in data {
             common[key] = value

@@ -10,7 +10,6 @@ import Foundation
 import RealmSwift
 
 
-
 typealias ModelGetter = (LeapModel) -> Any?
 typealias ModelSetter = (LeapModel, Any?) -> Void
 
@@ -119,6 +118,11 @@ class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
             fatalError("Can't bind a Reference-type value to \(String(describing:references[model])) type '\(model)'")
         }
         bindings[property.key] = .read(name: model, getter: get)
+    }
+
+    func readonlyBind(_ property: Property) {
+        bindings[property.key] = .read(name: references.keys.first!,
+                                       getter: { $0.getValue(forKeysRecursively: property.key.components(separatedBy: ".")) })
     }
 
     // this is separate from above, as opposed to using an optional arg,

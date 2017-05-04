@@ -25,6 +25,12 @@ class Series: LeapModel, Fuzzy {
     dynamic var typeString: String = CalendarItemType.event.rawValue
     dynamic var lastRecurrenceDay: Date?
     dynamic var originString: String = Origin.unknown.rawValue
+    dynamic var engagementString: String = Engagement.none.rawValue
+
+    var engagement: Engagement {
+        get { return Engagement(rawValue: engagementString)! }
+        set { engagementString = newValue.rawValue }
+    }
 
     static func by(id: String) -> Series? {
         return fetch(id: id)
@@ -226,20 +232,6 @@ class Series: LeapModel, Fuzzy {
         return false
     }
 
-    func startTime(between start: Date, and end: Date) -> Date? {
-        if Calendar.universalGregorian.component(.minute, from: start) == template.startMinute &&
-            Calendar.universalGregorian.component(.hour, from: start) == template.startHour {
-            return start < end ? start : nil
-        }
-        let minuteSet = Calendar.universalGregorian.date(bySetting: .minute, value: template.startMinute, of: start)!
-        let possibility = Calendar.universalGregorian.date(bySetting: .hour, value: template.startHour, of: minuteSet)!
-
-        guard possibility < end else {
-            return nil
-        }
-        return possibility
-    }
-
     func generateId(for start: Date) -> String {
         let year = Calendar.universalGregorian.component(.year, from: start)
         let month = Calendar.universalGregorian.component(.month, from: start)
@@ -264,7 +256,7 @@ class Series: LeapModel, Fuzzy {
             return nil
         }
 
-        guard let eventStart = startTime(between: start, and: end), recurrence.recursOn(eventStart, for: self) else {
+        guard let eventStart = template.startTime(between: start, and: end), recurrence.recursOn(eventStart, for: self) else {
             return nil
         }
         let eventId = generateId(for: eventStart)
@@ -298,7 +290,7 @@ class Series: LeapModel, Fuzzy {
             return nil
         }
 
-        guard let reminderStart = startTime(between: start, and: end), recurrence.recursOn(reminderStart, for: self) else {
+        guard let reminderStart = template.startTime(between: start, and: end), recurrence.recursOn(reminderStart, for: self) else {
             return nil
         }
 
