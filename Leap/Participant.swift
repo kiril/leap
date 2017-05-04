@@ -120,3 +120,25 @@ class Participant: LeapModel {
         return false
     }
 }
+
+extension List where Element: Participant {
+    var me: Participant? {
+        for participant in self {
+            if participant.isMe {
+                return participant
+            }
+        }
+        return nil
+    }
+}
+
+extension Array where Element: Participant {
+    var me: Participant? {
+        for participant in self {
+            if participant.isMe {
+                return participant
+            }
+        }
+        return nil
+    }
+}

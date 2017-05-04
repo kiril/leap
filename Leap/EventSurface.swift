@@ -15,6 +15,33 @@ enum EventResponse {
     yes,
     no,
     maybe
+
+
+    static func from(_ engagement: Engagement) -> EventResponse {
+        switch engagement {
+        case .undecided, .none:
+            return .none
+        case .engaged:
+            return .yes
+        case .disengaged:
+            return .no
+        case .tracking:
+            return .maybe
+        }
+    }
+
+    func asEngagement() -> Engagement {
+        switch self {
+        case .none:
+            return .undecided
+        case .yes:
+            return .engaged
+        case .no:
+            return .disengaged
+        case .maybe:
+            return .tracking
+        }
+    }
 }
 
 enum Handedness {
@@ -275,7 +302,7 @@ class EventSurface: Surface, ModelLoadable {
 
         let realm = Realm.user()
 
-        let event = Event.by(id: id)!
+        guard let event = Event.by(id: id) else { return }
 
         let data : [String: Any] = [
             "title": event.title,
@@ -283,13 +310,88 @@ class EventSurface: Surface, ModelLoadable {
             "startTime": event.startTime,
             "endTime": event.endTime,
             "typeString": ReminderType.event.rawValue,
-        ]
+            ]
 
         let reminder: Reminder = Reminder(value: data)
         try! realm.write {
             reminder.insert(into: realm)
             event.status = .archived
         }
+    }
+
+    static func invitationSummary(of event: Event) -> String? {
+        return invitationSummary(origin: event.origin,
+                                 calendar: event.linkedCalendars.first,
+                                 me: event.me,
+                                 organizer: event.organizer,
+                                 invitees: event.invitees)
+    }
+
+    static func invitationSummary(origin: Origin,
+                                  calendar: LegacyCalendar?,
+                                  me: Participant?,
+                                  organizer: Participant?,
+                                  invitees: [Participant]) -> String? {
+        let someone = "Someone"
+        let someCalendar = "Shared Calendar"
+
+        switch origin {
+        case .share:
+            if  let calendar = calendar,
+                let organizer = organizer,
+                let from = organizer.nameOrEmail {
+                return "\(from) -> \(calendar.title)"
+            } else if   let organizer = organizer,
+                let from = organizer.nameOrEmail {
+                return "from \(from)"
+            } else if let calendar = calendar {
+                return "via \(calendar.title)"
+            }
+            return "via Shared Calendar"
+
+        case .invite:
+            let from = organizer?.nameOrEmail
+            var to = ""
+
+            for participant in invitees {
+                if participant == organizer {
+                    continue
+                }
+                let name = participant.isMe ? "Me" : participant.nameOrEmail ?? someone
+                if !to.isEmpty {
+                    to += ", "
+                }
+                to += name
+            }
+
+            guard let fromName = from else {
+                return "→ \(to)"
+            }
+
+            if let me = me, to == "Me" {
+                if me.engagement == .engaged {
+                    return "with \(fromName)"
+                } else {
+                    return "from \(fromName)"
+                }
+            }
+
+            guard !to.isEmpty else {
+                return "from \(fromName)"
+            }
+
+            return "\(fromName) → \(to)"
+            
+        case .subscription:
+            return "via \(calendar?.title ?? someCalendar)"
+            
+        case .personal:
+            return nil
+            
+        case .unknown:
+            return nil
+        }
+
     }
 
     static func load(byId eventId: String) -> EventSurface? {
@@ -301,7 +403,6 @@ class EventSurface: Surface, ModelLoadable {
 
     static func load(with model: LeapModel) -> Surface? {
         guard let event = model as? Event else { return nil }
-
         let surface = EventSurface(id: event.id)
         let bridge = SurfaceModelBridge(id: event.id, surface: surface)
 
@@ -309,86 +410,19 @@ class EventSurface: Surface, ModelLoadable {
 
         bridge.bind(surface.title)
         bridge.bind(surface.detail)
-
-        bridge.readonlyBind(surface.hasAlarms) { (m:LeapModel) -> Bool in
-            return (m as! Event).alarms.count > 0
-        }
-        bridge.readonlyBind(surface.alarmSummary) { (m:LeapModel) -> String? in
-            guard let event = m as? Event, event.alarms.count > 0 else { return nil }
-            var summary = "Alarm "
-            let initialLength = summary.characters.count
-            for alarm in event.alarms {
-                if summary.characters.count > initialLength {
-                    summary += ", "
-                }
-
-                switch alarm.type {
-                case .absolute:
-                    let formatter = DateFormatter()
-                    formatter.locale = Locale.current
-                    formatter.setLocalizedDateFormatFromTemplate("MMMdy")
-                    let dateString = formatter.string(from: alarm.absoluteTime!)
-                    summary += dateString
-
-                case .location:
-                    summary += "on a certain location"
-
-                case .relative:
-                    let seconds = alarm.relativeOffset
-                    if seconds > 0 {
-                        summary += "\(seconds.durationString) after"
-                    } else if seconds == 0 {
-                        summary += "at time of event"
-                    } else {
-                        summary += "\(abs(seconds).durationString) before"
-                    }
-                }
-            }
-            return summary
-        }
-        bridge.readonlyBind(surface.origin) { (m) -> Any? in
-            if let e = m as? Event {
-                return e.origin
-            }
-            return Origin.unknown
-        }
-        bridge.readonlyBind(surface.isRecurring, populateWith: { (m:LeapModel) in
-            if let e = m as? Event {
-                return e.isRecurring
-            }
-            return false
-        })
-
         bridge.bind(surface.agenda)
 
-        func getStartTime(model:LeapModel) -> Any? {
-            guard let event = model as? Event else {
-                fatalError("OMG wrong type or something \(model)")
-            }
-            return event.startDate
-        }
-        func setStartTime(model:LeapModel, value: Any?) {
-            guard let event = model as? Event, let date = value as? Date else {
-                fatalError("OMG wrong type or something \(model)")
-            }
+        bridge.readonlyBind(surface.hasAlarms) { !($0 as! Event).alarms.isEmpty }
+        bridge.readonlyBind(surface.alarmSummary) { ($0 as! Event).alarms.summarize() }
+        bridge.readonlyBind(surface.origin) { ($0 as! Event).origin }
+        bridge.readonlyBind(surface.isRecurring) { ($0 as! Event).isRecurring }
 
-            event.startTime = date.secondsSinceReferenceDate
-        }
+        let getStartTime = { (m:LeapModel) in return (m as! Event).startDate }
+        let setStartTime = { (m:LeapModel, v: Any?) in (m as! Event).startTime = (v as! Date).secondsSinceReferenceDate }
         bridge.bind(surface.startTime, populateWith: getStartTime, on: "event", persistWith: setStartTime)
 
-        func getEndTime(model:LeapModel) -> Any? {
-            guard let event = model as? Event else {
-                fatalError("OMG wrong type or something \(model)")
-            }
-            return event.endDate
-        }
-        func setEndTime(model:LeapModel, value: Any?) {
-            guard let event = model as? Event, let date = value as? Date else {
-                fatalError("OMG wrong type or something \(model)")
-            }
-
-            event.endTime = date.secondsSinceReferenceDate
-        }
+        let getEndTime = {(m:LeapModel) in return (m as! Event).endDate}
+        let setEndTime = {(m:LeapModel, v:Any?) in (m as! Event).endTime = (v as! Date).secondsSinceReferenceDate }
         bridge.bind(surface.endTime, populateWith: getEndTime, on: "event", persistWith: setEndTime)
 
         func getArrivalTime(model: LeapModel) -> Any? {
@@ -420,202 +454,26 @@ class EventSurface: Surface, ModelLoadable {
         }
         bridge.bind(surface.departureTime, populateWith: getDepartureTime, on: "event", persistWith: setDepartureTime)
 
-        bridge.readonlyBind(surface.userIsInvited) { (model:LeapModel) in
-            guard let thing = model as? Temporality, let me = thing.me else {
-                return false
-            }
-            return me.ownership == .invitee
-        }
+        bridge.readonlyBind(surface.userIsInvited) { ($0 as! Event).origin == .invite }
 
         bridge.readonlyBind(surface.locationSummary) { (model:LeapModel) -> String? in
-            guard let event = model as? Event, let location = event.locationString, !location.isEmpty else {
+            guard let location = (model as! Event).locationString, !location.isEmpty else {
                 return nil
             }
             return location
         }
 
-        bridge.readonlyBind(surface.invitationSummary) { (model:LeapModel) -> String? in
-            let someone = "Someone"
-            let someCalendar = "Shared Calendar"
-            if let event = model as? Event {
-                switch event.origin {
-                case .share:
-                    if  let calendar = event.linkedCalendars.first,
-                        let organizer = event.organizer,
-                        let from = organizer.nameOrEmail {
-                        return "\(from) -> \(calendar.title)"
-                    } else if   let organizer = event.organizer,
-                                let from = organizer.nameOrEmail {
-                        return "from \(from)"
-                    } else if let calendar = event.linkedCalendars.first {
-                        return "via \(calendar.title)"
-                    }
-                    return "via Shared Calendar"
+        bridge.readonlyBind(surface.invitationSummary) { invitationSummary(of: ($0 as! Event)) }
 
-                case .invite:
-                    let from = event.organizer?.nameOrEmail
-                    var to = ""
-
-                    for participant in event.invitees {
-                        if participant == event.organizer {
-                            continue
-                        }
-                        let name = participant.isMe ? "Me" : participant.nameOrEmail ?? someone
-                        if !to.isEmpty {
-                            to += ", "
-                        }
-                        to += name
-                    }
-
-                    guard let fromName = from else {
-                        return "→ \(to)"
-                    }
-
-                    if event.me != nil && to == "Me" {
-                        if event.me!.engagement == .engaged {
-                            return "with \(fromName)"
-                        } else {
-                            return "from \(fromName)"
-                        }
-                    }
-
-                    guard !to.isEmpty else {
-                        return "from \(fromName)"
-                    }
-
-                    return "\(fromName) → \(to)"
-
-                case .subscription:
-                    return "via \(event.linkedCalendars.first?.title ?? someCalendar)"
-
-                case .personal:
-                    return nil
-
-                case .unknown:
-                    return nil
-                }
-            } else {
-                return "Not an Event"
-            }
-        }
-
-        func getEventResponse(model:LeapModel) -> Any? {
-            guard   let thing = model as? Temporality,
-                    let me = thing.me else {
-                return EventResponse.none
-            }
-
-            switch me.engagement {
-            case .undecided, .none:
-                return EventResponse.none
-            case .engaged:
-                return EventResponse.yes
-            case .disengaged:
-                return EventResponse.no
-            case .tracking:
-                return EventResponse.maybe
-            }
-        }
-        func setEventResponse(model:LeapModel, value: Any?) {
-            guard   let thing = model as? Temporality,
-                    let response = value as? EventResponse else {
-                fatalError("OMG wrong type or something \(model)")
-                // could this happen just because you are no longer invited?
-            }
-
-            if thing.me == nil {
-                // We need to add a participant if you don't have 
-
-                let personData: [String:Any?] = ["isMe": true]
-                let enforcedMe = Person(value: personData)
-
-                let participantData: [String: Any?] = ["person": enforcedMe]
-                let enforcedMeParticipation = Participant(value: participantData)
-
-                thing.participants.append(enforcedMeParticipation)
-            }
-
-            guard let me = thing.me else {
-                fatalError("me should be enforced")
-            }
-
-            // now handle other engagement settings
-            switch response {
-            case .none:
-                me.engagement = .undecided
-            case .yes:
-                me.engagement = .engaged
-            case .no:
-                me.engagement = .disengaged
-            case .maybe:
-                me.engagement = .tracking
-            }
-        }
         bridge.bind(surface.userResponse,
-                    populateWith: getEventResponse,
+                    populateWith: { EventResponse.from(($0 as! Event).engagement) },
                     on: "event",
-                    persistWith: setEventResponse)
+                    persistWith: { ($0 as! Event).engagement = ($1 as! EventResponse).asEngagement() })
 
         bridge.readonlyBind(surface.recurringTimeRange) { (model:LeapModel) -> String? in
             guard let event = model as? Event else { return nil }
             guard let seriesId = event.seriesId, let series = Series.by(id: seriesId) else { return nil }
-
-            var recurrence = "Repeating"
-            switch series.recurrence.frequency {
-            case .daily:
-                recurrence = "Daily"
-
-            case .weekly:
-                recurrence = "Weekly"
-                if series.recurrence.daysOfWeek.count > 0 {
-                    let weekdays = series.recurrence.daysOfWeek.map({ $0.raw }).sorted()
-                    if weekdays == GregorianWeekdays {
-                        recurrence = "Weekdays"
-                    } else if weekdays == GregorianWeekends {
-                        recurrence = "Weekends"
-                    } else {
-                        recurrence = ""
-
-                        for (i, weekday) in weekdays.enumerated() {
-                            if i > 0 {
-                                if i == weekdays.count-1 {
-                                    recurrence += " and "
-                                } else {
-                                    recurrence += ", "
-                                }
-                            }
-                            recurrence += "\(weekday.weekdayString)s"
-                        }
-                    }
-                }
-
-            case .monthly:
-                recurrence = "Monthly"
-
-            case .yearly:
-                recurrence = "Yearly"
-
-            case .unknown:
-                return nil
-            }
-
-            let calendar = Calendar.current
-            let startHour = calendar.component(.hour, from: event.startDate)
-            let endHour = calendar.component(.hour, from: event.endDate)
-
-            let spansDays = calendar.areOnDifferentDays(event.startDate, event.endDate)
-            let crossesNoon = spansDays || ( startHour < 12 && endHour >= 12 )
-
-            let from = calendar.formatDisplayTime(from: event.startDate, needsAMPM: crossesNoon)
-            let to = calendar.formatDisplayTime(from: event.endDate, needsAMPM: true)
-            var more = ""
-            if spansDays {
-                let days = calendar.daysBetween(event.startDate, and: event.endDate)
-                let ess = days == 1 ? "" : "s"
-                more = " \(days) day\(ess) later"
-            }
-            
-            return "\(recurrence) from \(from) - \(to)\(more)"
+            return recurringDescription(series: series)
         }
 
         bridge.readonlyBind(surface.participants) { (m:LeapModel) -> [ParticipantSurface] in
@@ -637,6 +495,72 @@ class EventSurface: Surface, ModelLoadable {
         return surface
     }
 
+    static func recurringDescription(series: Series) -> String? {
+        var recurrence = "Repeating"
+
+        switch series.recurrence.frequency {
+        case .daily:
+            recurrence = "Daily"
+
+        case .weekly:
+            recurrence = "Weekly"
+            if series.recurrence.daysOfWeek.count > 0 {
+                let weekdays = series.recurrence.daysOfWeek.map({ $0.raw }).sorted()
+                if weekdays == GregorianWeekdays {
+                    recurrence = "Weekdays"
+                } else if weekdays == GregorianWeekends {
+                    recurrence = "Weekends"
+                } else {
+                    recurrence = ""
+
+                    for (i, weekday) in weekdays.enumerated() {
+                        if i > 0 {
+                            if i == weekdays.count-1 {
+                                recurrence += " and "
+                            } else {
+                                recurrence += ", "
+                            }
+                        }
+                        recurrence += "\(weekday.weekdayString)s"
+                    }
+                }
+            }
+
+        case .monthly:
+            recurrence = "Monthly"
+
+        case .yearly:
+            recurrence = "Yearly"
+
+        case .unknown:
+            return nil
+        }
+
+
+        let calendar = Calendar.current
+        let now = Date()
+        let range = TimeRange(start: now, end: calendar.date(byAdding: .day, value: 1, to: now)!)!
+        let startDate = series.template.startTime(in: range)!
+        let endDate = series.template.endTime(in: range)!
+
+        let startHour = calendar.component(.hour, from: startDate)
+        let endHour = calendar.component(.hour, from: endDate)
+
+        let spansDays = calendar.areOnDifferentDays(startDate, endDate)
+        let crossesNoon = spansDays || ( startHour < 12 && endHour >= 12 )
+
+        let from = calendar.formatDisplayTime(from: startDate, needsAMPM: crossesNoon)
+        let to = calendar.formatDisplayTime(from: endDate, needsAMPM: true)
+        var more = ""
+        if spansDays {
+            let days = calendar.daysBetween(startDate, and: endDate)
+            let ess = days == 1 ? "" : "s"
+            more = " \(days) day\(ess) later"
+        }
+
+        return "\(recurrence) from \(from) - \(to)\(more)"
+    }
+
     func buttonText(forResponse response: EventResponse) -> String? {
         switch origin.value {
         case .invite:
@@ -655,7 +579,7 @@ class EventSurface: Surface, ModelLoadable {
             case .yes:
                 return "Join"
             case .no:
-                return "No"
+                return "Archive"
             case .maybe:
                 return "Maybe"
             case .none:
@@ -666,7 +590,7 @@ class EventSurface: Surface, ModelLoadable {
             case .yes:
                 return "Confirm"
             case .no:
-                return "No"
+                return "Archive"
             case .maybe:
                 return "Maybe"
             case .none:
@@ -699,8 +623,44 @@ extension Array where Element: EventSurface {
     }
 }
 
+
 extension EventSurface: Comparable {
     static func < (lhs: EventSurface, rhs: EventSurface) -> Bool {
         return lhs.startTime.value < lhs.startTime.value
+    }
+}
+
+
+extension List where Element: Alarm {
+    func summarize() -> String {
+        var summary = "Alarm "
+        for (i, alarm) in self.enumerated() {
+            if i > 0 {
+                summary += ", "
+            }
+
+            switch alarm.type {
+            case .absolute:
+                let formatter = DateFormatter()
+                formatter.locale = Locale.current
+                formatter.setLocalizedDateFormatFromTemplate("MMMdy")
+                let dateString = formatter.string(from: alarm.absoluteTime!)
+                summary += dateString
+
+            case .location:
+                summary += "on a certain location"
+
+            case .relative:
+                let seconds = alarm.relativeOffset
+                if seconds > 0 {
+                    summary += "\(seconds.durationString) after"
+                } else if seconds == 0 {
+                    summary += "at time of event"
+                } else {
+                    summary += "\(abs(seconds).durationString) before"
+                }
+            }
+        }
+        return summary
     }
 }

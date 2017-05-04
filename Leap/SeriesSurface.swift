@@ -17,10 +17,13 @@ class SeriesSurface: Surface, ModelLoadable {
     func event(for day: GregorianDay) -> EventSurface? {
         let start = Calendar.current.startOfDay(for: day)
         let end = Calendar.current.startOfDay(for: day.dayAfter)
-        if let event = Series.by(id: id)?.event(between: start, and: end) {
-            return EventSurface.load(with: event) as? EventSurface
+        guard let series = Series.by(id: id),
+            series.recursBetween(start, and: end),
+            series.template.startTime(between: start, and: end) != nil else {
+            return nil
         }
-        return nil
+
+        return RecurringEventSurface.load(with: series, in: TimeRange(start: start, end: end)!)
     }
 
     func reminder(for day: GregorianDay) -> ReminderSurface? {

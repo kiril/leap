@@ -65,6 +65,10 @@ class EventKit {
     }
 
     func importEvent(_ ekEvent: EKEvent, in calendar: EKCalendar) {
+        if ekEvent.isDetached {
+            print("DETACHED \(ekEvent.title)")
+        }
+
         importQueue.async {
             if let series = Series.by(id: ekEvent.cleanId) { // always keep series as series, even if arrives w/o recurrence info
                 self.importAsSeries(ekEvent, in: calendar, given: series)

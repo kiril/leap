@@ -36,6 +36,11 @@ class Template: LeapModel, Particible, Alarmable, CalendarLinkable {
         set { modalityString = newValue.rawValue }
     }
 
+    var origin: Origin {
+        get { return Origin(rawValue: originString)! }
+        set { originString = newValue.rawValue }
+    }
+
     func reminder(onDayOf date: Date, id: String? = nil) -> Reminder? {
         let calendar = Calendar.current
         let year = calendar.component(.year, from: date)
@@ -61,6 +66,36 @@ class Template: LeapModel, Particible, Alarmable, CalendarLinkable {
                                    "originString": originString]
         return Reminder(value: data)
     }
+
+    func startTime(in range: TimeRange) -> Date? {
+        return startTime(between: range.start, and: range.end)
+    }
+
+    func startTime(between start: Date, and end: Date) -> Date? {
+        if Calendar.universalGregorian.component(.minute, from: start) == startMinute &&
+            Calendar.universalGregorian.component(.hour, from: start) == startHour {
+            return start < end ? start : nil
+        }
+        let possibility = Calendar.universalGregorian.date(bySettingHour: startHour, minute: startMinute, second: 0, of: start)!
+
+        guard possibility < end else {
+            return nil
+        }
+        return possibility
+    }
+
+    func endTime(in range: TimeRange) -> Date? {
+        return endTime(between: range.start, and: range.end)
+    }
+
+
+    func endTime(between start: Date, and end: Date) -> Date? {
+        if let start = startTime(between: start, and: end) {
+            return Calendar.universalGregorian.date(byAdding: .minute, value: durationMinutes, to: start)!
+        }
+        return nil
+    }
+
 
     func event(onDayOf date: Date, id: String? = nil) -> Event? {
         let calendar = Calendar.current

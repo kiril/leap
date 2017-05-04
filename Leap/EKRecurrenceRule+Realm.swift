@@ -38,13 +38,17 @@ extension EKRecurrenceRule {
 
 
     func asSeries(for event: EKEvent, in calendar: EKCalendar) -> Series {
+        let origin = event.getOrigin(in: calendar)
+        let participants = event.getParticipants(origin: origin)
+        let engagement = (participants.me?.engagement ?? .none)
         let data: ModelInitData = ["id": event.cleanId,
                                    "title": event.title,
                                    "startTime": event.startDate.secondsSinceReferenceDate,
                                    "typeString": event.type.rawValue,
                                    "endTime": recurrenceEnd?.endDate?.secondsSinceReferenceDate ?? 0,
-                                   "originString": event.getOrigin(in: calendar).rawValue,
+                                   "originString": origin.rawValue,
                                    "template": event.asTemplate(in: calendar),
+                                   "engagementString": engagement.rawValue,
                                    "recurrence": self.asRecurrence(on: event.startDate)]
         return Series(value: data)
     }

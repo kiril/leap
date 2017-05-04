@@ -99,6 +99,7 @@ class _TemporalBase: LeapModel {
     dynamic var legacyTimeZone: TimeZone?
     dynamic var template: Template?
     dynamic var originString: String = Origin.unknown.rawValue
+    dynamic var engagementString: String = Engagement.none.rawValue
 
     let seriesEventNumber = RealmOptional<Int>()
 
@@ -111,5 +112,10 @@ class _TemporalBase: LeapModel {
     var origin: Origin {
         get { return Origin(rawValue: originString)! }
         set { originString = newValue.rawValue }
+    }
+
+    var engagement: Engagement {
+        get { return Engagement(rawValue: engagementString)! }
+        set { engagementString = newValue.rawValue }
     }
 }
