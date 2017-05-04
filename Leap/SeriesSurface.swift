@@ -15,7 +15,7 @@ class SeriesSurface: Surface, ModelLoadable {
     let seriesType     = SurfaceProperty<CalendarItemType>()
 
     func event(for day: GregorianDay) -> EventSurface? {
-        let range = TimeRange(start: Calendar.current.startOfDay(for: day), end: Calendar.current.startOfDay(for: day.dayAfter))!
+        let range = TimeRange.of(day: day)
         guard let series = Series.by(id: id), series.recurs(in: range) else { return nil }
         guard let startTime = series.template.startTime(in: range) else { return nil }
 
@@ -27,7 +27,7 @@ class SeriesSurface: Surface, ModelLoadable {
     }
 
     func reminder(for day: GregorianDay) -> ReminderSurface? {
-        let range = TimeRange(start: Calendar.current.startOfDay(for: day), end: Calendar.current.startOfDay(for: day.dayAfter))!
+        let range = TimeRange.of(day: day)
         guard let series = Series.by(id: id), series.recurs(in: range) else { return nil }
         guard let startTime = series.template.startTime(in: range) else { return nil }
 
@@ -38,7 +38,7 @@ class SeriesSurface: Surface, ModelLoadable {
         return RecurringReminderSurface.load(from: series, in: range)
     }
 
-    func recursOn(_ day: GregorianDay) -> Bool {
+    func recurs(on day: GregorianDay) -> Bool {
         guard let series = Series.by(id: id) else {
             return false
         }

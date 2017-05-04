@@ -26,7 +26,7 @@ class DayScheduleSurface: Surface {
             guard s.seriesType.value == .event else {
                 continue
             }
-            if s.recursOn(self.day.gregorianDay) {
+            if s.recurs(on: self.day.gregorianDay) {
                 matches.append(s)
             }
         }
@@ -39,7 +39,7 @@ class DayScheduleSurface: Surface {
             guard s.seriesType.value == .reminder else {
                 continue
             }
-            if s.recursOn(self.day.gregorianDay) {
+            if s.recurs(on: self.day.gregorianDay) {
                 matches.append(s)
             }
         }
