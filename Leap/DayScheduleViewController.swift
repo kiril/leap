@@ -181,7 +181,22 @@ extension DayScheduleViewController: EventViewCellDelegate {
             resolve(overlap: overlap, between: event, and: other, respondingTo: event, with: response)
 
         } else {
-            event.respond(with: response, forceDisplay: true)
+            if event.isRecurring.value && event.responseNeedsClarification, let recurring = event as? RecurringEventSurface {
+                let alert = recurring.recurringResponseOptions(for: response) { scope in
+                    switch scope {
+                    case .none:
+                        break
+                    case .series:
+                        recurring.respond(with: response, forceDisplay: true)
+                    case .event:
+                        recurring.respond(with: response, forceDisplay: true)
+                    }
+                }
+                self.present(alert, animated: true)
+
+            } else {
+                event.respond(with: response, forceDisplay: true)
+            }
         }
     }
 

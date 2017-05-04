@@ -101,4 +101,46 @@ class RecurringEventSurface: EventSurface {
                                  organizer: series.template.organizer,
                                  invitees: series.template.invitees)
     }
+
+
+    override var responseNeedsClarification: Bool {
+        if self.needsResponse.value {
+            return false
+        } else {
+            return true
+        }
+    }
+
+
+    func respondDetaching(with response: EventResponse, forceDisplay: Bool = false) {
+        userResponse.update(to: response)
+        temporarilyForceDisplayResponseOptions = forceDisplay
+        try! flush()
+    }
+
+    func recurringResponseOptions(for response: EventResponse, onComplete: @escaping (ResponseScope) -> Void) -> UIAlertController {
+        let alert = UIAlertController(title: "Recurring Event",
+                                      message: "\"\(title.value)\" is part of a series.",
+            preferredStyle: .actionSheet)
+
+        alert.addAction(UIAlertAction(title: "\(verb(for: response)) all events in the series", style: .default) {
+            action in
+            self.respond(with: response, forceDisplay: true)
+            onComplete(.series)
+        })
+        alert.addAction(UIAlertAction(title: "\(verb(for: response)) just this one", style: .default) {
+            action in
+            self.respondDetaching(with: response, forceDisplay: true)
+            onComplete(.event)
+        })
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { action in onComplete(.none) })
+
+        return alert
+    }
+}
+
+enum ResponseScope {
+    case series
+    case event
+    case none
 }
