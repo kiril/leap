@@ -255,7 +255,7 @@ class EventViewCell: UICollectionViewCell {
         titleLabel.text = event.title.value
         invitationSummaryLabel.text = event.invitationSummary.value
         timeWarningLabel.isHidden = !event.isInConflict
-        resolveButton.isHidden = !event.isInConflict || event.needsResponse.value
+        resolveButton.isHidden = !event.isInConflict || event.needsResponse.value || event.temporarilyForceDisplayResponseOptions
         descriptionIcon.isHidden = event.detail.rawValue == nil || !event.detail.value.hasNonWhitespaceCharacters
         alarmIcon.isHidden = !event.hasAlarms.value
         checklistIcon.isHidden = !event.hasAgenda
