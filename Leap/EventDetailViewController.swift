@@ -52,7 +52,8 @@ extension EventDetailViewController: EventDetailViewDelegate {
     }
 
     func selected(response: EventResponse, for event: EventSurface) {
-        if let recurring = event as? RecurringEventSurface, recurring.responseNeedsClarification {
+        if let recurring = event as? RecurringEventSurface,
+            recurring.responseNeedsClarification(for: response) {
             let alert = recurring.recurringResponseOptions(for: response) { scope in
                 switch scope {
                 case .none:

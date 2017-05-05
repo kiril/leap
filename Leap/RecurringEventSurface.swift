@@ -103,8 +103,8 @@ class RecurringEventSurface: EventSurface {
     }
 
 
-    override var responseNeedsClarification: Bool {
-        if self.needsResponse.value {
+    override func responseNeedsClarification(for response: EventResponse) -> Bool {
+        if self.needsResponse.value && response == .yes {
             return false
         } else {
             return true
