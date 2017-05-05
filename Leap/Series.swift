@@ -287,6 +287,7 @@ class Series: LeapModel, Fuzzy {
         if let event = template.event(onDayOf: eventStart, id: eventId),
             Calendar.universalGregorian.isDate(event.startDate, betweenInclusive: start, and: end) &&
                 self.recurrence.recursOn(event.startDate, for: self) {
+            event.engagement = engagement
             event.update()
             return event
         }
