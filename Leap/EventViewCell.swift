@@ -31,13 +31,9 @@ class EventViewCell: UICollectionViewCell {
 
     // icons!!
     @IBOutlet weak var recurringIcon: UILabel!
-    @IBOutlet weak var carIcon: UILabel!
-    @IBOutlet weak var attendeeIcon: UILabel!
     @IBOutlet weak var facebookIcon: UILabel!
     @IBOutlet weak var slackIcon: UILabel!
     @IBOutlet weak var videoIcon: UILabel!
-    @IBOutlet weak var attendeesIcon: UILabel!
-    @IBOutlet weak var trainIcon: UILabel!
     @IBOutlet weak var ticketIcon: UILabel!
     @IBOutlet weak var phoneIcon: UILabel!
     @IBOutlet weak var skypeIcon: UILabel!
@@ -48,6 +44,7 @@ class EventViewCell: UICollectionViewCell {
     @IBOutlet weak var checklistIcon: UILabel!
     @IBOutlet weak var alarmIcon: UILabel!
     @IBOutlet weak var descriptionIcon: UILabel!
+    @IBOutlet weak var brokenLinkIcon: UILabel!
 
     // location
     @IBOutlet weak var locationContainer: UIStackView!
@@ -109,7 +106,7 @@ class EventViewCell: UICollectionViewCell {
         descriptionIcon.textColor = UIColor.projectLightGray
         arrivalDepartureLabel.textColor = UIColor.projectWarning
 
-        for icon:UILabel in [alarmIcon, recurringIcon, checklistIcon, commentIcon, locationIconLabel, fileIcon, shareIcon, attendeeIcon, attendeesIcon, carIcon, trainIcon, phoneIcon, skypeIcon, ticketIcon, videoIcon, photoIcon, facebookIcon, slackIcon] {
+        for icon:UILabel in [alarmIcon, recurringIcon, checklistIcon, commentIcon, locationIconLabel, fileIcon, shareIcon, brokenLinkIcon, phoneIcon, skypeIcon, ticketIcon, videoIcon, photoIcon, facebookIcon, slackIcon] {
             icon.textColor = UIColor.projectLightGray
         }
 
@@ -243,29 +240,7 @@ class EventViewCell: UICollectionViewCell {
         }
     }
 
-    func configure(with event: EventSurface) {
-        // move out of here to seperate helper classes
-        // if this needs to be different
-        // for different contexts
-
-        // set values
-        self.event = event
-
-        timeLabel.text = event.timeString.value
-        titleLabel.text = event.title.value
-        invitationSummaryLabel.text = event.invitationSummary.value
-        timeWarningLabel.isHidden = !event.isInConflict
-        resolveButton.isHidden = !event.isInConflict || event.needsResponse.value || event.temporarilyForceDisplayResponseOptions
-        descriptionIcon.isHidden = event.detail.rawValue == nil || !event.detail.value.hasNonWhitespaceCharacters
-        alarmIcon.isHidden = !event.hasAlarms.value
-        checklistIcon.isHidden = !event.hasAgenda
-
-        carIcon.isHidden = !(event is RecurringEventSurface)
-
-        //attendeesIcon.isHidden = event.participants.value.count < 3
-        //attendeeIcon.isHidden = !(event.participants.value.count == 2 && event.participants.value.me != nil)
-
-        configureOrigin(with: event)
+    func configureArrivalDeparture(with event: EventSurface) {
 
         if !event.isInConflict && (event.hasCustomArrival || event.hasCustomDeparture) {
             let bold = [NSFontAttributeName: timeLabel.font!]
@@ -288,12 +263,35 @@ class EventViewCell: UICollectionViewCell {
                 custom.append(string: time, attributes: bold)
             }
             arrivalDepartureLabel.attributedText = custom
-            arrivalDepartureLabel.isHidden = false
-            topBorderView.isHidden = false
+            arrivalDepartureLabel.isVisible = true
+            topBorderView.isVisible = true
         } else {
-            arrivalDepartureLabel.isHidden = true
-            topBorderView.isHidden = true
+            arrivalDepartureLabel.isVisible = false
+            topBorderView.isVisible = false
         }
+    }
+
+    func configure(with event: EventSurface) {
+        self.event = event
+
+        configureOrigin(with: event)
+        configureArrivalDeparture(with: event)
+
+        timeLabel.text = event.timeString.value
+        titleLabel.text = event.title.value
+        invitationSummaryLabel.text = event.invitationSummary.value
+
+        timeWarningLabel.isVisible = event.isInConflict && !event.temporarilyForceDisplayResponseOptions
+        resolveButton.isVisible = event.isInConflict && !(event.needsResponse.value || event.temporarilyForceDisplayResponseOptions)
+        descriptionIcon.isVisible = event.hasDetail
+        alarmIcon.isVisible = event.hasAlarms.value
+        checklistIcon.isVisible = event.hasAgenda
+
+        brokenLinkIcon.isVisible = event.isDetached
+
+        invitationActionContainer.isVisible = !event.isConfirmed.value || event.temporarilyForceDisplayResponseOptions
+
+        recurringIcon.isVisible = event.isRecurring.value
 
         configure(location: event.locationSummary.rawValue)
 
@@ -313,10 +311,6 @@ class EventViewCell: UICollectionViewCell {
         } else {
             contentView.alpha = 1.0
         }
-
-        invitationActionContainer.isHidden = event.isConfirmed.value && !event.temporarilyForceDisplayResponseOptions
-
-        recurringIcon.isHidden = !event.isRecurring.value
 
         updateActionButtons(forEvent: event)
     }

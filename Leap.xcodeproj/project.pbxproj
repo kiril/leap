@@ -81,6 +81,7 @@
 		FB180C581EB2D57E00FE1CF4 /* String+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB180C571EB2D57E00FE1CF4 /* String+Leap.swift */; };
 		FB1869D41E9FF88A007642F4 /* RecurrenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1869D31E9FF88A007642F4 /* RecurrenceTests.swift */; };
 		FB1869D61EA01CBC007642F4 /* List+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1869D51EA01CBC007642F4 /* List+Leap.swift */; };
+		FB1871F61EBCB38F00213913 /* UIView+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1871F51EBCB38F00213913 /* UIView+Leap.swift */; };
 		FB1E5FFC1EB685DB00FFF60C /* TimeInterval+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1E5FFB1EB685DB00FFF60C /* TimeInterval+Leap.swift */; };
 		FB1E5FFE1EB68CFB00FFF60C /* ParticipantSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1E5FFD1EB68CFB00FFF60C /* ParticipantSurface.swift */; };
 		FB1E60001EB6A77700FFF60C /* DateFormatter+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1E5FFF1EB6A77700FFF60C /* DateFormatter+Leap.swift */; };
@@ -261,6 +262,7 @@
 		FB180C571EB2D57E00FE1CF4 /* String+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Leap.swift"; sourceTree = "<group>"; };
 		FB1869D31E9FF88A007642F4 /* RecurrenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecurrenceTests.swift; sourceTree = "<group>"; };
 		FB1869D51EA01CBC007642F4 /* List+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "List+Leap.swift"; sourceTree = "<group>"; };
+		FB1871F51EBCB38F00213913 /* UIView+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Leap.swift"; sourceTree = "<group>"; };
 		FB1E5FFB1EB685DB00FFF60C /* TimeInterval+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TimeInterval+Leap.swift"; sourceTree = "<group>"; };
 		FB1E5FFD1EB68CFB00FFF60C /* ParticipantSurface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantSurface.swift; sourceTree = "<group>"; };
 		FB1E5FFF1EB6A77700FFF60C /* DateFormatter+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Leap.swift"; sourceTree = "<group>"; };
@@ -547,6 +549,7 @@
 				83B6C6B21E92B850002DCDA2 /* UIPageViewController.swift */,
 				8372067A1E9EAEBF0010B914 /* UIFont+Extensions.swift */,
 				8372067C1E9F3EDE0010B914 /* RealmExtensions.swift */,
+				FB1871F51EBCB38F00213913 /* UIView+Leap.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -1197,6 +1200,7 @@
 				FB3895781EA7C0DE000FC103 /* Thread+Leap.swift in Sources */,
 				FBBB60EC1EBBAD80009E67AD /* RecurringReminderSurface.swift in Sources */,
 				FB2046A31E82DA2200F130C8 /* Event.swift in Sources */,
+				FB1871F61EBCB38F00213913 /* UIView+Leap.swift in Sources */,
 				FB4208511E8593DA007F4DBD /* Venue.swift in Sources */,
 				FBD1045D1E80309300DDF65B /* Property.swift in Sources */,
 				FBBE56991EA1692800B9647C /* SeriesSurface.swift in Sources */,

@@ -111,6 +111,15 @@ class EventSurface: Surface, ModelLoadable {
 
     var hasAgenda: Bool { return agenda.rawValue != nil }
 
+    var isDetached: Bool {
+        if self is RecurringEventSurface {
+            return false
+        }
+        return self.isRecurring.value
+    }
+
+    var hasDetail: Bool { return detail.rawValue != nil && detail.value.hasNonWhitespaceCharacters }
+
     func responseNeedsClarification(for response: EventResponse) -> Bool {
         return false
     }
@@ -164,19 +173,19 @@ class EventSurface: Surface, ModelLoadable {
     }
 
     func intersection(with other: EventSurface) -> Overlap {
-        if endTime.value <= other.startTime.value || other.endTime.value <= startTime.value {
+        if departureTime.value <= other.arrivalTime.value || other.departureTime.value <= arrivalTime.value {
             return .none
         }
 
-        if endTime.value == other.endTime.value && startTime.value == other.startTime.value {
+        if departureTime.value == other.departureTime.value && arrivalTime.value == other.arrivalTime.value {
             return .identical
         }
 
-        if endTime.value == other.endTime.value {
+        if departureTime.value == other.departureTime.value {
             return .justified(direction: .right)
         }
 
-        if startTime.value == other.startTime.value {
+        if arrivalTime.value == other.arrivalTime.value {
             return .justified(direction: .left)
         }
 
@@ -245,8 +254,7 @@ class EventSurface: Surface, ModelLoadable {
             let a = first.depart(at: midpoint)
             let b = second.arrive(at: midpoint)
 
-            me = (first == me ? a : b)
-            them = (first == me ? b : a)
+            (me, them) = (first == me ? (a, b) : (b, a))
 
         case let .justified(direction):
             switch direction {
@@ -259,8 +267,7 @@ class EventSurface: Surface, ModelLoadable {
                 let a = shorter.depart(at: midpoint)
                 let b = longer.arrive(at: midpoint)
 
-                me = (shorter == me ? a : b)
-                them = (shorter == me ? b : a)
+                (me, them) = (shorter == me ? (a, b) : (b, a))
 
             case .right:
                 let shorter = endTime.value < other.endTime.value ? self : other
@@ -270,8 +277,7 @@ class EventSurface: Surface, ModelLoadable {
                 let a = shorter.arrive(at: midpoint)
                 let b = longer.depart(at: midpoint)
 
-                me = (shorter == me ? a : b)
-                them = (shorter == me ? b : a)
+                (me, them) = (shorter == me ? (a, b) : (b, a))
             }
 
         case .none:
