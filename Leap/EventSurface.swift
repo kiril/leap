@@ -111,7 +111,9 @@ class EventSurface: Surface, ModelLoadable {
 
     var hasAgenda: Bool { return agenda.rawValue != nil }
 
-    var responseNeedsClarification: Bool { return false }
+    func responseNeedsClarification(for response: EventResponse) -> Bool {
+        return false
+    }
 
     func conflict(with other: EventSurface, assumingCommitted: Bool = false) -> Overlap {
         guard other != self && (isEligibleForConflict || assumingCommitted) && other.canBeConflictedWith else { return .none }
