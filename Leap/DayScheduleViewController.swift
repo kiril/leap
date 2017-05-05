@@ -239,10 +239,12 @@ extension DayScheduleViewController: EventViewCellDelegate {
                     switch scope {
                     case .none:
                         break
+
                     case .series:
                         recurring.respond(with: response, forceDisplay: true)
+
                     case .event:
-                        recurring.respondDetaching(with: response, forceDisplay: true)
+                        recurring.respond(with: response, forceDisplay: true, detaching: true)
                     }
                 }
                 self.present(alert, animated: true)

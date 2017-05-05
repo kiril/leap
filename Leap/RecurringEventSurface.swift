@@ -114,14 +114,6 @@ class RecurringEventSurface: EventSurface {
         }
     }
 
-
-    @discardableResult
-    func respondDetaching(with response: EventResponse, forceDisplay: Bool = false) -> EventSurface {
-        let event = detach()!
-        event.respond(with: response, forceDisplay: forceDisplay)
-        return event
-    }
-
     func detach() -> EventSurface? {
         guard let series = Series.by(id: id), let event = series.event(in: seriesRange!) else { return nil }
         let realm = Realm.user()

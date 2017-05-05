@@ -306,7 +306,8 @@ class EventSurface: Surface, ModelLoadable {
         }
     }
 
-    func respond(with response: EventResponse, forceDisplay: Bool = false, detaching: Bool = false) {
+    @discardableResult
+    func respond(with response: EventResponse, forceDisplay: Bool = false, detaching: Bool = false) -> EventSurface {
         var event = self
         if detaching, let recurring = self as? RecurringEventSurface {
             event = recurring.detach()!
@@ -314,6 +315,7 @@ class EventSurface: Surface, ModelLoadable {
         event.userResponse.update(to: response)
         event.temporarilyForceDisplayResponseOptions = forceDisplay
         try! event.flush()
+        return event
     }
 
     static func computeNeedsResponse(event: EventSurface) -> Bool {
