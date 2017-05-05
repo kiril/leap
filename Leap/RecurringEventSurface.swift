@@ -115,6 +115,7 @@ class RecurringEventSurface: EventSurface {
     }
 
 
+    @discardableResult
     func respondDetaching(with response: EventResponse, forceDisplay: Bool = false) -> EventSurface {
         let event = detach()!
         event.respond(with: response, forceDisplay: forceDisplay)
@@ -137,12 +138,10 @@ class RecurringEventSurface: EventSurface {
 
         alert.addAction(UIAlertAction(title: "\(verb(for: response)) all events in the series", style: .default) {
             action in
-            self.respond(with: response, forceDisplay: true)
             onComplete(.series)
         })
         alert.addAction(UIAlertAction(title: "\(verb(for: response)) just this one", style: .default) {
             action in
-            self.respondDetaching(with: response, forceDisplay: true)
             onComplete(.event)
         })
         alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { action in onComplete(.none) })

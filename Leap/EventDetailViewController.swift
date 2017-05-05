@@ -62,7 +62,7 @@ extension EventDetailViewController: EventDetailViewDelegate {
                     recurring.respond(with: response, forceDisplay: true)
                     self.navigationController!.popViewController(animated: true)
                 case .event:
-                    recurring.respond(with: response, forceDisplay: true)
+                    recurring.respondDetaching(with: response, forceDisplay: true)
                     self.navigationController!.popViewController(animated: true)
                 }
             }
