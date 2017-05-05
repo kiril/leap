@@ -186,15 +186,13 @@ class EventSurface: Surface, ModelLoadable {
     func leaveEarly(for other: EventSurface) {
         let otherStart = other.startTime.value
         guard otherStart > startTime.value && otherStart < endTime.value else { return }
-        departureTime.update(to: otherStart)
-        try! flush()
+        depart(at: otherStart)
     }
 
     func joinLate(for other: EventSurface) {
         let otherEnd = other.endTime.value
         guard otherEnd > startTime.value && otherEnd < endTime.value else { return }
-        arrivalTime.update(to: otherEnd)
-        try! flush()
+        arrive(at: otherEnd)
     }
 
     func depart(at departureTime: Date) {

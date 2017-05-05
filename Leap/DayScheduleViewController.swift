@@ -48,7 +48,7 @@ class DayScheduleViewController: UIViewController, StoryboardLoadable {
 }
 
 extension DayScheduleViewController: EventViewCellDelegate {
-    func presentSplitOptions(for event: EventSurface, and other: EventSurface) {
+    func presentSplitOptions(for event: EventSurface, and other: EventSurface, respondingTo respondee: EventSurface? = nil, with response: EventResponse? = nil) {
 
         let alert = UIAlertController(title: "Split Time",
                                       message: "Between \"\(event.title.value)\" and \"\(other.title.value)\" overlap.",
@@ -56,12 +56,19 @@ extension DayScheduleViewController: EventViewCellDelegate {
 
         let overlap = event.intersection(with: other)
 
+        func respond() {
+            if let respondee = respondee, let response = response {
+                respondee.respond(with: response)
+            }
+        }
+
         switch overlap {
         case .identical:
 
             let split = UIAlertAction(title: "Split the difference", style: .default) {
                 action in
                 event.splitTime(with: other, for: overlap)
+                respond()
             }
             alert.addAction(split)
 
@@ -74,12 +81,14 @@ extension DayScheduleViewController: EventViewCellDelegate {
                 let leaveEarly = UIAlertAction(title: "Leave \"\(first.title.value.truncate(to: 35, in: .end))\" early", style: .destructive) {
                     action in
                     first.leaveEarly(for: second)
+                    respond()
                 }
                 alert.addAction(leaveEarly)
 
                 let split = UIAlertAction(title: "Split the difference", style: .default) {
                     action in
                     event.splitTime(with: other, for: overlap)
+                    respond()
                 }
                 alert.addAction(split)
 
@@ -90,12 +99,14 @@ extension DayScheduleViewController: EventViewCellDelegate {
                 let joinLate = UIAlertAction(title: "Join \"\(second.title.value.truncate(to: 35, in: .end))\" late", style: .destructive) {
                     action in
                     second.joinLate(for: first)
+                    respond()
                 }
                 alert.addAction(joinLate)
 
                 let split = UIAlertAction(title: "Split the difference", style: .default) {
                     action in
                     event.splitTime(with: other, for: overlap)
+                    respond()
                 }
                 alert.addAction(split)
 
@@ -108,10 +119,12 @@ extension DayScheduleViewController: EventViewCellDelegate {
             let leaveEarly = UIAlertAction(title: "Leave \"\(first.title.value.truncate(to: 35, in: .end))\" early", style: .destructive) {
                 action in
                 first.leaveEarly(for: second)
+                respond()
             }
             let joinLate = UIAlertAction(title: "Join \"\(second.title.value.truncate(to: 35, in: .end))\" late", style: .destructive) {
                 action in
                 second.joinLate(for: first)
+                respond()
             }
 
             alert.addAction(leaveEarly)
@@ -127,6 +140,13 @@ extension DayScheduleViewController: EventViewCellDelegate {
     }
 
     func resolve(overlap: Overlap, between event: EventSurface, and other: EventSurface, respondingTo respondee: EventSurface? = nil, with response: EventResponse? = nil) {
+
+        func respond() {
+            if let respondee = respondee, let response = response {
+                respondee.respond(with: response)
+            }
+        }
+
         let title = respondee == nil ? "Fix Conflicting Events" : "Event Conflict"
         let alert = UIAlertController(title: title,
                                       message: "\"\(event.title.value)\" and \"\(other.title.value)\" overlap.",
@@ -135,10 +155,16 @@ extension DayScheduleViewController: EventViewCellDelegate {
         let declineOther = UIAlertAction(title: "Decline \"\(other.title.value.truncate(to: 35, in: .middle))\"", style: .destructive) {
             action in
             other.respond(with: .no)
+            if let response = response, let respondee = respondee, respondee != other {
+                respondee.respond(with: response)
+            }
         }
         let declineThis = UIAlertAction(title: "Decline \"\(event.title.value.truncate(to: 35, in: .middle))\"", style: .destructive) {
             action in
             event.respond(with: .no)
+            if let response = response, let respondee = respondee, respondee != event {
+                respondee.respond(with: response)
+            }
         }
 
         alert.addAction(declineOther)
@@ -149,17 +175,18 @@ extension DayScheduleViewController: EventViewCellDelegate {
             switch overlap {
             case .identical: // there are no other option
                 event.splitTime(with: other, for: overlap)
+                respond()
 
             default:
-                self.presentSplitOptions(for: event, and: other)
+                self.presentSplitOptions(for: event, and: other, respondingTo: respondee, with: response)
             }
         }
         alert.addAction(split)
 
-        if let respondee = respondee, let response = response {
-            let keep = UIAlertAction(title: "Join without fixing conflict", style: .destructive) {
+        if respondee != nil {
+            let keep = UIAlertAction(title: "Join now, fix later", style: .default) {
                 action in
-                respondee.respond(with: response)
+                respond()
             }
             alert.addAction(keep)
         }

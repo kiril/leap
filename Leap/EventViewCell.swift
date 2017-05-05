@@ -260,6 +260,8 @@ class EventViewCell: UICollectionViewCell {
         alarmIcon.isHidden = !event.hasAlarms.value
         checklistIcon.isHidden = !event.hasAgenda
 
+        carIcon.isHidden = !(event is RecurringEventSurface)
+
         //attendeesIcon.isHidden = event.participants.value.count < 3
         //attendeeIcon.isHidden = !(event.participants.value.count == 2 && event.participants.value.me != nil)
 

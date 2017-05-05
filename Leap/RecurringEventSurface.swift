@@ -115,10 +115,10 @@ class RecurringEventSurface: EventSurface {
     }
 
 
-    func respondDetaching(with response: EventResponse, forceDisplay: Bool = false) {
-        userResponse.update(to: response)
-        temporarilyForceDisplayResponseOptions = forceDisplay
-        try! flush()
+    func respondDetaching(with response: EventResponse, forceDisplay: Bool = false) -> EventSurface {
+        let event = detach()!
+        event.respond(with: response, forceDisplay: forceDisplay)
+        return event
     }
 
     func detach() -> EventSurface? {
