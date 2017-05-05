@@ -77,7 +77,7 @@ extension ReminderSurface: IGListDiffable {
         }
 
         return  (reminder.startTime.value == startTime.value) &&
-                (reminder.title.value == reminder.title.value)
+                (reminder.title.value == title.value) && reminder.isShinyNew == isShinyNew
     }
 }
 

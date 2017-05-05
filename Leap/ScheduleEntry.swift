@@ -114,10 +114,7 @@ class ScheduleEntryWrapper: IGListDiffable {
 
         switch (scheduleEntry, otherEntry) {
         case let (.event(a), .event(b)):
-            return  (a == b) &&
-                    (a.userResponse.value == b.userResponse.value) &&
-                    (a.isInConflict == b.isInConflict) &&
-                    (a.temporarilyForceDisplayResponseOptions == b.temporarilyForceDisplayResponseOptions) // this is horrible, but that transient state of the temporary thing lets me make sure we re-render
+            return  (a == b) && (a.isInConflict == b.isInConflict) && (a.isShinyNew == b.isShinyNew)
         case let (.openTime(a), .openTime(b)):
             return  (a.timeRange == b.timeRange) &&
                     (a.possibleEventIds == b.possibleEventIds) &&
