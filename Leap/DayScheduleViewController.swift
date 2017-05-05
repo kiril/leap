@@ -149,6 +149,7 @@ extension DayScheduleViewController: EventViewCellDelegate {
             }
 
             if let recurring = event as? RecurringEventSurface, other is RecurringEventSurface {
+                // TODO: switch the order of operations here (presentSplitOptions, and THEN ask about series vs. individual)
                 let alert = recurring.recurringUpdateOptions(for: "Split time") { scope in
                     switch scope {
                     case .none:
