@@ -128,6 +128,7 @@ class RecurringEventSurface: EventSurface {
         try! realm.safeWrite {
             realm.add(event)
         }
+        self.isShinyNew = false
         return EventSurface.load(with: event) as? EventSurface
     }
 

@@ -210,8 +210,9 @@ extension DayScheduleViewController: EventViewCellDelegate {
 
     func selectedNewEventResponse(_ response: EventResponse, on cell: EventViewCell, for event: EventSurface) {
         if response == .yes, let (overlap, other) = event.firstConflict(in: surface.entries.events, assumingCommitted: true) {
-            resolve(overlap: overlap, between: event, and: other, allowDefer: true) { (event, other) in
-                event.respond(with: response, forceDisplay: true)
+            resolve(overlap: overlap, between: event, and: other, allowDefer: true) { (newEvent, other) in
+                event.isShinyNew = false // this is annoying... it's so the list diffable understands what to do
+                newEvent.respond(with: response, forceDisplay: true)
             }
 
         } else {
