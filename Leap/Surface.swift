@@ -111,12 +111,14 @@ open class Surface: Equatable {
             }
         }
 
-        let mirror = Mirror(reflecting: self)
+        var mirror = Mirror(reflecting: self)
         lookInThe(mirror: mirror)
 
         while let superMirror = mirror.superclassMirror {
-            lookInThe(mirror: superMirror)
+            lookInThe(mirror: mirror)
+            mirror = superMirror
         }
+
     }
 
     private func property(named name: String) -> Property? {
