@@ -133,21 +133,63 @@ class EventSurface: Surface, ModelLoadable {
         return .staggered
     }
 
-    func leaveEarly(for other: EventSurface) -> EventSurface {
+
+
+    func resolveConflict(with other: EventSurface, in overlap: Overlap, by resolution: TimeConflictResolution, detaching: Bool) -> (EventSurface, EventSurface) {
+        var left = detaching ? (self as? RecurringEventSurface)?.detach() ?? self : self
+        var right = detaching ? (other as? RecurringEventSurface)?.detach() ?? other : other
+
+        switch resolution {
+        case .leaveEarly:
+            // whichever starts first, we leave in time for the second
+            if left.arrivesEarlier(than: right) {
+                left = left.leaveEarly(for: right, detaching: detaching)
+            } else {
+                right = right.leaveEarly(for: left, detaching: detaching)
+            }
+
+        case .arriveLate:
+            // whichever ends later, we arrive at when the first one is done
+            if left.departsLater(than: right) {
+                left = left.joinLate(for: right, detaching: detaching)
+            } else {
+                right = right.joinLate(for: left, detaching: detaching)
+            }
+
+        case .splitEvenly:
+            (left, right) = left.splitTime(with: right, for: overlap, detaching: detaching)
+
+        case let .decline(side):
+            switch side {
+            case .left:
+                left.respond(with: .no, forceDisplay: true, detaching: detaching)
+
+            case .right:
+                right.respond(with: .no, forceDisplay: true, detaching: detaching)
+            }
+
+        case .none:
+            break // cancel tapped
+        }
+
+        return (left, right)
+    }
+
+    func leaveEarly(for other: EventSurface, detaching: Bool) -> EventSurface {
         let otherStart = other.startTime.value
         guard otherStart > startTime.value && otherStart < endTime.value else { fatalError() }
-        return depart(at: otherStart)
+        return depart(at: otherStart, detaching: detaching)
     }
 
-    func joinLate(for other: EventSurface) -> EventSurface {
+    func joinLate(for other: EventSurface, detaching: Bool) -> EventSurface {
         let otherEnd = other.endTime.value
         guard otherEnd > startTime.value && otherEnd < endTime.value else { fatalError() }
-        return arrive(at: otherEnd)
+        return arrive(at: otherEnd, detaching: detaching)
     }
 
-    func depart(at departureTime: Date) -> EventSurface {
+    func depart(at departureTime: Date, detaching: Bool) -> EventSurface {
         var me = self
-        if let recurring = self as? RecurringEventSurface {
+        if let recurring = self as? RecurringEventSurface, detaching {
             me = recurring.detach()!
         }
 
@@ -156,9 +198,9 @@ class EventSurface: Surface, ModelLoadable {
         return me
     }
 
-    func arrive(at arrivalTime: Date) -> EventSurface {
+    func arrive(at arrivalTime: Date, detaching: Bool) -> EventSurface {
         var me = self
-        if let recurring = self as? RecurringEventSurface {
+        if let recurring = self as? RecurringEventSurface, detaching {
             me = recurring.detach()!
         }
 
@@ -167,7 +209,7 @@ class EventSurface: Surface, ModelLoadable {
         return me
     }
 
-    func splitTime(with other: EventSurface, for overlap: Overlap) -> (EventSurface, EventSurface) {
+    func splitTime(with other: EventSurface, for overlap: Overlap, detaching: Bool) -> (EventSurface, EventSurface) {
         var me: EventSurface = self
         var them: EventSurface = other
 
@@ -176,8 +218,8 @@ class EventSurface: Surface, ModelLoadable {
             let diff = endTime.value.timeIntervalSince(startTime.value)
             let midpoint = Date(timeIntervalSinceReferenceDate: startTime.value.timeIntervalSinceReferenceDate + diff/2)
 
-            me = self.depart(at: midpoint)
-            them = other.arrive(at: midpoint)
+            me = self.depart(at: midpoint, detaching: detaching)
+            them = other.arrive(at: midpoint, detaching: detaching)
 
         case .staggered:
             let first = startTime.value < other.startTime.value ? self : other
@@ -190,8 +232,8 @@ class EventSurface: Surface, ModelLoadable {
             let diff = startOfSecond.timeIntervalSince(endOfFirst)
             let midpoint = Date(timeIntervalSinceReferenceDate: endOfFirst.timeIntervalSinceReferenceDate + diff/2)
 
-            let a = first.depart(at: midpoint)
-            let b = second.arrive(at: midpoint)
+            let a = first.depart(at: midpoint, detaching: detaching)
+            let b = second.arrive(at: midpoint, detaching: detaching)
 
             (me, them) = (first == me ? (a, b) : (b, a))
 
@@ -203,8 +245,8 @@ class EventSurface: Surface, ModelLoadable {
                 let amount = shorter.endTime.value.timeIntervalSince(shorter.startTime.value) / 2
                 let midpoint = Date(timeIntervalSinceReferenceDate: shorter.startTime.value.timeIntervalSinceReferenceDate + amount)
 
-                let a = shorter.depart(at: midpoint)
-                let b = longer.arrive(at: midpoint)
+                let a = shorter.depart(at: midpoint, detaching: detaching)
+                let b = longer.arrive(at: midpoint, detaching: detaching)
 
                 (me, them) = (shorter == me ? (a, b) : (b, a))
 
@@ -213,8 +255,8 @@ class EventSurface: Surface, ModelLoadable {
                 let longer = shorter == self ? other : self
                 let amount = shorter.endTime.value.timeIntervalSince(shorter.startTime.value) / 2
                 let midpoint = Date(timeIntervalSinceReferenceDate: shorter.startTime.value.timeIntervalSinceReferenceDate + amount)
-                let a = shorter.arrive(at: midpoint)
-                let b = longer.depart(at: midpoint)
+                let a = shorter.arrive(at: midpoint, detaching: detaching)
+                let b = longer.depart(at: midpoint, detaching: detaching)
 
                 (me, them) = (shorter == me ? (a, b) : (b, a))
             }
@@ -264,10 +306,14 @@ class EventSurface: Surface, ModelLoadable {
         }
     }
 
-    func respond(with response: EventResponse, forceDisplay: Bool = false) {
-        userResponse.update(to: response)
-        temporarilyForceDisplayResponseOptions = forceDisplay
-        try! flush()
+    func respond(with response: EventResponse, forceDisplay: Bool = false, detaching: Bool = false) {
+        var event = self
+        if detaching, let recurring = self as? RecurringEventSurface {
+            event = recurring.detach()!
+        }
+        event.userResponse.update(to: response)
+        event.temporarilyForceDisplayResponseOptions = forceDisplay
+        try! event.flush()
     }
 
     static func computeNeedsResponse(event: EventSurface) -> Bool {
@@ -756,6 +802,7 @@ enum TimeConflictResolution {
     case leaveEarly
     case arriveLate
     case splitEvenly
+    case decline(side: Handedness)
     case none
 }
 

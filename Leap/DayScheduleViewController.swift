@@ -99,95 +99,112 @@ extension DayScheduleViewController: EventViewCellDelegate {
     }
 
     func resolve(overlap: Overlap, between event: EventSurface, and other: EventSurface, allowDefer: Bool, onResolve callback: @escaping (EventSurface, EventSurface) -> Void) {
+
+
+        func finish(by resolution: TimeConflictResolution, detaching: Bool) {
+            let (a, b) = event.resolveConflict(with: other, in: overlap, by: resolution, detaching: detaching)
+            callback(a, b)
+        }
+
         let alert = UIAlertController(title: "Scheduling Conflict",
                                       message: "\"\(event.title.value)\" and \"\(other.title.value)\" overlap.",
             preferredStyle: .actionSheet)
 
-        alert.addAction(UIAlertAction(title: "Decline \"\(other.title.value.truncate(to: 35, in: .middle))\"", style: .destructive) {
+        alert.addAction(UIAlertAction(title: "\(event.verb(for: .no)) \"\(other.title.value.truncate(to: 35, in: .middle))\"", style: .destructive) {
             action in
-            other.respond(with: .no)
-            callback(event, other)
+
+            if let recurring = event as? RecurringEventSurface {
+                let alert = recurring.recurringUpdateOptions(for: event.verb(for: .no)) { scope in
+                    switch scope {
+                    case .series:
+                        finish(by: .decline(side: .right), detaching: false)
+
+                    case .event:
+                        finish(by: .decline(side: .right), detaching: true)
+
+                    case .none:
+                        return //canceled
+                    }
+                }
+
+                self.present(alert, animated: true)
+            }
+            
+            finish(by: .decline(side: .right), detaching: false)
         })
-        alert.addAction(UIAlertAction(title: "Decline \"\(event.title.value.truncate(to: 35, in: .middle))\"", style: .destructive) {
+        alert.addAction(UIAlertAction(title: "\(event.verb(for: .no)) \"\(event.title.value.truncate(to: 35, in: .middle))\"", style: .destructive) {
             action in
-            event.respond(with: .no)
-            callback(event, other)
+
+            if let recurring = event as? RecurringEventSurface {
+                let alert = recurring.recurringUpdateOptions(for: event.verb(for: .no)) { scope in
+                    switch scope {
+                    case .series:
+                        finish(by: .decline(side: .left), detaching: false)
+
+                    case .event:
+                        finish(by: .decline(side: .left), detaching: true)
+
+                    case .none:
+                        return //canceled
+                    }
+                }
+
+                self.present(alert, animated: true)
+            }
+
+            finish(by: .decline(side: .left), detaching: false)
         })
 
         alert.addAction(UIAlertAction(title: "Split time between events", style: .default) {
             action in
 
-            func resolve(resolution: TimeConflictResolution) {
-                var left = event
-                var right = other
-
-                switch resolution {
-                case .leaveEarly:
-                    // whichever starts first, we leave in time for the second
-                    if left.arrivesEarlier(than: right) {
-                        left = left.leaveEarly(for: right)
-                    } else {
-                        right = right.leaveEarly(for: left)
-                    }
-
-                case .arriveLate:
-                    // whichever ends later, we arrive at when the first one is done
-                    if left.departsLater(than: right) {
-                        left = left.joinLate(for: right)
-                    } else {
-                        right = right.joinLate(for: left)
-                    }
-
-                case .splitEvenly:
-                    (left, right) = left.splitTime(with: right, for: overlap)
-
-                case .none:
-                    return // cancel tapped
-                }
-
-                callback(left, right) // splitting will sometimes detach
-            }
-
             if let recurring = event as? RecurringEventSurface, other is RecurringEventSurface {
-                // TODO: switch the order of operations here (presentSplitOptions, and THEN ask about series vs. individual)
-                let alert = recurring.recurringUpdateOptions(for: "Split time") { scope in
-                    switch scope {
-                    case .none:
-                        return // canceled
-                    case .series:
-                        switch overlap {
-                        case .identical:
-                            let (a, b) = event.splitTime(with: other, for: overlap)
-                            callback(a, b)
+                switch overlap {
+                case .identical:
+                    let alert = recurring.recurringUpdateOptions(for: "Split time") { scope in
+                        switch scope {
+                        case .series:
+                            finish(by: .splitEvenly, detaching: false)
 
-                        default:
-                            self.presentSplitOptions(for: event, and: other, andThen: resolve)
-                        }
+                        case .event:
+                            finish(by: .splitEvenly, detaching: true)
 
-                    case .event:
-                        let detachedEvent = recurring.detach()!
-                        switch overlap {
-                        case .identical:
-                            let (a, b) = detachedEvent.splitTime(with: other, for: overlap)
-                            callback(a, b)
-
-                        default:
-                            self.presentSplitOptions(for: detachedEvent, and: other, andThen: resolve)
+                        case .none:
+                            return // canceled
                         }
                     }
-                }
 
-                self.present(alert, animated: true)
+                    self.present(alert, animated: true)
+
+                default:
+                    self.presentSplitOptions(for: event, and: other) { resolution in
+                        let alert = recurring.recurringUpdateOptions(for: "Split time") { scope in
+                            switch scope {
+                            case .series:
+                                finish(by: resolution, detaching: false)
+
+                            case .event:
+                                finish(by: resolution, detaching: true)
+
+                            case .none:
+                                return //canceled
+                            }
+                        }
+
+                        self.present(alert, animated: true)
+                    }
+                }
 
             } else {
 
                 switch overlap {
                 case .identical: // there are no other option
-                    let (a, b) = event.splitTime(with: other, for: overlap)
-                    callback(a, b)
+                    finish(by: .splitEvenly, detaching: true)
 
                 default:
-                    self.presentSplitOptions(for: event, and: other, andThen: resolve)
+                    self.presentSplitOptions(for: event, and: other) {
+                        finish(by: $0, detaching: true)
+                    }
                 }
             }
         })
