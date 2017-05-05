@@ -82,6 +82,7 @@
 		FB1869D41E9FF88A007642F4 /* RecurrenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1869D31E9FF88A007642F4 /* RecurrenceTests.swift */; };
 		FB1869D61EA01CBC007642F4 /* List+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1869D51EA01CBC007642F4 /* List+Leap.swift */; };
 		FB1871F61EBCB38F00213913 /* UIView+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1871F51EBCB38F00213913 /* UIView+Leap.swift */; };
+		FB1871F81EBCDE9800213913 /* RaggedEdgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1871F71EBCDE9800213913 /* RaggedEdgeView.swift */; };
 		FB1E5FFC1EB685DB00FFF60C /* TimeInterval+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1E5FFB1EB685DB00FFF60C /* TimeInterval+Leap.swift */; };
 		FB1E5FFE1EB68CFB00FFF60C /* ParticipantSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1E5FFD1EB68CFB00FFF60C /* ParticipantSurface.swift */; };
 		FB1E60001EB6A77700FFF60C /* DateFormatter+Leap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1E5FFF1EB6A77700FFF60C /* DateFormatter+Leap.swift */; };
@@ -263,6 +264,7 @@
 		FB1869D31E9FF88A007642F4 /* RecurrenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecurrenceTests.swift; sourceTree = "<group>"; };
 		FB1869D51EA01CBC007642F4 /* List+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "List+Leap.swift"; sourceTree = "<group>"; };
 		FB1871F51EBCB38F00213913 /* UIView+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Leap.swift"; sourceTree = "<group>"; };
+		FB1871F71EBCDE9800213913 /* RaggedEdgeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RaggedEdgeView.swift; sourceTree = "<group>"; };
 		FB1E5FFB1EB685DB00FFF60C /* TimeInterval+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TimeInterval+Leap.swift"; sourceTree = "<group>"; };
 		FB1E5FFD1EB68CFB00FFF60C /* ParticipantSurface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantSurface.swift; sourceTree = "<group>"; };
 		FB1E5FFF1EB6A77700FFF60C /* DateFormatter+Leap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Leap.swift"; sourceTree = "<group>"; };
@@ -689,6 +691,7 @@
 				FB180C491EB260F800FE1CF4 /* EventDetailViewController.swift */,
 				FB180C4D1EB261B200FE1CF4 /* EventDetailView.xib */,
 				FB180C4F1EB261DB00FE1CF4 /* EventDetailView.swift */,
+				FB1871F71EBCDE9800213913 /* RaggedEdgeView.swift */,
 			);
 			name = Events;
 			sourceTree = "<group>";
@@ -1157,6 +1160,7 @@
 				FB180C501EB261DB00FE1CF4 /* EventDetailView.swift in Sources */,
 				FB1E60001EB6A77700FFF60C /* DateFormatter+Leap.swift in Sources */,
 				FBD614581E7F57B0001F4050 /* Validation.swift in Sources */,
+				FB1871F81EBCDE9800213913 /* RaggedEdgeView.swift in Sources */,
 				FB2046B21E82E7BF00F130C8 /* Reminder.swift in Sources */,
 				FB42086E1E89816B007F4DBD /* EKRecurrenceRule+Realm.swift in Sources */,
 				FB4503D31EA579F8001D9F51 /* SwiftyLRU.swift in Sources */,
