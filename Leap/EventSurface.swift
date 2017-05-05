@@ -546,7 +546,7 @@ class EventSurface: Surface, ModelLoadable {
         if spansDays {
             let days = calendar.daysBetween(startDate, and: endDate)
             let ess = days == 1 ? "" : "s"
-            more = " \(days) day\(ess) later"
+            more = " (\(days) day\(ess) later)"
         }
 
         return "\(recurrence) from \(from) - \(to)\(more)"

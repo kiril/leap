@@ -107,7 +107,7 @@ extension ReminderSurface: Linear {
         if spansDays {
             let days = calendar.daysBetween(start, and: end)
             let ess = days == 1 ? "" : "s"
-            more = " \(days) day\(ess) later"
+            more = " (\(days) day\(ess) later)"
         }
 
         return "\(from) - \(to)\(more)"
