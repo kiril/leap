@@ -131,16 +131,16 @@ class RecurringEventSurface: EventSurface {
         return EventSurface.load(with: event) as? EventSurface
     }
 
-    func recurringResponseOptions(for response: EventResponse, onComplete: @escaping (ResponseScope) -> Void) -> UIAlertController {
+    func recurringUpdateOptions(for verb: String, onComplete: @escaping (ResponseScope) -> Void) -> UIAlertController {
         let alert = UIAlertController(title: "Recurring Event",
                                       message: "\"\(title.value)\" is part of a series.",
             preferredStyle: .actionSheet)
 
-        alert.addAction(UIAlertAction(title: "\(verb(for: response)) all events in the series", style: .default) {
+        alert.addAction(UIAlertAction(title: "\(verb) all events in the series", style: .default) {
             action in
             onComplete(.series)
         })
-        alert.addAction(UIAlertAction(title: "\(verb(for: response)) just this one", style: .default) {
+        alert.addAction(UIAlertAction(title: "\(verb) just this one", style: .default) {
             action in
             onComplete(.event)
         })

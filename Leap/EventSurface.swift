@@ -10,65 +10,6 @@
 import Foundation
 import RealmSwift
 
-enum EventResponse {
-    case none,
-    yes,
-    no,
-    maybe
-
-
-    static func from(_ engagement: Engagement) -> EventResponse {
-        switch engagement {
-        case .undecided, .none:
-            return .none
-        case .engaged:
-            return .yes
-        case .disengaged:
-            return .no
-        case .tracking:
-            return .maybe
-        }
-    }
-
-    func asEngagement() -> Engagement {
-        switch self {
-        case .none:
-            return .undecided
-        case .yes:
-            return .engaged
-        case .no:
-            return .disengaged
-        case .maybe:
-            return .tracking
-        }
-    }
-}
-
-enum Handedness {
-    case left
-    case right
-}
-
-enum Overlap {
-    case identical
-    case staggered
-    case justified(direction:Handedness)
-    case none
-}
-
-extension TimePerspective {
-    static func compute(fromEvent event: EventSurface) -> TimePerspective {
-        let now = Date()
-        if event.startTime.value > now {
-            return .future
-        } else if event.endTime.value < now {
-            return .past
-        } else {
-            return .current
-        }
-    }
-}
-
 class EventSurface: Surface, ModelLoadable {
     override var type: String { return "event" }
 
@@ -227,8 +168,6 @@ class EventSurface: Surface, ModelLoadable {
     }
 
     func splitTime(with other: EventSurface, for overlap: Overlap) -> (EventSurface, EventSurface) {
-        assert(!(self is RecurringEventSurface) || !(other is RecurringEventSurface))
-
         var me: EventSurface = self
         var them: EventSurface = other
 
@@ -650,6 +589,22 @@ class EventSurface: Surface, ModelLoadable {
             }
         }
     }
+
+    func arrivesEarlier(than event: EventSurface) -> Bool {
+        return arrivalTime.value < event.arrivalTime.value
+    }
+
+    func arrivesLater(than event: EventSurface) -> Bool {
+        return arrivalTime.value > event.arrivalTime.value
+    }
+
+    func departsEarlier(than event: EventSurface) -> Bool {
+        return departureTime.value < event.departureTime.value
+    }
+
+    func departsLater(than event: EventSurface) -> Bool {
+        return departureTime.value > event.departureTime.value
+    }
 }
 
 extension EventSurface: Hashable {
@@ -718,7 +673,6 @@ extension List where Element: Alarm {
 }
 
 
-
 extension EventSurface: Linear {
     var duration: TimeInterval {
         return endTime.value.timeIntervalSinceReferenceDate - startTime.value.timeIntervalSinceReferenceDate
@@ -747,5 +701,73 @@ extension EventSurface: Linear {
         }
 
         return "\(from) - \(to)\(more)"
+    }
+}
+
+
+
+enum EventResponse {
+    case none,
+    yes,
+    no,
+    maybe
+
+
+    static func from(_ engagement: Engagement) -> EventResponse {
+        switch engagement {
+        case .undecided, .none:
+            return .none
+        case .engaged:
+            return .yes
+        case .disengaged:
+            return .no
+        case .tracking:
+            return .maybe
+        }
+    }
+
+    func asEngagement() -> Engagement {
+        switch self {
+        case .none:
+            return .undecided
+        case .yes:
+            return .engaged
+        case .no:
+            return .disengaged
+        case .maybe:
+            return .tracking
+        }
+    }
+}
+
+enum Handedness {
+    case left
+    case right
+}
+
+enum Overlap {
+    case identical
+    case staggered
+    case justified(direction:Handedness)
+    case none
+}
+
+enum TimeConflictResolution {
+    case leaveEarly
+    case arriveLate
+    case splitEvenly
+    case none
+}
+
+extension TimePerspective {
+    static func compute(fromEvent event: EventSurface) -> TimePerspective {
+        let now = Date()
+        if event.startTime.value > now {
+            return .future
+        } else if event.endTime.value < now {
+            return .past
+        } else {
+            return .current
+        }
     }
 }
