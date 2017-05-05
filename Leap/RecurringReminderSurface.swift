@@ -70,7 +70,7 @@ class RecurringReminderSurface: ReminderSurface {
         if spansDays {
             let days = calendar.daysBetween(range.start, and: range.end)
             let ess = days == 1 ? "" : "s"
-            more = " \(days) day\(ess) later"
+            more = " (\(days) day\(ess) later)"
         }
 
         return "\(from) - \(to)\(more)"
