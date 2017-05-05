@@ -65,24 +65,18 @@ open class Surface: Equatable {
 
     fileprivate var operations: [Operation] = []
 
+    fileprivate func markClean() {
+        operations = []
+    }
+
     public var isTransient: Bool { return store == nil }
 
-    public var dirtyFields: Set<String> {
-        var set = Set<String>()
-        for operation in operations {
-            set.insert(operation.field)
-        }
-        return set
-    }
+    public var dirtyFields: Set<String> { return Set(operations.map({$0.field})) }
 
-    public var isDirty: Bool {
-        return operations.count > 0
-    }
+    public var isDirty: Bool { return !operations.isEmpty }
+    public var isShinyNew: Bool = true
 
-    public var isPersisted: Bool {
-        return !isTransient && !isDirty
-    }
-
+    public var isPersisted: Bool { return !isTransient && !isDirty }
 
     public var lastModified: TimeInterval?
     public var lastPersisted: TimeInterval?
@@ -117,12 +111,10 @@ open class Surface: Equatable {
             }
         }
 
-
         let mirror = Mirror(reflecting: self)
         lookInThe(mirror: mirror)
 
-        // this enables you to extend a Surface subclass, and still function
-        if properties.isEmpty, let superMirror = mirror.superclassMirror {
+        while let superMirror = mirror.superclassMirror {
             lookInThe(mirror: superMirror)
         }
     }
@@ -212,6 +204,7 @@ extension Surface: Updateable {
             for (key, value) in data {
                 if value !~= data[key] {
                     operations.append(SetOperation(key, to: value, from: data[key]))
+                    isShinyNew = false
                 }
             }
         }
@@ -237,6 +230,7 @@ extension Surface: Updateable {
 
         if !(source is BackingStore) {
             operations.append(SetOperation(key, to: value, from: data[key]))
+            isShinyNew = false
         }
 
         data[key] = value
@@ -247,9 +241,11 @@ extension Surface: Updateable {
     }
 
     public func remove(key: String, via source: SourceIdentifiable?, silently: Bool = false) {
+        guard data[key] != nil else { return }
 
         if !(source is BackingStore) {
             operations.append(UnsetOperation(key, from: data[key]))
+            isShinyNew = false
         }
 
         data[key] = nil
@@ -401,6 +397,8 @@ extension Surface: Persistable {
 
     @discardableResult
     public func flush() throws -> Bool {
-        return try self.store?.persist(self) ?? false
+        let ret = try self.store?.persist(self) ?? false
+        markClean()
+        return ret
     }
 }
