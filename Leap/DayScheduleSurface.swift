@@ -68,32 +68,8 @@ class DayScheduleSurface: Surface {
 
         events.sort(by: isLessThan)
 
-        var secondPriorEvent: EventSurface? = nil
-        var priorEvent: EventSurface? = nil
-
         for event in events {
-            event.isInConflict = false
-
-            guard event.isEligibleForConflict else { continue }
-
-            var priorToUse: EventSurface? = nil
-            if let p = priorEvent, p.isEligibleForConflict {
-                priorToUse = p
-            } else if let p = secondPriorEvent, p.isEligibleForConflict {
-                priorToUse = p
-            }
-
-            if let prior = priorToUse {
-                if event.conflicts(with: prior) {
-                    event.isInConflict = true
-                }
-                if prior.conflicts(with: event) {
-                    prior.isInConflict = true
-                }
-            }
-
-            secondPriorEvent = priorEvent
-            priorEvent = event
+            event.isInConflict = event.firstConflict(in: events) != nil
         }
 
         cachedCombinedEvents = events
