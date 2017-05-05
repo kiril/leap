@@ -9,6 +9,10 @@
 import RealmSwift
 import Foundation
 
+enum EventDisplayType: String {
+    case schedule = "schedule"
+    case headline = "headline"
+}
 
 enum EventModality: String {
     case unknown  = "unknown"
@@ -33,6 +37,7 @@ class Event: _TemporalBase, Temporality, CalendarLinkable, Alarmable, Fuzzy {
     dynamic var modalityString: String = EventModality.unknown.rawValue
     dynamic var agenda: Checklist? = nil
     dynamic var firmnessString: String = Firmness.firm.rawValue
+    dynamic var displayTypeString: String = EventDisplayType.schedule.rawValue
     dynamic var isTentative: Bool = false
     dynamic var arrivalOffset: Int = 0
     dynamic var arrivalRefefence: Event? = nil
@@ -51,6 +56,11 @@ class Event: _TemporalBase, Temporality, CalendarLinkable, Alarmable, Fuzzy {
     var firmness: Firmness {
         get { return Firmness(rawValue: firmnessString)! }
         set { firmnessString = newValue.rawValue }
+    }
+
+    var displayType: EventDisplayType {
+        get { return EventDisplayType(rawValue: displayTypeString)! }
+        set { displayTypeString = newValue.rawValue }
     }
 
     var date: Date? { return Date(timeIntervalSinceReferenceDate: Double(startTime)) }
@@ -89,8 +99,24 @@ class Event: _TemporalBase, Temporality, CalendarLinkable, Alarmable, Fuzzy {
         return between(start, and: end)
     }
 
-    static func between(_ starting: Date, and before: Date, withStatus status: ObjectStatus = .active) -> Results<Event> {
-        let predicate = NSPredicate(format: "statusString = %@ AND ((startTime >= %d AND startTime < %d) OR (endTime >= %d AND endTime <= %d))", status.rawValue, starting.secondsSinceReferenceDate, before.secondsSinceReferenceDate, starting.secondsSinceReferenceDate, before.secondsSinceReferenceDate)
+    static func between(_ starting: Date,
+                        and before: Date,
+                        withStatus status: ObjectStatus = .active,
+                        withDisplayType displayType: EventDisplayType? = nil) -> Results<Event> {
+
+        var displayTypeQuery = ""
+        if let displayType = displayType {
+            displayTypeQuery = "displayTypeString = \(displayType.rawValue) AND"
+        }
+
+        let queryString = displayTypeQuery + "statusString = %@ AND ((startTime >= %d AND startTime < %d) OR (endTime >= %d AND endTime <= %d))"
+        let predicate = NSPredicate(format: queryString,
+                                    status.rawValue,
+                                    starting.secondsSinceReferenceDate,
+                                    before.secondsSinceReferenceDate,
+                                    starting.secondsSinceReferenceDate,
+                                    before.secondsSinceReferenceDate)
+        
         return Realm.user().objects(Event.self).filter(predicate).sorted(byKeyPath: "startTime")
         // TODO: also spanning this range??? (notes???)
     }

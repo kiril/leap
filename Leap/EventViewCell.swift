@@ -122,7 +122,7 @@ class EventViewCell: UICollectionViewCell {
             }
         }
 
-        remindButton.addTarget(self, action: #selector(remindMe), for: .touchUpInside)
+        remindButton.addTarget(self, action: #selector(moveToHeadlines), for: .touchUpInside)
         locationButton.addTarget(self, action: #selector(launchMaps), for: .touchUpInside)
         resolveButton.addTarget(self, action: #selector(resolveConflict), for: .touchUpInside)
     }
@@ -135,8 +135,8 @@ class EventViewCell: UICollectionViewCell {
         }
     }
 
-    @objc private func remindMe() {
-        event?.hackyCreateReminderFromEvent()
+    @objc private func moveToHeadlines() {
+        event?.displayType.update(to: .headline)
     }
 
     private func responseType(forButton button: UIButton) -> EventResponse {

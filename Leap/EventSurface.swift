@@ -74,6 +74,7 @@ class EventSurface: Surface, ModelLoadable {
     let departureTime          = SurfaceDate()
     let arrivalReferenceEvent  = SurfaceProperty<EventSurface>()
     let departureReferenceEvent = SurfaceProperty<EventSurface>()
+    let displayType            = SurfaceProperty<EventDisplayType>()
 
     var isEligibleForConflict: Bool { return isConfirmed.value }
 
@@ -304,6 +305,7 @@ class EventSurface: Surface, ModelLoadable {
 
         bridge.bind(surface.title)
         bridge.bind(surface.detail)
+        bridge.bind(surface.displayType)
 
         bridge.readonlyBind(surface.hasAlarms) { (m:LeapModel) -> Bool in
             return (m as! Event).alarms.count > 0
