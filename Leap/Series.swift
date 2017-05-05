@@ -263,6 +263,10 @@ class Series: LeapModel, Fuzzy {
         return false
     }
 
+    func event(in range: TimeRange, withStatus status: [ObjectStatus] = [.active]) -> Event? {
+        return event(between: range.start, and: range.end, withStatus: status)
+    }
+
     func event(between start: Date, and end: Date, withStatus status: [ObjectStatus] = [.active]) -> Event? {
         guard self.type == .event else {
             return nil

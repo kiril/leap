@@ -11,6 +11,8 @@ import RealmSwift
 
 class RecurringEventSurface: EventSurface {
 
+    var seriesRange: TimeRange?
+
     override func hackyShowAsReminder() {
         let realm = Realm.user()
 
@@ -38,6 +40,7 @@ class RecurringEventSurface: EventSurface {
 
     static func load(with series: Series, in range: TimeRange) -> EventSurface? {
         let surface = RecurringEventSurface(id: series.id)
+        surface.seriesRange = range
         let bridge = SurfaceModelBridge(id: series.id, surface: surface)
 
         bridge.reference(series, as: "series")
@@ -116,6 +119,15 @@ class RecurringEventSurface: EventSurface {
         userResponse.update(to: response)
         temporarilyForceDisplayResponseOptions = forceDisplay
         try! flush()
+    }
+
+    func detach() -> EventSurface? {
+        guard let series = Series.by(id: id), let event = series.event(in: seriesRange!) else { return nil }
+        let realm = Realm.user()
+        try! realm.safeWrite {
+            realm.add(event)
+        }
+        return EventSurface.load(with: event) as? EventSurface
     }
 
     func recurringResponseOptions(for response: EventResponse, onComplete: @escaping (ResponseScope) -> Void) -> UIAlertController {
