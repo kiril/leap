@@ -76,7 +76,8 @@ class EventViewCell: UICollectionViewCell {
     }
 
     private func updateBorderColor() {
-        self.backgroundColor = borderColor
+        self.layer.borderColor = borderColor.cgColor
+        self.layer.borderWidth = 1.0
     }
 
     private func updateShadow() {
@@ -306,7 +307,7 @@ class EventViewCell: UICollectionViewCell {
         }
 
         if event.perspective.value == .past {
-            contentView.alpha = 0.8
+            contentView.alpha = 0.5
             borderColor = UIColor.projectLightGray
         } else {
             contentView.alpha = 1.0
