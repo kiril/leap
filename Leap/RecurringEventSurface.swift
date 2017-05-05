@@ -11,6 +11,8 @@ import RealmSwift
 
 class RecurringEventSurface: EventSurface {
 
+    var seriesRange: TimeRange?
+
     override func hackyShowAsReminder() {
         let realm = Realm.user()
 
@@ -38,6 +40,7 @@ class RecurringEventSurface: EventSurface {
 
     static func load(with series: Series, in range: TimeRange) -> EventSurface? {
         let surface = RecurringEventSurface(id: series.id)
+        surface.seriesRange = range
         let bridge = SurfaceModelBridge(id: series.id, surface: surface)
 
         bridge.reference(series, as: "series")
@@ -112,25 +115,33 @@ class RecurringEventSurface: EventSurface {
     }
 
 
-    func respondDetaching(with response: EventResponse, forceDisplay: Bool = false) {
-        userResponse.update(to: response)
-        temporarilyForceDisplayResponseOptions = forceDisplay
-        try! flush()
+    @discardableResult
+    func respondDetaching(with response: EventResponse, forceDisplay: Bool = false) -> EventSurface {
+        let event = detach()!
+        event.respond(with: response, forceDisplay: forceDisplay)
+        return event
     }
 
-    func recurringResponseOptions(for response: EventResponse, onComplete: @escaping (ResponseScope) -> Void) -> UIAlertController {
+    func detach() -> EventSurface? {
+        guard let series = Series.by(id: id), let event = series.event(in: seriesRange!) else { return nil }
+        let realm = Realm.user()
+        try! realm.safeWrite {
+            realm.add(event)
+        }
+        return EventSurface.load(with: event) as? EventSurface
+    }
+
+    func recurringUpdateOptions(for verb: String, onComplete: @escaping (ResponseScope) -> Void) -> UIAlertController {
         let alert = UIAlertController(title: "Recurring Event",
                                       message: "\"\(title.value)\" is part of a series.",
             preferredStyle: .actionSheet)
 
-        alert.addAction(UIAlertAction(title: "\(verb(for: response)) all events in the series", style: .default) {
+        alert.addAction(UIAlertAction(title: "\(verb) all events in the series", style: .default) {
             action in
-            self.respond(with: response, forceDisplay: true)
             onComplete(.series)
         })
-        alert.addAction(UIAlertAction(title: "\(verb(for: response)) just this one", style: .default) {
+        alert.addAction(UIAlertAction(title: "\(verb) just this one", style: .default) {
             action in
-            self.respondDetaching(with: response, forceDisplay: true)
             onComplete(.event)
         })
         alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { action in onComplete(.none) })

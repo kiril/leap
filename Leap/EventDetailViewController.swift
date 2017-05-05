@@ -54,15 +54,17 @@ extension EventDetailViewController: EventDetailViewDelegate {
     func selected(response: EventResponse, for event: EventSurface) {
         if let recurring = event as? RecurringEventSurface,
             recurring.responseNeedsClarification(for: response) {
-            let alert = recurring.recurringResponseOptions(for: response) { scope in
+            let alert = recurring.recurringUpdateOptions(for: recurring.verb(for: response)) { scope in
                 switch scope {
                 case .none:
-                    break
+                    break // this is Cancel tapped
+
                 case .series:
                     recurring.respond(with: response, forceDisplay: true)
                     self.navigationController!.popViewController(animated: true)
+
                 case .event:
-                    recurring.respond(with: response, forceDisplay: true)
+                    recurring.respondDetaching(with: response, forceDisplay: true)
                     self.navigationController!.popViewController(animated: true)
                 }
             }

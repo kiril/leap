@@ -10,65 +10,6 @@
 import Foundation
 import RealmSwift
 
-enum EventResponse {
-    case none,
-    yes,
-    no,
-    maybe
-
-
-    static func from(_ engagement: Engagement) -> EventResponse {
-        switch engagement {
-        case .undecided, .none:
-            return .none
-        case .engaged:
-            return .yes
-        case .disengaged:
-            return .no
-        case .tracking:
-            return .maybe
-        }
-    }
-
-    func asEngagement() -> Engagement {
-        switch self {
-        case .none:
-            return .undecided
-        case .yes:
-            return .engaged
-        case .no:
-            return .disengaged
-        case .maybe:
-            return .tracking
-        }
-    }
-}
-
-enum Handedness {
-    case left
-    case right
-}
-
-enum Overlap {
-    case identical
-    case staggered
-    case justified(direction:Handedness)
-    case none
-}
-
-extension TimePerspective {
-    static func compute(fromEvent event: EventSurface) -> TimePerspective {
-        let now = Date()
-        if event.startTime.value > now {
-            return .future
-        } else if event.endTime.value < now {
-            return .past
-        } else {
-            return .current
-        }
-    }
-}
-
 class EventSurface: Surface, ModelLoadable {
     override var type: String { return "event" }
 
@@ -110,6 +51,15 @@ class EventSurface: Surface, ModelLoadable {
     var hasCustomDeparture: Bool { return departureTime.value != endTime.value }
 
     var hasAgenda: Bool { return agenda.rawValue != nil }
+
+    var isDetached: Bool {
+        if self is RecurringEventSurface {
+            return false
+        }
+        return self.isRecurring.value
+    }
+
+    var hasDetail: Bool { return detail.rawValue != nil && detail.value.hasNonWhitespaceCharacters }
 
     func responseNeedsClarification(for response: EventResponse) -> Bool {
         return false
@@ -164,49 +114,70 @@ class EventSurface: Surface, ModelLoadable {
     }
 
     func intersection(with other: EventSurface) -> Overlap {
-        if endTime.value <= other.startTime.value || other.endTime.value <= startTime.value {
+        if departureTime.value <= other.arrivalTime.value || other.departureTime.value <= arrivalTime.value {
             return .none
         }
 
-        if endTime.value == other.endTime.value && startTime.value == other.startTime.value {
+        if departureTime.value == other.departureTime.value && arrivalTime.value == other.arrivalTime.value {
             return .identical
         }
 
-        if endTime.value == other.endTime.value {
+        if departureTime.value == other.departureTime.value {
             return .justified(direction: .right)
         }
 
-        if startTime.value == other.startTime.value {
+        if arrivalTime.value == other.arrivalTime.value {
             return .justified(direction: .left)
         }
 
         return .staggered
     }
 
-    func leaveEarly(for other: EventSurface) {
+    func leaveEarly(for other: EventSurface) -> EventSurface {
         let otherStart = other.startTime.value
-        guard otherStart > startTime.value && otherStart < endTime.value else { return }
-        departureTime.update(to: otherStart)
-        try! flush()
+        guard otherStart > startTime.value && otherStart < endTime.value else { fatalError() }
+        return depart(at: otherStart)
     }
 
-    func joinLate(for other: EventSurface) {
+    func joinLate(for other: EventSurface) -> EventSurface {
         let otherEnd = other.endTime.value
-        guard otherEnd > startTime.value && otherEnd < endTime.value else { return }
-        arrivalTime.update(to: otherEnd)
-        try! flush()
+        guard otherEnd > startTime.value && otherEnd < endTime.value else { fatalError() }
+        return arrive(at: otherEnd)
     }
 
-    func splitTime(with other: EventSurface, for overlap: Overlap) {
+    func depart(at departureTime: Date) -> EventSurface {
+        var me = self
+        if let recurring = self as? RecurringEventSurface {
+            me = recurring.detach()!
+        }
+
+        me.departureTime.update(to: departureTime)
+        try! me.flush()
+        return me
+    }
+
+    func arrive(at arrivalTime: Date) -> EventSurface {
+        var me = self
+        if let recurring = self as? RecurringEventSurface {
+            me = recurring.detach()!
+        }
+
+        me.arrivalTime.update(to: arrivalTime)
+        try! me.flush()
+        return me
+    }
+
+    func splitTime(with other: EventSurface, for overlap: Overlap) -> (EventSurface, EventSurface) {
+        var me: EventSurface = self
+        var them: EventSurface = other
+
         switch overlap {
         case .identical:
             let diff = endTime.value.timeIntervalSince(startTime.value)
             let midpoint = Date(timeIntervalSinceReferenceDate: startTime.value.timeIntervalSinceReferenceDate + diff/2)
 
-            self.departureTime.update(to: midpoint)
-            try! self.flush()
-            other.arrivalTime.update(to: midpoint)
-            try! other.flush()
+            me = self.depart(at: midpoint)
+            them = other.arrive(at: midpoint)
 
         case .staggered:
             let first = startTime.value < other.startTime.value ? self : other
@@ -214,15 +185,15 @@ class EventSurface: Surface, ModelLoadable {
             let startOfSecond = second.startTime.value
             let endOfFirst = first.endTime.value
 
-            guard endOfFirst < startOfSecond else { return }
+            guard endOfFirst < startOfSecond else { return (me, them) }
 
             let diff = startOfSecond.timeIntervalSince(endOfFirst)
             let midpoint = Date(timeIntervalSinceReferenceDate: endOfFirst.timeIntervalSinceReferenceDate + diff/2)
 
-            first.departureTime.update(to: midpoint)
-            try! first.flush()
-            second.arrivalTime.update(to: midpoint)
-            try! second.flush()
+            let a = first.depart(at: midpoint)
+            let b = second.arrive(at: midpoint)
+
+            (me, them) = (first == me ? (a, b) : (b, a))
 
         case let .justified(direction):
             switch direction {
@@ -231,25 +202,28 @@ class EventSurface: Surface, ModelLoadable {
                 let longer = shorter == self ? other : self
                 let amount = shorter.endTime.value.timeIntervalSince(shorter.startTime.value) / 2
                 let midpoint = Date(timeIntervalSinceReferenceDate: shorter.startTime.value.timeIntervalSinceReferenceDate + amount)
-                shorter.departureTime.update(to: midpoint)
-                try! shorter.flush()
-                longer.arrivalTime.update(to: midpoint)
-                try! longer.flush()
+
+                let a = shorter.depart(at: midpoint)
+                let b = longer.arrive(at: midpoint)
+
+                (me, them) = (shorter == me ? (a, b) : (b, a))
 
             case .right:
                 let shorter = endTime.value < other.endTime.value ? self : other
                 let longer = shorter == self ? other : self
                 let amount = shorter.endTime.value.timeIntervalSince(shorter.startTime.value) / 2
                 let midpoint = Date(timeIntervalSinceReferenceDate: shorter.startTime.value.timeIntervalSinceReferenceDate + amount)
-                shorter.arrivalTime.update(to: midpoint)
-                try! shorter.flush()
-                longer.departureTime.update(to: midpoint)
-                try! longer.flush()
+                let a = shorter.arrive(at: midpoint)
+                let b = longer.depart(at: midpoint)
+
+                (me, them) = (shorter == me ? (a, b) : (b, a))
             }
 
         case .none:
-            return
+            return (me, them)
         }
+
+        return (me, them)
     }
 
     func verb(for response: EventResponse) -> String {
@@ -615,6 +589,22 @@ class EventSurface: Surface, ModelLoadable {
             }
         }
     }
+
+    func arrivesEarlier(than event: EventSurface) -> Bool {
+        return arrivalTime.value < event.arrivalTime.value
+    }
+
+    func arrivesLater(than event: EventSurface) -> Bool {
+        return arrivalTime.value > event.arrivalTime.value
+    }
+
+    func departsEarlier(than event: EventSurface) -> Bool {
+        return departureTime.value < event.departureTime.value
+    }
+
+    func departsLater(than event: EventSurface) -> Bool {
+        return departureTime.value > event.departureTime.value
+    }
 }
 
 extension EventSurface: Hashable {
@@ -683,7 +673,6 @@ extension List where Element: Alarm {
 }
 
 
-
 extension EventSurface: Linear {
     var duration: TimeInterval {
         return endTime.value.timeIntervalSinceReferenceDate - startTime.value.timeIntervalSinceReferenceDate
@@ -712,5 +701,73 @@ extension EventSurface: Linear {
         }
 
         return "\(from) - \(to)\(more)"
+    }
+}
+
+
+
+enum EventResponse {
+    case none,
+    yes,
+    no,
+    maybe
+
+
+    static func from(_ engagement: Engagement) -> EventResponse {
+        switch engagement {
+        case .undecided, .none:
+            return .none
+        case .engaged:
+            return .yes
+        case .disengaged:
+            return .no
+        case .tracking:
+            return .maybe
+        }
+    }
+
+    func asEngagement() -> Engagement {
+        switch self {
+        case .none:
+            return .undecided
+        case .yes:
+            return .engaged
+        case .no:
+            return .disengaged
+        case .maybe:
+            return .tracking
+        }
+    }
+}
+
+enum Handedness {
+    case left
+    case right
+}
+
+enum Overlap {
+    case identical
+    case staggered
+    case justified(direction:Handedness)
+    case none
+}
+
+enum TimeConflictResolution {
+    case leaveEarly
+    case arriveLate
+    case splitEvenly
+    case none
+}
+
+extension TimePerspective {
+    static func compute(fromEvent event: EventSurface) -> TimePerspective {
+        let now = Date()
+        if event.startTime.value > now {
+            return .future
+        } else if event.endTime.value < now {
+            return .past
+        } else {
+            return .current
+        }
     }
 }
