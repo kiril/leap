@@ -177,7 +177,7 @@ class EventKit {
                 existing.status = .archived
             }
         }
-        print("series UPDATE \(ekEvent.title)")
+        print("series UPDATE \(existing.type) \(ekEvent.title)")
     }
 
     func importAsSeries(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: Series? = nil) {
@@ -202,8 +202,7 @@ class EventKit {
                 if let me = series.template.me, me.engagement == .disengaged {
                     series.status = .archived
                 }
-                series.insert()
-                print("series INSERT \(ekEvent.title)")
+                print("series INSERT \(series.type) \(ekEvent.title)")
             }
         }
     }

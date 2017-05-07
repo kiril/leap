@@ -11,6 +11,12 @@ import UIKit
 import EventKit
 import IGListKit
 
+
+
+let TITLE_MAX = 30
+
+
+
 class DayScheduleViewController: UIViewController, StoryboardLoadable {
 
     @IBOutlet weak var collectionView: IGListCollectionView!
@@ -65,13 +71,13 @@ extension DayScheduleViewController: EventViewCellDelegate {
             case .right:
                 let first = event.arrivalTime.value < other.arrivalTime.value ? event : other
 
-                alert.addAction(UIAlertAction(title: "Leave \"\(first.title.value.truncate(to: 35, in: .end))\" early", style: .destructive) { action in callback(TimeConflictResolution.leaveEarly) })
+                alert.addAction(UIAlertAction(title: "Leave \"\(first.title.value.truncate(to: TITLE_MAX, in: .end))\" early", style: .destructive) { action in callback(TimeConflictResolution.leaveEarly) })
                 alert.addAction(UIAlertAction(title: "Split the difference", style: .default) { action in callback(.splitEvenly) })
 
             case .left:
                 let second = event.departureTime.value > other.departureTime.value ? event : other
 
-                alert.addAction(UIAlertAction(title: "Join \"\(second.title.value.truncate(to: 35, in: .end))\" late", style: .destructive) { action in callback(.arriveLate) })
+                alert.addAction(UIAlertAction(title: "Join \"\(second.title.value.truncate(to: TITLE_MAX, in: .end))\" late", style: .destructive) { action in callback(.arriveLate) })
                 alert.addAction(UIAlertAction(title: "Split the difference", style: .default) { action in callback(.splitEvenly) })
 
             }
@@ -80,9 +86,9 @@ extension DayScheduleViewController: EventViewCellDelegate {
             let first = event.startTime.value < other.startTime.value ? event : other
             let second = first == event ? other : event
 
-            alert.addAction(UIAlertAction(title: "Leave \"\(first.title.value.truncate(to: 35, in: .end))\" early", style: .destructive) {
+            alert.addAction(UIAlertAction(title: "Leave \"\(first.title.value.truncate(to: TITLE_MAX, in: .end))\" early", style: .destructive) {
                 action in callback(.leaveEarly) })
-            alert.addAction(UIAlertAction(title: "Join \"\(second.title.value.truncate(to: 35, in: .end))\" late", style: .destructive) {
+            alert.addAction(UIAlertAction(title: "Join \"\(second.title.value.truncate(to: TITLE_MAX, in: .end))\" late", style: .destructive) {
                 action in callback(.arriveLate) })
 
         case .none:
@@ -110,7 +116,7 @@ extension DayScheduleViewController: EventViewCellDelegate {
                                       message: "\"\(event.title.value)\" and \"\(other.title.value)\" overlap.",
             preferredStyle: .actionSheet)
 
-        alert.addAction(UIAlertAction(title: "\(event.verb(for: .no)) \"\(other.title.value.truncate(to: 35, in: .middle))\"", style: .destructive) {
+        alert.addAction(UIAlertAction(title: "\(event.verb(for: .no)) \"\(other.title.value.truncate(to: TITLE_MAX, in: .middle))\"", style: .destructive) {
             action in
 
             if let recurring = event as? RecurringEventSurface {
@@ -132,7 +138,7 @@ extension DayScheduleViewController: EventViewCellDelegate {
             
             finish(by: .decline(side: .right), detaching: false)
         })
-        alert.addAction(UIAlertAction(title: "\(event.verb(for: .no)) \"\(event.title.value.truncate(to: 35, in: .middle))\"", style: .destructive) {
+        alert.addAction(UIAlertAction(title: "\(event.verb(for: .no)) \"\(event.title.value.truncate(to: TITLE_MAX, in: .middle))\"", style: .destructive) {
             action in
 
             if let recurring = event as? RecurringEventSurface {
