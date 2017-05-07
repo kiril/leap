@@ -203,6 +203,7 @@ class EventKit {
                     series.status = .archived
                 }
                 print("series INSERT \(series.type) \(ekEvent.title)")
+                series.insert()
             }
         }
     }
