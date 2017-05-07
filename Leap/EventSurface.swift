@@ -29,8 +29,10 @@ class EventSurface: Surface, ModelLoadable {
     let userResponse           = SurfaceProperty<EventResponse>()
     let needsResponse          = ComputedSurfaceBool<EventSurface>(by: EventSurface.computeNeedsResponse)
     let isConfirmed            = ComputedSurfaceBool<EventSurface>(by: EventSurface.computeIsConfirmed)
-    let perspective            = ComputedSurfaceProperty<TimePerspective,EventSurface>(by: TimePerspective.compute)
+    let perspective            = ComputedSurfaceProperty<TimePerspective,EventSurface>(by: EventSurface.computePerspective)
+    let userAttendancePerspective = ComputedSurfaceProperty<TimePerspective,EventSurface>(by: EventSurface.computeUserAttendancePerspective)
     let percentElapsed         = ComputedSurfaceFloat<EventSurface>(by: EventSurface.computeElapsed)
+    let percentUserAttendanceElapsed = ComputedSurfaceFloat<EventSurface>(by: EventSurface.computeUserAttendanceElapsed)
     let invitationSummary      = SurfaceString()
     let locationSummary        = SurfaceString()
     let isRecurring            = SurfaceBool()
@@ -326,15 +328,35 @@ class EventSurface: Surface, ModelLoadable {
         return event.userResponse.value == .yes
     }
 
+    static func computePerspective(fromEvent event: EventSurface) -> TimePerspective {
+        return TimePerspective.forPeriod(fromStart: event.startTime.value,
+                                         toEnd: event.endTime.value)
+    }
+
+    static func computeUserAttendancePerspective(fromEvent event: EventSurface) -> TimePerspective {
+        return TimePerspective.forPeriod(fromStart: event.arrivalTime.value,
+                                         toEnd: event.departureTime.value)
+    }
+
     static func computeElapsed(event: EventSurface) -> Float {
+        return computeElapsedBetween(start: event.startTime.value,
+                                     end: event.endTime.value)
+    }
+
+    static func computeUserAttendanceElapsed(event: EventSurface) -> Float {
+        return computeElapsedBetween(start: event.arrivalTime.value,
+                                     end: event.departureTime.value)
+    }
+
+    private static func computeElapsedBetween(start: Date, end: Date) -> Float {
         let now = Date()
 
-        if Calendar.current.isDate(now, after: event.endTime.value) {
+        if Calendar.current.isDate(now, after: end) {
             return 1.0
-        } else if Calendar.current.isDate(now, before: event.startTime.value) {
+        } else if Calendar.current.isDate(now, before: start) {
             return 0.0
         } else {
-            return Float(now.seconds(since: event.startTime.value))/Float(event.endTime.value.seconds(since: event.startTime.value))
+            return Float(now.seconds(since: start))/Float(end.seconds(since: start))
         }
     }
 
@@ -809,14 +831,23 @@ enum TimeConflictResolution {
 }
 
 extension TimePerspective {
-    static func compute(fromEvent event: EventSurface) -> TimePerspective {
+    // move this somewhere more appropriate?
+    static func forPeriod(fromStart start: Date, toEnd end: Date) -> TimePerspective {
         let now = Date()
-        if event.startTime.value > now {
+        if start > now {
             return .future
-        } else if event.endTime.value < now {
+        } else if end < now {
             return .past
         } else {
             return .current
         }
+    }
+}
+
+extension TimeRange {
+    // move this somewhere more appropriate?
+    var timePerspective: TimePerspective {
+        return TimePerspective.forPeriod(fromStart: start,
+                                         toEnd: end)
     }
 }

@@ -17,6 +17,11 @@ protocol EventViewCellDelegate: class {
 class EventViewCell: UICollectionViewCell {
     @IBOutlet weak var topBorderView: UIView!
 
+    // elapsed time
+    @IBOutlet weak var elapsedTimeIndicatorView: UIView!
+    @IBOutlet weak var elapsedTimeHeightConstraint: NSLayoutConstraint!
+    private weak var elapsedTimeWidthConstraint: NSLayoutConstraint?
+
     // time info
     @IBOutlet weak var subscribedIcon: UILabel!
     @IBOutlet weak var timeWarningLabel: UILabel!
@@ -76,8 +81,8 @@ class EventViewCell: UICollectionViewCell {
     }
 
     private func updateBorderColor() {
-        self.layer.borderColor = borderColor.cgColor
-        self.layer.borderWidth = 1.0
+        layer.borderColor = borderColor.cgColor
+        layer.borderWidth = 1.0
     }
 
     private func updateShadow() {
@@ -90,11 +95,32 @@ class EventViewCell: UICollectionViewCell {
         layer.shadowRadius = 2
     }
 
+    var elapsedTimeIndicatorHidden = true {
+        didSet { updateElapsedTimeIndicator() }
+    }
+
+    var elapsedTimePercent: CGFloat = 0.0 {
+        didSet { updateElapsedTimeIndicator() }
+    }
+
+    private func updateElapsedTimeIndicator() {
+        elapsedTimeIndicatorView.isHidden = elapsedTimeIndicatorHidden
+        elapsedTimeHeightConstraint.constant = elapsedTimeIndicatorHidden ? 0.0 : 7.0
+        elapsedTimeWidthConstraint?.isActive = false
+
+        let elapsedTimePercent = max(0.0, min(1.0, self.elapsedTimePercent))
+        elapsedTimeWidthConstraint = elapsedTimeIndicatorView.widthAnchor.constraint(equalTo: self.widthAnchor,
+                                                                                     multiplier: elapsedTimePercent,
+                                                                                     constant: 0)
+        elapsedTimeWidthConstraint?.isActive = true
+    }
+
     private func setup() {
         updateBorderColor()
         updateShadow()
         updateFonts()
         setupButtons()
+        updateElapsedTimeIndicator()
 
         self.contentView.translatesAutoresizingMaskIntoConstraints = false
         self.translatesAutoresizingMaskIntoConstraints = false
@@ -306,10 +332,28 @@ class EventViewCell: UICollectionViewCell {
             displayShadow = true
         }
 
-        if event.perspective.value == .past {
-            contentView.alpha = 0.5
+        elapsedTimeIndicatorView.backgroundColor = UIColor.projectLightGray
+
+        switch event.perspective.value {
+        case .past:
             borderColor = UIColor.projectLightGray
-        } else {
+            elapsedTimeIndicatorHidden = true
+        case .current:
+            elapsedTimeIndicatorHidden = false
+            elapsedTimePercent = CGFloat(event.percentElapsed.value)
+        case .future:
+            elapsedTimeIndicatorHidden = true
+        }
+
+        switch event.userAttendancePerspective.value {
+        case .past:
+            contentView.alpha = 0.5
+        case .current:
+            contentView.alpha = 1.0
+            if event.isConfirmed.value {
+                elapsedTimeIndicatorView.backgroundColor = UIColor.projectBlue
+            }
+        case .future:
             contentView.alpha = 1.0
         }
 
