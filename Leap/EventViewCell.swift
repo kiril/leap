@@ -80,6 +80,8 @@ class EventViewCell: UICollectionViewCell {
         }
     }
 
+    var day: GregorianDay?
+
     private func updateBorderColor() {
         layer.borderColor = borderColor.cgColor
         layer.borderWidth = 1.0
@@ -298,13 +300,19 @@ class EventViewCell: UICollectionViewCell {
         }
     }
 
-    func configure(with event: EventSurface) {
+    func configure(with event: EventSurface, on day: GregorianDay) {
+        self.day = day
         self.event = event
 
         configureOrigin(with: event)
         configureArrivalDeparture(with: event)
 
-        timeLabel.text = event.timeString.value
+        if let day = self.day {
+            timeLabel.text = event.formatDuration(viewedFrom: day)
+        } else {
+            timeLabel.text = event.timeString.value
+        }
+
         titleLabel.text = event.title.value
         invitationSummaryLabel.text = event.invitationSummary.value
 
@@ -415,7 +423,7 @@ class EventViewCell: UICollectionViewCell {
 extension EventViewCell: SurfaceObserver {
     func surfaceDidChange(_ surface: Surface) {
         guard let event = surface as? EventSurface else { return }
-        self.configure(with: event)
+        self.configure(with: event, on: day!)
     }
 
     var sourceId: String { return "EventViewCell" }

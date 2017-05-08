@@ -90,7 +90,7 @@ extension ReminderSurface: Linear {
     var secondsLong: Int { return Int(duration) }
     var minutesLong: Int { return secondsLong / 60 }
 
-    func formatDuration() -> String? {
+    func formatDuration(viewedFrom day: GregorianDay? = nil) -> String? {
         guard let end = endDate else { return nil }
         let start = startDate
 

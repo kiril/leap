@@ -173,8 +173,8 @@ extension Calendar {
         var year = min(aYear, bYear)
         let endYear = max(aYear, bYear)
         while year < endYear {
-            let lastDay = Calendar.current.date(from: DateComponents(year: year, month: 12, day: 31))!
-            let daysInYear = Calendar.current.ordinality(of: .day, in: .year, for: lastDay)!
+            let lastDay = date(from: DateComponents(year: year, month: 12, day: 31))!
+            let daysInYear = ordinality(of: .day, in: .year, for: lastDay)!
             interveningDays += daysInYear
             year += 1
         }

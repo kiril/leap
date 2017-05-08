@@ -12,5 +12,5 @@ protocol Linear {
     var duration: TimeInterval { get }
     var secondsLong: Int { get }
     var minutesLong: Int { get }
-    func formatDuration() -> String?
+    func formatDuration(viewedFrom day: GregorianDay?) -> String?
 }

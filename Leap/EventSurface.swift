@@ -750,7 +750,7 @@ extension EventSurface: Linear {
     var secondsLong: Int { return Int(duration) }
     var minutesLong: Int { return secondsLong / 60 }
 
-    func formatDuration() -> String? {
+    func formatDuration(viewedFrom day: GregorianDay? = nil) -> String? {
         let start = startTime.value
         let end = endTime.value
 
@@ -763,14 +763,42 @@ extension EventSurface: Linear {
 
         let from = calendar.formatDisplayTime(from: start, needsAMPM: crossesNoon)
         let to = calendar.formatDisplayTime(from: end, needsAMPM: true)
-        var more = ""
+        var after = ""
+        var before = ""
         if spansDays {
-            let days = calendar.daysBetween(start, and: end)
-            let ess = days == 1 ? "" : "s"
-            more = " \(days) day\(ess) later"
+
+            if let day = day {
+                let startOfDay = calendar.startOfDay(for: day)
+                let endOfDay = calendar.startOfDay(for: day.dayAfter)
+                if start < startOfDay {
+                    let daysEarlier = calendar.daysBetween(start, and: startOfDay)
+                    switch daysEarlier {
+                    case 0, 1:
+                        before = "(Yesterday) "
+                    default:
+                        before = "(\(daysEarlier) days ago) "
+                    }
+                }
+
+                if end > endOfDay {
+                    let daysLater = calendar.daysBetween(end, and: endOfDay)
+                    switch daysLater {
+                    case 0, 1:
+                        after = " (Tomorrow)"
+                    default:
+                        after = " (in \(daysLater) days)"
+                    }
+                } else if start < startOfDay {
+                    after = " today"
+                }
+            } else {
+                let days = calendar.daysBetween(start, and: end)
+                let ess = days == 1 ? "" : "s"
+                after = " (\(days) day\(ess) later)"
+            }
         }
 
-        return "\(from) - \(to)\(more)"
+        return "\(before)\(from) - \(to)\(after)"
     }
 }
 
