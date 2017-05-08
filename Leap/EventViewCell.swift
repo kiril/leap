@@ -15,7 +15,11 @@ protocol EventViewCellDelegate: class {
 }
 
 class EventViewCell: UICollectionViewCell {
-    @IBOutlet weak var topBorderView: UIView!
+    // cell bits
+    @IBOutlet weak var raggedEdgeView: RaggedEdgeView!
+    @IBOutlet weak var raggedEdgeHeight: NSLayoutConstraint!
+    @IBOutlet weak var bottomRaggedEdgeView: RaggedEdgeView!
+    @IBOutlet weak var bottomRaggedEdgeHeight: NSLayoutConstraint!
 
     // elapsed time
     @IBOutlet weak var elapsedTimeIndicatorView: UIView!
@@ -23,6 +27,7 @@ class EventViewCell: UICollectionViewCell {
     private weak var elapsedTimeWidthConstraint: NSLayoutConstraint?
 
     // time info
+    @IBOutlet weak var background: UIView!
     @IBOutlet weak var subscribedIcon: UILabel!
     @IBOutlet weak var timeWarningLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
@@ -83,8 +88,9 @@ class EventViewCell: UICollectionViewCell {
     var day: GregorianDay?
 
     private func updateBorderColor() {
-        layer.borderColor = borderColor.cgColor
-        layer.borderWidth = 1.0
+        background.layer.borderColor = borderColor.cgColor
+        background.layer.borderWidth = 1.0
+        raggedEdgeView.lineColor = borderColor
     }
 
     private func updateShadow() {
@@ -122,10 +128,18 @@ class EventViewCell: UICollectionViewCell {
         updateShadow()
         updateFonts()
         setupButtons()
+        setupRaggedEdges()
         updateElapsedTimeIndicator()
 
         self.contentView.translatesAutoresizingMaskIntoConstraints = false
         self.translatesAutoresizingMaskIntoConstraints = false
+    }
+
+    private func setupRaggedEdges() {
+        raggedEdgeView.orientation = .top
+        raggedEdgeView.edgeDisposition = .innie
+        bottomRaggedEdgeView.orientation = .bottom
+        bottomRaggedEdgeView.edgeDisposition = .outie
     }
 
     private func updateFonts() {
@@ -142,8 +156,6 @@ class EventViewCell: UICollectionViewCell {
         timeWarningLabel.textColor = UIColor.orange
         titleLabel.textColor = UIColor.projectDarkGray
         timeLabel.textColor = UIColor.projectDarkGray
-
-        topBorderView.backgroundColor = UIColor.projectWarning
     }
 
     override func awakeFromNib() {
@@ -271,6 +283,12 @@ class EventViewCell: UICollectionViewCell {
 
     func configureArrivalDeparture(with event: EventSurface) {
 
+        arrivalDepartureLabel.isVisible = false
+        raggedEdgeView.isVisible = false
+        raggedEdgeHeight.constant = 1
+        bottomRaggedEdgeView.isVisible = false
+        bottomRaggedEdgeHeight.constant = 1
+
         if !event.isInConflict && (event.hasCustomArrival || event.hasCustomDeparture) {
             let bold = [NSFontAttributeName: timeLabel.font!]
             let normal = [NSFontAttributeName: arrivalDepartureLabel.font!]
@@ -281,7 +299,12 @@ class EventViewCell: UICollectionViewCell {
                 let time = DateFormatter.shortTime(date: arrival, appendAMPM: true)
                 custom.append(string: time, attributes: bold)
                 custom.append(string: " arrival", attributes: normal)
+
+                raggedEdgeHeight.constant = 11
+                raggedEdgeView.isVisible = true
+                raggedEdgeView.setNeedsDisplay()
             }
+
             if event.hasCustomDeparture {
                 let departure = event.departureTime.value
                 if custom.length > 0 {
@@ -290,13 +313,14 @@ class EventViewCell: UICollectionViewCell {
                 let time = DateFormatter.shortTime(date: departure, appendAMPM: true)
                 custom.append(string: "depart ", attributes: normal)
                 custom.append(string: time, attributes: bold)
+
+                bottomRaggedEdgeHeight.constant = 11
+                bottomRaggedEdgeView.isVisible = true
+                bottomRaggedEdgeView.setNeedsDisplay()
             }
+
             arrivalDepartureLabel.attributedText = custom
             arrivalDepartureLabel.isVisible = true
-            topBorderView.isVisible = true
-        } else {
-            arrivalDepartureLabel.isVisible = false
-            topBorderView.isVisible = false
         }
     }
 
@@ -331,11 +355,13 @@ class EventViewCell: UICollectionViewCell {
         configure(location: event.locationSummary.rawValue)
 
         if event.isConfirmed.value {
-            backgroundColor = UIColor.white
+            background.backgroundColor = UIColor.white
+            raggedEdgeView.maskColor = UIColor.white
             borderColor = UIColor.projectLightGray
             displayShadow = false
         } else {
-            backgroundColor = UIColor.projectLightBackgroundGray
+            background.backgroundColor = UIColor.projectLightBackgroundGray
+            raggedEdgeView.maskColor = UIColor.projectLightBackgroundGray
             borderColor = UIColor.projectLightGray
             displayShadow = true
         }

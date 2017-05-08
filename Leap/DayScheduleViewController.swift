@@ -13,7 +13,7 @@ import IGListKit
 
 
 
-let TITLE_MAX = 30
+let TITLE_MAX = 25
 
 
 
