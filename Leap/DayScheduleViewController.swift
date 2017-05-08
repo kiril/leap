@@ -13,7 +13,7 @@ import IGListKit
 
 
 
-let TITLE_MAX = 25
+let TITLE_MAX = 20
 
 
 
@@ -116,7 +116,7 @@ extension DayScheduleViewController: EventViewCellDelegate {
                                       message: "\"\(event.title.value)\" and \"\(other.title.value)\" overlap.",
             preferredStyle: .actionSheet)
 
-        alert.addAction(UIAlertAction(title: "\(event.verb(for: .no)) \"\(other.title.value.truncate(to: TITLE_MAX, in: .middle))\"", style: .destructive) {
+        alert.addAction(UIAlertAction(title: "\(event.verb(for: .no)) \"\(other.title.value.truncate(to: TITLE_MAX, in: .end))\"", style: .destructive) {
             action in
 
             if let recurring = event as? RecurringEventSurface {
@@ -138,7 +138,7 @@ extension DayScheduleViewController: EventViewCellDelegate {
             
             finish(by: .decline(side: .right), detaching: false)
         })
-        alert.addAction(UIAlertAction(title: "\(event.verb(for: .no)) \"\(event.title.value.truncate(to: TITLE_MAX, in: .middle))\"", style: .destructive) {
+        alert.addAction(UIAlertAction(title: "\(event.verb(for: .no)) \"\(event.title.value.truncate(to: TITLE_MAX, in: .end))\"", style: .destructive) {
             action in
 
             if let recurring = event as? RecurringEventSurface {
