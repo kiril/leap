@@ -18,25 +18,29 @@ enum ZigZag {
     case zag
 }
 
+enum RaggedOrientation {
+    case top
+    case bottom
+}
+
 class RaggedEdgeView: UIView {
-    static let ZIG_COUNT = 10
+    static let ZIG_COUNT = 12
     static let ZAG_HEIGHT: CGFloat = 8.0
 
     var edgeDisposition = EdgeDisposition.outie
     var lineColor = UIColor.projectLightGray
     var maskColor = UIColor.white
-    var borderWidth: CGFloat = 2.0
+    var borderWidth: CGFloat = 1.0
+    var orientation = RaggedOrientation.top
 
     var zigWidth: CGFloat { return frame.size.width / CGFloat(RaggedEdgeView.ZIG_COUNT) }
     var zagHeight: CGFloat { return min(frame.size.height, RaggedEdgeView.ZAG_HEIGHT) }
 
-    func drawEdge(in rect: CGRect) {
+    func zigZagPath(in rect: CGRect) -> UIBezierPath {
         let width = frame.size.width
         let height = frame.size.height
 
         let path = UIBezierPath()
-        let bottom = zagHeight
-        let top: CGFloat = 0.5
         /*
          Outie:
 
@@ -55,61 +59,93 @@ class RaggedEdgeView: UIView {
          /
          */
 
-        let leftEdge: CGFloat = 1.0
-        let rightEdge: CGFloat = width - 1.0
+        let leftEdge: CGFloat = 0.5
+        let rightEdge: CGFloat = width - 0.5
+        let topEdge: CGFloat = 0.5
+        let bottomEdge: CGFloat = height - 0.5
 
+        var verticalMovement = zagHeight
         var startPoint: CGPoint!
+        var zigZagStartPoint: CGPoint!
         var endPoint: CGPoint!
+        var zigZagEndPoint: CGPoint!
         var z = ZigZag.zig
 
-        switch edgeDisposition {
-        case .outie:
-            startPoint = CGPoint(x: leftEdge, y: top)
-            endPoint = CGPoint(x: rightEdge, y: top)
-            z = .zig
+        switch orientation {
+        case .top:
+            startPoint = CGPoint(x: leftEdge, y: height)
+            endPoint = CGPoint(x: rightEdge, y: height)
 
-        case .innie:
-            startPoint = CGPoint(x: leftEdge, y: bottom)
-            endPoint = CGPoint(x: rightEdge, y: bottom)
-            z = .zag
+            switch edgeDisposition {
+            case .outie:
+                zigZagStartPoint = CGPoint(x: leftEdge, y: topEdge)
+                zigZagEndPoint = CGPoint(x: rightEdge, y: topEdge)
+                z = .zig
+
+            case .innie:
+                zigZagStartPoint = CGPoint(x: leftEdge, y: zagHeight)
+                zigZagEndPoint = CGPoint(x: rightEdge, y: zagHeight)
+                z = .zag
+            }
+
+        case .bottom:
+            startPoint = CGPoint(x: leftEdge, y: 0.0)
+            endPoint = CGPoint(x: rightEdge, y: 0.0)
+            verticalMovement *= -1
+
+            switch edgeDisposition {
+            case .outie:
+                zigZagStartPoint = CGPoint(x: leftEdge, y: bottomEdge)
+                zigZagEndPoint = CGPoint(x: rightEdge, y: bottomEdge)
+                z = .zig
+
+            case .innie:
+                zigZagStartPoint = CGPoint(x: leftEdge, y: bottomEdge-zagHeight)
+                zigZagEndPoint = CGPoint(x: rightEdge, y: bottomEdge-zagHeight)
+                z = .zag
+            }
         }
 
 
-        path.move(to: CGPoint(x: leftEdge, y: height))
-        path.addLine(to: startPoint)
+        path.move(to: startPoint)
+        path.addLine(to: zigZagStartPoint)
 
         var x = zigWidth / 2.0
-        var y = startPoint.y
+        var y = zigZagStartPoint.y
 
         while abs(rightEdge-x) > 1.0 {
             switch z {
             case .zig: // down
-                y += zagHeight
+                y += verticalMovement
                 z = .zag
 
             case .zag:
-                y -= zagHeight
+                y -= verticalMovement
                 z = .zig
             }
-
+            
             path.addLine(to: CGPoint(x: x, y: y))
-
+            
             x += zigWidth / 2.0
         }
-
-        path.addLine(to: endPoint)
-        path.addLine(to: CGPoint(x: rightEdge, y: height))
         
-        lineColor.setStroke()
-        path.lineWidth = borderWidth
-        path.stroke()
+        path.addLine(to: zigZagEndPoint)
+        path.addLine(to: endPoint)
 
-        path.close()
-        maskColor.setFill()
-        path.fill()
+        return path
     }
 
     override func draw(_ rect: CGRect) {
-        drawEdge(in: rect)
+        guard frame.size.height > 1 else { return }
+
+        let fillPath = zigZagPath(in: rect)
+        fillPath.close()
+        maskColor.setFill()
+        fillPath.fill()
+
+        let borderPath = zigZagPath(in: rect)
+        lineColor.setStroke()
+        borderPath.lineWidth = borderWidth
+        borderPath.stroke()
     }
 }

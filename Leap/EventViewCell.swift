@@ -15,7 +15,11 @@ protocol EventViewCellDelegate: class {
 }
 
 class EventViewCell: UICollectionViewCell {
+    // cell bits
     @IBOutlet weak var raggedEdgeView: RaggedEdgeView!
+    @IBOutlet weak var raggedEdgeHeight: NSLayoutConstraint!
+    @IBOutlet weak var bottomRaggedEdgeView: RaggedEdgeView!
+    @IBOutlet weak var bottomRaggedEdgeHeight: NSLayoutConstraint!
 
     // elapsed time
     @IBOutlet weak var elapsedTimeIndicatorView: UIView!
@@ -25,7 +29,6 @@ class EventViewCell: UICollectionViewCell {
     // time info
     @IBOutlet weak var background: UIView!
     @IBOutlet weak var subscribedIcon: UILabel!
-    @IBOutlet weak var raggedEdgeHeight: NSLayoutConstraint!
     @IBOutlet weak var timeWarningLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
@@ -125,10 +128,18 @@ class EventViewCell: UICollectionViewCell {
         updateShadow()
         updateFonts()
         setupButtons()
+        setupRaggedEdges()
         updateElapsedTimeIndicator()
 
         self.contentView.translatesAutoresizingMaskIntoConstraints = false
         self.translatesAutoresizingMaskIntoConstraints = false
+    }
+
+    private func setupRaggedEdges() {
+        raggedEdgeView.orientation = .top
+        raggedEdgeView.edgeDisposition = .innie
+        bottomRaggedEdgeView.orientation = .bottom
+        bottomRaggedEdgeView.edgeDisposition = .outie
     }
 
     private func updateFonts() {
@@ -272,6 +283,12 @@ class EventViewCell: UICollectionViewCell {
 
     func configureArrivalDeparture(with event: EventSurface) {
 
+        arrivalDepartureLabel.isVisible = false
+        raggedEdgeView.isVisible = false
+        raggedEdgeHeight.constant = 1
+        bottomRaggedEdgeView.isVisible = false
+        bottomRaggedEdgeHeight.constant = 1
+
         if !event.isInConflict && (event.hasCustomArrival || event.hasCustomDeparture) {
             let bold = [NSFontAttributeName: timeLabel.font!]
             let normal = [NSFontAttributeName: arrivalDepartureLabel.font!]
@@ -282,7 +299,12 @@ class EventViewCell: UICollectionViewCell {
                 let time = DateFormatter.shortTime(date: arrival, appendAMPM: true)
                 custom.append(string: time, attributes: bold)
                 custom.append(string: " arrival", attributes: normal)
+
+                raggedEdgeHeight.constant = 11
+                raggedEdgeView.isVisible = true
+                raggedEdgeView.setNeedsDisplay()
             }
+
             if event.hasCustomDeparture {
                 let departure = event.departureTime.value
                 if custom.length > 0 {
@@ -291,19 +313,14 @@ class EventViewCell: UICollectionViewCell {
                 let time = DateFormatter.shortTime(date: departure, appendAMPM: true)
                 custom.append(string: "depart ", attributes: normal)
                 custom.append(string: time, attributes: bold)
+
+                bottomRaggedEdgeHeight.constant = 11
+                bottomRaggedEdgeView.isVisible = true
+                bottomRaggedEdgeView.setNeedsDisplay()
             }
+
             arrivalDepartureLabel.attributedText = custom
             arrivalDepartureLabel.isVisible = true
-            raggedEdgeHeight.constant = 11
-            raggedEdgeView.isVisible = true
-            raggedEdgeView.setNeedsDisplay()
-
-        } else {
-            arrivalDepartureLabel.isVisible = false
-            raggedEdgeHeight.constant = 1
-            raggedEdgeView.isVisible = false
-
-            //background.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
         }
     }
 
