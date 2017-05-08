@@ -63,6 +63,54 @@ class EventDetailView: UIView {
     @IBOutlet weak var separator4: UIView!
     @IBOutlet weak var alertsLabel: UILabel!
 
+    func configureTime(with event: EventSurface) {
+
+        let normal = [NSFontAttributeName: timeLabel.font!]
+        let alert = [NSForegroundColorAttributeName: UIColor.projectWarning]
+
+        let timeInfo = NSMutableAttributedString()
+
+        if event.isRecurring.value {
+            timeInfo.append(string: event.recurrenceDescription.value, attributes: normal)
+            if event.isDetached {
+                timeInfo.append(string: " modified", attributes: [NSObliquenessAttributeName: 1])
+            }
+
+        } else {
+            let date = Calendar.current.shortDateString(from: event.startTime.value)
+            timeInfo.append(string: "\(date), \(event.timeString.value)", attributes: normal)
+
+            if event.hasCustomArrival || event.hasCustomDeparture {
+                timeInfo.append(string: " (", attributes: alert)
+            }
+
+            if event.hasCustomArrival {
+                let arrival = event.arrivalTime.value
+                let time = DateFormatter.shortTime(date: arrival, appendAMPM: true)
+                timeInfo.append(string: time, attributes: alert)
+                timeInfo.append(string: " arrival", attributes: alert)
+            }
+
+            if event.hasCustomDeparture {
+
+                let departure = event.departureTime.value
+                if event.hasCustomArrival {
+                    timeInfo.append(string: "; ", attributes: alert)
+                }
+
+                let time = DateFormatter.shortTime(date: departure, appendAMPM: true)
+                timeInfo.append(string: "depart ", attributes: alert)
+                timeInfo.append(string: time, attributes: alert)
+            }
+
+            if event.hasCustomArrival || event.hasCustomDeparture {
+                timeInfo.append(string: ")", attributes: alert)
+            }
+        }
+
+        timeLabel.attributedText = timeInfo
+    }
+
     func configure(with event: EventSurface) {
         self.event = event
         recurringIcon.isHidden = !event.isRecurring.value
@@ -72,13 +120,8 @@ class EventDetailView: UIView {
         updateActionButtons(forEvent: event)
         setup()
 
+        configureTime(with: event)
         titleLabel.text = event.title.value
-        if event.isRecurring.value {
-            timeLabel.text = event.recurrenceDescription.value
-        } else {
-            let date = Calendar.current.shortDateString(from: event.startTime.value)
-            timeLabel.text = "\(date), \(event.timeString.value)"
-        }
         timeAlertLabel.isHidden = !event.isInConflict
         timeAlertLabel.superview?.isHidden = !event.isInConflict
 
