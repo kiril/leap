@@ -12,6 +12,7 @@ protocol EventViewCellDelegate: class {
     func tapReceived(on cell: EventViewCell, for event: EventSurface)
     func fixConflictTapped(on cell: EventViewCell, for event: EventSurface)
     func selectedNewEventResponse(_ response: EventResponse, on cell: EventViewCell, for event: EventSurface)
+    func updatedTimePerspective(on cell: EventViewCell, for event: EventSurface)
 }
 
 class EventViewCell: UICollectionViewCell {
@@ -342,18 +343,16 @@ class EventViewCell: UICollectionViewCell {
 
         timeWarningLabel.isVisible = event.isInConflict && !event.temporarilyForceDisplayResponseOptions
         resolveButton.isVisible = event.isInConflict && !(event.needsResponse.value || event.temporarilyForceDisplayResponseOptions)
-        descriptionIcon.isVisible = event.hasDetail
-        alarmIcon.isVisible = event.hasAlarms.value
-        checklistIcon.isVisible = event.hasAgenda
-
-        brokenLinkIcon.isVisible = event.isDetached
-
         invitationActionContainer.isVisible = !event.isConfirmed.value || event.temporarilyForceDisplayResponseOptions
 
-        recurringIcon.isVisible = event.isRecurring.value
-
         configure(location: event.locationSummary.rawValue)
+        configureTimePerspective(with: event)
+        configureIcons(with: event)
+        updateActionButtons(forEvent: event)
+        ensureCurrentEventUpdates()
+    }
 
+    private func configureTimePerspective(with event: EventSurface) {
         if event.isConfirmed.value {
             background.backgroundColor = UIColor.white
             raggedEdgeView.maskColor = UIColor.white
@@ -391,7 +390,14 @@ class EventViewCell: UICollectionViewCell {
             contentView.alpha = 1.0
         }
 
-        updateActionButtons(forEvent: event)
+    }
+
+    private func configureIcons(with event: EventSurface) {
+        recurringIcon.isVisible = event.isRecurring.value
+        descriptionIcon.isVisible = event.hasDetail
+        alarmIcon.isVisible = event.hasAlarms.value
+        checklistIcon.isVisible = event.hasAgenda
+        brokenLinkIcon.isVisible = event.isDetached
     }
 
     private func updateActionButtons(forEvent event: EventSurface) {
@@ -443,6 +449,64 @@ class EventViewCell: UICollectionViewCell {
         super.layoutSubviews()
 
         updateShadow()
+    }
+
+    private var currentEventTimer: Timer?
+    private var lastPerspective: TimePerspective!
+
+    private func ensureCurrentEventUpdates() {
+        // this should be called once per event configuration
+        guard let   perspective = event?.perspective.value,
+                    perspective != .past else {
+                        cancelCurrentEventTimer()
+                        return
+        }
+
+        lastPerspective = perspective
+
+        setupCurrentDisplayTimer()
+    }
+
+    private func nextRoundMinute() -> Date {
+        let calendar = Calendar.current
+        let now = Date()
+        var components = calendar.dateComponents([.era,.year,.month,.day,.hour,.minute], from: now)
+        components.setValue(components.minute! + 1, for: .minute)
+        return calendar.date(from: components)!
+    }
+
+    private func setupCurrentDisplayTimer() {
+        guard currentEventTimer == nil else { return }
+
+        currentEventTimer = Timer(fire: nextRoundMinute(), interval: 60, repeats: true) { [weak self] timer in
+            guard   let _self = self,
+                    let event = _self.event else {
+                    timer.invalidate()
+                    return
+            }
+
+            if _self.lastPerspective != event.perspective.value {
+                _self.delegate?.updatedTimePerspective(on: _self,
+                                                       for: event)
+            } else if event.perspective.value == .current {
+
+                UIView.animate(withDuration: 0.2) {
+                    _self.configureTimePerspective(with: event)
+                    _self.setNeedsLayout()
+                    _self.layoutIfNeeded()
+                }
+            }
+
+            _self.ensureCurrentEventUpdates()
+        }
+
+        let runLoop = RunLoop.current
+        runLoop.add(currentEventTimer!, forMode: .defaultRunLoopMode)
+    }
+
+    private func cancelCurrentEventTimer() {
+        currentEventTimer?.invalidate()
+        currentEventTimer = nil
     }
 }
 
