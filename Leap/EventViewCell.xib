@@ -24,14 +24,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="434" height="156"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AiP-NQ-v6I" userLabel="TopBorder" customClass="RaggedEdgeView" customModule="Leap" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="434" height="10"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="10" id="Q59-9l-fil"/>
-                        </constraints>
-                    </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XPV-t1-ljT">
-                        <rect key="frame" x="0.0" y="0.0" width="434" height="156"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XPV-t1-ljT" userLabel="Background View">
+                        <rect key="frame" x="0.0" y="0.0" width="434" height="125"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UvH-PR-EcM">
                                 <rect key="frame" x="0.0" y="0.0" width="286.5" height="7"/>
@@ -252,6 +246,12 @@
                             <constraint firstItem="UvH-PR-EcM" firstAttribute="top" secondItem="XPV-t1-ljT" secondAttribute="top" id="rne-AQ-84D"/>
                         </constraints>
                     </view>
+                    <view hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AiP-NQ-v6I" userLabel="RaggedEdge" customClass="RaggedEdgeView" customModule="Leap" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="434" height="1"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" identifier="hidden" id="Q59-9l-fil"/>
+                        </constraints>
+                    </view>
                 </subviews>
             </view>
             <constraints>
@@ -259,14 +259,15 @@
                 <constraint firstAttribute="trailing" secondItem="XPV-t1-ljT" secondAttribute="trailing" id="ZKY-33-55C"/>
                 <constraint firstItem="AiP-NQ-v6I" firstAttribute="leading" secondItem="QYs-MJ-mNJ" secondAttribute="leading" id="a1S-wF-vDe"/>
                 <constraint firstAttribute="bottom" secondItem="XPV-t1-ljT" secondAttribute="bottom" id="g2X-iO-PjK"/>
-                <constraint firstItem="XPV-t1-ljT" firstAttribute="top" secondItem="QYs-MJ-mNJ" secondAttribute="top" id="loc-gy-1ea"/>
                 <constraint firstAttribute="trailing" secondItem="AiP-NQ-v6I" secondAttribute="trailing" id="mEs-0A-sDR"/>
                 <constraint firstItem="AiP-NQ-v6I" firstAttribute="top" secondItem="QYs-MJ-mNJ" secondAttribute="top" id="pMr-SW-tOg"/>
+                <constraint firstItem="XPV-t1-ljT" firstAttribute="top" secondItem="AiP-NQ-v6I" secondAttribute="bottom" constant="-1" id="wP8-Nx-L7T"/>
             </constraints>
             <size key="customSize" width="434" height="156"/>
             <connections>
                 <outlet property="alarmIcon" destination="Dcf-DS-rqr" id="hPo-c1-jQE"/>
                 <outlet property="arrivalDepartureLabel" destination="5wE-3X-t9M" id="oNK-K4-EiS"/>
+                <outlet property="background" destination="XPV-t1-ljT" id="LHC-ly-FFR"/>
                 <outlet property="brokenLinkIcon" destination="m9Q-kv-g25" id="ynT-Ro-AWp"/>
                 <outlet property="checklistIcon" destination="Vzt-KL-tQe" id="R4g-4O-rnE"/>
                 <outlet property="commentIcon" destination="DKh-9R-SAA" id="ULc-bF-Ty4"/>
@@ -285,6 +286,8 @@
                 <outlet property="noButton" destination="OCC-lH-cVP" id="C0I-6Z-X1N"/>
                 <outlet property="phoneIcon" destination="g2x-Ga-3In" id="xWY-G8-zDt"/>
                 <outlet property="photoIcon" destination="AS5-aZ-W6c" id="Jto-Af-Wlt"/>
+                <outlet property="raggedEdgeHeight" destination="Q59-9l-fil" id="76G-k8-FiL"/>
+                <outlet property="raggedEdgeView" destination="AiP-NQ-v6I" id="oAr-Ou-eeC"/>
                 <outlet property="recurringIcon" destination="FlJ-fs-Idr" id="c3z-dy-9Fe"/>
                 <outlet property="remindButton" destination="pUw-eQ-tcj" id="IOO-gT-hgr"/>
                 <outlet property="resolveButton" destination="UiA-oS-DLF" id="lgv-M5-IeB"/>
@@ -296,7 +299,6 @@
                 <outlet property="timeLabel" destination="rSm-Ad-vKa" id="7Xd-vy-1Fo"/>
                 <outlet property="timeWarningLabel" destination="oFA-wl-htA" id="hOW-pf-2GB"/>
                 <outlet property="titleLabel" destination="Qnk-55-lVk" id="uce-Ya-ah4"/>
-                <outlet property="topBorderView" destination="AiP-NQ-v6I" id="Zhj-ok-bZL"/>
                 <outlet property="videoIcon" destination="WGW-ax-qYE" id="Pwp-cU-8TX"/>
                 <outlet property="yesButton" destination="xly-Xe-mCV" id="BZo-HF-yTx"/>
             </connections>

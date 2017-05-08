@@ -15,7 +15,7 @@ protocol EventViewCellDelegate: class {
 }
 
 class EventViewCell: UICollectionViewCell {
-    @IBOutlet weak var topBorderView: UIView!
+    @IBOutlet weak var raggedEdgeView: RaggedEdgeView!
 
     // elapsed time
     @IBOutlet weak var elapsedTimeIndicatorView: UIView!
@@ -23,7 +23,9 @@ class EventViewCell: UICollectionViewCell {
     private weak var elapsedTimeWidthConstraint: NSLayoutConstraint?
 
     // time info
+    @IBOutlet weak var background: UIView!
     @IBOutlet weak var subscribedIcon: UILabel!
+    @IBOutlet weak var raggedEdgeHeight: NSLayoutConstraint!
     @IBOutlet weak var timeWarningLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
@@ -83,8 +85,9 @@ class EventViewCell: UICollectionViewCell {
     var day: GregorianDay?
 
     private func updateBorderColor() {
-        layer.borderColor = borderColor.cgColor
-        layer.borderWidth = 1.0
+        background.layer.borderColor = borderColor.cgColor
+        background.layer.borderWidth = 1.0
+        raggedEdgeView.lineColor = borderColor
     }
 
     private func updateShadow() {
@@ -291,10 +294,16 @@ class EventViewCell: UICollectionViewCell {
             }
             arrivalDepartureLabel.attributedText = custom
             arrivalDepartureLabel.isVisible = true
-            topBorderView.isVisible = true
+            raggedEdgeHeight.constant = 11
+            raggedEdgeView.isVisible = true
+            raggedEdgeView.setNeedsDisplay()
+
         } else {
             arrivalDepartureLabel.isVisible = false
-            topBorderView.isVisible = true // false <------------------------------ CHANGE ME BACK TO FALSE THANKS
+            raggedEdgeHeight.constant = 1
+            raggedEdgeView.isVisible = false
+
+            //background.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
         }
     }
 
@@ -329,11 +338,13 @@ class EventViewCell: UICollectionViewCell {
         configure(location: event.locationSummary.rawValue)
 
         if event.isConfirmed.value {
-            backgroundColor = UIColor.white
+            background.backgroundColor = UIColor.white
+            raggedEdgeView.maskColor = UIColor.white
             borderColor = UIColor.projectLightGray
             displayShadow = false
         } else {
-            backgroundColor = UIColor.projectLightBackgroundGray
+            background.backgroundColor = UIColor.projectLightBackgroundGray
+            raggedEdgeView.maskColor = UIColor.projectLightBackgroundGray
             borderColor = UIColor.projectLightGray
             displayShadow = true
         }
