@@ -12,7 +12,6 @@ class EventDetailViewController: UIViewController {
 
     var event: EventSurface!
     var entries: [ScheduleEntry]!
-
     override func viewWillAppear(_ animated: Bool) {
         var text = event.title.value
         if text.utf16.count > 12 {

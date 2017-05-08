@@ -20,6 +20,8 @@ class EventDetailView: UIView {
     var priorEvent: EventSurface?
     weak var delegate: EventDetailViewDelegate?
 
+    var entries: [ScheduleEntry]!
+
     // container
     @IBOutlet weak var stackView: UIStackView!
 
@@ -61,8 +63,6 @@ class EventDetailView: UIView {
     @IBOutlet weak var separator4: UIView!
     @IBOutlet weak var alertsLabel: UILabel!
 
-    var entries: [ScheduleEntry]!
-
     func configure(with event: EventSurface) {
         self.event = event
         recurringIcon.isHidden = !event.isRecurring.value
@@ -73,7 +73,12 @@ class EventDetailView: UIView {
         setup()
 
         titleLabel.text = event.title.value
-        timeLabel.text = event.isRecurring.value ? event.recurrenceDescription.value : "From \(event.timeString.value)"
+        if event.isRecurring.value {
+            timeLabel.text = event.recurrenceDescription.value
+        } else {
+            let date = Calendar.current.shortDateString(from: event.startTime.value)
+            timeLabel.text = "\(date), \(event.timeString.value)"
+        }
         timeAlertLabel.isHidden = !event.isInConflict
         timeAlertLabel.superview?.isHidden = !event.isInConflict
 
