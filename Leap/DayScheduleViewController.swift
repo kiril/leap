@@ -298,7 +298,7 @@ extension DayScheduleViewController: IGListAdapterDataSource {
             case .openTime:
                 return OpenTimeSectionController(delegate: self)
             case .event:
-                return EventSectionController(eventViewCellDelegate: self)
+                return EventSectionController(eventViewCellDelegate: self, day: self.surface.day.gregorianDay)
             }
         }
         else if object is ReminderSurface ||

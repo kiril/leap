@@ -11,12 +11,14 @@ import IGListKit
 
 class EventSectionController: IGListSectionController, IGListSectionType {
     var event: EventSurface!
+    var day: GregorianDay?
 
     weak var eventViewCellDelegate: EventViewCellDelegate?
 
-    init(eventViewCellDelegate: EventViewCellDelegate) {
+    init(eventViewCellDelegate: EventViewCellDelegate, day: GregorianDay) {
         super.init()
         self.eventViewCellDelegate = eventViewCellDelegate
+        self.day = day
 
         inset = UIEdgeInsets(top: 0, left: 0, bottom: 15, right: 0)
     }
@@ -29,7 +31,7 @@ class EventSectionController: IGListSectionController, IGListSectionType {
         let targetSize = CGSize(width: targetCellWidth, height: 100000000)
         configureCellWidth(prototypeEventCell)
 
-        prototypeEventCell.configure(with: event)
+        prototypeEventCell.configure(with: event, on: day!)
         let size = prototypeEventCell.systemLayoutSizeFitting(targetSize)
         return size
     }
@@ -49,7 +51,7 @@ class EventSectionController: IGListSectionController, IGListSectionType {
                                                           bundle: nil,
                                                           for: self,
                                                           at: index) as! EventViewCell
-        cell.configure(with: event)
+        cell.configure(with: event, on: day!)
         cell.delegate = self.eventViewCellDelegate
 
         self.configureCellWidth(cell)
