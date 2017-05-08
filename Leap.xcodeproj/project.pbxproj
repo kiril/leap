@@ -688,10 +688,10 @@
 			children = (
 				831444C71E7B034A00A5EF06 /* EventViewCell.xib */,
 				831444C91E7B072600A5EF06 /* EventViewCell.swift */,
-				FB180C491EB260F800FE1CF4 /* EventDetailViewController.swift */,
 				FB1871F71EBCDE9800213913 /* RaggedEdgeView.swift */,
 				FB180C4D1EB261B200FE1CF4 /* EventDetailView.xib */,
 				FB180C4F1EB261DB00FE1CF4 /* EventDetailView.swift */,
+				FB180C491EB260F800FE1CF4 /* EventDetailViewController.swift */,
 			);
 			name = Events;
 			sourceTree = "<group>";
