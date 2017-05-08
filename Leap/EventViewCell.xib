@@ -24,10 +24,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="434" height="156"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AiP-NQ-v6I" userLabel="TopBorder">
-                        <rect key="frame" x="0.0" y="0.0" width="434" height="0.0"/>
+                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AiP-NQ-v6I" userLabel="TopBorder" customClass="RaggedEdgeView" customModule="Leap" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="434" height="10"/>
                         <constraints>
-                            <constraint firstAttribute="height" id="Q59-9l-fil"/>
+                            <constraint firstAttribute="height" constant="10" id="Q59-9l-fil"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XPV-t1-ljT">

@@ -142,8 +142,6 @@ class EventViewCell: UICollectionViewCell {
         timeWarningLabel.textColor = UIColor.orange
         titleLabel.textColor = UIColor.projectDarkGray
         timeLabel.textColor = UIColor.projectDarkGray
-
-        topBorderView.backgroundColor = UIColor.projectWarning
     }
 
     override func awakeFromNib() {
@@ -296,7 +294,7 @@ class EventViewCell: UICollectionViewCell {
             topBorderView.isVisible = true
         } else {
             arrivalDepartureLabel.isVisible = false
-            topBorderView.isVisible = false
+            topBorderView.isVisible = true // false <------------------------------ CHANGE ME BACK TO FALSE THANKS
         }
     }
 

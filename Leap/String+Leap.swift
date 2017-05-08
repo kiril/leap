@@ -15,8 +15,9 @@ public enum Truncation {
 }
 
 extension String {
-    static let sticky_open = ""
-    static let stocky_closed = ""
+    static let fa_sticky_open = ""
+    static let fa_sticky_closed = ""
+    static let fa_arrow_spanning = ""
 
     static let addressPattern = "^\\d{1,4}[a-zA-Z]*\\s+\\w|\\s+\\d{5}(-\\d{4})?\\s*$|^(\\w+\\b\\s*)+,\\s+\\d{1,4}[a-zA-Z]*\\s+\\w.*(\\w+\\b\\s*)+,\\s+\\w{2}\\b"
     static let addressRegexp = try! NSRegularExpression(pattern: String.addressPattern, options: .caseInsensitive)

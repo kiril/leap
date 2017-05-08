@@ -8,39 +8,95 @@
 
 import UIKit
 
+enum EdgeDisposition {
+    case outie
+    case innie
+}
+
+enum ZigZag {
+    case zig
+    case zag
+}
+
 class RaggedEdgeView: UIView {
+    static let ZIG_COUNT = 10
+    static let ZAG_HEIGHT: CGFloat = 10.0
+
+    var edgeDisposition = EdgeDisposition.outie
+    var lineColor = UIColor.projectLightGray
+
     override func draw(_ rect: CGRect) {
-        // Drawing code
+        let width = frame.size.width
+        let height = frame.size.height
+
+        let zigWidth: CGFloat = width / CGFloat(RaggedEdgeView.ZIG_COUNT)
+        let zagHeight: CGFloat = RaggedEdgeView.ZAG_HEIGHT
+
+        let path = UIBezierPath()
+        let bottom = zagHeight
+        let top: CGFloat = 0.0
         /*
-         let width = givenView.frame.size.width
-         let height = givenView.frame.size.height
+         Outie:
 
-         let givenFrame = givenView.frame
-         let zigZagWidth = CGFloat(7)
-         let zigZagHeight = CGFloat(5)
-         let yInitial = height-zigZagHeight
+         |\/\/\/\/\/\|
+         |           |
+         
+         Innie:
+         
+         /\/\/\/\/\/\
+         |          |
+         
+         Zig:
+         \
+         
+         Zag:
+         /
+         */
 
-         var zigZagPath = UIBezierPath()
-         zigZagPath.moveToPoint(CGPointMake(0, 0))
-         zigZagPath.addLineToPoint(CGPointMake(0, yInitial))
+        var startPoint: CGPoint!
+        var endPoint: CGPoint!
+        var z = ZigZag.zig
 
-         var slope = -1
-         var x = CGFloat(0)
-         var i = 0
-         while x < width {
-         x = zigZagWidth * CGFloat(i)
-         let p = zigZagHeight * CGFloat(slope)
-         let y = yInitial + p
-         let point = CGPointMake(x, y)
-         zigZagPath.addLineToPoint(point)
-         slope = slope*(-1)
-         i++
-         }
-         zigZagPath.addLineToPoint(CGPointMake(width, 0))
+        switch edgeDisposition {
+        case .outie:
+            startPoint = CGPoint(x: 0.0, y: top)
+            endPoint = CGPoint(x: width, y: top)
+            z = .zig
 
-         var shapeLayer = CAShapeLayer()
-         shapeLayer.path = zigZagPath.CGPath
-         givenView.layer.mask = shapeLayer
- */
+        case .innie:
+            startPoint = CGPoint(x: 0.0, y: bottom)
+            endPoint = CGPoint(x: width, y: bottom)
+            z = .zag
+        }
+
+
+        path.move(to: CGPoint(x: 0.0, y: height))
+        path.addLine(to: startPoint)
+
+        var x = zigWidth / 2.0
+        var y = startPoint.y
+
+        while abs(width-x) > 0.5 {
+            switch z {
+            case .zig: // down
+                y += zagHeight
+                z = .zag
+
+            case .zag:
+                y -= zagHeight
+                z = .zig
+            }
+
+            path.addLine(to: CGPoint(x: x, y: y))
+
+            x += zigWidth / 2.0
+        }
+
+        path.addLine(to: endPoint)
+        path.addLine(to: CGPoint(x: width, y: height))
+
+        //guard let context: CGContext? = UIGraphicsGetCurrentContext() else { fatalError() }
+
+        path.stroke()
     }
 }
