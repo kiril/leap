@@ -271,6 +271,11 @@ extension DayScheduleViewController: EventViewCellDelegate {
         eventViewController.entries = self.surface.entries
         self.navigationController?.pushViewController(eventViewController, animated: true)
     }
+
+    func updatedTimePerspective(on cell: EventViewCell, for event: EventSurface) {
+        event.isShinyNew = false
+        collectionAdapter.performUpdates(animated: true, completion: nil)
+    }
 }
 
 extension DayScheduleViewController: OpenTimeSectionControllerDelegate {
