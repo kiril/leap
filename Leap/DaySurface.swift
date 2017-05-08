@@ -19,11 +19,7 @@ class DaySurface: Surface, IntIdInitable {
 
 
     var shortDateString: String {
-        let date = Calendar.current.date(from: gregorianDay.components)!
-        let formatter = DateFormatter()
-        formatter.locale = Locale.current
-        formatter.setLocalizedDateFormatFromTemplate("MMMd")
-        return formatter.string(from: date)
+        return Calendar.current.shortDateString(from: gregorianDay)
     }
 
     var weekdayName: String {

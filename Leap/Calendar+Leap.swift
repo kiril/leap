@@ -417,4 +417,19 @@ extension Calendar {
         let daysInFebruary = self.range(of: .day, in: .month, for: self.date(bySetting: .month, value: 2, of: date)!)!.upperBound - 1
         return 365 + (daysInFebruary - 28)
     }
+
+    func shortDateString(from day: GregorianDay) -> String {
+        let d = date(from: day.components)!
+        let formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.setLocalizedDateFormatFromTemplate("MMMd")
+        return formatter.string(from: d)
+    }
+
+    func shortDateString(from d: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.setLocalizedDateFormatFromTemplate("MMMd")
+        return formatter.string(from: d)
+    }
 }
