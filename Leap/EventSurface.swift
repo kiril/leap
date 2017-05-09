@@ -455,11 +455,15 @@ class EventSurface: Surface, ModelLoadable {
 
     }
 
-    static func load(byId eventId: String) -> EventSurface? {
+    class func load(byId eventId: String) -> EventSurface? {
         guard let event:Event = Event.by(id: eventId) else {
             return nil
         }
         return load(with: event) as? EventSurface
+    }
+
+    static func find(bySeriesOrEventId id: String, inRange range: TimeRange) -> EventSurface? {
+        return EventSurface.load(byId: id) ?? RecurringEventSurface.load(seriesId: id, in: range)
     }
 
     static func load(with model: LeapModel) -> Surface? {

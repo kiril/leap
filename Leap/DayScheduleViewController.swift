@@ -280,7 +280,9 @@ extension DayScheduleViewController: EventViewCellDelegate {
 
 extension DayScheduleViewController: OpenTimeSectionControllerDelegate {
     func didTapEvent(eventId: String, on openTimeSection: OpenTimeSectionController) {
-        guard let event = EventSurface.load(byId: eventId) else { return }
+        // probably shouldn't go through openTime to get the event (either pass event or fetch by Id globally...
+        // will do the latter when Recurring vs. one-time events are both fetchable by id.
+        guard let event = openTimeSection.openTime.event(forId: eventId) else { return }
         presentEvent(event: event)
     }
 }

@@ -38,6 +38,11 @@ class RecurringEventSurface: EventSurface {
         return load(with: series, in: range)
     }
 
+    override class func load(byId eventId: String) -> EventSurface? {
+        fatalError("this doesn't work yet for RecurringEventSurface. We have plans to do it, though. Until we do, pass around the Surface itself")
+    }
+
+
     static func load(with series: Series, in range: TimeRange) -> EventSurface? {
         let surface = RecurringEventSurface(id: series.id)
         surface.seriesRange = range
