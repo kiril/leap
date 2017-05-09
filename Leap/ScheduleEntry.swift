@@ -114,9 +114,11 @@ class ScheduleEntryWrapper: IGListDiffable {
 
         switch (scheduleEntry, otherEntry) {
         case let (.event(a), .event(b)):
-            return  (a == b) &&
-                    (a.isInConflict == b.isInConflict) &&
-                    a.isShinyNew && b.isShinyNew
+            let isEqual =   (a == b) &&
+                            (a.isInConflict == b.isInConflict) &&
+                            (a.userResponse.value == b.userResponse.value) &&
+                            a.isShinyNew && b.isShinyNew
+            return isEqual
         case let (.openTime(a), .openTime(b)):
             return  (a.timeRange == b.timeRange) &&
                     (a.possibleEventIds == b.possibleEventIds) &&

@@ -294,7 +294,7 @@ extension DayScheduleViewController: SourceIdentifiable {
 
 extension DayScheduleViewController: SurfaceObserver {
     func surfaceDidChange(_ surface: Surface) {
-        self.collectionAdapter.performUpdates(animated: true)
+        collectionAdapter.performUpdates(animated: true)
     }
 }
 
