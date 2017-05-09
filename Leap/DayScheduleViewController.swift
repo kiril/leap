@@ -51,6 +51,16 @@ class DayScheduleViewController: UIViewController, StoryboardLoadable {
         collectionView!.alwaysBounceVertical = true
     }
 
+    var isCurrentlyAppeared = false
+
+    override func viewDidAppear(_ animated: Bool) {
+        isCurrentlyAppeared = true
+        collectionAdapter.performUpdates(animated: animated, completion: nil)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        isCurrentlyAppeared = false
+    }
 }
 
 extension DayScheduleViewController: EventViewCellDelegate {
@@ -294,7 +304,9 @@ extension DayScheduleViewController: SourceIdentifiable {
 
 extension DayScheduleViewController: SurfaceObserver {
     func surfaceDidChange(_ surface: Surface) {
-        collectionAdapter.performUpdates(animated: true)
+        if isCurrentlyAppeared {
+            collectionAdapter.performUpdates(animated: true)
+        }
     }
 }
 
