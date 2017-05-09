@@ -74,7 +74,7 @@ struct OpenTimeViewModel: Equatable {
     }
 
     func event(forId eventOrSeriesId: String) -> EventSurface? {
-        return  EventSurface.load(byId: eventOrSeriesId) ??
-                RecurringEventSurface.load(seriesId: eventOrSeriesId, in: range!)
+        return  EventSurface.find(bySeriesOrEventId: eventOrSeriesId,
+                                  inRange: range!)
     }
 }
