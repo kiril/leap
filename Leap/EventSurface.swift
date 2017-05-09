@@ -455,7 +455,7 @@ class EventSurface: Surface, ModelLoadable {
 
     }
 
-    static func load(byId eventId: String) -> EventSurface? {
+    class func load(byId eventId: String) -> EventSurface? {
         guard let event:Event = Event.by(id: eventId) else {
             return nil
         }
