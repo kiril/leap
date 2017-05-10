@@ -56,6 +56,6 @@ extension ReminderSurface: ReminderCellDisplayable {
 }
 
 extension NoRemindersPlaceholderObject: ReminderCellDisplayable {
-    var titleForCell: String { return "No Reminders" }
+    var titleForCell: String { return "No Headlines" }
 }
 
