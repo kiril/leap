@@ -129,18 +129,10 @@ class EventViewCell: UICollectionViewCell {
         updateShadow()
         updateFonts()
         setupButtons()
-        setupRaggedEdges()
         updateElapsedTimeIndicator()
 
         self.contentView.translatesAutoresizingMaskIntoConstraints = false
         self.translatesAutoresizingMaskIntoConstraints = false
-    }
-
-    private func setupRaggedEdges() {
-        raggedEdgeView.orientation = .top
-        raggedEdgeView.edgeDisposition = .innie
-        bottomRaggedEdgeView.orientation = .bottom
-        bottomRaggedEdgeView.edgeDisposition = .outie
     }
 
     private func updateFonts() {
@@ -283,12 +275,7 @@ class EventViewCell: UICollectionViewCell {
     }
 
     func configureArrivalDeparture(with event: EventSurface) {
-
         arrivalDepartureLabel.isVisible = false
-        raggedEdgeView.isVisible = false
-        raggedEdgeHeight.constant = 1
-        bottomRaggedEdgeView.isVisible = false
-        bottomRaggedEdgeHeight.constant = 1
 
         if !event.isInConflict && (event.hasCustomArrival || event.hasCustomDeparture) {
             let bold = [NSFontAttributeName: timeLabel.font!]
@@ -300,10 +287,6 @@ class EventViewCell: UICollectionViewCell {
                 let time = DateFormatter.shortTime(date: arrival, appendAMPM: true)
                 custom.append(string: time, attributes: bold)
                 custom.append(string: " arrival", attributes: normal)
-
-                raggedEdgeHeight.constant = 11
-                raggedEdgeView.isVisible = true
-                raggedEdgeView.setNeedsDisplay()
             }
 
             if event.hasCustomDeparture {
@@ -314,10 +297,6 @@ class EventViewCell: UICollectionViewCell {
                 let time = DateFormatter.shortTime(date: departure, appendAMPM: true)
                 custom.append(string: "depart ", attributes: normal)
                 custom.append(string: time, attributes: bold)
-
-                bottomRaggedEdgeHeight.constant = 11
-                bottomRaggedEdgeView.isVisible = true
-                bottomRaggedEdgeView.setNeedsDisplay()
             }
 
             arrivalDepartureLabel.attributedText = custom
