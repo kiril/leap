@@ -15,13 +15,13 @@
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "29 Spotlight (iOS 5_6)-1.png",
+      "filename" : "29 Spotlight (iOS 5_6).png",
       "scale" : "1x"
     },
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "58 Retina Spotlight (iOS 5_6).png",
+      "filename" : "58 Retina Settings (iOS 5+)-1.png",
       "scale" : "2x"
     },
     {
@@ -74,7 +74,7 @@
     {
       "size" : "20x20",
       "idiom" : "ipad",
-      "filename" : "40 Spotlight (iOS 7+)-1.png",
+      "filename" : "40 Retina Notification-1.png",
       "scale" : "2x"
     },
     {
@@ -86,7 +86,7 @@
     {
       "size" : "29x29",
       "idiom" : "ipad",
-      "filename" : "58 Retina Settings (iOS 5+).png",
+      "filename" : "58 Retina Setting (iOS 5+).png",
       "scale" : "2x"
     },
     {
