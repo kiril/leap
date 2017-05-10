@@ -16,11 +16,6 @@ protocol EventViewCellDelegate: class {
 }
 
 class EventViewCell: UICollectionViewCell {
-    // cell bits
-    @IBOutlet weak var raggedEdgeView: RaggedEdgeView!
-    @IBOutlet weak var raggedEdgeHeight: NSLayoutConstraint!
-    @IBOutlet weak var bottomRaggedEdgeView: RaggedEdgeView!
-    @IBOutlet weak var bottomRaggedEdgeHeight: NSLayoutConstraint!
 
     // elapsed time
     @IBOutlet weak var elapsedTimeIndicatorView: UIView!
@@ -91,7 +86,6 @@ class EventViewCell: UICollectionViewCell {
     private func updateBorderColor() {
         background.layer.borderColor = borderColor.cgColor
         background.layer.borderWidth = 1.0
-        raggedEdgeView.lineColor = borderColor
     }
 
     private func updateShadow() {
@@ -129,18 +123,10 @@ class EventViewCell: UICollectionViewCell {
         updateShadow()
         updateFonts()
         setupButtons()
-        setupRaggedEdges()
         updateElapsedTimeIndicator()
 
         self.contentView.translatesAutoresizingMaskIntoConstraints = false
         self.translatesAutoresizingMaskIntoConstraints = false
-    }
-
-    private func setupRaggedEdges() {
-        raggedEdgeView.orientation = .top
-        raggedEdgeView.edgeDisposition = .innie
-        bottomRaggedEdgeView.orientation = .bottom
-        bottomRaggedEdgeView.edgeDisposition = .outie
     }
 
     private func updateFonts() {
@@ -283,12 +269,7 @@ class EventViewCell: UICollectionViewCell {
     }
 
     func configureArrivalDeparture(with event: EventSurface) {
-
         arrivalDepartureLabel.isVisible = false
-        raggedEdgeView.isVisible = false
-        raggedEdgeHeight.constant = 1
-        bottomRaggedEdgeView.isVisible = false
-        bottomRaggedEdgeHeight.constant = 1
 
         if !event.isInConflict && (event.hasCustomArrival || event.hasCustomDeparture) {
             let bold = [NSFontAttributeName: timeLabel.font!]
@@ -300,10 +281,6 @@ class EventViewCell: UICollectionViewCell {
                 let time = DateFormatter.shortTime(date: arrival, appendAMPM: true)
                 custom.append(string: time, attributes: bold)
                 custom.append(string: " arrival", attributes: normal)
-
-                raggedEdgeHeight.constant = 11
-                raggedEdgeView.isVisible = true
-                raggedEdgeView.setNeedsDisplay()
             }
 
             if event.hasCustomDeparture {
@@ -314,10 +291,6 @@ class EventViewCell: UICollectionViewCell {
                 let time = DateFormatter.shortTime(date: departure, appendAMPM: true)
                 custom.append(string: "depart ", attributes: normal)
                 custom.append(string: time, attributes: bold)
-
-                bottomRaggedEdgeHeight.constant = 11
-                bottomRaggedEdgeView.isVisible = true
-                bottomRaggedEdgeView.setNeedsDisplay()
             }
 
             arrivalDepartureLabel.attributedText = custom
@@ -355,12 +328,10 @@ class EventViewCell: UICollectionViewCell {
     private func configureTimePerspective(with event: EventSurface) {
         if event.isConfirmed.value {
             background.backgroundColor = UIColor.white
-            raggedEdgeView.maskColor = UIColor.white
             borderColor = UIColor.projectLightGray
             displayShadow = false
         } else {
             background.backgroundColor = UIColor.projectLightBackgroundGray
-            raggedEdgeView.maskColor = UIColor.projectLightBackgroundGray
             borderColor = UIColor.projectLightGray
             displayShadow = true
         }

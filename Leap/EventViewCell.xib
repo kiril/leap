@@ -246,39 +246,19 @@
                             <constraint firstItem="UvH-PR-EcM" firstAttribute="top" secondItem="XPV-t1-ljT" secondAttribute="top" id="rne-AQ-84D"/>
                         </constraints>
                     </view>
-                    <view hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AiP-NQ-v6I" userLabel="Top Ragged" customClass="RaggedEdgeView" customModule="Leap" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="434" height="1"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="1" identifier="hidden" id="Q59-9l-fil"/>
-                        </constraints>
-                    </view>
-                    <view hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jWQ-nI-HWv" userLabel="Bottom Ragged" customClass="RaggedEdgeView" customModule="Leap" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="155" width="434" height="1"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="1" identifier="hidden" id="Tdg-RT-7Yi"/>
-                        </constraints>
-                    </view>
                 </subviews>
             </view>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="XPV-t1-ljT" secondAttribute="bottom" id="D0G-wZ-9pq"/>
                 <constraint firstItem="XPV-t1-ljT" firstAttribute="leading" secondItem="QYs-MJ-mNJ" secondAttribute="leading" id="MTN-DE-1s0"/>
-                <constraint firstItem="jWQ-nI-HWv" firstAttribute="leading" secondItem="QYs-MJ-mNJ" secondAttribute="leading" id="Svn-nv-gfr"/>
                 <constraint firstAttribute="trailing" secondItem="XPV-t1-ljT" secondAttribute="trailing" id="ZKY-33-55C"/>
-                <constraint firstItem="AiP-NQ-v6I" firstAttribute="leading" secondItem="QYs-MJ-mNJ" secondAttribute="leading" id="a1S-wF-vDe"/>
-                <constraint firstItem="jWQ-nI-HWv" firstAttribute="top" secondItem="XPV-t1-ljT" secondAttribute="bottom" constant="-1" id="cPY-c3-8iN"/>
-                <constraint firstAttribute="bottom" secondItem="jWQ-nI-HWv" secondAttribute="bottom" id="eeO-H0-zKP"/>
-                <constraint firstAttribute="trailing" secondItem="AiP-NQ-v6I" secondAttribute="trailing" id="mEs-0A-sDR"/>
-                <constraint firstItem="AiP-NQ-v6I" firstAttribute="top" secondItem="QYs-MJ-mNJ" secondAttribute="top" id="pMr-SW-tOg"/>
-                <constraint firstItem="XPV-t1-ljT" firstAttribute="top" secondItem="AiP-NQ-v6I" secondAttribute="bottom" constant="-1" id="wP8-Nx-L7T"/>
-                <constraint firstAttribute="trailing" secondItem="jWQ-nI-HWv" secondAttribute="trailing" id="zb6-Yv-AbY"/>
+                <constraint firstItem="XPV-t1-ljT" firstAttribute="top" secondItem="QYs-MJ-mNJ" secondAttribute="top" id="b29-mf-kk6"/>
             </constraints>
             <size key="customSize" width="434" height="156"/>
             <connections>
                 <outlet property="alarmIcon" destination="Dcf-DS-rqr" id="hPo-c1-jQE"/>
                 <outlet property="arrivalDepartureLabel" destination="5wE-3X-t9M" id="oNK-K4-EiS"/>
                 <outlet property="background" destination="XPV-t1-ljT" id="LHC-ly-FFR"/>
-                <outlet property="bottomRaggedEdgeHeight" destination="Tdg-RT-7Yi" id="hcs-z7-0eR"/>
-                <outlet property="bottomRaggedEdgeView" destination="jWQ-nI-HWv" id="Wjt-3O-dVs"/>
                 <outlet property="brokenLinkIcon" destination="m9Q-kv-g25" id="ynT-Ro-AWp"/>
                 <outlet property="checklistIcon" destination="Vzt-KL-tQe" id="R4g-4O-rnE"/>
                 <outlet property="commentIcon" destination="DKh-9R-SAA" id="ULc-bF-Ty4"/>
@@ -297,8 +277,6 @@
                 <outlet property="noButton" destination="OCC-lH-cVP" id="C0I-6Z-X1N"/>
                 <outlet property="phoneIcon" destination="g2x-Ga-3In" id="xWY-G8-zDt"/>
                 <outlet property="photoIcon" destination="AS5-aZ-W6c" id="Jto-Af-Wlt"/>
-                <outlet property="raggedEdgeHeight" destination="Q59-9l-fil" id="76G-k8-FiL"/>
-                <outlet property="raggedEdgeView" destination="AiP-NQ-v6I" id="oAr-Ou-eeC"/>
                 <outlet property="recurringIcon" destination="FlJ-fs-Idr" id="c3z-dy-9Fe"/>
                 <outlet property="remindButton" destination="pUw-eQ-tcj" id="IOO-gT-hgr"/>
                 <outlet property="resolveButton" destination="UiA-oS-DLF" id="lgv-M5-IeB"/>
