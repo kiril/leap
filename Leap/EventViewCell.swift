@@ -16,11 +16,6 @@ protocol EventViewCellDelegate: class {
 }
 
 class EventViewCell: UICollectionViewCell {
-    // cell bits
-    @IBOutlet weak var raggedEdgeView: RaggedEdgeView!
-    @IBOutlet weak var raggedEdgeHeight: NSLayoutConstraint!
-    @IBOutlet weak var bottomRaggedEdgeView: RaggedEdgeView!
-    @IBOutlet weak var bottomRaggedEdgeHeight: NSLayoutConstraint!
 
     // elapsed time
     @IBOutlet weak var elapsedTimeIndicatorView: UIView!
@@ -91,7 +86,6 @@ class EventViewCell: UICollectionViewCell {
     private func updateBorderColor() {
         background.layer.borderColor = borderColor.cgColor
         background.layer.borderWidth = 1.0
-        raggedEdgeView.lineColor = borderColor
     }
 
     private func updateShadow() {
@@ -334,12 +328,10 @@ class EventViewCell: UICollectionViewCell {
     private func configureTimePerspective(with event: EventSurface) {
         if event.isConfirmed.value {
             background.backgroundColor = UIColor.white
-            raggedEdgeView.maskColor = UIColor.white
             borderColor = UIColor.projectLightGray
             displayShadow = false
         } else {
             background.backgroundColor = UIColor.projectLightBackgroundGray
-            raggedEdgeView.maskColor = UIColor.projectLightBackgroundGray
             borderColor = UIColor.projectLightGray
             displayShadow = true
         }
