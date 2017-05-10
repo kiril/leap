@@ -754,6 +754,132 @@ extension EventSurface: Linear {
     var secondsLong: Int { return Int(duration) }
     var minutesLong: Int { return secondsLong / 60 }
 
+    func formatArrivalPerspective(on day: GregorianDay?, at start: Date) -> String? {
+        let calendar = Calendar.current
+        if let day = day {
+            let startOfDay = calendar.startOfDay(for: day)
+            if start < startOfDay {
+                let daysEarlier = calendar.daysBetween(start, and: startOfDay)
+                switch daysEarlier {
+                case 0, 1:
+                    return "yesterday"
+
+                default:
+                    return "\(daysEarlier) days ago"
+                }
+            }
+        }
+
+        return nil
+    }
+
+    func formatDeparturePerspective(on day: GregorianDay?, at start: Date, until end: Date) -> String? {
+        let calendar = Calendar.current
+        if let day = day {
+            let startOfDay = calendar.startOfDay(for: day)
+            let endOfDay = calendar.dayAfter(startOfDay)
+
+            if end > endOfDay {
+                let daysLater = calendar.daysBetween(end, and: endOfDay)
+                switch daysLater {
+                case 0, 1:
+                    return "tomorrow"
+
+                default:
+                    return "in \(daysLater) days"
+                }
+            } else if start < startOfDay {
+                return "today"
+            }
+
+        } else {
+            let days = calendar.daysBetween(start, and: end)
+            let ess = days == 1 ? "" : "s"
+            return "\(days) day\(ess) later"
+        }
+
+        return nil
+    }
+
+    func formatAttendance(viewedFrom day: GregorianDay? = nil) -> NSAttributedString {
+        let start = startTime.value
+        let end = endTime.value
+        let arrive = arrivalTime.value
+        let depart = departureTime.value
+
+        let calendar = Calendar.current
+        let startHour = calendar.component(.hour, from: start)
+        let endHour = calendar.component(.hour, from: end)
+
+        let daysBetween = calendar.daysBetween(start, and: end)
+        let spansDays = daysBetween > 0
+        let crossesNoon = spansDays || ( startHour < 12 && endHour >= 12 )
+
+        let attendStartHour = calendar.component(.hour, from: arrive)
+        let attendEndHour = calendar.component(.hour, from: depart)
+        let attendDaysBetween = calendar.daysBetween(arrive, and: depart)
+        let attendSpansDays = attendDaysBetween > 0
+        let attendCrossesNoon = attendSpansDays || ( attendStartHour < 12 && attendEndHour >= 12 )
+
+        let attendance = NSMutableAttributedString()
+
+        let special = [NSForegroundColorAttributeName: UIColor.projectOrange]
+        let normal: [String:Any] = [:]
+
+        let fromAttributes = hasCustomArrival ? special : normal
+        let from = calendar.formatDisplayTime(from: arrive, needsAMPM: attendCrossesNoon)
+        attendance.append(string: from, attributes: fromAttributes)
+        if attendSpansDays, let perspective = formatArrivalPerspective(on: day, at: arrive) {
+            attendance.append(string: " \(perspective)", attributes: fromAttributes)
+        }
+
+        attendance.append(string: " - ", attributes: (hasCustomArrival && hasCustomDeparture ? special : normal))
+
+        let toAttributes = hasCustomDeparture ? special : normal
+        let to = calendar.formatDisplayTime(from: depart, needsAMPM: true)
+        attendance.append(string: to, attributes: toAttributes)
+        if attendSpansDays, let perspective = formatDeparturePerspective(on: day, at: arrive, until: depart) {
+            attendance.append(string: " \(perspective)", attributes: toAttributes)
+        }
+
+        let startMovedAcrossNoon = crossesNoon != attendCrossesNoon
+        let startString = calendar.formatDisplayTime(from: start, needsAMPM: startMovedAcrossNoon)
+        let endString = calendar.formatDisplayTime(from: end, needsAMPM: attendCrossesNoon && !startMovedAcrossNoon)
+
+        if hasCustomArrival && hasCustomDeparture {
+            attendance.append(string: " (\(startString)", attributes: normal)
+            if calendar.areOnDifferentDays(start, arrive),
+                let perspective = formatArrivalPerspective(on: day, at: start) {
+                attendance.append(string: " \(perspective)", attributes: normal)
+            }
+            attendance.append(string: "-", attributes: normal)
+            attendance.append(string: endString, attributes: normal)
+            if calendar.areOnDifferentDays(end, depart),
+                let perspective = formatDeparturePerspective(on: day, at: start, until: end) {
+                attendance.append(string: " \(perspective)", attributes: normal)
+            }
+            attendance.append(string: ")", attributes: normal)
+
+        } else if hasCustomArrival {
+            attendance.append(string: " (starts \(startString)", attributes: normal)
+            if calendar.areOnDifferentDays(start, arrive),
+                let perspective = formatArrivalPerspective(on: day, at: start) {
+                attendance.append(string: " \(perspective)", attributes: normal)
+            }
+            attendance.append(string: ")", attributes: normal)
+
+        } else if hasCustomDeparture {
+            attendance.append(string: " (ends \(endString)", attributes: normal)
+            if calendar.areOnDifferentDays(start, arrive),
+                let perspective = formatDeparturePerspective(on: day, at: start, until: end) {
+                attendance.append(string: " \(perspective)", attributes: normal)
+            }
+            attendance.append(string: ")", attributes: normal)
+        }
+
+        return attendance
+    }
+
     func formatDuration(viewedFrom day: GregorianDay? = nil) -> String? {
         let start = startTime.value
         let end = endTime.value

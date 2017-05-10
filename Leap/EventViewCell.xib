@@ -37,30 +37,24 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="xj8-ev-Gzs">
                                 <rect key="frame" x="10" y="17" width="414" height="129"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Arrival/Departure" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5wE-3X-t9M">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="18"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Y9n-0L-JzR" userLabel="Time Stack">
-                                        <rect key="frame" x="0.0" y="18" width="414" height="20"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="20"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="254" verticalHuggingPriority="251" horizontalCompressionResistancePriority="748" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oFA-wl-htA">
-                                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="20"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="14" height="20"/>
                                                 <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="14"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="10am-12pm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rSm-Ad-vKa">
-                                                <rect key="frame" x="4" y="0.0" width="57" height="20"/>
+                                                <rect key="frame" x="18" y="0.0" width="87" height="20"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UiA-oS-DLF">
-                                                <rect key="frame" x="65" y="0.0" width="77" height="20"/>
-                                                <state key="normal" title="Fix Conflict"/>
+                                                <rect key="frame" x="109" y="0.0" width="33" height="20"/>
+                                                <state key="normal" title="Fix"/>
                                             </button>
                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="alS-2c-OR9">
                                                 <rect key="frame" x="146" y="0.0" width="12" height="20"/>
@@ -164,7 +158,7 @@
                                         </constraints>
                                     </stackView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" verticalCompressionResistancePriority="752" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qnk-55-lVk">
-                                        <rect key="frame" x="0.0" y="38" width="414" height="33"/>
+                                        <rect key="frame" x="0.0" y="20" width="414" height="51"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -257,7 +251,6 @@
             <size key="customSize" width="434" height="156"/>
             <connections>
                 <outlet property="alarmIcon" destination="Dcf-DS-rqr" id="hPo-c1-jQE"/>
-                <outlet property="arrivalDepartureLabel" destination="5wE-3X-t9M" id="oNK-K4-EiS"/>
                 <outlet property="background" destination="XPV-t1-ljT" id="LHC-ly-FFR"/>
                 <outlet property="brokenLinkIcon" destination="m9Q-kv-g25" id="ynT-Ro-AWp"/>
                 <outlet property="checklistIcon" destination="Vzt-KL-tQe" id="R4g-4O-rnE"/>

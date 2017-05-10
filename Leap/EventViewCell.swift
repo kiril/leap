@@ -29,7 +29,6 @@ class EventViewCell: UICollectionViewCell {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var resolveButton: UIButton!
-    @IBOutlet weak var arrivalDepartureLabel: UILabel!
 
     // detail
     @IBOutlet weak var invitationSummaryLabel: UILabel!
@@ -134,7 +133,6 @@ class EventViewCell: UICollectionViewCell {
         locationLabel.textColor = UIColor.projectLightGray
         recurringIcon.textColor = UIColor.projectLightGray
         descriptionIcon.textColor = UIColor.projectLightGray
-        arrivalDepartureLabel.textColor = UIColor.projectWarning
 
         for icon:UILabel in [alarmIcon, recurringIcon, checklistIcon, commentIcon, locationIconLabel, fileIcon, shareIcon, brokenLinkIcon, phoneIcon, skypeIcon, ticketIcon, videoIcon, photoIcon, facebookIcon, slackIcon] {
             icon.textColor = UIColor.projectLightGray
@@ -268,48 +266,13 @@ class EventViewCell: UICollectionViewCell {
         }
     }
 
-    func configureArrivalDeparture(with event: EventSurface) {
-        arrivalDepartureLabel.isVisible = false
-
-        if !event.isInConflict && (event.hasCustomArrival || event.hasCustomDeparture) {
-            let bold = [NSFontAttributeName: timeLabel.font!]
-            let normal = [NSFontAttributeName: arrivalDepartureLabel.font!]
-
-            let custom = NSMutableAttributedString()
-            if event.hasCustomArrival {
-                let arrival = event.arrivalTime.value
-                let time = DateFormatter.shortTime(date: arrival, appendAMPM: true)
-                custom.append(string: time, attributes: bold)
-                custom.append(string: " arrival", attributes: normal)
-            }
-
-            if event.hasCustomDeparture {
-                let departure = event.departureTime.value
-                if custom.length > 0 {
-                    custom.append(string: "; ", attributes: normal)
-                }
-                let time = DateFormatter.shortTime(date: departure, appendAMPM: true)
-                custom.append(string: "depart ", attributes: normal)
-                custom.append(string: time, attributes: bold)
-            }
-
-            arrivalDepartureLabel.attributedText = custom
-            arrivalDepartureLabel.isVisible = true
-        }
-    }
-
     func configure(with event: EventSurface, on day: GregorianDay) {
         self.day = day
         self.event = event
 
         configureOrigin(with: event)
-        configureArrivalDeparture(with: event)
 
-        if let day = self.day {
-            timeLabel.text = event.formatDuration(viewedFrom: day)
-        } else {
-            timeLabel.text = event.timeString.value
-        }
+        timeLabel.attributedText = event.formatAttendance(viewedFrom: day)
 
         titleLabel.text = event.title.value
         invitationSummaryLabel.text = event.invitationSummary.value
