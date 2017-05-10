@@ -212,8 +212,8 @@ extension EKEvent {
         return Template(value: data)
     }
     
-    func asEvent(in calendar: EKCalendar, detached: Bool = false, from series: Series? = nil) -> Event {
-        let data = addCommonData([
+    func asEvent(in calendar: EKCalendar, detached: Bool = false, from series: Series? = nil, eventId: String? = nil) -> Event {
+        var data = addCommonData([
             "startTime": self.startDate.secondsSinceReferenceDate,
             "endTime": self.endDate.secondsSinceReferenceDate,
             "remoteCreated": self.creationDate,
@@ -226,11 +226,15 @@ extension EKEvent {
             "seriesId": series?.id,
             ], in: calendar)
 
+        if detached, let id = eventId {
+            data["id"] = id
+        }
+
         return Event(value: data)
     }
 
-    func asReminder(in calendar: EKCalendar, detached: Bool = false, from series: Series? = nil) -> Reminder {
-        let data = addCommonData([
+    func asReminder(in calendar: EKCalendar, detached: Bool = false, from series: Series? = nil, eventId: String? = nil) -> Reminder {
+        var data = addCommonData([
             "startTime": self.startDate.secondsSinceReferenceDate,
             "endTime": self.reminderType == .time ? self.endDate.secondsSinceReferenceDate : 0,
             "legacyTimeZone": TimeZone.from(self.timeZone),
@@ -242,6 +246,10 @@ extension EKEvent {
             "typeString": self.reminderType.rawValue,
             ], in: calendar)
 
+        if detached, let id = eventId {
+            data["id"] = id
+        }
+
         return Reminder(value: data)
     }
 
@@ -249,8 +257,16 @@ extension EKEvent {
 
         let minutes = (endDate.secondsSinceReferenceDate - startDate.secondsSinceReferenceDate) / 60
 
-        if !series.recurs(on: startDate) || title != series.template.title || minutes != series.template.durationMinutes {
-            print("Doesn't match series data")
+        if !series.recurs(on: startDate) {
+            let start = Calendar.current.startOfDay(for: startDate)
+            let end = Calendar.current.dayAfter(start)
+            let range = TimeRange(start: start, end: end)!
+            print("Series doesn't recuring on \(startDate), but on \(String(describing: series.template.startTime(in: range))) given \(range)")
+            return true
+        }
+
+        if title != series.template.title || minutes != series.template.durationMinutes {
+            print("Title or Duration change")
             return true
         }
 

@@ -127,12 +127,12 @@ class EventKit {
         print("\(String(describing: type(of:existing)).lowercased()) UPDATE \(ekEvent.title)")
     }
 
-    func importAsEvent(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: Event? = nil, detached: Bool = false, from series: Series? = nil) {
+    func importAsEvent(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: Event? = nil, detached: Bool = false, from series: Series? = nil, eventId: String? = nil) {
         if let existing = existing {
             merge(ekEvent, into: existing, in: calendar)
 
         } else {
-            let event = ekEvent.asEvent(in: calendar, detached: detached, from: series)
+            let event = ekEvent.asEvent(in: calendar, detached: detached, from: series, eventId: eventId)
             if let duplicate = Event.by(fuzzyHash: event.calculateFuzzyHash()) {
                 print("event DUPLICATE \(ekEvent.title)")
                 merge(ekEvent, into: duplicate, in: calendar, detached: detached, from: series)
@@ -149,12 +149,12 @@ class EventKit {
         }
     }
 
-    func importAsReminder(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: Reminder? = nil, detached: Bool = false, from series: Series? = nil) {
+    func importAsReminder(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: Reminder? = nil, detached: Bool = false, from series: Series? = nil, eventId: String? = nil) {
         if let existing = existing {
             merge(ekEvent, into: existing, in: calendar)
 
         } else {
-            let reminder = ekEvent.asReminder(in: calendar, detached: detached, from: series)
+            let reminder = ekEvent.asReminder(in: calendar, detached: detached, from: series, eventId: eventId)
             if let duplicate = Reminder.by(fuzzyHash: reminder.calculateFuzzyHash()) {
                 print("reminder DUPLICATE \(ekEvent.title)")
                 merge(ekEvent, into: duplicate, in: calendar, detached: detached, from: series)
@@ -198,9 +198,9 @@ class EventKit {
             if ekEvent.isDetachedForm(of: existing) {
                 switch ekEvent.type {
                 case .event:
-                    importAsEvent(ekEvent, in: calendar, given: Event.by(id: ekEvent.cleanId), detached: true, from: existing)
+                    importAsEvent(ekEvent, in: calendar, given: Event.by(id: ekEvent.cleanId), detached: true, from: existing, eventId: existing.generateId(for: ekEvent.startDate))
                 case .reminder:
-                    importAsReminder(ekEvent, in: calendar, given: Reminder.by(id: ekEvent.cleanId), detached: true, from: existing)
+                    importAsReminder(ekEvent, in: calendar, given: Reminder.by(id: ekEvent.cleanId), detached: true, from: existing, eventId: existing.generateId(for: ekEvent.startDate))
                 }
             } else {
                 merge(ekEvent, into: existing, in: calendar)
