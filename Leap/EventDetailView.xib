@@ -237,7 +237,7 @@
                                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="laU-py-sqt" userLabel="Remind Me">
                                             <rect key="frame" x="137" y="0.0" width="198" height="20"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                            <state key="normal" title="Save as Reminder"/>
+                                            <state key="normal" title="Move to Headlines"/>
                                         </button>
                                     </subviews>
                                     <constraints>
