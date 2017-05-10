@@ -65,17 +65,13 @@ class EventKit {
     }
 
     func importEvent(_ ekEvent: EKEvent, in calendar: EKCalendar) {
-        if ekEvent.isDetached {
-            print("DETACHED \(ekEvent.title)")
-        }
-
         importQueue.async {
             if let series = Series.by(id: ekEvent.cleanId) { // always keep series as series, even if arrives w/o recurrence info
                 self.importAsSeries(ekEvent, in: calendar, given: series)
 
             } else {
 
-                if ekEvent.isRecurring && !ekEvent.isDetached {
+                if ekEvent.isRecurring {
                     let existing = Series.by(id: ekEvent.cleanId)
                     self.importAsSeries(ekEvent, in: calendar, given: existing)
 
@@ -87,7 +83,7 @@ class EventKit {
 
                     case .reminder:
                         if let series = Series.by(title: ekEvent.title),
-                            (series.isExactRecurrence(date: ekEvent.startDate) || (ekEvent.isAllDay && series.recurrence.recursOn(ekEvent.startDate, for: series))) {
+                            (series.recurs(on: ekEvent.startDate) || (ekEvent.isAllDay && series.recurrence.recursOn(ekEvent.startDate, for: series))) {
                             print("reminder DUPLICATE of Series \(ekEvent.title)")
                             self.importAsSeries(ekEvent, in: calendar, given: series)
 
@@ -101,41 +97,47 @@ class EventKit {
         }
     }
 
-    func merge(_ ekEvent: EKEvent, into another: Temporality, in calendar: EKCalendar) {
+    func merge(_ ekEvent: EKEvent, into another: Temporality, in calendar: EKCalendar, detached: Bool = false, from series: Series? = nil) {
         var existing = another
         let realm = Realm.user()
         if existing.participants.isEmpty && ekEvent.hasAttendees {
             try! realm.safeWrite {
                 existing.addParticipants(ekEvent.getParticipants(origin: ekEvent.getOrigin(in: calendar)))
+                existing.status = ekEvent.objectStatus
             }
-            if let me = existing.me, me.engagement == .disengaged, existing.status != .archived {
+        }
+
+        if !existing.wasDetached && detached {
+            if let event = existing as? Event {
                 try! realm.safeWrite {
-                    existing.status = .archived
+                    event.wasDetached = true
+                }
+            } else if let reminder = existing as? Reminder {
+                try! realm.safeWrite {
+                    reminder.wasDetached = true
                 }
             }
         }
+
         if let linkable = existing as? CalendarLinkable {
             try! realm.safeWrite {
                 linkable.addLink(to: calendar)
             }
         }
-        print("\(type(of:existing)) UPDATE \(ekEvent.title)")
+        print("\(String(describing: type(of:existing)).lowercased()) UPDATE \(ekEvent.title)")
     }
 
-    func importAsEvent(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: Event? = nil) {
+    func importAsEvent(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: Event? = nil, detached: Bool = false, from series: Series? = nil) {
         if let existing = existing {
             merge(ekEvent, into: existing, in: calendar)
 
         } else {
-            let event = ekEvent.asEvent(in: calendar)
+            let event = ekEvent.asEvent(in: calendar, detached: detached, from: series)
             if let duplicate = Event.by(fuzzyHash: event.calculateFuzzyHash()) {
                 print("event DUPLICATE \(ekEvent.title)")
-                merge(ekEvent, into: duplicate, in: calendar)
+                merge(ekEvent, into: duplicate, in: calendar, detached: detached, from: series)
 
             } else {
-                if let me = event.me, me.engagement == .disengaged {
-                    event.status = .archived
-                }
                 event.insert()
                 print("event INSERT \(ekEvent.title) \(event.origin) from \(calendar.title)")
                 if ekEvent.title.contains("Eleni") {
@@ -147,15 +149,16 @@ class EventKit {
         }
     }
 
-    func importAsReminder(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: Reminder? = nil) {
+    func importAsReminder(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: Reminder? = nil, detached: Bool = false, from series: Series? = nil) {
         if let existing = existing {
             merge(ekEvent, into: existing, in: calendar)
 
         } else {
-            let reminder = ekEvent.asReminder(in: calendar)
+            let reminder = ekEvent.asReminder(in: calendar, detached: detached, from: series)
             if let duplicate = Reminder.by(fuzzyHash: reminder.calculateFuzzyHash()) {
                 print("reminder DUPLICATE \(ekEvent.title)")
-                merge(ekEvent, into: duplicate, in: calendar)
+                merge(ekEvent, into: duplicate, in: calendar, detached: detached, from: series)
+
             } else {
                 reminder.insert()
                 print("reminder INSERT \(ekEvent.title) \(reminder.type)")
@@ -173,15 +176,16 @@ class EventKit {
             existing.template.addParticipants(ekEvent.getParticipants(origin: ekEvent.getOrigin(in: calendar)))
             existing.template.addLink(to: calendar)
             existing.template.addAlarms(ekEvent.getAlarms())
-            if let me = existing.template.me, me.engagement == .disengaged, existing.status != .archived {
-                existing.status = .archived
+            if existing.status == .archived && ekEvent.objectStatus == .active {
+                existing.status = .active
             }
         }
-        print("series UPDATE \(existing.type) \(ekEvent.title)")
+
+        print("series UPDATE \(existing.type) \(ekEvent.title) \(existing.status)")
     }
 
     func importAsSeries(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: Series? = nil) {
-        if let event = Event.by(id: ekEvent.cleanId) {
+        if let event = Event.by(id: ekEvent.cleanId), !event.wasDetached {
             event.delete()
             print("event DELETE series root \(ekEvent.title)")
         }
@@ -191,18 +195,28 @@ class EventKit {
         }
 
         if let existing = existing {
-            merge(ekEvent, into: existing, in: calendar)
+            if ekEvent.isDetachedForm(of: existing) {
+                switch ekEvent.type {
+                case .event:
+                    importAsEvent(ekEvent, in: calendar, given: Event.by(id: ekEvent.cleanId), detached: true, from: existing)
+                case .reminder:
+                    importAsReminder(ekEvent, in: calendar, given: Reminder.by(id: ekEvent.cleanId), detached: true, from: existing)
+                }
+            } else {
+                merge(ekEvent, into: existing, in: calendar)
+            }
 
         } else if let rule = ekEvent.rule {
             let series = rule.asSeries(for: ekEvent, in: calendar)
             if let duplicate = Series.by(fuzzyHash: series.calculateFuzzyHash()) {
                 print("series DUPLICATE \(duplicate.title)")
                 merge(ekEvent, into: duplicate, in: calendar)
+
             } else {
                 if let me = series.template.me, me.engagement == .disengaged {
                     series.status = .archived
                 }
-                print("series INSERT \(series.type) \(ekEvent.title)")
+                print("series INSERT \(series.type) \(ekEvent.title) \(series.status)")
                 series.insert()
             }
         }

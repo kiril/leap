@@ -213,6 +213,15 @@ class Series: LeapModel, Fuzzy {
         }
     }
 
+    func recurs(on date: Date) -> Bool {
+        let startOfDay = Calendar.current.startOfDay(for: date)
+        let endOfDay = Calendar.current.dayAfter(startOfDay)
+        guard let range = TimeRange(start: startOfDay, end: endOfDay),
+            recurs(in: range),
+            let actualStart = template.startTime(in: range) else { return false }
+        return actualStart == date
+    }
+
     func recurs(in range: TimeRange) -> Bool {
         return recursBetween(range.start, and: range.end)
     }
