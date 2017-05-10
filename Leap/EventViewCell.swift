@@ -133,7 +133,6 @@ class EventViewCell: UICollectionViewCell {
         locationLabel.textColor = UIColor.projectLightGray
         recurringIcon.textColor = UIColor.projectLightGray
         descriptionIcon.textColor = UIColor.projectLightGray
-        arrivalDepartureLabel.textColor = UIColor.projectWarning
 
         for icon:UILabel in [alarmIcon, recurringIcon, checklistIcon, commentIcon, locationIconLabel, fileIcon, shareIcon, brokenLinkIcon, phoneIcon, skypeIcon, ticketIcon, videoIcon, photoIcon, facebookIcon, slackIcon] {
             icon.textColor = UIColor.projectLightGray
