@@ -130,7 +130,6 @@ class RecurringEventSurface: EventSurface {
 
 
         let calendar = Calendar.current
-        let now = Date()
         let startDate = series.template.startTime(in: range)!
         let endDate = series.template.endTime(in: range)!
 
