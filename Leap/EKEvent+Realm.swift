@@ -189,6 +189,7 @@ extension EKEvent {
             "linkedCalendarIds": [calendar.asLinkId()],
             "alarms": self.getAlarms(),
             "engagementString": (participants.me?.engagement ?? .none).rawValue,
+            "statusString": self.objectStatus.rawValue,
         ]
         for (key, value) in data {
             common[key] = value
@@ -211,36 +212,77 @@ extension EKEvent {
         return Template(value: data)
     }
     
-    func asEvent(in calendar: EKCalendar) -> Event {
-        let data = addCommonData([
+    func asEvent(in calendar: EKCalendar, detached: Bool = false, from series: Series? = nil, eventId: String? = nil) -> Event {
+        var data = addCommonData([
             "startTime": self.startDate.secondsSinceReferenceDate,
             "endTime": self.endDate.secondsSinceReferenceDate,
             "remoteCreated": self.creationDate,
             "remoteModified": self.lastModifiedDate,
             "legacyTimeZone": TimeZone.from(self.timeZone),
             "externalURL": self.url?.absoluteString,
-            "wasDetached": self.isDetached,
+            "wasDetached": detached,
             "isTentative": self.isTentative,
             "firmnessString": self.firmness.rawValue,
+            "seriesId": series?.id,
             ], in: calendar)
+
+        if detached, let id = eventId {
+            data["id"] = id
+        }
 
         return Event(value: data)
     }
 
-    func asReminder(in calendar: EKCalendar) -> Reminder {
-        let data = addCommonData([
+    func asReminder(in calendar: EKCalendar, detached: Bool = false, from series: Series? = nil, eventId: String? = nil) -> Reminder {
+        var data = addCommonData([
             "startTime": self.startDate.secondsSinceReferenceDate,
             "endTime": self.reminderType == .time ? self.endDate.secondsSinceReferenceDate : 0,
             "legacyTimeZone": TimeZone.from(self.timeZone),
             "remoteCreated": self.creationDate,
             "remoteModified": self.lastModifiedDate,
             "externalURL": self.url?.absoluteString,
-            "wasDetached": self.isDetached,
+            "wasDetached": detached,
+            "seriesId": series?.id,
             "typeString": self.reminderType.rawValue,
             ], in: calendar)
 
-        let reminder = Reminder(value: data)
-        return reminder
+        if detached, let id = eventId {
+            data["id"] = id
+        }
+
+        return Reminder(value: data)
+    }
+
+    func isDetachedForm(of series: Series) -> Bool {
+
+        let minutes = (endDate.secondsSinceReferenceDate - startDate.secondsSinceReferenceDate) / 60
+
+        if !series.recurs(on: startDate, ignoreActiveRange: true) {
+            let start = Calendar.current.startOfDay(for: startDate)
+            let end = Calendar.current.dayAfter(start)
+            let range = TimeRange(start: start, end: end)!
+            print("DETACHED: \(DateFormatter.shortFormat(startDate)) isn't \(String(describing: series.template.startTime(in: range)))")
+            return true
+        }
+
+        if title != series.template.title || minutes != series.template.durationMinutes {
+            print("DETACHED \(title): Title/Duration change")
+            return true
+        }
+
+        return series.status != objectStatus
+    }
+
+    var objectStatus: ObjectStatus {
+        switch status {
+        case .canceled:
+            return .archived
+        default:
+            if let me = self.me, me.getEngagement(availability: availability) == .disengaged {
+                return .archived
+            }
+            return .active
+        }
     }
 
     var reminderType: ReminderType {

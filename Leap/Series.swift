@@ -213,6 +213,21 @@ class Series: LeapModel, Fuzzy {
         }
     }
 
+    func recurs(on date: Date, ignoreActiveRange: Bool = false) -> Bool {
+        let startOfDay = Calendar.current.startOfDay(for: date)
+        let endOfDay = Calendar.current.dayAfter(startOfDay)
+        guard let range = TimeRange(start: startOfDay, end: endOfDay),
+            let start = template.startTime(in: range),
+            (ignoreActiveRange || recurs(in: range)) else {
+                print("\(title) : doesn't recur on \(DateFormatter.shortFormat(date))")
+                return false
+        }
+        if start != date {
+            print("\(title) : \(DateFormatter.shortFormat(start)) != \(DateFormatter.shortFormat(date))")
+        }
+        return start == date
+    }
+
     func recurs(in range: TimeRange) -> Bool {
         return recursBetween(range.start, and: range.end)
     }
