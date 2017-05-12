@@ -771,8 +771,8 @@ extension EventSurface: Linear {
         }
 
         let startMovedAcrossNoon = crossesNoon != attendCrossesNoon
-        let startString = calendar.formatDisplayTime(from: start, needsAMPM: startMovedAcrossNoon)
-        let endString = calendar.formatDisplayTime(from: end, needsAMPM: attendCrossesNoon && !startMovedAcrossNoon)
+        let startString = calendar.formatDisplayTime(from: start, needsAMPM: (startMovedAcrossNoon || !hasCustomDeparture))
+        let endString = calendar.formatDisplayTime(from: end, needsAMPM: ((attendCrossesNoon && !startMovedAcrossNoon) || !hasCustomArrival))
 
         if hasCustomArrival && hasCustomDeparture {
             attendance.append(string: " (\(startString)", attributes: normal)
