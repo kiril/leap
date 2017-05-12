@@ -257,16 +257,16 @@ extension EKEvent {
 
         let minutes = (endDate.secondsSinceReferenceDate - startDate.secondsSinceReferenceDate) / 60
 
-        if !series.recurs(on: startDate) {
+        if !series.recurs(on: startDate, ignoreActiveRange: true) {
             let start = Calendar.current.startOfDay(for: startDate)
             let end = Calendar.current.dayAfter(start)
             let range = TimeRange(start: start, end: end)!
-            print("Series doesn't recuring on \(startDate), but on \(String(describing: series.template.startTime(in: range))) given \(range)")
+            print("DETACHED: \(DateFormatter.shortFormat(startDate)) isn't \(String(describing: series.template.startTime(in: range)))")
             return true
         }
 
         if title != series.template.title || minutes != series.template.durationMinutes {
-            print("Title or Duration change")
+            print("DETACHED \(title): Title/Duration change")
             return true
         }
 

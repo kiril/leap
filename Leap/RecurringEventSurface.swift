@@ -42,66 +42,6 @@ class RecurringEventSurface: EventSurface {
         fatalError("this doesn't work yet for RecurringEventSurface. We have plans to do it, though. Until we do, pass around the Surface itself")
     }
 
-
-    static func load(with series: Series, in range: TimeRange) -> EventSurface? {
-        let surface = RecurringEventSurface(id: series.id)
-        surface.seriesRange = range
-        let bridge = SurfaceModelBridge(id: series.id, surface: surface)
-
-        bridge.reference(series, as: "series")
-        bridge.readonlyBind(surface.title)
-        bridge.readonlyBind(surface.detail) { ($0 as! Series).template.detail }
-        bridge.readonlyBind(surface.agenda) { ($0 as! Series).template.agenda }
-        bridge.readonlyBind(surface.hasAlarms) { !($0 as! Series).template.alarms.isEmpty }
-        bridge.readonlyBind(surface.alarmSummary) { ($0 as! Series).template.alarms.summarize() }
-        bridge.readonlyBind(surface.origin) { ($0 as! Series).template.origin }
-        bridge.readonlyBind(surface.isRecurring) { (m:LeapModel) in return true }
-
-
-        bridge.readonlyBind(surface.startTime) { ($0 as! Series).template.startTime(in: range) }
-        bridge.readonlyBind(surface.endTime) { ($0 as! Series).template.endTime(in: range) }
-        bridge.readonlyBind(surface.arrivalTime) { ($0 as! Series).template.startTime(in: range) }
-        bridge.readonlyBind(surface.departureTime) { ($0 as! Series).template.endTime(in: range) }
-        bridge.readonlyBind(surface.userIsInvited) { (model:LeapModel) in
-            guard let series = model as? Series, let me = series.template.participants.me else {
-                return false
-            }
-            return me.ownership == .invitee
-        }
-
-        bridge.readonlyBind(surface.locationSummary) { (model:LeapModel) -> String? in
-            guard let series = model as? Series, let location = series.template.locationString, !location.isEmpty else {
-                return nil
-            }
-            return location
-        }
-
-        bridge.readonlyBind(surface.invitationSummary) { invitationSummary(series: ($0 as! Series)) }
-        bridge.bind(surface.userResponse,
-                    populateWith: { (m:LeapModel) in EventResponse.from((m as! Series).engagement) },
-                    on: "series",
-                    persistWith: { ($0 as! Series).engagement = ($1 as! EventResponse).asEngagement() })
-        bridge.readonlyBind(surface.recurrenceDescription) { recurringDescription(series: ($0 as! Series)) }
-
-        bridge.readonlyBind(surface.participants) { (m:LeapModel) -> [ParticipantSurface] in
-            let series = m as! Series
-            var participants: [ParticipantSurface] = []
-
-            for participant in series.template.participants {
-                if let participantSurface = ParticipantSurface.load(with: participant) as? ParticipantSurface {
-                    participants.append(participantSurface)
-                }
-            }
-
-            return participants
-        }
-
-        surface.store = bridge
-        bridge.populate(surface, with: series, as: "series")
-
-        return surface
-    }
-
     static func invitationSummary(series: Series) -> String? {
         return invitationSummary(origin: series.template.origin,
                                  calendar: series.template.linkedCalendars.first,
@@ -145,6 +85,130 @@ class RecurringEventSurface: EventSurface {
         alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { action in onComplete(.none) })
 
         return alert
+    }
+
+    static func recurringDescription(series: Series, in range: TimeRange) -> String? {
+        var recurrence = "Repeating"
+
+        switch series.recurrence.frequency {
+        case .daily:
+            recurrence = "Daily"
+
+        case .weekly:
+            recurrence = "Weekly"
+            if series.recurrence.daysOfWeek.count > 0 {
+                let weekdays = series.recurrence.daysOfWeek.map({ $0.raw }).sorted()
+                if weekdays == GregorianWeekdays {
+                    recurrence = "Weekdays"
+                } else if weekdays == GregorianWeekends {
+                    recurrence = "Weekends"
+                } else {
+                    recurrence = ""
+
+                    for (i, weekday) in weekdays.enumerated() {
+                        if i > 0 {
+                            if i == weekdays.count-1 {
+                                recurrence += " and "
+                            } else {
+                                recurrence += ", "
+                            }
+                        }
+                        recurrence += "\(weekday.weekdayString)s"
+                    }
+                }
+            }
+
+        case .monthly:
+            recurrence = "Monthly"
+
+        case .yearly:
+            recurrence = "Yearly"
+
+        case .unknown:
+            return nil
+        }
+
+
+        let calendar = Calendar.current
+        let now = Date()
+        let startDate = series.template.startTime(in: range)!
+        let endDate = series.template.endTime(in: range)!
+
+        let startHour = calendar.component(.hour, from: startDate)
+        let endHour = calendar.component(.hour, from: endDate)
+
+        let spansDays = calendar.areOnDifferentDays(startDate, endDate)
+        let crossesNoon = spansDays || ( startHour < 12 && endHour >= 12 )
+
+        let from = calendar.formatDisplayTime(from: startDate, needsAMPM: crossesNoon)
+        let to = calendar.formatDisplayTime(from: endDate, needsAMPM: true)
+        var more = ""
+        if spansDays {
+            let days = calendar.daysBetween(startDate, and: endDate)
+            let ess = days == 1 ? "" : "s"
+            more = " (\(days) day\(ess) later)"
+        }
+        
+        return "\(recurrence) from \(from) - \(to)\(more)"
+    }
+
+    static func load(with series: Series, in range: TimeRange) -> EventSurface? {
+        let surface = RecurringEventSurface(id: series.id)
+        surface.seriesRange = range
+        let bridge = SurfaceModelBridge(id: series.id, surface: surface)
+
+        bridge.reference(series, as: "series")
+        bridge.readonlyBind(surface.title)
+        bridge.readonlyBind(surface.detail) { ($0 as! Series).template.detail }
+        bridge.readonlyBind(surface.agenda) { ($0 as! Series).template.agenda }
+        bridge.readonlyBind(surface.hasAlarms) { !($0 as! Series).template.alarms.isEmpty }
+        bridge.readonlyBind(surface.alarmSummary) { ($0 as! Series).template.alarms.summarize() }
+        bridge.readonlyBind(surface.origin) { ($0 as! Series).template.origin }
+        bridge.readonlyBind(surface.isRecurring) { (m:LeapModel) in return true }
+
+
+        bridge.readonlyBind(surface.startTime) { ($0 as! Series).template.startTime(in: range) }
+        bridge.readonlyBind(surface.endTime) { ($0 as! Series).template.endTime(in: range) }
+        bridge.readonlyBind(surface.arrivalTime) { ($0 as! Series).template.startTime(in: range) }
+        bridge.readonlyBind(surface.departureTime) { ($0 as! Series).template.endTime(in: range) }
+        bridge.readonlyBind(surface.userIsInvited) { (model:LeapModel) in
+            guard let series = model as? Series, let me = series.template.participants.me else {
+                return false
+            }
+            return me.ownership == .invitee
+        }
+
+        bridge.readonlyBind(surface.locationSummary) { (model:LeapModel) -> String? in
+            guard let series = model as? Series, let location = series.template.locationString, !location.isEmpty else {
+                return nil
+            }
+            return location
+        }
+
+        bridge.readonlyBind(surface.invitationSummary) { invitationSummary(series: ($0 as! Series)) }
+        bridge.bind(surface.userResponse,
+                    populateWith: { (m:LeapModel) in EventResponse.from((m as! Series).engagement) },
+                    on: "series",
+                    persistWith: { ($0 as! Series).engagement = ($1 as! EventResponse).asEngagement() })
+        bridge.readonlyBind(surface.recurrenceDescription) { recurringDescription(series: ($0 as! Series), in: surface.seriesRange!) }
+
+        bridge.readonlyBind(surface.participants) { (m:LeapModel) -> [ParticipantSurface] in
+            let series = m as! Series
+            var participants: [ParticipantSurface] = []
+
+            for participant in series.template.participants {
+                if let participantSurface = ParticipantSurface.load(with: participant) as? ParticipantSurface {
+                    participants.append(participantSurface)
+                }
+            }
+
+            return participants
+        }
+
+        surface.store = bridge
+        bridge.populate(surface, with: series, as: "series")
+        
+        return surface
     }
 }
 

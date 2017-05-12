@@ -21,4 +21,14 @@ extension DateFormatter {
             return appendAMPM ? "\(simpleHour)\(amPm)" : "\(simpleHour)"
         }
     }
+
+    static func shortDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.setLocalizedDateFormatFromTemplate("MMMd")
+        return formatter.string(from: date)
+    }
+
+    static func shortFormat(_ date: Date) -> String {
+        return "\(shortDate(date)), \(shortTime(date: date, appendAMPM: true))"
+    }
 }

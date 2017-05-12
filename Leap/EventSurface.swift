@@ -535,12 +535,6 @@ class EventSurface: Surface, ModelLoadable {
                     on: "event",
                     persistWith: { ($0 as! Event).engagement = ($1 as! EventResponse).asEngagement() })
 
-        bridge.readonlyBind(surface.recurrenceDescription) { (model:LeapModel) -> String? in
-            guard let event = model as? Event else { return nil }
-            guard let seriesId = event.seriesId, let series = Series.by(id: seriesId) else { return nil }
-            return recurringDescription(series: series)
-        }
-
         bridge.readonlyBind(surface.participants) { (m:LeapModel) -> [ParticipantSurface] in
             var participants: [ParticipantSurface] = []
 
@@ -558,72 +552,6 @@ class EventSurface: Surface, ModelLoadable {
         surface.store = bridge
         bridge.populate(surface, with: event, as: "event")
         return surface
-    }
-
-    static func recurringDescription(series: Series) -> String? {
-        var recurrence = "Repeating"
-
-        switch series.recurrence.frequency {
-        case .daily:
-            recurrence = "Daily"
-
-        case .weekly:
-            recurrence = "Weekly"
-            if series.recurrence.daysOfWeek.count > 0 {
-                let weekdays = series.recurrence.daysOfWeek.map({ $0.raw }).sorted()
-                if weekdays == GregorianWeekdays {
-                    recurrence = "Weekdays"
-                } else if weekdays == GregorianWeekends {
-                    recurrence = "Weekends"
-                } else {
-                    recurrence = ""
-
-                    for (i, weekday) in weekdays.enumerated() {
-                        if i > 0 {
-                            if i == weekdays.count-1 {
-                                recurrence += " and "
-                            } else {
-                                recurrence += ", "
-                            }
-                        }
-                        recurrence += "\(weekday.weekdayString)s"
-                    }
-                }
-            }
-
-        case .monthly:
-            recurrence = "Monthly"
-
-        case .yearly:
-            recurrence = "Yearly"
-
-        case .unknown:
-            return nil
-        }
-
-
-        let calendar = Calendar.current
-        let now = Date()
-        let range = TimeRange(start: now, end: calendar.date(byAdding: .day, value: 1, to: now)!)!
-        let startDate = series.template.startTime(in: range)!
-        let endDate = series.template.endTime(in: range)!
-
-        let startHour = calendar.component(.hour, from: startDate)
-        let endHour = calendar.component(.hour, from: endDate)
-
-        let spansDays = calendar.areOnDifferentDays(startDate, endDate)
-        let crossesNoon = spansDays || ( startHour < 12 && endHour >= 12 )
-
-        let from = calendar.formatDisplayTime(from: startDate, needsAMPM: crossesNoon)
-        let to = calendar.formatDisplayTime(from: endDate, needsAMPM: true)
-        var more = ""
-        if spansDays {
-            let days = calendar.daysBetween(startDate, and: endDate)
-            let ess = days == 1 ? "" : "s"
-            more = " (\(days) day\(ess) later)"
-        }
-
-        return "\(recurrence) from \(from) - \(to)\(more)"
     }
 
     func buttonText(forResponse response: EventResponse) -> String? {

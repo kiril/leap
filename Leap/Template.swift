@@ -97,7 +97,7 @@ class Template: LeapModel, Particible, Alarmable, CalendarLinkable {
         }
         let possibility = Calendar.current.date(bySettingHour: startHour, minute: startMinute, second: 0, of: start)!
 
-        guard possibility < end else {
+        guard possibility < end && possibility > start else {
             return nil
         }
         return possibility

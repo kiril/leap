@@ -189,7 +189,7 @@ class EventKit {
             event.delete()
             print("event DELETE series root \(ekEvent.title)")
         }
-        if let reminder = Reminder.by(id: ekEvent.cleanId) {
+        if let reminder = Reminder.by(id: ekEvent.cleanId), !reminder.wasDetached {
             reminder.delete()
             print("reminder DELETE series root \(ekEvent.title)")
         }
@@ -198,8 +198,10 @@ class EventKit {
             if ekEvent.isDetachedForm(of: existing) {
                 switch ekEvent.type {
                 case .event:
+                    print("event DETACHING from \(existing.title) for \(DateFormatter.shortDate(ekEvent.startDate))")
                     importAsEvent(ekEvent, in: calendar, given: Event.by(id: ekEvent.cleanId), detached: true, from: existing, eventId: existing.generateId(for: ekEvent.startDate))
                 case .reminder:
+                    print("reminder DETACHING from \(existing.title) for \(DateFormatter.shortDate(ekEvent.startDate))")
                     importAsReminder(ekEvent, in: calendar, given: Reminder.by(id: ekEvent.cleanId), detached: true, from: existing, eventId: existing.generateId(for: ekEvent.startDate))
                 }
             } else {
