@@ -61,35 +61,35 @@ class EventKit {
     }
 
     func eventSearchCallback(_ calendar: EKCalendar) -> EKEventSearchCallback {
-        return { (event:EKEvent, stop:UnsafeMutablePointer<ObjCBool>) in self.importEvent(event, in: calendar) }
+        return { (event:EKEvent, stop:UnsafeMutablePointer<ObjCBool>) in self.importEK(event: event, in: calendar) }
     }
 
-    func importEvent(_ ekEvent: EKEvent, in calendar: EKCalendar) {
+    func importEK(event ekEvent: EKEvent, in calendar: EKCalendar) {
         importQueue.async {
             if let series = Series.by(id: ekEvent.cleanId) { // always keep series as series, even if arrives w/o recurrence info
-                self.importAsSeries(ekEvent, in: calendar, given: series)
+                self.importSeries(ekEvent, in: calendar, given: series)
 
             } else {
 
                 if ekEvent.isRecurring {
                     let existing = Series.by(id: ekEvent.cleanId)
-                    self.importAsSeries(ekEvent, in: calendar, given: existing)
+                    self.importSeries(ekEvent, in: calendar, given: existing)
 
                 } else {
                     switch ekEvent.type {
                     case .event:
                         let existing = Event.by(id: ekEvent.cleanId)
-                        self.importAsEvent(ekEvent, in: calendar, given: existing)
+                        self.importOne(ekEvent, in: calendar, given: existing)
 
                     case .reminder:
                         if let series = Series.by(title: ekEvent.title),
                             (series.recurs(on: ekEvent.startDate) || (ekEvent.isAllDay && series.recurrence.recursOn(ekEvent.startDate, for: series))) {
                             print("reminder DUPLICATE of Series \(ekEvent.title)")
-                            self.importAsSeries(ekEvent, in: calendar, given: series)
+                            self.importSeries(ekEvent, in: calendar, given: series)
 
                         } else {
                             let existing = Reminder.by(id: ekEvent.cleanId)
-                            self.importAsReminder(ekEvent, in: calendar, given: existing)
+                            self.importOne(ekEvent, in: calendar, given: existing)
                         }
                     }
                 }
@@ -127,42 +127,31 @@ class EventKit {
         print("\(String(describing: type(of:existing)).lowercased()) UPDATE \(ekEvent.title)")
     }
 
-    func importAsEvent(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: Event? = nil, detached: Bool = false, from series: Series? = nil, eventId: String? = nil) {
+    func importOne<T:LeapModel>(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: T? = nil, detached: Bool = false, from series: Series? = nil, eventId: String? = nil) where T:Temporality, T:Fuzzy {
         if let existing = existing {
             merge(ekEvent, into: existing, in: calendar)
-
-        } else {
-            let event = ekEvent.asEvent(in: calendar, detached: detached, from: series, eventId: eventId)
-            if let duplicate = Event.by(fuzzyHash: event.calculateFuzzyHash()) {
-                print("event DUPLICATE \(ekEvent.title)")
-                merge(ekEvent, into: duplicate, in: calendar, detached: detached, from: series)
-
-            } else {
-                event.insert()
-                print("event INSERT \(ekEvent.title) \(event.origin) from \(calendar.title)")
-                if ekEvent.title.contains("Eleni") {
-                    print("    Calendar: \(calendar.title) - \(calendar.calendarIdentifier)")
-                    print("    Source: \(calendar.source.title) - \(calendar.source.sourceIdentifier)")
-                    print("    ID: \(ekEvent.eventIdentifier)")
-                }
-            }
+            return
         }
-    }
 
-    func importAsReminder(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: Reminder? = nil, detached: Bool = false, from series: Series? = nil, eventId: String? = nil) {
-        if let existing = existing {
-            merge(ekEvent, into: existing, in: calendar)
+        var item: Temporality!
+        if T.self == Event.self {
+            item = ekEvent.asEvent(in: calendar, detached: detached, from: series, eventId: eventId)
+        } else {
+            item = ekEvent.asReminder(in: calendar, detached: detached, from: series, eventId: eventId)
+        }
+
+        if detached && item.id != ekEvent.cleanId, let existingDetached = T.by(id: item.id) {
+            merge(ekEvent, into: existingDetached, in: calendar)
+            return
+        }
+
+        if let duplicate = T.by(fuzzyHash: (item as! Fuzzy).calculateFuzzyHash()) {
+            print("\(String(describing: T.self).lowercased()) DUPLICATE \(ekEvent.title)")
+            merge(ekEvent, into: duplicate, in: calendar, detached: detached, from: series)
 
         } else {
-            let reminder = ekEvent.asReminder(in: calendar, detached: detached, from: series, eventId: eventId)
-            if let duplicate = Reminder.by(fuzzyHash: reminder.calculateFuzzyHash()) {
-                print("reminder DUPLICATE \(ekEvent.title)")
-                merge(ekEvent, into: duplicate, in: calendar, detached: detached, from: series)
-
-            } else {
-                reminder.insert()
-                print("reminder INSERT \(ekEvent.title) \(reminder.type)")
-            }
+            (item as! LeapModel).insert()
+            print("event INSERT \(ekEvent.title) \(item.origin) from \(calendar.title)")
         }
     }
 
@@ -184,7 +173,7 @@ class EventKit {
         print("series UPDATE \(existing.type) \(ekEvent.title) \(existing.status)")
     }
 
-    func importAsSeries(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: Series? = nil) {
+    func importSeries(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: Series? = nil) {
         if let event = Event.by(id: ekEvent.cleanId), !event.wasDetached {
             event.delete()
             print("event DELETE series root \(ekEvent.title)")
@@ -199,10 +188,10 @@ class EventKit {
                 switch ekEvent.type {
                 case .event:
                     print("event DETACHING from \(existing.title) for \(DateFormatter.shortDate(ekEvent.startDate))")
-                    importAsEvent(ekEvent, in: calendar, given: Event.by(id: ekEvent.cleanId), detached: true, from: existing, eventId: existing.generateId(for: ekEvent.startDate))
+                    importOne(ekEvent, in: calendar, given: Event.by(id: ekEvent.cleanId), detached: true, from: existing, eventId: existing.generateId(for: ekEvent.startDate))
                 case .reminder:
                     print("reminder DETACHING from \(existing.title) for \(DateFormatter.shortDate(ekEvent.startDate))")
-                    importAsReminder(ekEvent, in: calendar, given: Reminder.by(id: ekEvent.cleanId), detached: true, from: existing, eventId: existing.generateId(for: ekEvent.startDate))
+                    importOne(ekEvent, in: calendar, given: Reminder.by(id: ekEvent.cleanId), detached: true, from: existing, eventId: existing.generateId(for: ekEvent.startDate))
                 }
             } else {
                 merge(ekEvent, into: existing, in: calendar)
