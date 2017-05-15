@@ -25,7 +25,7 @@
                     <rect key="frame" x="20" y="28" width="335" height="639"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Mc6-Fo-C7r">
-                            <rect key="frame" x="0.0" y="0.0" width="335" height="495"/>
+                            <rect key="frame" x="0.0" y="0.0" width="335" height="525.5"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WSI-Hw-Hew">
                                     <rect key="frame" x="0.0" y="0.0" width="335" height="21.5"/>
@@ -244,6 +244,12 @@
                                         <constraint firstAttribute="height" relation="lessThanOrEqual" constant="20" id="cqB-No-rsh"/>
                                     </constraints>
                                 </stackView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Event Identifier" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KDT-lG-rUT">
+                                    <rect key="frame" x="0.0" y="505" width="335" height="20.5"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" red="1" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                         </stackView>
                     </subviews>
@@ -274,6 +280,7 @@
                 <outlet property="conflictLabel" destination="hPh-as-OKe" id="tTg-Ku-RgQ"/>
                 <outlet property="detailLabel" destination="0up-fm-j76" id="YQW-Wn-iCZ"/>
                 <outlet property="detailSeparator" destination="Hr4-An-7cf" id="OYe-B6-lD2"/>
+                <outlet property="eventIdLabel" destination="KDT-lG-rUT" id="FiT-pK-czp"/>
                 <outlet property="invitationSummaryLabel" destination="oXm-1a-vvU" id="js7-nR-II0"/>
                 <outlet property="locationButton" destination="qqg-aA-5db" id="K3X-Eo-FcV"/>
                 <outlet property="locationLabel" destination="toS-pQ-DoM" id="HtS-cb-THe"/>

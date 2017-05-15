@@ -17,6 +17,20 @@ enum Origin: String {
     case subscription
     case personal
     case unknown
+
+    func winner(vs other: Origin) -> Origin {
+        switch self {
+        case .invite:
+            return self
+        default:
+            switch other {
+            case .invite:
+                return other
+            default:
+                return self
+            }
+        }
+    }
 }
 
 

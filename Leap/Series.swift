@@ -222,9 +222,6 @@ class Series: LeapModel, Fuzzy {
                 print("\(title) : doesn't recur on \(DateFormatter.shortFormat(date))")
                 return false
         }
-        if start != date {
-            print("\(title) : \(DateFormatter.shortFormat(start)) != \(DateFormatter.shortFormat(date))")
-        }
         return start == date
     }
 
@@ -257,6 +254,15 @@ class Series: LeapModel, Fuzzy {
             date = Calendar.current.date(byAdding: DateComponents(day: 1), to: d)
         }
         return false
+    }
+
+    func startTime(in range: TimeRange) -> Date? {
+        return template.startTime(in: range)
+    }
+
+    func generateId(in range: TimeRange) -> String? {
+        guard let date = startTime(in: range) else { return nil }
+        return generateId(for: date)
     }
 
     func generateId(for start: Date) -> String {

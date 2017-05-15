@@ -36,6 +36,7 @@ class EventDetailView: UIView {
     @IBOutlet weak var invitationSummaryLabel: UILabel!
     @IBOutlet weak var invitationActionContainer: UIStackView!
     @IBOutlet weak var detailLabel: UILabel!
+    @IBOutlet weak var eventIdLabel: UILabel!
 
     // location
     @IBOutlet weak var locationContainer: UIStackView!
@@ -116,6 +117,7 @@ class EventDetailView: UIView {
         recurringIcon.isHidden = !event.isRecurring.value
         recurringIcon.superview?.isHidden = !event.isRecurring.value
         timeLabel.text = event.timeString.value
+        eventIdLabel.text = event.id
 
         updateActionButtons(forEvent: event)
         setup()

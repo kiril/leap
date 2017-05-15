@@ -99,11 +99,20 @@ class EventKit {
 
     func merge(_ ekEvent: EKEvent, into another: Temporality, in calendar: EKCalendar, detached: Bool = false, from series: Series? = nil) {
         var existing = another
+        let origin = ekEvent.getOrigin(in: calendar)
+
         let realm = Realm.user()
         if existing.participants.isEmpty && ekEvent.hasAttendees {
             try! realm.safeWrite {
-                existing.addParticipants(ekEvent.getParticipants(origin: ekEvent.getOrigin(in: calendar)))
+                existing.addParticipants(ekEvent.getParticipants(origin: origin))
                 existing.status = ekEvent.objectStatus
+            }
+        }
+
+        let bestOrigin = existing.origin.winner(vs: origin)
+        if bestOrigin != existing.origin {
+            try! realm.safeWrite {
+                existing.origin = bestOrigin
             }
         }
 
@@ -150,8 +159,8 @@ class EventKit {
             merge(ekEvent, into: duplicate, in: calendar, detached: detached, from: series)
 
         } else {
+            print("event INSERT \(ekEvent.title) \(item.origin) [\(item.wasDetached)] \(DateFormatter.shortDate(item.date!)) from \(calendar.title)")
             (item as! LeapModel).insert()
-            print("event INSERT \(ekEvent.title) \(item.origin) from \(calendar.title)")
         }
     }
 
@@ -173,28 +182,61 @@ class EventKit {
         print("series UPDATE \(existing.type) \(ekEvent.title) \(existing.status)")
     }
 
-    func importSeries(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: Series? = nil) {
-        if let event = Event.by(id: ekEvent.cleanId), !event.wasDetached {
-            event.delete()
-            print("event DELETE series root \(ekEvent.title)")
-        }
-        if let reminder = Reminder.by(id: ekEvent.cleanId), !reminder.wasDetached {
-            reminder.delete()
-            print("reminder DELETE series root \(ekEvent.title)")
-        }
+    func cleanUp(after series: Series) {
 
-        if let existing = existing {
-            if ekEvent.isDetachedForm(of: existing) {
-                switch ekEvent.type {
-                case .event:
-                    print("event DETACHING from \(existing.title) for \(DateFormatter.shortDate(ekEvent.startDate))")
-                    importOne(ekEvent, in: calendar, given: Event.by(id: ekEvent.cleanId), detached: true, from: existing, eventId: existing.generateId(for: ekEvent.startDate))
-                case .reminder:
-                    print("reminder DETACHING from \(existing.title) for \(DateFormatter.shortDate(ekEvent.startDate))")
-                    importOne(ekEvent, in: calendar, given: Reminder.by(id: ekEvent.cleanId), detached: true, from: existing, eventId: existing.generateId(for: ekEvent.startDate))
+        if let event = Event.by(id: series.id) {
+            if event.isDetachedForm(of: series) && !event.wasDetached {
+                let detached = Event(value: event)
+                if let id = series.generateId(in: TimeRange.day(of: detached.startDate)) {
+                    print("event DETACH modified series root \(event.title), \(DateFormatter.shortDate(event.startDate))")
+                    detached.seriesId = series.id
+                    detached.id = id
+                    detached.insert()
                 }
             } else {
-                merge(ekEvent, into: existing, in: calendar)
+                print("event DELETE series root \(event.title)")
+            }
+
+            event.delete()
+        }
+
+        if let reminder = Reminder.by(id: series.id) {
+            if reminder.isDetachedForm(of: series) && !reminder.wasDetached {
+                let detached = Reminder(value: reminder)
+                if let id = series.generateId(in: TimeRange.day(of: detached.startDate)) {
+                    print("event DETACH modified series root \(reminder.title), \(DateFormatter.shortDate(reminder.startDate))")
+                    detached.seriesId = series.id
+                    detached.id = id
+                    detached.insert()
+                }
+            } else {
+                print("event DELETE series root \(reminder.title)")
+            }
+
+            reminder.delete()
+        }
+    }
+
+    func importSeries(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: Series? = nil) {
+
+        if let series = existing {
+            if ekEvent.isDetachedForm(of: series) {
+                let id = series.generateId(in: TimeRange.day(of: ekEvent.startDate))!
+
+                switch ekEvent.type {
+                case .event:
+                    print("event DETACHING from \(series.title) for \(DateFormatter.shortDate(ekEvent.startDate))")
+                    let event = Event.by(id: id)
+                    importOne(ekEvent, in: calendar, given: event, detached: true, from: series, eventId: id)
+
+                case .reminder:
+                    let reminder = Reminder.by(id: id)
+                    print("reminder DETACHING from \(series.title) for \(DateFormatter.shortDate(ekEvent.startDate))")
+                    importOne(ekEvent, in: calendar, given: reminder, detached: true, from: series, eventId: id)
+                }
+
+            } else {
+                merge(ekEvent, into: series, in: calendar)
             }
 
         } else if let rule = ekEvent.rule {
@@ -209,7 +251,9 @@ class EventKit {
                 }
                 print("series INSERT \(series.type) \(ekEvent.title) \(series.status)")
                 series.insert()
+                cleanUp(after: series)
             }
+
         }
     }
 }

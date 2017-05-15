@@ -43,7 +43,15 @@ struct TimeRange: TimeRangeExcludable {
     }
 
     static func of(day: GregorianDay) -> TimeRange {
-        return TimeRange(start: Calendar.current.startOfDay(for: day), end: Calendar.current.startOfDay(for: day.dayAfter))!
+        let start = Calendar.current.startOfDay(for: day)
+        let end = Calendar.current.dayAfter(start)
+        return TimeRange(start: start, end: end)!
+    }
+
+    static func day(of date: Date) -> TimeRange {
+        let start = Calendar.current.startOfDay(for: date)
+        let end = Calendar.current.dayAfter(start)
+        return TimeRange(start: start, end: end)!
     }
 }
 

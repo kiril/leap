@@ -47,6 +47,21 @@ class Reminder: _TemporalBase, Temporality, CalendarLinkable, Alarmable, Fuzzy {
         return Double(endTime - startTime)
     }
 
+
+
+    func isDetachedForm(of series: Series) -> Bool {
+
+        if !series.recurs(on: startDate, ignoreActiveRange: true) {
+            return true
+        }
+
+        if title != series.template.title {
+            return true
+        }
+
+        return series.status != self.status
+    }
+
     static func between(_ starting: Date, and before: Date) -> Results<Reminder> {
         let predicate = NSPredicate(format: "statusString = %@ AND startTime >= %d AND startTime < %d", ObjectStatus.active.rawValue, starting.secondsSinceReferenceDate, before.secondsSinceReferenceDate)
         return Realm.user().objects(Reminder.self).filter(predicate).sorted(byKeyPath: "startTime")

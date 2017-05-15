@@ -54,13 +54,13 @@ class EventSurfaceTests: XCTestCase {
         let start = Calendar.current.todayAt(hour: 13, minute: 30)
         let end = Calendar.current.date(byAdding: Calendar.Component.day, value: 1, to: start)!
         let surface = EventSurface(mockData: ["startTime": start, "endTime": end])
-        XCTAssertEqual(surface.timeString.value, "1:30pm - 1:30pm 1 day later")
+        XCTAssertEqual(surface.timeString.value, "1:30pm - 1:30pm (1 day later)")
     }
 
     func testTimeRangeMultiDay2() {
         let start = Calendar.current.todayAt(hour: 13, minute: 30)
         let end = Calendar.current.date(byAdding: Calendar.Component.day, value: 2, to: start)!
         let surface = EventSurface(mockData: ["startTime": start, "endTime": end])
-        XCTAssertEqual(surface.timeString.value, "1:30pm - 1:30pm 2 days later")
+        XCTAssertEqual(surface.timeString.value, "1:30pm - 1:30pm (2 days later)")
     }
 }
