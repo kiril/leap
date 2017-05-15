@@ -159,8 +159,8 @@ class EventKit {
             merge(ekEvent, into: duplicate, in: calendar, detached: detached, from: series)
 
         } else {
+            print("event INSERT \(ekEvent.title) \(item.origin) [\(item.wasDetached)] \(DateFormatter.shortDate(item.date!)) from \(calendar.title)")
             (item as! LeapModel).insert()
-            print("event INSERT \(ekEvent.title) \(item.origin) from \(calendar.title)")
         }
     }
 
@@ -182,15 +182,40 @@ class EventKit {
         print("series UPDATE \(existing.type) \(ekEvent.title) \(existing.status)")
     }
 
-    func importSeries(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: Series? = nil) {
-        if let event = Event.by(id: ekEvent.cleanId), !event.wasDetached {
+    func cleanUp(after series: Series) {
+
+        if let event = Event.by(id: series.id) {
+            if event.isDetachedForm(of: series) && !event.wasDetached {
+                let detached = Event(value: event)
+                if let id = series.generateId(in: TimeRange.day(of: detached.startDate)) {
+                    print("event DETACH modified series root \(event.title), \(DateFormatter.shortDate(event.startDate))")
+                    detached.id = id
+                    detached.insert()
+                }
+            } else {
+                print("event DELETE series root \(event.title)")
+            }
+
             event.delete()
-            print("event DELETE series root \(ekEvent.title)")
         }
-        if let reminder = Reminder.by(id: ekEvent.cleanId), !reminder.wasDetached {
+
+        if let reminder = Reminder.by(id: series.id) {
+            if reminder.isDetachedForm(of: series) && !reminder.wasDetached {
+                let detached = Reminder(value: reminder)
+                if let id = series.generateId(in: TimeRange.day(of: detached.startDate)) {
+                    print("event DETACH modified series root \(reminder.title), \(DateFormatter.shortDate(reminder.startDate))")
+                    detached.id = id
+                    detached.insert()
+                }
+            } else {
+                print("event DELETE series root \(reminder.title)")
+            }
+
             reminder.delete()
-            print("reminder DELETE series root \(ekEvent.title)")
         }
+    }
+
+    func importSeries(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: Series? = nil) {
 
         if let series = existing {
             if ekEvent.isDetachedForm(of: series) {
@@ -224,7 +249,9 @@ class EventKit {
                 }
                 print("series INSERT \(series.type) \(ekEvent.title) \(series.status)")
                 series.insert()
+                cleanUp(after: series)
             }
+
         }
     }
 }

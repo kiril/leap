@@ -222,9 +222,6 @@ class Series: LeapModel, Fuzzy {
                 print("\(title) : doesn't recur on \(DateFormatter.shortFormat(date))")
                 return false
         }
-        if start != date {
-            print("\(title) : \(DateFormatter.shortFormat(start)) != \(DateFormatter.shortFormat(date))")
-        }
         return start == date
     }
 

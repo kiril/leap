@@ -83,6 +83,21 @@ class Event: _TemporalBase, Temporality, CalendarLinkable, Alarmable, Fuzzy {
         return query.first != nil
     }
 
+
+    func isDetachedForm(of series: Series) -> Bool {
+        let minutes = (endTime - startTime) / 60
+
+        if !series.recurs(on: startDate, ignoreActiveRange: true) {
+            return true
+        }
+
+        if title != series.template.title || minutes != series.template.durationMinutes {
+            return true
+        }
+
+        return series.status != self.status
+    }
+
     static func on(_ day: GregorianDay) -> Results<Event> {
         let start = Calendar.current.startOfDay(for: day)
         let end = Calendar.current.startOfDay(for: day.dayAfter)
