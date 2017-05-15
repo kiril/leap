@@ -132,4 +132,11 @@ class _TemporalBase: LeapModel {
         get { return Engagement(rawValue: engagementString)! }
         set { engagementString = newValue.rawValue }
     }
+
+    var unqualifiedIdentifier: String? {
+        if try! id.matches(pattern: "[0-9A-Z\\-]{20,}:[0-9A-Z\\-]{20,}") {
+            return id.components(separatedBy: ":")[1]
+        }
+        return nil
+    }
 }

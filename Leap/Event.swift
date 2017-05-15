@@ -75,6 +75,9 @@ class Event: _TemporalBase, Temporality, CalendarLinkable, Alarmable, Fuzzy {
     }
 
     func calculateFuzzyHash() -> Int {
+        if let unqualId = self.unqualifiedIdentifier {
+            return "\(title)_\(startTime)_\(endTime)_\(unqualId)".hashValue
+        }
         return "\(title)_\(startTime)_\(endTime)_\(participants)".hashValue
     }
 
