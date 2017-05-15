@@ -112,6 +112,7 @@ class EventKit {
         let bestOrigin = existing.origin.winner(vs: origin)
         if bestOrigin != existing.origin {
             try! realm.safeWrite {
+                print("\(ekEvent.title) -> \(bestOrigin)")
                 existing.origin = bestOrigin
             }
         }
