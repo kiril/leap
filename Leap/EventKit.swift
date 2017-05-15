@@ -189,6 +189,7 @@ class EventKit {
                 let detached = Event(value: event)
                 if let id = series.generateId(in: TimeRange.day(of: detached.startDate)) {
                     print("event DETACH modified series root \(event.title), \(DateFormatter.shortDate(event.startDate))")
+                    detached.seriesId = series.id
                     detached.id = id
                     detached.insert()
                 }
@@ -204,6 +205,7 @@ class EventKit {
                 let detached = Reminder(value: reminder)
                 if let id = series.generateId(in: TimeRange.day(of: detached.startDate)) {
                     print("event DETACH modified series root \(reminder.title), \(DateFormatter.shortDate(reminder.startDate))")
+                    detached.seriesId = series.id
                     detached.id = id
                     detached.insert()
                 }
