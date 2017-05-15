@@ -259,6 +259,15 @@ class Series: LeapModel, Fuzzy {
         return false
     }
 
+    func startTime(in range: TimeRange) -> Date? {
+        return template.startTime(in: range)
+    }
+
+    func generateId(in range: TimeRange) -> String? {
+        guard let date = startTime(in: range) else { return nil }
+        return generateId(for: date)
+    }
+
     func generateId(for start: Date) -> String {
         let year = Calendar.universalGregorian.component(.year, from: start)
         let month = Calendar.universalGregorian.component(.month, from: start)

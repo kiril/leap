@@ -99,11 +99,20 @@ class EventKit {
 
     func merge(_ ekEvent: EKEvent, into another: Temporality, in calendar: EKCalendar, detached: Bool = false, from series: Series? = nil) {
         var existing = another
+        let origin = ekEvent.getOrigin(in: calendar)
+
         let realm = Realm.user()
         if existing.participants.isEmpty && ekEvent.hasAttendees {
             try! realm.safeWrite {
-                existing.addParticipants(ekEvent.getParticipants(origin: ekEvent.getOrigin(in: calendar)))
+                existing.addParticipants(ekEvent.getParticipants(origin: origin))
                 existing.status = ekEvent.objectStatus
+            }
+        }
+
+        let bestOrigin = existing.origin.winner(vs: origin)
+        if bestOrigin != existing.origin {
+            try! realm.safeWrite {
+                existing.origin = bestOrigin
             }
         }
 
@@ -183,18 +192,24 @@ class EventKit {
             print("reminder DELETE series root \(ekEvent.title)")
         }
 
-        if let existing = existing {
-            if ekEvent.isDetachedForm(of: existing) {
+        if let series = existing {
+            if ekEvent.isDetachedForm(of: series) {
+                let id = series.generateId(in: TimeRange.day(of: ekEvent.startDate))!
+
                 switch ekEvent.type {
                 case .event:
-                    print("event DETACHING from \(existing.title) for \(DateFormatter.shortDate(ekEvent.startDate))")
-                    importOne(ekEvent, in: calendar, given: Event.by(id: ekEvent.cleanId), detached: true, from: existing, eventId: existing.generateId(for: ekEvent.startDate))
+                    print("event DETACHING from \(series.title) for \(DateFormatter.shortDate(ekEvent.startDate))")
+                    let event = Event.by(id: id)
+                    importOne(ekEvent, in: calendar, given: event, detached: true, from: series, eventId: id)
+
                 case .reminder:
-                    print("reminder DETACHING from \(existing.title) for \(DateFormatter.shortDate(ekEvent.startDate))")
-                    importOne(ekEvent, in: calendar, given: Reminder.by(id: ekEvent.cleanId), detached: true, from: existing, eventId: existing.generateId(for: ekEvent.startDate))
+                    let reminder = Reminder.by(id: id)
+                    print("reminder DETACHING from \(series.title) for \(DateFormatter.shortDate(ekEvent.startDate))")
+                    importOne(ekEvent, in: calendar, given: reminder, detached: true, from: series, eventId: id)
                 }
+
             } else {
-                merge(ekEvent, into: existing, in: calendar)
+                merge(ekEvent, into: series, in: calendar)
             }
 
         } else if let rule = ekEvent.rule {

@@ -152,7 +152,7 @@ class RecurringEventSurface: EventSurface {
     }
 
     static func load(with series: Series, in range: TimeRange) -> EventSurface? {
-        let surface = RecurringEventSurface(id: series.id)
+        let surface = RecurringEventSurface(id: series.generateId(for: series.template.startTime(in: range)!))
         surface.seriesRange = range
         let bridge = SurfaceModelBridge(id: series.id, surface: surface)
 
