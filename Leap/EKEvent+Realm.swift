@@ -108,6 +108,11 @@ extension EKEvent {
 
     var isTentative: Bool { return self.availability == .tentative }
 
+    var isMultidayReminder: Bool {
+        guard self.isAllDay else { return false }
+        return Calendar.current.areOnDifferentDays(startDate, endDate)
+    }
+
     func getAlarms() -> [Alarm] {
         var alarms: [Alarm] = []
 
@@ -251,6 +256,20 @@ extension EKEvent {
         }
 
         return Reminder(value: data)
+    }
+
+    func asSeries(in calendar: EKCalendar) -> Series {
+        let template = self.asTemplate(in: calendar)
+        let recurrence = self.asRecurrence()
+        let data = addCommonData(["typeString": CalendarItemType.reminder.rawValue,
+                                  "recurrence": recurrence,
+                                  "template": template],
+                                 in: calendar)
+        return Series(value: data)
+    }
+
+    func asRecurrence() -> Recurrence {
+        return Recurrence(value: ["count": Calendar.current.daysBetween(startDate, and: endDate)])
     }
 
     func isDetachedForm(of series: Series) -> Bool {

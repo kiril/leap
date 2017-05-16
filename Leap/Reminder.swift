@@ -16,7 +16,7 @@ enum ReminderType: String {
     case unknown
 }
 
-class Reminder: _TemporalBase, Temporality, CalendarLinkable, Alarmable, Fuzzy {
+class Reminder: _TemporalBase, Temporality, Originating, CalendarLinkable, Alarmable, Fuzzy {
     dynamic var event: Event?
     dynamic var location: Location?
     dynamic var geoFence: GeoFence?
