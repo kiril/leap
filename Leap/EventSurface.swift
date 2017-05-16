@@ -490,13 +490,7 @@ class EventSurface: Surface, ModelLoadable {
         let setEndTime = {(m:LeapModel, v:Any?) in (m as! Event).endTime = (v as! Date).secondsSinceReferenceDate }
         bridge.bind(surface.endTime, populateWith: getEndTime, on: "event", persistWith: setEndTime)
 
-        func getArrivalTime(model: LeapModel) -> Any? {
-            let event = model as! Event
-            guard event.arrivalOffset != 0 else {
-                return event.startDate
-            }
-            return Date(timeIntervalSinceReferenceDate: TimeInterval(event.startTime + event.arrivalOffset))
-        }
+        func getArrivalTime(model: LeapModel) -> Any? { return (model as! Event).arrivalDate }
         func setArrivalTime(model: LeapModel, value: Any?) {
             let event = model as! Event
             guard let arrivalTime = value as? Date else { return }
@@ -505,13 +499,7 @@ class EventSurface: Surface, ModelLoadable {
         bridge.bind(surface.arrivalTime, populateWith: getArrivalTime, on: "event", persistWith: setArrivalTime)
 
 
-        func getDepartureTime(model: LeapModel) -> Any? {
-            let event = model as! Event
-            guard event.departureOffset != 0 else {
-                return event.endDate
-            }
-            return Date(timeIntervalSinceReferenceDate: TimeInterval(event.endTime + event.departureOffset))
-        }
+        func getDepartureTime(model: LeapModel) -> Any? { return (model as! Event).departureDate }
         func setDepartureTime(model: LeapModel, value: Any?) {
             let event = model as! Event
             guard let departureTime = value as? Date else { return }

@@ -25,6 +25,8 @@ class Template: LeapModel, Originating, Particible, Alarmable, CalendarLinkable 
     dynamic var seriesId: String?
     dynamic var reminderTypeString: String?
     dynamic var event: Event?
+    dynamic var arrivalOffset: Int = 0
+    dynamic var departureOffset: Int = 0
 
     let channels = List<Channel>()
 
@@ -36,6 +38,28 @@ class Template: LeapModel, Originating, Particible, Alarmable, CalendarLinkable 
         let copy = Template(value: self)
         copy.id = UUID().uuidString
         return copy
+    }
+
+    func arrivalDate(in range: TimeRange) -> Date? {
+        guard let start = startTime(in: range) else { return nil }
+        guard arrivalOffset != 0 else { return start }
+        return Date(timeIntervalSinceNow: TimeInterval(start.secondsSinceReferenceDate + arrivalOffset))
+    }
+
+    func departureDate(in range: TimeRange) -> Date? {
+        guard let start = startTime(in: range) else { return nil }
+        guard arrivalOffset != 0 else { return start }
+        return Date(timeIntervalSinceNow: TimeInterval(start.secondsSinceReferenceDate + arrivalOffset))
+    }
+
+    func setArrivalOffset(from arrival: Date, in range: TimeRange) {
+        guard let start = startTime(in: range), start != arrival else { return }
+        arrivalOffset = arrival.secondsSinceReferenceDate - start.secondsSinceReferenceDate
+    }
+
+    func setDepartureOffset(from departure: Date, in range: TimeRange) {
+        guard let end = endTime(in: range), end != departure else { return }
+        arrivalOffset = departure.secondsSinceReferenceDate - end.secondsSinceReferenceDate
     }
 
     var modality: EventModality {

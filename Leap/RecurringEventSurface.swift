@@ -179,8 +179,16 @@ class RecurringEventSurface: EventSurface {
 
         bridge.readonlyBind(surface.startTime) { ($0 as! Series).template.startTime(in: range) }
         bridge.readonlyBind(surface.endTime) { ($0 as! Series).template.endTime(in: range) }
-        bridge.readonlyBind(surface.arrivalTime) { ($0 as! Series).template.startTime(in: range) }
-        bridge.readonlyBind(surface.departureTime) { ($0 as! Series).template.endTime(in: range) }
+
+        bridge.bind(surface.arrivalTime,
+                    populateWith: { ($0 as! Series).template.arrivalDate(in: range) },
+                    on: "series",
+                    persistWith: { ($0 as! Series).template.setArrivalOffset(from: ($1 as! Date), in: range) })
+        bridge.bind(surface.departureTime,
+                    populateWith: { ($0 as! Series).template.departureDate(in: range) },
+                    on: "series",
+                    persistWith: { ($0 as! Series).template.setDepartureOffset(from: ($1 as! Date), in: range) })
+
         bridge.readonlyBind(surface.userIsInvited) { (model:LeapModel) in
             guard let series = model as? Series, let me = series.template.participants.me else {
                 return false
