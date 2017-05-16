@@ -87,7 +87,7 @@ extension EKEvent {
         }
     }
 
-    var rule: EKRecurrenceRule? { return self.recurrenceRules?[0] }
+    var rule: EKRecurrenceRule? { return self.hasRecurrenceRules ? self.recurrenceRules?[0] : nil }
 
     var cleanId: String {
         var id = self.eventIdentifier
@@ -269,7 +269,8 @@ extension EKEvent {
     }
 
     func asRecurrence() -> Recurrence {
-        return Recurrence(value: ["count": Calendar.current.daysBetween(startDate, and: endDate)])
+        return Recurrence(value: ["frequencyRaw": Frequency.daily.rawValue,
+                                  "count": Calendar.current.daysBetween(startDate, and: endDate)])
     }
 
     func isDetachedForm(of series: Series) -> Bool {
