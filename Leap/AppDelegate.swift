@@ -120,6 +120,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UISegmentedControl.appearance().setTitleTextAttributes(attributes, for: .normal)
 
         self.window?.tintColor = UIColor.projectTint
+
+        UITabBar.appearance().barTintColor = UIColor.projectTint
+        UITabBar.appearance().tintColor = UIColor.white
+        UITabBar.appearance().unselectedItemTintColor = UIColor.projectLightPink
+        UINavigationBar.appearance().barTintColor = UIColor.white
     }
 
     // MARK: - Core Data stack

@@ -49,7 +49,7 @@ class WeekOverviewViewController: UIViewController, StoryboardLoadable {
 
             switch day.happensIn {
             case .current:
-                dayView.labelColor = UIColor.projectPurple
+                dayView.labelColor = UIColor.projectTint
                 dayView.isBold = true
             case .future:
                 dayView.labelColor = UIColor.projectDarkerGray

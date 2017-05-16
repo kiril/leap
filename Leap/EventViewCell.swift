@@ -87,6 +87,9 @@ class EventViewCell: UICollectionViewCell {
         background.layer.borderWidth = 1.0
     }
 
+
+    private let cornerRadius: CGFloat = 3.0
+
     private func updateShadow() {
         let shadowPath = UIBezierPath(rect: bounds)
         layer.masksToBounds = false;
@@ -95,6 +98,12 @@ class EventViewCell: UICollectionViewCell {
         layer.shadowPath = shadowPath.cgPath
         layer.shadowOpacity = displayShadow ? 0.1 : 0
         layer.shadowRadius = 2
+        layer.cornerRadius = cornerRadius
+    }
+
+    private func setupCorners() {
+        background.layer.cornerRadius = cornerRadius
+        background.layer.masksToBounds = true
     }
 
     var elapsedTimeIndicatorHidden = true {
@@ -122,6 +131,7 @@ class EventViewCell: UICollectionViewCell {
         updateShadow()
         updateFonts()
         setupButtons()
+        setupCorners()
         updateElapsedTimeIndicator()
 
         self.contentView.translatesAutoresizingMaskIntoConstraints = false
@@ -289,14 +299,13 @@ class EventViewCell: UICollectionViewCell {
     }
 
     private func configureTimePerspective(with event: EventSurface) {
+        background.backgroundColor = UIColor.white
+        borderColor = UIColor.projectLightGray
+
         if event.isConfirmed.value {
-            background.backgroundColor = UIColor.white
-            borderColor = UIColor.projectLightGray
-            displayShadow = false
-        } else {
-            background.backgroundColor = UIColor.projectLightBackgroundGray
-            borderColor = UIColor.projectLightGray
             displayShadow = true
+        } else {
+            displayShadow = false
         }
 
         elapsedTimeIndicatorView.backgroundColor = UIColor.projectLightGray
@@ -315,10 +324,13 @@ class EventViewCell: UICollectionViewCell {
         switch event.userAttendancePerspective.value {
         case .past:
             contentView.alpha = 0.5
+            displayShadow = false
+
         case .current:
             contentView.alpha = 1.0
             if event.isConfirmed.value {
                 elapsedTimeIndicatorView.backgroundColor = UIColor.projectBlue
+                borderColor = UIColor.projectBlue
             }
         case .future:
             contentView.alpha = 1.0
@@ -350,7 +362,7 @@ class EventViewCell: UICollectionViewCell {
             case .no:
                 applyActionButtonFormat(to: noButton,
                                         color: UIColor.white,
-                                        backgroundColor: UIColor.projectRed)
+                                        backgroundColor: UIColor.projectDarkGray)
             case .maybe:
                 applyActionButtonFormat(to: maybeButton,
                                         color: UIColor.white,
@@ -360,7 +372,7 @@ class EventViewCell: UICollectionViewCell {
             }
         } else {
             applyActionButtonFormat(to: yesButton, color: UIColor.projectBlue)
-            applyActionButtonFormat(to: noButton, color: UIColor.projectRed)
+            applyActionButtonFormat(to: noButton, color: UIColor.projectDarkGray)
             applyActionButtonFormat(to: maybeButton, color: UIColor.projectPurple)
         }
 
