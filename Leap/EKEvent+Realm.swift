@@ -50,7 +50,7 @@ extension EKEvent {
             return .personal
 
         } else if let _ = me {
-            if attendees!.count > 1 {
+            if !attendees!.isEmpty {
                 return .invite
             } else {
                 return .personal
