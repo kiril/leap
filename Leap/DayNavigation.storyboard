@@ -49,7 +49,7 @@
             <objects>
                 <navigationController id="IAV-eP-8LO" sceneMemberID="viewController">
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="hfr-8P-UE7">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="hfr-8P-UE7">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -78,7 +78,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vjX-LE-elP">
-                                <rect key="frame" x="-24" y="510" width="423" height="44"/>
+                                <rect key="frame" x="16" y="510" width="343" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="8IV-A3-HzF"/>
                                 </constraints>
@@ -91,7 +91,7 @@
                             <constraint firstItem="ba6-3e-2LR" firstAttribute="leading" secondItem="w3e-Xu-ivr" secondAttribute="leading" id="353-VG-2h5"/>
                             <constraint firstItem="vjX-LE-elP" firstAttribute="centerX" secondItem="w3e-Xu-ivr" secondAttribute="centerX" id="8Mq-Wf-4oq"/>
                             <constraint firstItem="swg-YB-X1w" firstAttribute="top" secondItem="vjX-LE-elP" secondAttribute="bottom" constant="15" id="P50-MH-uzm"/>
-                            <constraint firstItem="vjX-LE-elP" firstAttribute="leading" secondItem="w3e-Xu-ivr" secondAttribute="leadingMargin" constant="-40" id="Sfx-pv-lHU"/>
+                            <constraint firstItem="vjX-LE-elP" firstAttribute="leading" secondItem="w3e-Xu-ivr" secondAttribute="leadingMargin" id="Sfx-pv-lHU"/>
                             <constraint firstItem="swg-YB-X1w" firstAttribute="top" secondItem="ba6-3e-2LR" secondAttribute="bottom" id="XcW-z0-vNw"/>
                             <constraint firstAttribute="trailing" secondItem="ba6-3e-2LR" secondAttribute="trailing" id="eYe-ev-hVB"/>
                             <constraint firstItem="ba6-3e-2LR" firstAttribute="top" secondItem="Akj-aX-bE6" secondAttribute="bottom" id="qiP-ee-Cqi"/>
