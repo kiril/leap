@@ -87,6 +87,9 @@ class EventKit {
                             print("reminder DUPLICATE of Series \(ekEvent.title)")
                             self.importSeries(ekEvent, in: calendar, given: series)
 
+                        } else if ekEvent.isMultidayReminder {
+                            self.importSeries(ekEvent, in: calendar)
+
                         } else {
                             let existing = Reminder.by(id: ekEvent.cleanId)
                             self.importOne(ekEvent, in: calendar, given: existing)
@@ -178,10 +181,13 @@ class EventKit {
             if existing.status == .archived && ekEvent.objectStatus == .active {
                 existing.status = .active
             }
+
             let origin = ekEvent.getOrigin(in: calendar)
-            let bestOrigin = existing.template.origin.winner(vs: origin)
-            if bestOrigin != existing.template.origin {
-                existing.template.origin = bestOrigin
+            let best = origin.winner(vs: existing.origin)
+            if origin != existing.origin {
+                var series = existing
+                series.updateToBestOrigin(with: best)
+                series.template.updateToBestOrigin(with: best)
             }
         }
 
@@ -260,6 +266,10 @@ class EventKit {
                 cleanUp(after: series)
             }
 
+        } else if ekEvent.isMultidayReminder {
+            let series = ekEvent.asSeries(in: calendar)
+            print("series INSERT spanning-reminder \(ekEvent.title) \(series.status)")
+            series.insert()
         }
     }
 }

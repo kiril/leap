@@ -27,7 +27,7 @@ enum Firmness: String {
 /**
  * Here's our core!
  */
-class Event: _TemporalBase, Temporality, CalendarLinkable, Alarmable, Fuzzy {
+class Event: _TemporalBase, Temporality, Originating, CalendarLinkable, Alarmable, Fuzzy {
     dynamic var startTime: Int = 0
     dynamic var endTime: Int = 0
     dynamic var modalityString: String = EventModality.unknown.rawValue

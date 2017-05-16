@@ -12,7 +12,7 @@ import RealmSwift
 let reminderQueue = DispatchQueue(label: "reminder.materialize")
 let eventQueue = DispatchQueue(label: "event.materialize")
 
-class Series: LeapModel, Fuzzy {
+class Series: LeapModel, Fuzzy, Originating {
     static let reminderCache = SwiftlyLRU<String,Reminder>(capacity: 100)
     static let eventCache = SwiftlyLRU<String,Event>(capacity: 100)
 

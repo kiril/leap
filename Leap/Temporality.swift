@@ -11,31 +11,6 @@ import RealmSwift
 import EventKit
 
 
-enum Origin: String {
-    case invite
-    case share
-    case subscription
-    case personal
-    case unknown
-
-    func winner(vs other: Origin) -> Origin {
-        switch self {
-        case .invite:
-            return self
-
-        default:
-            switch other {
-            case .invite:
-                return other
-
-            default:
-                return self
-            }
-        }
-    }
-}
-
-
 protocol Temporality: Particible {
     var id: String { get }
     var title: String { get }
@@ -124,11 +99,6 @@ class _TemporalBase: LeapModel {
     let linkedCalendarIds = List<StringWrapper>()
 
     var isRecurring: Bool { return seriesId != nil }
-
-    var origin: Origin {
-        get { return Origin(rawValue: originString)! }
-        set { originString = newValue.rawValue }
-    }
 
     var engagement: Engagement {
         get { return Engagement(rawValue: engagementString)! }

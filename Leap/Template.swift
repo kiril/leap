@@ -9,7 +9,7 @@
 import Foundation
 import RealmSwift
 
-class Template: LeapModel, Particible, Alarmable, CalendarLinkable {
+class Template: LeapModel, Originating, Particible, Alarmable, CalendarLinkable {
     dynamic var title: String = ""
     dynamic var detail: String?
     dynamic var locationString: String?
@@ -41,11 +41,6 @@ class Template: LeapModel, Particible, Alarmable, CalendarLinkable {
     var modality: EventModality {
         get { return EventModality(rawValue: modalityString)! }
         set { modalityString = newValue.rawValue }
-    }
-
-    var origin: Origin {
-        get { return Origin(rawValue: originString)! }
-        set { originString = newValue.rawValue }
     }
 
     var reminderType: ReminderType {
