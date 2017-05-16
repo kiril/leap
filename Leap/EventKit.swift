@@ -178,6 +178,11 @@ class EventKit {
             if existing.status == .archived && ekEvent.objectStatus == .active {
                 existing.status = .active
             }
+            let origin = ekEvent.getOrigin(in: calendar)
+            let bestOrigin = existing.template.origin.winner(vs: origin)
+            if bestOrigin != existing.template.origin {
+                existing.template.origin = bestOrigin
+            }
         }
 
         print("series UPDATE \(existing.type) \(ekEvent.title) \(existing.status)")

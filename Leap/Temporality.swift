@@ -22,10 +22,12 @@ enum Origin: String {
         switch self {
         case .invite:
             return self
+
         default:
             switch other {
             case .invite:
                 return other
+
             default:
                 return self
             }
