@@ -59,6 +59,15 @@ struct OpenTimeViewModel: Equatable {
         return TimeRange(start: start, end: end)
     }
 
+    static func computePerspective(fromEvent event: EventSurface) -> TimePerspective {
+        return TimePerspective.forPeriod(fromStart: event.startTime.value,
+                                         toEnd: event.endTime.value)
+    }
+
+    var perspective: TimePerspective {
+        return range?.timePerspective ?? .past
+    }
+
     var possibleEventIds = [String]()
 
     var possibleEventCount: Int {
