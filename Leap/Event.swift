@@ -59,11 +59,11 @@ class Event: _TemporalBase, Temporality, Originating, CalendarLinkable, Alarmabl
     var time: TimeInterval { return Double(startTime) }
 
     var arrivalDate: Date {
-        return arrivalOffset == 0 ? startDate : Date(timeIntervalSinceReferenceDate: TimeInterval(startTime+arrivaloffset))
+        return arrivalOffset == 0 ? startDate : Date(timeIntervalSinceReferenceDate: TimeInterval(startTime+arrivalOffset))
     }
 
     var departureDate: Date {
-        return arrivalOffset == 0 ? startDate : Date(timeIntervalSinceReferenceDate: TimeInterval(startTime+arrivaloffset))
+        return arrivalOffset == 0 ? startDate : Date(timeIntervalSinceReferenceDate: TimeInterval(startTime+arrivalOffset))
     }
 
     override static func indexedProperties() -> [String] {
