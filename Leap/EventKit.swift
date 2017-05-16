@@ -169,9 +169,6 @@ class EventKit {
     }
 
     func merge(_ ekEvent: EKEvent, into existing: Series, in calendar: EKCalendar) {
-        guard ekEvent.startDate < existing.startDate else {
-            return
-        }
 
         try! Realm.user().safeWrite {
             existing.updateStartTimeIfEarlier(ekEvent.startDate.secondsSinceReferenceDate)
