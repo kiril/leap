@@ -11,12 +11,13 @@ import RealmSwift
 
 class RecurringEventSurface: EventSurface {
 
-    var seriesRange: TimeRange?
+    var seriesId: String!
+    var seriesRange: TimeRange!
 
     override func hackyShowAsReminder() {
         let realm = Realm.user()
 
-        guard let series = Series.by(id: id) else { return }
+        guard let series = Series.by(id: seriesId) else { return }
 
         let reminderSeries = series.clone()
         reminderSeries.referencing = series
@@ -60,7 +61,7 @@ class RecurringEventSurface: EventSurface {
     }
 
     func detach() -> EventSurface? {
-        guard let series = Series.by(id: id), let event = series.event(in: seriesRange!) else { return nil }
+        guard let series = Series.by(id: id), let event = series.event(in: seriesRange) else { return nil }
         let realm = Realm.user()
         try! realm.safeWrite {
             realm.add(event)
@@ -154,6 +155,7 @@ class RecurringEventSurface: EventSurface {
     static func load(with series: Series, in range: TimeRange) -> EventSurface? {
         let surface = RecurringEventSurface(id: series.generateId(for: series.template.startTime(in: range)!))
         surface.seriesRange = range
+        surface.seriesId = series.id
         let bridge = SurfaceModelBridge(id: series.id, surface: surface)
 
         bridge.reference(series, as: "series")
@@ -189,7 +191,7 @@ class RecurringEventSurface: EventSurface {
                     populateWith: { (m:LeapModel) in EventResponse.from((m as! Series).engagement) },
                     on: "series",
                     persistWith: { ($0 as! Series).engagement = ($1 as! EventResponse).asEngagement() })
-        bridge.readonlyBind(surface.recurrenceDescription) { recurringDescription(series: ($0 as! Series), in: surface.seriesRange!) }
+        bridge.readonlyBind(surface.recurrenceDescription) { recurringDescription(series: ($0 as! Series), in: surface.seriesRange) }
 
         bridge.readonlyBind(surface.participants) { (m:LeapModel) -> [ParticipantSurface] in
             let series = m as! Series
