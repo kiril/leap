@@ -58,6 +58,14 @@ class Event: _TemporalBase, Temporality, Originating, CalendarLinkable, Alarmabl
     var endDate: Date { return Date(timeIntervalSinceReferenceDate: Double(endTime)) }
     var time: TimeInterval { return Double(startTime) }
 
+    var arrivalDate: Date {
+        return arrivalOffset == 0 ? startDate : Date(timeIntervalSinceReferenceDate: TimeInterval(startTime+arrivalOffset))
+    }
+
+    var departureDate: Date {
+        return departureOffset == 0 ? endDate : Date(timeIntervalSinceReferenceDate: TimeInterval(endTime+departureOffset))
+    }
+
     override static func indexedProperties() -> [String] {
         return ["venue", "room", "startTime", "endTime", "participants", "statusString", "hash"]
     }
