@@ -17,7 +17,7 @@ class RecurringEventSurface: EventSurface {
     override func hackyShowAsReminder() {
         let realm = Realm.user()
 
-        guard let series = Series.by(id: seriesId) else { return }
+        guard let series = getSeries() else { return }
 
         let reminderSeries = series.clone()
         reminderSeries.referencing = series
@@ -31,7 +31,7 @@ class RecurringEventSurface: EventSurface {
     }
 
     static func load(seriesId: String, in range: TimeRange) -> EventSurface? {
-        guard let series:Series = Series.by(id: seriesId) else { return nil }
+        guard let series = Series.by(id: seriesId) else { return nil }
         if let start = series.template.startTime(in: range),
             let concreteEvent = Event.by(id: series.generateId(for: start)) {
             return load(with: concreteEvent) as? EventSurface
@@ -61,13 +61,17 @@ class RecurringEventSurface: EventSurface {
     }
 
     func detach() -> EventSurface? {
-        guard let series = Series.by(id: id), let event = series.event(in: seriesRange) else { return nil }
+        guard let series = getSeries(), let event = series.event(in: seriesRange) else { return nil }
         let realm = Realm.user()
         try! realm.safeWrite {
             realm.add(event)
         }
         self.isShinyNew = false
         return EventSurface.load(with: event) as? EventSurface
+    }
+
+    func getSeries() -> Series? {
+        return Series.by(id: self.seriesId)
     }
 
     func recurringUpdateOptions(for verb: String, onComplete: @escaping (ResponseScope) -> Void) -> UIAlertController {
@@ -86,6 +90,11 @@ class RecurringEventSurface: EventSurface {
         alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { action in onComplete(.none) })
 
         return alert
+    }
+
+    func isSplitCompatible(with other: RecurringEventSurface) -> Bool {
+        guard let s1 = self.getSeries(), let s2 = other.getSeries() else { return false }
+        return s1.coRecurs(with: s2, after: seriesRange.start)
     }
 
     static func recurringDescription(series: Series, in range: TimeRange) -> String? {

@@ -176,47 +176,60 @@ extension DayScheduleViewController: EventViewCellDelegate {
         alert.addAction(UIAlertAction(title: "Split time between events", style: .default) {
             action in
 
-            if let recurring = event as? RecurringEventSurface, other is RecurringEventSurface {
+            if let r1 = event as? RecurringEventSurface, let r2 = other as? RecurringEventSurface {
+                let canSplitSeries = r1.isSplitCompatible(with: r2)
+
                 switch overlap {
                 case .identical:
-                    let alert = recurring.recurringUpdateOptions(for: "Split time") { scope in
-                        switch scope {
-                        case .series:
-                            finish(by: .splitEvenly, detaching: false)
-
-                        case .event:
-                            finish(by: .splitEvenly, detaching: true)
-
-                        case .none:
-                            return // canceled
-                        }
-                    }
-
-                    self.present(alert, animated: true)
-
-                default:
-                    self.presentSplitOptions(for: event, and: other) { resolution in
-                        let alert = recurring.recurringUpdateOptions(for: "Split time") { scope in
+                    if canSplitSeries {
+                        let alert = r1.recurringUpdateOptions(for: "Split time") { scope in
                             switch scope {
                             case .series:
-                                finish(by: resolution, detaching: false)
+                                finish(by: .splitEvenly, detaching: false)
 
                             case .event:
-                                finish(by: resolution, detaching: true)
+                                finish(by: .splitEvenly, detaching: true)
 
                             case .none:
-                                return //canceled
+                                return // canceled
                             }
                         }
 
                         self.present(alert, animated: true)
+
+                    } else {
+                        finish(by: .splitEvenly, detaching: true)
+                    }
+
+
+                default:
+                    self.presentSplitOptions(for: event, and: other) { resolution in
+                        if canSplitSeries {
+                            let alert = r1.recurringUpdateOptions(for: "Split time") { scope in
+                                switch scope {
+                                case .series:
+                                    finish(by: resolution, detaching: false)
+
+                                case .event:
+                                    finish(by: resolution, detaching: true)
+
+                                case .none:
+                                    return //canceled
+                                }
+                            }
+
+                            self.present(alert, animated: true)
+
+                        } else {
+                            finish(by: resolution, detaching: true)
+                        }
                     }
                 }
 
             } else {
 
                 switch overlap {
-                case .identical: // there are no other option
+                case .identical: // there are no other options
                     finish(by: .splitEvenly, detaching: true)
 
                 default:

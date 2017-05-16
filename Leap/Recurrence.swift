@@ -90,6 +90,18 @@ class Recurrence: LeapModel {
         set { frequencyRaw = newValue.rawValue }
     }
 
+    func coRecurs(with other: Recurrence) -> Bool {
+        guard frequency == other.frequency else { return false }
+        guard interval == other.interval else { return false }
+        guard daysOfWeek == other.daysOfWeek else { return false }
+        guard daysOfMonth == other.daysOfMonth else { return false }
+        guard weeksOfYear == other.weeksOfYear else { return false }
+        guard monthsOfYear == other.monthsOfYear else { return false }
+        guard setPositions == other.setPositions else { return false }
+
+        return true // well, ok then! :)
+    }
+
     public static func every(_ frequency: Frequency, at minute: Int = 0, past hour: Int = 0, max count: Int = 0, interval: Int = 0, on dayOfMonth: Int = 0) -> Recurrence {
         let data: ModelInitData = ["startHour": hour,
                                    "startMinute": minute,

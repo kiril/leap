@@ -213,6 +213,14 @@ class Series: LeapModel, Fuzzy, Originating {
         }
     }
 
+    func coRecurs(with other: Series, after start: Date) -> Bool {
+        guard endTime == other.endTime else { return false }
+        ensureLastRecurrenceDayCalculated()
+        other.ensureLastRecurrenceDayCalculated()
+        guard lastRecurrenceDay == other.lastRecurrenceDay else { return false }
+        return recurrence.coRecurs(with: other.recurrence)
+    }
+
     func recurs(on date: Date, ignoreActiveRange: Bool = false) -> Bool {
         let startOfDay = Calendar.current.startOfDay(for: date)
         let endOfDay = Calendar.current.dayAfter(startOfDay)
@@ -229,6 +237,13 @@ class Series: LeapModel, Fuzzy, Originating {
         return recursBetween(range.start, and: range.end)
     }
 
+
+    func ensureLastRecurrenceDayCalculated() {
+        if recurrence!.count > 0 && lastRecurrenceDay == nil {
+            calculateLastRecurrenceDay()
+        }
+    }
+
     /**
      * Note: The general usage should be:
      *   if series.recursBetween(...), let tm = series.stub(on: date) {
@@ -236,9 +251,7 @@ class Series: LeapModel, Fuzzy, Originating {
      *   }
      */
     func recursBetween(_ startDate: Date, and endDate: Date) -> Bool {
-        if recurrence!.count > 0 && lastRecurrenceDay == nil {
-            calculateLastRecurrenceDay()
-        }
+        ensureLastRecurrenceDayCalculated()
         guard startTime <= endDate.secondsSinceReferenceDate &&
             (endTime == 0 || endTime > startDate.secondsSinceReferenceDate) else {
             return false
