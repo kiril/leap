@@ -43,13 +43,13 @@ class Template: LeapModel, Originating, Particible, Alarmable, CalendarLinkable 
     func arrivalDate(in range: TimeRange) -> Date? {
         guard let start = startTime(in: range) else { return nil }
         guard arrivalOffset != 0 else { return start }
-        return Date(timeIntervalSinceNow: TimeInterval(start.secondsSinceReferenceDate + arrivalOffset))
+        return Date(timeIntervalSinceReferenceDate: TimeInterval(start.secondsSinceReferenceDate + arrivalOffset))
     }
 
     func departureDate(in range: TimeRange) -> Date? {
         guard let end = endTime(in: range) else { return nil }
         guard departureOffset != 0 else { return end }
-        return Date(timeIntervalSinceNow: TimeInterval(end.secondsSinceReferenceDate + departureOffset))
+        return Date(timeIntervalSinceReferenceDate: TimeInterval(end.secondsSinceReferenceDate + departureOffset))
     }
 
     func setArrivalOffset(from arrival: Date, in range: TimeRange) {

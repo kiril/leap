@@ -204,24 +204,30 @@ extension DayScheduleViewController: EventViewCellDelegate {
 
                 default:
                     self.presentSplitOptions(for: event, and: other) { resolution in
-                        if canSplitSeries {
-                            let alert = r1.recurringUpdateOptions(for: "Split time") { scope in
-                                switch scope {
-                                case .series:
-                                    finish(by: resolution, detaching: false)
+                        switch resolution {
+                        case .none:
+                            break // cancel
 
-                                case .event:
-                                    finish(by: resolution, detaching: true)
+                        default:
+                            if canSplitSeries {
+                                let alert = r1.recurringUpdateOptions(for: "Split time") { scope in
+                                    switch scope {
+                                    case .series:
+                                        finish(by: resolution, detaching: false)
 
-                                case .none:
-                                    return //canceled
+                                    case .event:
+                                        finish(by: resolution, detaching: true)
+
+                                    case .none:
+                                        return //canceled
+                                    }
                                 }
+
+                                self.present(alert, animated: true)
+
+                            } else {
+                                finish(by: resolution, detaching: true)
                             }
-
-                            self.present(alert, animated: true)
-
-                        } else {
-                            finish(by: resolution, detaching: true)
                         }
                     }
                 }

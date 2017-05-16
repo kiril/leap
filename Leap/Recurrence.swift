@@ -93,11 +93,11 @@ class Recurrence: LeapModel {
     func coRecurs(with other: Recurrence) -> Bool {
         guard frequency == other.frequency else { return false }
         guard interval == other.interval else { return false }
-        guard daysOfWeek == other.daysOfWeek else { return false }
-        guard daysOfMonth == other.daysOfMonth else { return false }
-        guard weeksOfYear == other.weeksOfYear else { return false }
-        guard monthsOfYear == other.monthsOfYear else { return false }
-        guard setPositions == other.setPositions else { return false }
+        guard daysOfWeek.hasEqualContents(to: other.daysOfWeek) else { return false }
+        guard daysOfMonth.hasEqualContents(to: other.daysOfMonth) else { return false }
+        guard weeksOfYear.hasEqualContents(to: other.weeksOfYear) else { return false }
+        guard monthsOfYear.hasEqualContents(to: other.monthsOfYear) else { return false }
+        guard setPositions.hasEqualContents(to: other.setPositions) else { return false }
 
         return true // well, ok then! :)
     }
