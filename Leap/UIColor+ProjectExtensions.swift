@@ -76,9 +76,25 @@ extension UIColor {
     }
 
     public static var projectTint: UIColor {
+        return projectPink
+    }
+
+    public static var projectPink: UIColor {
         return UIColor(r: 235,
                        g: 68,
                        b: 90)
+    }
+
+    public static var projectLightPink: UIColor {
+        return UIColor(r: 255,
+                       g: 205,
+                       b: 219)
+    }
+
+    public static var projectLightestPink: UIColor {
+        return UIColor(r: 253,
+                       g: 249,
+                       b: 249)
     }
 
     public static var projectOrange: UIColor {

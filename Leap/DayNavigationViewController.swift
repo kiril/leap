@@ -83,6 +83,10 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
             barButtonItemFor(navView: arrowView),
             barButtonItemFor(navView: titleView)
         ]
+
+        let addEvent = UIBarButtonItem(title: "Add Event", style: .done, target: nil, action: nil)
+
+        navigationItem.rightBarButtonItem = addEvent
     }
 
     private func setupHiddenEventsButton() {
@@ -95,8 +99,8 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
         hiddenEventsButton.insertSubview(blur, at: 0)
         hiddenEventsButton.layer.cornerRadius = cornerRadius
         hiddenEventsButton.layer.masksToBounds = true
-        hiddenEventsButton.layer.borderColor = UIColor.projectPurple.cgColor
-        hiddenEventsButton.layer.borderWidth = 0.5
+        hiddenEventsButton.layer.borderColor = UIColor.projectLightPink.cgColor
+        hiddenEventsButton.layer.borderWidth = 1
         hiddenEventsButton.addTarget(self,
                                      action: #selector(toggleHideEvents),
                                      for: .touchUpInside)
