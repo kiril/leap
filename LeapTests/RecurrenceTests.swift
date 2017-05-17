@@ -264,5 +264,8 @@ class RecurrenceTests: XCTestCase {
         series.template = Template.of("Weekend Event", at: 0, past: 18, lasting: 1200)
 
         XCTAssertTrue(series.recurs(on: lastFriday))
+
+        let nextFriday = Calendar.current.theNext(.friday, after: lastFriday)
+        XCTAssertFalse(series.recurs(on: nextFriday))
     }
 }
