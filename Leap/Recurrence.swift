@@ -102,17 +102,12 @@ class Recurrence: LeapModel {
         return true // well, ok then! :)
     }
 
-    public static func every(_ frequency: Frequency, max count: Int = 0, by interval: Int = 0, on weekday: Weekday? = nil, the day: Int? = nil) -> Recurrence {
-        var data: ModelInitData = ["frequencyRaw": frequency.rawValue,
-                                   "count": count,
-                                   "interval": interval]
-        if let weekday = weekday {
-            data["daysOfWeek"] = List<IntWrapper>([IntWrapper.of(weekday.gregorianIndex)])
+    func lastRecurringDate(before date: Date) -> Date? {
+        return nil
+    }
 
-        } else if let day = day {
-            data["daysOfMonth"] = List<IntWrapper>([IntWrapper.of(day)])
-        }
-        return Recurrence(value: data)
+    func nextRecurringDate(after date: Date) -> Date? {
+        return nil
     }
 
     func dayOfWeekMatches(for date: Date) -> Bool {
@@ -320,5 +315,18 @@ class Recurrence: LeapModel {
         case .unknown:
             return false
         }
+    }
+
+    public static func every(_ frequency: Frequency, max count: Int = 0, by interval: Int = 0, on weekday: Weekday? = nil, the day: Int? = nil) -> Recurrence {
+        var data: ModelInitData = ["frequencyRaw": frequency.rawValue,
+                                   "count": count,
+                                   "interval": interval]
+        if let weekday = weekday {
+            data["daysOfWeek"] = List<IntWrapper>([IntWrapper.of(weekday.gregorianIndex)])
+
+        } else if let day = day {
+            data["daysOfMonth"] = List<IntWrapper>([IntWrapper.of(day)])
+        }
+        return Recurrence(value: data)
     }
 }

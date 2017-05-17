@@ -248,11 +248,54 @@ class EventKit {
         }
     }
 
+    func eventExists(withId id: String, in calendar: EKCalendar, during range: TimeRange) -> Bool {
+    }
+
+    func findOriginalDate(in series: Series, for event: EKEvent) -> Date? {
+        var earlier: Date?
+        var later: Date?
+
+        if let before = series.lastRecurringDate(before: event.startDate),
+            eventExists(withId: series.id, in: event.calendar, during: TimeRange.day(of: before)) {
+            earlier = before
+        }
+        if let after = series.nextRecurringDate(after: event.startDate),
+            eventExists(withId: series.id, in: event.calendar, during: TimeRange.day(of: after)) {
+            later = after
+        }
+
+        if let earlier = earlier, later == nil {
+            return earlier
+
+        } else if let later = later, earlier == nil {
+            return later
+
+        } else if let later = later, let earlier = earlier {
+            let laterDays = Calendar.current.daysBetween(event.startDate, and: later)
+            let earlierDays = Calendar.current.daysBetween(earlier, and: event.startDate)
+            if laterDays < earlierDays {
+                return later
+            } else if earlierDays < laterDays {
+                return earlier
+            }
+        }
+
+        return nil
+    }
+
+    func findDetachedIdentifier(in series: Series, near date: Date) -> String? {
+        guard let originalDate = findOriginalDate(in: series, near: date) else { return nil }
+        return series.generateId(for: originalDate)
+    }
+
     func importSeries(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: Series? = nil) {
 
         if let series = existing {
             if ekEvent.isDetachedForm(of: series) {
-                let id = series.generateId(in: TimeRange.day(of: ekEvent.startDate))!
+                guard let id = series.generateId(forDayOf: ekEvent.startDate) ?? findDetachedIdentifier(in: series, near: ekEvent.startDate) else {
+                    print("series BROKEN detached/can't figure out where from \(ekEvent.title)")
+                    return
+                }
 
                 switch ekEvent.type {
                 case .event:
