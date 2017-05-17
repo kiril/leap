@@ -46,9 +46,9 @@ class DayScheduleViewController: UIViewController, StoryboardLoadable {
 
         collectionView!.collectionViewLayout = layout
         collectionView!.contentInset = UIEdgeInsets(top:    15.0,
-                                                    left:   5.0,
+                                                    left:   10.0,
                                                     bottom: 75.0,
-                                                    right:  5.0)
+                                                    right:  10.0)
 
         collectionView!.alwaysBounceVertical = true
     }
@@ -315,6 +315,13 @@ extension DayScheduleViewController: OpenTimeSectionControllerDelegate {
         // will do the latter when Recurring vs. one-time events are both fetchable by id.
         guard let event = openTimeSection.openTime.event(forId: eventId) else { return }
         presentEvent(event: event)
+    }
+
+    func openTimeNeedsUpdate(openTime: OpenTimeViewModel, on openTimeSection: OpenTimeSectionController) {
+        DispatchQueue.main.async { [unowned self] in
+            openTime.needsRefresh = true
+            self.collectionAdapter.performUpdates(animated: true, completion: nil)
+        }
     }
 }
 

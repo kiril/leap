@@ -11,6 +11,7 @@ import IGListKit
 
 protocol OpenTimeSectionControllerDelegate: class {
     func didTapEvent(eventId: String, on openTimeSection: OpenTimeSectionController)
+    func openTimeNeedsUpdate(openTime: OpenTimeViewModel, on openTimeSection: OpenTimeSectionController)
 }
 
 class OpenTimeSectionController: IGListSectionController, IGListSectionType {
@@ -68,6 +69,7 @@ class OpenTimeSectionController: IGListSectionController, IGListSectionType {
                                                               for: self,
                                                               at: index) as! OpenTimeViewCell
             cell.configure(with: openTime)
+            cell.delegate = self
             configureCellWidth(cell)
             return cell
         } else {
@@ -111,3 +113,8 @@ class OpenTimeSectionController: IGListSectionController, IGListSectionType {
     }
 }
 
+extension OpenTimeSectionController: OpenTimeViewCellDelegate {
+    func updatedTimePerspective(on cell: OpenTimeViewCell, for openTime: OpenTimeViewModel) {
+        delegate?.openTimeNeedsUpdate(openTime: openTime, on: self)
+    }
+}

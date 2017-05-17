@@ -18,9 +18,8 @@ protocol EventViewCellDelegate: class {
 class EventViewCell: UICollectionViewCell {
 
     // elapsed time
-    @IBOutlet weak var elapsedTimeIndicatorView: UIView!
+    @IBOutlet weak var elapsedTimeIndicatorView: TimeProgressView!
     @IBOutlet weak var elapsedTimeHeightConstraint: NSLayoutConstraint!
-    private weak var elapsedTimeWidthConstraint: NSLayoutConstraint?
 
     // time info
     @IBOutlet weak var background: UIView!
@@ -65,6 +64,10 @@ class EventViewCell: UICollectionViewCell {
 
     weak var delegate: EventViewCellDelegate?
 
+    var timePerspectiveUpdatesEnabled = true {
+        didSet { setupCurrentEventUpdates() }
+    }
+
     var borderColor: UIColor = UIColor.black {
         didSet { updateBorderColor() }
     }
@@ -73,7 +76,7 @@ class EventViewCell: UICollectionViewCell {
         didSet { updateShadow() }
     }
 
-    private var event: EventSurface? {
+    fileprivate var event: EventSurface? {
         didSet {
             event?.register(observer: self)
             setupButtons()
@@ -117,13 +120,12 @@ class EventViewCell: UICollectionViewCell {
     private func updateElapsedTimeIndicator() {
         elapsedTimeIndicatorView.isHidden = elapsedTimeIndicatorHidden
         elapsedTimeHeightConstraint.constant = elapsedTimeIndicatorHidden ? 0.0 : 7.0
-        elapsedTimeWidthConstraint?.isActive = false
 
-        let elapsedTimePercent = max(0.0, min(1.0, self.elapsedTimePercent))
-        elapsedTimeWidthConstraint = elapsedTimeIndicatorView.widthAnchor.constraint(equalTo: self.widthAnchor,
-                                                                                     multiplier: elapsedTimePercent,
-                                                                                     constant: 0)
-        elapsedTimeWidthConstraint?.isActive = true
+
+
+        elapsedTimeIndicatorView.setProgress(progress: self.elapsedTimePercent,
+                                             withEdgeBuffer: 0.02)
+
     }
 
     private func setup() {
@@ -295,10 +297,10 @@ class EventViewCell: UICollectionViewCell {
         configureTimePerspective(with: event)
         configureIcons(with: event)
         updateActionButtons(forEvent: event)
-        ensureCurrentEventUpdates()
+        setupCurrentEventUpdates()
     }
 
-    private func configureTimePerspective(with event: EventSurface) {
+    fileprivate func configureTimePerspective(with event: EventSurface) {
         background.backgroundColor = UIColor.white
         borderColor = UIColor.projectLightGray
 
@@ -308,7 +310,6 @@ class EventViewCell: UICollectionViewCell {
             displayShadow = false
         }
 
-        elapsedTimeIndicatorView.backgroundColor = UIColor.projectLightGray
 
         switch event.perspective.value {
         case .past:
@@ -325,15 +326,20 @@ class EventViewCell: UICollectionViewCell {
         case .past:
             contentView.alpha = 0.5
             displayShadow = false
+            elapsedTimeIndicatorView.progressColor = UIColor.projectLightGray
 
         case .current:
             contentView.alpha = 1.0
             if event.isConfirmed.value {
-                elapsedTimeIndicatorView.backgroundColor = UIColor.projectBlue
+                elapsedTimeIndicatorView.progressColor = UIColor.projectBlue
+
                 borderColor = UIColor.projectBlue
+            } else {
+                elapsedTimeIndicatorView.progressColor = UIColor.projectLightGray
             }
         case .future:
             contentView.alpha = 1.0
+            elapsedTimeIndicatorView.progressColor = UIColor.projectLightGray
         }
 
     }
@@ -397,62 +403,35 @@ class EventViewCell: UICollectionViewCell {
         updateShadow()
     }
 
-    private var currentEventTimer: Timer?
-    private var lastPerspective: TimePerspective!
+    private var timeObserver: TimeRangeObserver?
 
-    private func ensureCurrentEventUpdates() {
-        // this should be called once per event configuration
-        guard let   perspective = event?.perspective.value,
-                    perspective != .past else {
-                        cancelCurrentEventTimer()
-                        return
+    private func setupCurrentEventUpdates() {
+        guard   let event = event,
+                let range = event.range else { return }
+
+        guard timePerspectiveUpdatesEnabled else {
+            timeObserver = nil
+            return
         }
 
-        lastPerspective = perspective
+        timeObserver = TimeRangeObserver(range: range)
+        timeObserver?.delegate = self
+    }
+}
 
-        setupCurrentDisplayTimer()
+extension EventViewCell: TimeRangeObserverDelegate {
+    func didObserveTimePerspectiveChange(on observer: TimeRangeObserver) {
+        guard let event = event else { return }
+        self.delegate?.updatedTimePerspective(on: self, for: event)
     }
 
-    private func nextRoundMinute() -> Date {
-        let calendar = Calendar.current
-        let now = Date()
-        var components = calendar.dateComponents([.era,.year,.month,.day,.hour,.minute], from: now)
-        components.setValue(components.minute! + 1, for: .minute)
-        return calendar.date(from: components)!
-    }
-
-    private func setupCurrentDisplayTimer() {
-        guard currentEventTimer == nil else { return }
-
-        currentEventTimer = Timer(fire: nextRoundMinute(), interval: 60, repeats: true) { [weak self] timer in
-            guard   let _self = self,
-                    let event = _self.event else {
-                    timer.invalidate()
-                    return
-            }
-
-            if _self.lastPerspective != event.perspective.value {
-                _self.delegate?.updatedTimePerspective(on: _self,
-                                                       for: event)
-            } else if event.perspective.value == .current {
-
-                UIView.animate(withDuration: 0.2) {
-                    _self.configureTimePerspective(with: event)
-                    _self.setNeedsLayout()
-                    _self.layoutIfNeeded()
-                }
-            }
-
-            _self.ensureCurrentEventUpdates()
+    func didObserveMinuteChangeWhenCurrent(on observer: TimeRangeObserver) {
+        guard let event = event else { return }
+        UIView.animate(withDuration: 0.2) { [weak self] in
+            self?.configureTimePerspective(with: event)
+            self?.setNeedsLayout()
+            self?.layoutIfNeeded()
         }
-
-        let runLoop = RunLoop.current
-        runLoop.add(currentEventTimer!, forMode: .defaultRunLoopMode)
-    }
-
-    private func cancelCurrentEventTimer() {
-        currentEventTimer?.invalidate()
-        currentEventTimer = nil
     }
 }
 

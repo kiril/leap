@@ -120,6 +120,9 @@ class ScheduleEntryWrapper: IGListDiffable {
                             a.isShinyNew && b.isShinyNew
             return isEqual
         case let (.openTime(a), .openTime(b)):
+            if a.needsRefresh || b.needsRefresh {
+                return false
+            }
             return  (a.timeRange == b.timeRange) &&
                     (a.possibleEventIds == b.possibleEventIds) &&
                     (a.possibleEvents == b.possibleEvents) // will this trigger every time?

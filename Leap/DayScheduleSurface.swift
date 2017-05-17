@@ -178,7 +178,9 @@ class DayScheduleSurface: Surface {
         var openTimeEntries = [ScheduleEntry]()
         let sortedPossibleEvents = possibleEvents.sorted()
         for openRange in openTimeRanges {
-            var openTime = OpenTimeViewModel(startTime: openRange.start, endTime: openRange.end)
+
+            let openTime = self.openTime(forRange: openRange)
+
             for possibleEvent in sortedPossibleEvents {
                 guard let eventRange = possibleEvent.range else { continue }
 
@@ -196,6 +198,20 @@ class DayScheduleSurface: Surface {
         theEntries.sort()
 
         return theEntries
+    }
+
+    private var openTimeCache = Set<OpenTimeViewModel>()
+    private func openTime(forRange range: TimeRange) -> OpenTimeViewModel {
+        var openTime = OpenTimeViewModel(startTime: range.start, endTime: range.end)
+
+        if let existingOpenTime = openTimeCache.first(where: { $0.hashValue == openTime.hashValue }) {
+            existingOpenTime.possibleEventIds = [String]()
+            openTime = existingOpenTime
+        } else {
+            openTimeCache.insert(openTime)
+        }
+
+        return openTime
     }
 
     enum DayBusynessSection { case day, evening }
