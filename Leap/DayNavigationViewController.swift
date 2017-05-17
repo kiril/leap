@@ -143,9 +143,10 @@ class DayNavigationViewController: UIViewController, StoryboardLoadable {
 
     func navigateToDay(dayId: String?) {
         guard   let currentId = currentlySelectedDay?.intId,
-            let dayId = dayId,
-            dayId != String(currentId) else {
-                return
+                let dayId = dayId,
+                dayId != String(currentId) else {
+                    currentlySelectedDayScheduleVC?.scrollToCurrentTime(animated: true)
+                    return
         }
 
         let direction: UIPageViewControllerNavigationDirection = (Int(dayId)! > currentId) ? .forward : .reverse

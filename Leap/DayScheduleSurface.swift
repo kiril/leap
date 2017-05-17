@@ -169,6 +169,22 @@ class DayScheduleSurface: Surface {
                          end: rangeEnd)
     }
 
+    func latestScheduleEntry() -> ScheduleEntry? {
+        for entry in entries {
+            switch entry {
+            case let .event(event):
+                if event.userAttendancePerspective.value != .past {
+                    return entry
+                }
+            case let .openTime(openTime):
+                if openTime.perspective != .past {
+                    return entry
+                }
+            }
+        }
+        return nil
+    }
+
     private func scheduleEntries(displayedEvents: [EventSurface],
                                  possibleEvents: [EventSurface] = [EventSurface]()) -> [ScheduleEntry] {
         let openTimeRanges = displayedEvents.openTimes(in: fullScheduleRange).filter { (timeRange) -> Bool in
