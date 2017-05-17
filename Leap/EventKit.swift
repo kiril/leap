@@ -19,26 +19,39 @@ class EventKit {
         self.store = store
     }
 
+    func firstTime() -> Bool {
+        return Realm.user().objects(Event.self).isEmpty
+    }
+
+    private func doImport(from start: Date, to end: Date) {
+        store.calendars(for: EKEntityType.event).forEach { self.importEvents(in: $0, from: start, to: end) }
+        store.calendars(for: EKEntityType.reminder).forEach { self.importEvents(in: $0, from: start, to: end) }
+    }
+
+    func catchUp() {
+        let startOfDay = Calendar.current.startOfDay(for: Date())
+        let endOfDay = Calendar.current.dayAfter(startOfDay)
+        let aWeekOut = Calendar.current.adding(days: 7, to: endOfDay)
+        let aWeekBack = Calendar.current.subtracting(days: 7, from: startOfDay)
+
+        doImport(from: endOfDay, to: aWeekOut)
+        doImport(from: startOfDay, to: endOfDay)
+        doImport(from: aWeekBack, to: startOfDay)
+        doImport(from: aWeekOut, to: farOffFuture())
+    }
+
     func importAll() {
         let startOfDay = Calendar.current.startOfDay(for: Date())
         let endOfDay = Calendar.current.startOfDay(for: Calendar.current.dayAfter(startOfDay))
-        let aWeekAway = Calendar.current.date(byAdding: .day, value: 7, to: endOfDay)!
+        let aWeekOut = Calendar.current.adding(days: 7, to: endOfDay)
+        let aWeekBack = Calendar.current.subtracting(days: 7, from: startOfDay)
 
-        // some future first, because recurring events are annoying, and this stops some thrash
-        store.calendars(for: EKEntityType.event).forEach { self.importEvents(in: $0, from: endOfDay, to: aWeekAway) }
-        store.calendars(for: EKEntityType.reminder).forEach { self.importEvents(in: $0, from: endOfDay, to: aWeekAway) }
+        doImport(from: endOfDay, to: aWeekOut) // doing immediate future first helps stop recurring event thrash
+        doImport(from: startOfDay, to: endOfDay) // then we populate today quickly
+        doImport(from: aWeekBack, to: startOfDay) // then recent past
 
-        // get today's stuff flowing in fast
-        store.calendars(for: EKEntityType.event).forEach { self.importEvents(in: $0, from: startOfDay, to: endOfDay) }
-        store.calendars(for: EKEntityType.reminder).forEach { self.importEvents(in: $0, from: startOfDay, to: endOfDay) }
-
-        // future, because you're more likely to look there soon
-        store.calendars(for: EKEntityType.event).forEach { self.importEvents(in: $0, from: aWeekAway, to: farOffFuture()) }
-        store.calendars(for: EKEntityType.reminder).forEach { self.importEvents(in: $0, from: aWeekAway, to: farOffFuture()) }
-
-        // then get the past (which cleans up some stuff about event recurrence, too)
-        store.calendars(for: EKEntityType.event).forEach { self.importEvents(in: $0, from: longAgo(), to: startOfDay) }
-        store.calendars(for: EKEntityType.reminder).forEach { self.importEvents(in: $0, from: longAgo(), to: startOfDay) }
+        doImport(from: aWeekOut, to: farOffFuture()) // the rest
+        doImport(from: longAgo(), to: startOfDay) // of time (as we know it)
     }
 
     // max sync distance is 4 years

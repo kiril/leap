@@ -154,7 +154,6 @@ class Recurrence: LeapModel {
         let week = calendar.component(.weekOfYear, from: date)
 
         if !dayOfWeekMatches(for: date) {
-            print("wrong day of week")
             return false
         }
 
@@ -185,13 +184,8 @@ class Recurrence: LeapModel {
             return true
 
         case .weekly:
-            let weeksSinceStart = calendar.weeksBetween(series.startDate, and: date)
-            if interval != 0 {
-                print("interval = \(interval), weeks = \(weeksSinceStart) given \(series.startDate) and \(date)8")
-                if weeksSinceStart % interval != 0 {
-                    print("fail: \(weeksSinceStart) % \(interval) = \(weeksSinceStart % interval), not 0")
-                    return false
-                }
+            if interval != 0 && calendar.weeksBetween(series.startDate, and: date) % interval != 0 {
+                return false
             }
             return true
 
