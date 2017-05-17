@@ -35,6 +35,10 @@ class DayScheduleViewController: UIViewController, StoryboardLoadable {
         setupCollectionView()
         view.backgroundColor = UIColor.projectLightestPink
         collectionView.backgroundColor = UIColor.clear
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(refreshForNewAppearance),
+                                               name: .UIApplicationDidBecomeActive,
+                                               object: nil)
     }
 
     private func setupCollectionView() {
@@ -53,15 +57,49 @@ class DayScheduleViewController: UIViewController, StoryboardLoadable {
         collectionView!.alwaysBounceVertical = true
     }
 
-    var isCurrentlyAppeared = false
+    fileprivate var isCurrentlyAppeared = false
+    fileprivate var pushedToEventDetail = false
 
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         isCurrentlyAppeared = true
-        collectionAdapter.performUpdates(animated: animated, completion: nil)
+        refreshForNewAppearance(animated: animated)
+        pushedToEventDetail = false
+    }
+
+    @objc private func refreshForNewAppearance(animated: Bool = true) {
+        let justPoppedEventDetail = self.pushedToEventDetail
+
+        collectionAdapter.performUpdates(animated: animated, completion: { [weak self] _ in
+            guard let _self = self else { return }
+
+            if _self.surface.day.isToday, _self.collectionView.contentSize.height > _self.collectionView.bounds.size.height {
+                // Do not want to automatically scroll down if you just came back from viewing / editing
+                // an event
+                if !justPoppedEventDetail {
+                    _self.scrollToCurrentTime(animated: animated)
+                }
+            }
+        })
     }
 
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         isCurrentlyAppeared = false
+    }
+
+    @objc func scrollToCurrentTime(animated: Bool) {
+        if  let latest = surface?.latestScheduleEntry() {
+            let wrappedLatest = ScheduleEntryWrapper(scheduleEntry: latest)
+
+            let section = collectionAdapter.section(for: wrappedLatest)
+            let indexPath = IndexPath(row: 0, section: section)
+            collectionView.scrollToItem(at: indexPath, at: .centeredVertically, animated: animated)
+        }
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
@@ -281,6 +319,7 @@ extension DayScheduleViewController: EventViewCellDelegate {
         let eventViewController = EventDetailViewController()
         eventViewController.event = event
         eventViewController.entries = self.surface.entries
+        pushedToEventDetail = true
         self.navigationController?.pushViewController(eventViewController, animated: true)
     }
 
