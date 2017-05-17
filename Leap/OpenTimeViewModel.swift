@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct OpenTimeViewModel: Equatable {
+class OpenTimeViewModel: Equatable {
     let startTime: Date?
     let endTime: Date?
     var durationSeconds: Int {
@@ -20,7 +20,7 @@ struct OpenTimeViewModel: Equatable {
         self.endTime = endTime
     }
 
-    init() {
+    convenience init() {
         self.init(startTime: nil, endTime: nil)
     }
 
@@ -85,5 +85,13 @@ struct OpenTimeViewModel: Equatable {
     func event(forId eventOrSeriesId: String) -> EventSurface? {
         return  EventSurface.find(bySeriesOrEventId: eventOrSeriesId,
                                   inRange: range!)
+    }
+
+    var needsRefresh = false
+}
+
+extension OpenTimeViewModel: Hashable {
+    var hashValue: Int {
+        return "\(startTime?.secondsSinceReferenceDate ?? 0)-\(endTime?.secondsSinceReferenceDate ?? 0)".hashValue
     }
 }

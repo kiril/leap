@@ -68,7 +68,9 @@ class EventSectionController: IGListSectionController, IGListSectionType {
     }
 
     private lazy var prototypeEventCell: EventViewCell = {
-        return Bundle.main.loadNibNamed("EventViewCell", owner: nil, options: nil)?.first as! EventViewCell
+        let cell = Bundle.main.loadNibNamed("EventViewCell", owner: nil, options: nil)?.first as! EventViewCell
+        cell.timePerspectiveUpdatesEnabled = false
+        return cell
     }()
 
     func configureCellWidth(_ cell: UICollectionViewCell) {

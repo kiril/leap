@@ -351,13 +351,8 @@ class EventSurface: Surface, ModelLoadable {
     private static func computeElapsedBetween(start: Date, end: Date) -> Float {
         let now = Date()
 
-        if Calendar.current.isDate(now, after: end) {
-            return 1.0
-        } else if Calendar.current.isDate(now, before: start) {
-            return 0.0
-        } else {
-            return Float(now.seconds(since: start))/Float(end.seconds(since: start))
-        }
+        return now.percentElapsed(withinRangeFromStart: start,
+                                  toEnd: end)
     }
 
     func hackyShowAsReminder() {
@@ -935,5 +930,13 @@ extension TimeRange {
     var timePerspective: TimePerspective {
         return TimePerspective.forPeriod(fromStart: start,
                                          toEnd: end)
+    }
+}
+
+extension EventSurface {
+    func debugDo(ifTitle titleToCheck: String, block: ()->()) {
+        if self.title.value == titleToCheck {
+            block()
+        }
     }
 }

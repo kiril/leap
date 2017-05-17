@@ -297,6 +297,13 @@ extension DayScheduleViewController: OpenTimeSectionControllerDelegate {
         guard let event = openTimeSection.openTime.event(forId: eventId) else { return }
         presentEvent(event: event)
     }
+
+    func openTimeNeedsUpdate(openTime: OpenTimeViewModel, on openTimeSection: OpenTimeSectionController) {
+        DispatchQueue.main.async { [unowned self] in
+            openTime.needsRefresh = true
+            self.collectionAdapter.performUpdates(animated: true, completion: nil)
+        }
+    }
 }
 
 extension DayScheduleViewController: SourceIdentifiable {

@@ -36,4 +36,19 @@ extension Date {
         }
         return true
     }
+
+    func percentElapsed(withinRangeFromStart start: Date, toEnd end: Date) -> Float {
+        if self > end  {
+            return 1.0
+        } else if self < start {
+            return 0.0
+        } else {
+            return Float(self.seconds(since: start))/Float(end.seconds(since: start))
+        }
+    }
+
+    func percentElapsed(withinRange timeRange: TimeRange) -> Float {
+        return percentElapsed(withinRangeFromStart: timeRange.start,
+                              toEnd: timeRange.end)
+    }
 }

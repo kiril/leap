@@ -14,6 +14,12 @@ class OpenTimePossibleEventCollectionViewCell: UICollectionViewCell {
 
     func configure(with event: EventSurface) {
         titleLabel.text = "\(event.timeString.value): \(event.title.value)"
+        switch event.perspective.value {
+        case .past:
+            contentView.alpha = 0.5
+        case .current, .future:
+            contentView.alpha = 1.0
+        }
     }
 
     override func awakeFromNib() {
