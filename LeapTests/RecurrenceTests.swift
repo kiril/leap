@@ -29,96 +29,100 @@ class RecurrenceTests: XCTestCase {
     }
 
     func testEvery() {
-        let rec = Recurrence.every(.daily, at: 0, past: 12)
+        let rec = Recurrence.every(.daily)
         XCTAssertEqual(rec.frequency, Frequency.daily)
         XCTAssertEqual(rec.count, 0)
     }
     
     func testTrivialDaily() {
-        let rec = Recurrence.every(.daily, at: 30, past: 2)
-        XCTAssertTrue(rec.recursOn(now, for: series))
+        let rec = Recurrence.every(.daily)
+        XCTAssertTrue(rec.recurs(on: now, for: series))
     }
 
     func testOneDayOfWeek() {
-        let rec = Recurrence.every(.daily, at: 30, past: 2)
+        let rec = Recurrence.every(.daily)
         rec.daysOfWeek.append(DayOfWeek.monday.toInt())
 
         let monday = calendar.theNext(weekday: GregorianMonday, onOrAfter: now)
 
-        XCTAssertTrue(rec.recursOn(monday, for: series))
+        XCTAssertTrue(rec.recurs(on: monday, for: series))
         let tuesday = calendar.dayAfter(monday)
-        XCTAssertFalse(rec.recursOn(tuesday, for: series))
+        XCTAssertFalse(rec.recurs(on: tuesday, for: series))
         let wednesday = calendar.dayAfter(tuesday)
-        XCTAssertFalse(rec.recursOn(wednesday, for: series))
+        XCTAssertFalse(rec.recurs(on: wednesday, for: series))
         let thursday = calendar.dayAfter(wednesday)
-        XCTAssertFalse(rec.recursOn(thursday, for: series))
+        XCTAssertFalse(rec.recurs(on: thursday, for: series))
     }
 
     func testMultipleDaysOfWeek() {
-        let rec = Recurrence.every(.daily, at: 30, past: 2)
+        let rec = Recurrence.every(.daily)
         rec.daysOfWeek.append(DayOfWeek.monday.toInt())
         rec.daysOfWeek.append(DayOfWeek.tuesday.toInt())
 
         let monday = calendar.theNext(weekday: GregorianMonday, onOrAfter: now)
 
-        XCTAssertTrue(rec.recursOn(monday, for: series))
+        XCTAssertTrue(rec.recurs(on: monday, for: series))
         let tuesday = calendar.dayAfter(monday)
-        XCTAssertTrue(rec.recursOn(tuesday, for: series))
+        XCTAssertTrue(rec.recurs(on: tuesday, for: series))
         let wednesday = calendar.dayAfter(tuesday)
-        XCTAssertFalse(rec.recursOn(wednesday, for: series))
+        XCTAssertFalse(rec.recurs(on: wednesday, for: series))
         let thursday = calendar.dayAfter(wednesday)
-        XCTAssertFalse(rec.recursOn(thursday, for: series))
+        XCTAssertFalse(rec.recurs(on: thursday, for: series))
         let friday = calendar.dayAfter(thursday)
-        XCTAssertFalse(rec.recursOn(friday, for: series))
+        XCTAssertFalse(rec.recurs(on: friday, for: series))
     }
 
     func testTrivialMonthly() {
-        let rec = Recurrence.every(.monthly, at: 0, past: 9, on: 8)
+        let rec = Recurrence.every(.monthly, the: 1)
+
         // need to make sure I get a real date, when not all days are valid in all months...
         let date = Calendar.current.date(byAdding: DateComponents(day: -1*(Calendar.current.component(.day, from: now)-1)), to: now)!
-        XCTAssertTrue(rec.recursOn(date, for: series))
+        XCTAssertTrue(rec.recurs(on: date, for: series))
         let nextMonth = Calendar.current.date(byAdding: DateComponents(month: 1), to: date)!
-        XCTAssertTrue(rec.recursOn(nextMonth, for: series))
+        XCTAssertTrue(rec.recurs(on: nextMonth, for: series))
         let nextNextMonth = Calendar.current.date(byAdding: DateComponents(month: 1), to: nextMonth)!
-        XCTAssertTrue(rec.recursOn(nextNextMonth, for: series))
+        XCTAssertTrue(rec.recurs(on: nextNextMonth, for: series))
     }
 
     func testEveryOtherMonth() {
-        let rec = Recurrence.every(.monthly, at: 0, past: 9, interval: 2, on: 8)
-        let date = Calendar.universalGregorian.startOfMonth(including: now)
-        XCTAssertTrue(rec.recursOn(date, for: series))
+        let rec = Recurrence.every(.monthly, by: 2, the: 1)
+        let date = Calendar.current.startOfMonth(including: now)
+        XCTAssertTrue(rec.recurs(on: date, for: series))
+
         let nextMonth = Calendar.current.date(byAdding: DateComponents(month: 1), to: date)!
-        XCTAssertFalse(rec.recursOn(nextMonth, for: series))
+        XCTAssertFalse(rec.recurs(on: nextMonth, for: series))
+
         let nextNextMonth = Calendar.current.date(byAdding: DateComponents(month: 1), to: nextMonth)!
-        XCTAssertTrue(rec.recursOn(nextNextMonth, for: series))
+        XCTAssertTrue(rec.recurs(on: nextNextMonth, for: series))
+
         let tripleNextMonth = Calendar.current.date(byAdding: DateComponents(month: 1), to: nextNextMonth)!
-        XCTAssertFalse(rec.recursOn(tripleNextMonth, for: series))
+        XCTAssertFalse(rec.recurs(on: tripleNextMonth, for: series))
     }
 
     func testFirstTuesdayOfMonth() {
-        let rec = Recurrence.every(.monthly, at: 0, past: 9)
+        let rec = Recurrence.every(.monthly)
         rec.daysOfWeek.append(DayOfWeek.tuesday.toInt(week: 1))
 
         let theFirst = calendar.startOfMonth(onOrAfter: now)
         let firstTuesday = calendar.theNext(weekday: GregorianTuesday, onOrAfter: theFirst)
-        XCTAssertTrue(rec.recursOn(firstTuesday, for: series), "Didn't recur on \(firstTuesday)")
+        XCTAssertTrue(rec.recurs(on: firstTuesday, for: series), "Didn't recur on \(firstTuesday)")
         let secondTuesday = calendar.theNext(weekday: GregorianTuesday, onOrAfter: calendar.dayAfter(firstTuesday))
-        XCTAssertFalse(rec.recursOn(secondTuesday, for: series))
+        XCTAssertFalse(rec.recurs(on: secondTuesday, for: series))
     }
 
     func testSecondTuesdayOfMonth() {
-        let rec = Recurrence.every(.monthly, at: 0, past: 9)
+        let rec = Recurrence.every(.monthly)
         rec.daysOfWeek.append(DayOfWeek.tuesday.toInt(week: 2))
 
         let theFirst = calendar.startOfMonth(onOrAfter: now)
         let firstTuesday = calendar.theNext(weekday: GregorianTuesday, onOrAfter: theFirst)
-        XCTAssertFalse(rec.recursOn(firstTuesday, for: series), "Didn't recur on \(firstTuesday)")
+        XCTAssertFalse(rec.recurs(on: firstTuesday, for: series), "Didn't recur on \(firstTuesday)")
         let secondTuesday = calendar.theNext(weekday: GregorianTuesday, onOrAfter: calendar.dayAfter(firstTuesday))
-        XCTAssertTrue(rec.recursOn(secondTuesday, for: series))
+        XCTAssertTrue(rec.recurs(on: secondTuesday, for: series))
     }
 
     func testSundaysInFebruary() {
-        let rec = Recurrence.every(.weekly, at: 0, past: 9)
+        let rec = Recurrence.every(.weekly)
         rec.daysOfWeek.append(DayOfWeek.sunday.toInt())
         rec.monthsOfYear.append(IntWrapper.of(2))
 
@@ -130,35 +134,35 @@ class RecurrenceTests: XCTestCase {
         XCTAssertEqual(calendar.component(.month, from: feb1), 2)
 
         for sunday in calendar.all(weekdays: GregorianSunday, inMonthOf: feb1) {
-            XCTAssertTrue(rec.recursOn(sunday, for: series))
+            XCTAssertTrue(rec.recurs(on: sunday, for: series))
         }
 
         for sunday in calendar.all(weekdays: GregorianSunday, inMonthOf: mar1) {
-            XCTAssertFalse(rec.recursOn(sunday, for: series))
+            XCTAssertFalse(rec.recurs(on: sunday, for: series))
         }
 
         for sunday in calendar.all(weekdays: GregorianSunday, inMonthOf: jan1) {
-            XCTAssertFalse(rec.recursOn(sunday, for: series))
+            XCTAssertFalse(rec.recurs(on: sunday, for: series))
         }
     }
 
     func testPositionalInMonth() {
         self.measure {
-            let rec = Recurrence.every(.monthly, at: 0, past: 9)
+            let rec = Recurrence.every(.monthly)
             rec.daysOfWeek.append(DayOfWeek.friday.toInt())
             rec.setPositions.append(2)
 
             let fridays = self.calendar.all(weekdays: GregorianFriday, inMonthOf: self.now)
-            XCTAssertFalse(rec.recursOn(fridays[0], for: self.series))
-            XCTAssertTrue(rec.recursOn(fridays[1], for: self.series))
+            XCTAssertFalse(rec.recurs(on: fridays[0], for: self.series))
+            XCTAssertTrue(rec.recurs(on: fridays[1], for: self.series))
             for friday in fridays.dropFirst(2) {
-                XCTAssertFalse(rec.recursOn(friday, for: self.series))
+                XCTAssertFalse(rec.recurs(on: friday, for: self.series))
             }
         }
     }
 
     func testComplexPositionalInMonth() {
-        let rec = Recurrence.every(.monthly, at: 0, past: 9)
+        let rec = Recurrence.every(.monthly)
         rec.daysOfWeek.append(DayOfWeek.thursday.toInt())
         rec.daysOfWeek.append(DayOfWeek.friday.toInt())
         rec.setPositions.append(2)
@@ -171,25 +175,25 @@ class RecurrenceTests: XCTestCase {
             if weekday == GregorianThursday || weekday == GregorianFriday {
                 matchCount += 1
                 if matchCount == 2 {
-                    XCTAssertTrue(rec.recursOn(day, for: series))
+                    XCTAssertTrue(rec.recurs(on: day, for: series))
                 } else {
-                    XCTAssertFalse(rec.recursOn(day, for: series))
+                    XCTAssertFalse(rec.recurs(on: day, for: series))
                 }
             }
         }
     }
 
     func testPositionalInYear() {
-        let rec = Recurrence.every(.yearly, at: 0, past: 9)
+        let rec = Recurrence.every(.yearly)
         rec.daysOfWeek.append(DayOfWeek.saturday.toInt())
         rec.setPositions.append(IntWrapper.of(3))
 
         let saturdays = calendar.all(weekdays: GregorianSaturday, inYearOf: now)
-        XCTAssertFalse(rec.recursOn(saturdays[0], for: series))
-        XCTAssertFalse(rec.recursOn(saturdays[1], for: series))
-        XCTAssertTrue(rec.recursOn(saturdays[2], for: series))
+        XCTAssertFalse(rec.recurs(on: saturdays[0], for: series))
+        XCTAssertFalse(rec.recurs(on: saturdays[1], for: series))
+        XCTAssertTrue(rec.recurs(on: saturdays[2], for: series))
         for saturday in saturdays.dropFirst(3) {
-            XCTAssertFalse(rec.recursOn(saturday, for: series), "\(saturday)")
+            XCTAssertFalse(rec.recurs(on: saturday, for: series), "\(saturday)")
         }
     }
 
@@ -204,7 +208,7 @@ class RecurrenceTests: XCTestCase {
     }
 
     func testDayOfWeekMatches() {
-        let rec = Recurrence.every(.yearly, at: 0, past: 9)
+        let rec = Recurrence.every(.yearly)
         rec.daysOfWeek.append(DayOfWeek.saturday.toInt())
 
         XCTAssertTrue(rec.dayOfWeekMatches(for: calendar.theNext(weekday: GregorianSaturday, after: Date())))
@@ -212,7 +216,7 @@ class RecurrenceTests: XCTestCase {
 
     func testSecondAndLastWeekdayInYear() {
         self.measure {
-            let rec = Recurrence.every(.yearly, at: 0, past: 9)
+            let rec = Recurrence.every(.yearly)
             rec.daysOfWeek.append(DayOfWeek.monday.toInt())
             rec.daysOfWeek.append(DayOfWeek.tuesday.toInt())
             rec.daysOfWeek.append(DayOfWeek.wednesday.toInt())
@@ -241,18 +245,34 @@ class RecurrenceTests: XCTestCase {
             for day in self.calendar.allDays(inYearOf: startOfYear) {
                 if self.calendar.isWeekday(day) {
                     if i == finalWeekdayIndex {
-                        XCTAssertTrue(rec.recursOn(day, for: self.series))
+                        XCTAssertTrue(rec.recurs(on: day, for: self.series))
                     } else {
                         matchCount += 1
                         if matchCount == 2 {
-                            XCTAssertTrue(rec.recursOn(day, for: self.series))
+                            XCTAssertTrue(rec.recurs(on: day, for: self.series))
                         } else {
-                            XCTAssertFalse(rec.recursOn(day, for: self.series))
+                            XCTAssertFalse(rec.recurs(on: day, for: self.series))
                         }
                     }
                 }
                 i += 1
             }
         }
+    }
+
+    func testEveryOtherWeekendLongEvent() {
+        let lastFriday = Calendar.current.theLast(.friday, before: now)
+
+        let series = Series.series("Weekend Event", startingOn: lastFriday)
+        series.recurrence = Recurrence.every(.weekly, by: 2, on: .friday)
+        series.template = Template.of("Weekend Event", at: 0, past: 18, lasting: 1200)
+
+        XCTAssertTrue(series.recurs(on: lastFriday))
+
+        let nextFriday = Calendar.current.theNext(.friday, after: lastFriday)
+        XCTAssertTrue(nextFriday > lastFriday)
+        XCTAssertEqual(7, Calendar.current.daysBetween(lastFriday, and: nextFriday))
+        print("TESTING NOW on \(nextFriday) with a start of \(lastFriday)")
+        XCTAssertFalse(series.recurs(on: nextFriday))
     }
 }

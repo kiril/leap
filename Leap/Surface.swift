@@ -204,7 +204,7 @@ extension Surface: Updateable {
 
         if !(source is BackingStore) {
             for (key, value) in data {
-                if value !~= data[key] {
+                if value !~=? data[key] {
                     operations.append(SetOperation(key, to: value, from: data[key]))
                     isShinyNew = false
                 }

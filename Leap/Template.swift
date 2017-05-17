@@ -116,10 +116,19 @@ class Template: LeapModel, Originating, Particible, Alarmable, CalendarLinkable 
         }
         let possibility = Calendar.current.date(bySettingHour: startHour, minute: startMinute, second: 0, of: start)!
 
-        guard possibility < end && possibility > start else {
+        guard possibility < end && possibility >= start else {
             return nil
         }
         return possibility
+    }
+
+    func startTime(overlapping range: TimeRange) -> Date? {
+        return startTime(overlappingRegionBetween: range.start, and: range.end)
+    }
+
+    func startTime(overlappingRegionBetween start: Date, and end: Date) -> Date? {
+        let lookbackStart = start.subtracting(minutes: durationMinutes)
+        return startTime(between: lookbackStart, and: end)
     }
 
     func endTime(in range: TimeRange, startTime: Date? = nil) -> Date? {
@@ -170,5 +179,9 @@ class Template: LeapModel, Originating, Particible, Alarmable, CalendarLinkable 
                              "linkedCalendarIds": linkedCalendarIds,
                              "originString": originString,
                              "endTime": endDate.secondsSinceReferenceDate])
+    }
+
+    static func of(_ title: String, at minute: Int, past hour: Int, lasting minutes: Int) -> Template {
+        return Template(value: ["title": title, "startMinute": minute, "startHour": hour, "durationMinutes": minutes])
     }
 }

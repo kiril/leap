@@ -23,8 +23,8 @@ extension Date {
 
     func isToday() -> Bool {
         let d = Date()
-        let cal = Calendar.universalGregorian
-        
+        let cal = Calendar.current
+
         if cal.component(.year, from: d) != cal.component(.year, from: self) {
             return false
         }
@@ -50,5 +50,21 @@ extension Date {
     func percentElapsed(withinRange timeRange: TimeRange) -> Float {
         return percentElapsed(withinRangeFromStart: timeRange.start,
                               toEnd: timeRange.end)
+    }
+
+    func subtracting(minutes: Int) -> Date {
+        return subtracting(seconds: minutes * 60)
+    }
+
+    func subtracting(seconds: Int) -> Date {
+        return self.addingTimeInterval(TimeInterval(-seconds))
+    }
+
+    func addming(minutes: Int) -> Date {
+        return adding(seconds: minutes * 60)
+    }
+
+    func adding(seconds: Int) -> Date {
+        return self.addingTimeInterval(TimeInterval(seconds))
     }
 }

@@ -98,7 +98,7 @@ class Event: _TemporalBase, Temporality, Originating, CalendarLinkable, Alarmabl
     func isDetachedForm(of series: Series) -> Bool {
         let minutes = (endTime - startTime) / 60
 
-        if !series.recurs(on: startDate, ignoreActiveRange: true) {
+        if !series.recurs(exactlyAt: startDate, ignoreActiveRange: true) {
             return true
         }
 

@@ -45,7 +45,7 @@ class SetOperation: _Operation, Operation {
     }
 
     func apply(_ data: inout ModelData) -> Bool {
-        if data[field] ~= value {
+        if data[field] ~=? value {
             return false // samesies!
         }
         data[field] = value
@@ -53,7 +53,7 @@ class SetOperation: _Operation, Operation {
     }
 
     func isNoOp() -> Bool {
-        return before ~= value
+        return before ~=? value
     }
 
     func combine(with op: Operation) -> Operation? {
@@ -107,9 +107,9 @@ class UnsetOperation: _Operation, Operation {
     }
 }
 
-infix operator ~=
+infix operator ~=?
 
-func ~= (left: Any?, right: Any?) -> Bool {
+func ~=? (left: Any?, right: Any?) -> Bool {
     guard (left == nil) == (right == nil) else {
         return false
     }
@@ -140,10 +140,10 @@ func ~= (left: Any?, right: Any?) -> Bool {
     return false
 }
 
-infix operator !~=
+infix operator !~=?
 
-func !~= (left: Any?, right: Any?) -> Bool {
-    return !(left ~= right)
+func !~=? (left: Any?, right: Any?) -> Bool {
+    return !(left ~=? right)
 }
 
 /*

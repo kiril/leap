@@ -10,26 +10,33 @@ import XCTest
 @testable import Leap
 
 class LeapTests: XCTestCase {
-    
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func testSwift() {
+
+        switch Int(-2) {
+        case Int.min..<0:
+            print("sanity is sane for -1 raw")
+
+        case Int.min...(-1):
+            print("sanity is slightly sane for -1 raw")
+
+        case -1000000..<0:
+            print("sanity is at least possibly rationally flawed and mendable for -1 raw")
+
+        case -1000000...(-1):
+            print("sanity is broken but we can survive for -1 raw")
+
+        default:
+            fatalError("The world is fucked")
+        }
+
+
+
+        switch Double(-2) {
+        case -100000000.0..<Double(0.0):
+            print("The world is sane")
+
+        default:
+            fatalError("The world is not sane")
         }
     }
     

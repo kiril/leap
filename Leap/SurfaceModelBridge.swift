@@ -199,7 +199,7 @@ class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
                 }
                 if let model = getModel(name),
                     let value = get(model),
-                    value !~= data[key] {
+                    value !~=? data[key] {
                     madeChanges = true
                     data[key] = value
                 }
@@ -210,7 +210,7 @@ class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
                 }
                 if let model = getModel(name),
                     let value = get(model),
-                    value !~= data[key] {
+                    value !~=? data[key] {
                     madeChanges = true
                     data[key] = value
                 }
@@ -220,7 +220,7 @@ class SurfaceModelBridge<SomeSurface:Surface>: BackingStore {
                     break
                 }
                 if let array = getArray(name),
-                    array !~= data[key] {
+                    array !~=? data[key] {
                     madeChanges = true
                     data[key] = array
                 }
