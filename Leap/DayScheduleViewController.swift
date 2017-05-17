@@ -77,7 +77,7 @@ class DayScheduleViewController: UIViewController, StoryboardLoadable {
                 // Do not want to automatically scroll down if you just came back from viewing / editing
                 // an event
                 if !justPoppedEventDetail {
-                    _self.scrollToCurrentTime(animated: animated)
+                    _self.scrollToCurrentTime(animated: true)
                 }
             }
         })
