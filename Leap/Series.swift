@@ -111,7 +111,7 @@ class Series: LeapModel, Fuzzy, Originating {
                 let endOfSubsequentWeek = Calendar.current.date(byAdding: .day, value: 7, to: endOfLastFullWeek)!
                 var timesRecurred = fullWeeks * occurrencesPerWeek
                 while day < endOfSubsequentWeek && timesRecurred < maxRecurrences {
-                    if rec.recursOn(day, for: self) {
+                    if rec.recurs(on: day, for: self) {
                         timesRecurred += 1
                     }
                     day = Calendar.current.dayAfter(day)
@@ -132,7 +132,7 @@ class Series: LeapModel, Fuzzy, Originating {
                     let endOfSubsequentMonth = Calendar.current.date(byAdding: .month, value: 1, to: endOfLastFullMonth)!
                     var timesRecurred = fullMonths * occurrencesPerMonth
                     while day < endOfSubsequentMonth && timesRecurred < maxRecurrences {
-                        if rec.recursOn(day, for: self) {
+                        if rec.recurs(on: day, for: self) {
                             timesRecurred += 1
                         }
                         day = Calendar.current.dayAfter(day)
@@ -157,7 +157,7 @@ class Series: LeapModel, Fuzzy, Originating {
                     let endOfSubsequentYear = Calendar.current.date(byAdding: .year, value: 1, to: endOfLastFullYear)!
                     var timesRecurred = fullYears * occurrencesPerYear
                     while day < endOfSubsequentYear && timesRecurred < maxRecurrences {
-                        if rec.recursOn(day, for: self) {
+                        if rec.recurs(on: day, for: self) {
                             timesRecurred += 1
                         }
                         day = Calendar.current.dayAfter(day)
@@ -177,7 +177,7 @@ class Series: LeapModel, Fuzzy, Originating {
                     // TODO: skip to the damned day, given that it's so easy...
                     var day = lastMonthStart
                     while day < lastMonthEnd {
-                        if rec.recursOn(day, for: self) {
+                        if rec.recurs(on: day, for: self) {
                             lastDay = day
                             break
                         }
@@ -199,7 +199,7 @@ class Series: LeapModel, Fuzzy, Originating {
             var day = startDate
             var recurrences = 0
             while recurrences < maxRecurrences {
-                if rec.recursOn(day, for: self) {
+                if rec.recurs(on: day, for: self) {
                     recurrences += 1
                 }
                 day = Calendar.current.dayAfter(day)
@@ -248,7 +248,7 @@ class Series: LeapModel, Fuzzy, Originating {
 
         var date:Date? = startDate
         while let d = date, d.secondsSinceReferenceDate < endSecs {
-            if recurrence!.recursOn(d, for: self), let when = template.startTime(between: start, and: end), when >= start && when < end {
+            if recurrence!.recurs(on: d, for: self), let when = template.startTime(in: TimeRange.day(of: d)), when >= start && when < end {
                 return true
             }
             date = Calendar.current.dayAfter(d)
@@ -263,7 +263,7 @@ class Series: LeapModel, Fuzzy, Originating {
     }
 
     func startTime(in range: TimeRange) -> Date? {
-        if let when = template.startTime(in: range), recurrence.recursOn(when, for: self) {
+        if let when = template.startTime(in: range), recurrence.recurs(on: when, for: self) {
             return when
         }
         return nil
@@ -286,7 +286,7 @@ class Series: LeapModel, Fuzzy, Originating {
     func isExactRecurrence(date: Date) -> Bool {
         if Calendar.universalGregorian.component(.hour, from: date) == template.startHour &&
             Calendar.universalGregorian.component(.minute, from: date) == template.startMinute &&
-            recurrence.recursOn(date, for: self) {
+            recurrence.recurs(on: date, for: self) {
             return true
 
         }
@@ -307,7 +307,7 @@ class Series: LeapModel, Fuzzy, Originating {
         // SO:
         // -> check duration of event
         // -> look back from 'start' by that duration when doing the template.startTime()
-        guard let eventStart = template.startTime(overlappingRegionBetween: start, and: end), recurrence.recursOn(eventStart, for: self) else {
+        guard let eventStart = template.startTime(overlappingRegionBetween: start, and: end), recurrence.recurs(on: eventStart, for: self) else {
             return nil
         }
         let eventId = generateId(for: eventStart)
@@ -321,7 +321,7 @@ class Series: LeapModel, Fuzzy, Originating {
 
         if let event = template.event(onDayOf: eventStart, id: eventId),
             Calendar.universalGregorian.isDate(event.startDate, betweenInclusive: start, and: end) &&
-                self.recurrence.recursOn(event.startDate, for: self) {
+                self.recurrence.recurs(on: event.startDate, for: self) {
             event.engagement = engagement
             event.update()
             return event
@@ -342,7 +342,7 @@ class Series: LeapModel, Fuzzy, Originating {
             return nil
         }
 
-        guard let reminderStart = template.startTime(between: start, and: end), recurrence.recursOn(reminderStart, for: self) else {
+        guard let reminderStart = template.startTime(between: start, and: end), recurrence.recurs(on: reminderStart, for: self) else {
             return nil
         }
 
@@ -354,7 +354,7 @@ class Series: LeapModel, Fuzzy, Originating {
 
         if let reminder = template.reminder(onDayOf: reminderStart, id: reminderId),
             Calendar.universalGregorian.isDate(reminder.startDate, betweenInclusive: start, and: end) &&
-                self.recurrence.recursOn(reminder.startDate, for: self) {
+                self.recurrence.recurs(on: reminder.startDate, for: self) {
             reminder.update()
             return reminder
         }

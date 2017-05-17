@@ -83,7 +83,7 @@ class EventKit {
 
                     case .reminder:
                         if let series = Series.by(title: ekEvent.title),
-                            (series.recurs(exactlyAt: ekEvent.startDate) || (ekEvent.isAllDay && series.recurrence.recursOn(ekEvent.startDate, for: series))) {
+                            (series.recurs(exactlyAt: ekEvent.startDate) || (ekEvent.isAllDay && series.recurrence.recurs(on: ekEvent.startDate, for: series))) {
                             print("reminder DUPLICATE of Series \(ekEvent.title)")
                             self.importSeries(ekEvent, in: calendar, given: series)
 

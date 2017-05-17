@@ -102,7 +102,7 @@ class Recurrence: LeapModel {
         return true // well, ok then! :)
     }
 
-    public static func every(_ frequency: Frequency, max count: Int = 0, by interval: Int = 0, on weekday: Weekday? = nil, the day: Int? = 0) -> Recurrence {
+    public static func every(_ frequency: Frequency, max count: Int = 0, by interval: Int = 0, on weekday: Weekday? = nil, the day: Int? = nil) -> Recurrence {
         var data: ModelInitData = ["frequencyRaw": frequency.rawValue,
                                    "count": count,
                                    "interval": interval]
@@ -140,7 +140,7 @@ class Recurrence: LeapModel {
         return false
     }
 
-    func recursOn(_ date: Date, for series: Series) -> Bool {
+    func recurs(on date: Date, for series: Series) -> Bool {
         // start with frequency, and then you know how to qualify to begin with, and what to test
         // use the interval to further narrow
         // look at all of the dates in the range to see if we're in a range we exist
@@ -154,6 +154,7 @@ class Recurrence: LeapModel {
         let week = calendar.component(.weekOfYear, from: date)
 
         if !dayOfWeekMatches(for: date) {
+            print("wrong day of week")
             return false
         }
 
@@ -186,7 +187,9 @@ class Recurrence: LeapModel {
         case .weekly:
             let weeksSinceStart = calendar.weeksBetween(series.startDate, and: date)
             if interval != 0 {
+                print("interval = \(interval), weeks = \(weeksSinceStart) given \(series.startDate) and \(date)8")
                 if weeksSinceStart % interval != 0 {
+                    print("fail: \(weeksSinceStart) % \(interval) = \(weeksSinceStart % interval), not 0")
                     return false
                 }
             }
