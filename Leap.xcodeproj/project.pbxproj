@@ -158,6 +158,7 @@
 		FBD614541E7F3370001F4050 /* EventSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD614531E7F3370001F4050 /* EventSurface.swift */; };
 		FBD614561E7F38D4001F4050 /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD614551E7F38D4001F4050 /* Schema.swift */; };
 		FBD614581E7F57B0001F4050 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD614571E7F57B0001F4050 /* Validation.swift */; };
+		FBD7238C1ECCAE2700B5E126 /* Weekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD7238B1ECCAE2700B5E126 /* Weekday.swift */; };
 		FBE0EFE41DFBBB80007BD8DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE0EFE31DFBBB80007BD8DF /* AppDelegate.swift */; };
 		FBE0EFE61DFBBB80007BD8DF /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE0EFE51DFBBB80007BD8DF /* AuthViewController.swift */; };
 		FBE0EFEC1DFBBB80007BD8DF /* Leap.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FBE0EFEA1DFBBB80007BD8DF /* Leap.xcdatamodeld */; };
@@ -344,6 +345,7 @@
 		FBD614531E7F3370001F4050 /* EventSurface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventSurface.swift; sourceTree = "<group>"; };
 		FBD614551E7F38D4001F4050 /* Schema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Schema.swift; sourceTree = "<group>"; };
 		FBD614571E7F57B0001F4050 /* Validation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
+		FBD7238B1ECCAE2700B5E126 /* Weekday.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Weekday.swift; sourceTree = "<group>"; };
 		FBE0EFE01DFBBB80007BD8DF /* Leap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Leap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBE0EFE31DFBBB80007BD8DF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FBE0EFE51DFBBB80007BD8DF /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
@@ -520,6 +522,7 @@
 				FB1E5FFF1EB6A77700FFF60C /* DateFormatter+Leap.swift */,
 				FBBB60E61EB8EBA6009E67AD /* NSAttributedString+Leap.swift */,
 				831EC0811ECBDBC7006F631C /* TimeRangeObserver.swift */,
+				FBD7238B1ECCAE2700B5E126 /* Weekday.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -1137,6 +1140,7 @@
 				FB4208571E85A168007F4DBD /* GeoFence.swift in Sources */,
 				FB39ADBB1E9407FF00B79A7B /* Int+Leap.swift in Sources */,
 				8366F11A1EAFAD4A00E3A448 /* ReminderSectionController.swift in Sources */,
+				FBD7238C1ECCAE2700B5E126 /* Weekday.swift in Sources */,
 				FB166B5C1E8AC3CA00CB95EC /* Fetchable.swift in Sources */,
 				FB166B5E1E8AC6DB00CB95EC /* ModelReference.swift in Sources */,
 				833617781E8C4756009A97FF /* StoryboardLoadable.swift in Sources */,

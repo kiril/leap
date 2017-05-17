@@ -277,7 +277,7 @@ extension EKEvent {
 
         let minutes = (endDate.secondsSinceReferenceDate - startDate.secondsSinceReferenceDate) / 60
 
-        if !series.recurs(on: startDate, ignoreActiveRange: true) {
+        if !series.recurs(exactlyAt: startDate, ignoreActiveRange: true) {
             let start = Calendar.current.startOfDay(for: startDate)
             let end = Calendar.current.dayAfter(start)
             let range = TimeRange(start: start, end: end)!

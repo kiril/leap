@@ -102,12 +102,16 @@ class Recurrence: LeapModel {
         return true // well, ok then! :)
     }
 
-    public static func every(_ frequency: Frequency, at minute: Int = 0, past hour: Int = 0, max count: Int = 0, interval: Int = 0, on dayOfMonth: Int = 0) -> Recurrence {
-        let data: ModelInitData = ["startHour": hour,
-                                   "startMinute": minute,
-                                   "frequencyRaw": frequency.rawValue,
+    public static func every(_ frequency: Frequency, max count: Int = 0, by interval: Int = 0, on weekday: Weekday? = nil, the day: Int? = 0) -> Recurrence {
+        var data: ModelInitData = ["frequencyRaw": frequency.rawValue,
                                    "count": count,
                                    "interval": interval]
+        if let weekday = weekday {
+            data["daysOfWeek"] = List<IntWrapper>([IntWrapper.of(weekday.gregorianIndex)])
+
+        } else if let day = day {
+            data["daysOfMonth"] = List<IntWrapper>([IntWrapper.of(day)])
+        }
         return Recurrence(value: data)
     }
 

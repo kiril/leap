@@ -29,18 +29,18 @@ class RecurrenceTests: XCTestCase {
     }
 
     func testEvery() {
-        let rec = Recurrence.every(.daily, at: 0, past: 12)
+        let rec = Recurrence.every(.daily)
         XCTAssertEqual(rec.frequency, Frequency.daily)
         XCTAssertEqual(rec.count, 0)
     }
     
     func testTrivialDaily() {
-        let rec = Recurrence.every(.daily, at: 30, past: 2)
+        let rec = Recurrence.every(.daily)
         XCTAssertTrue(rec.recursOn(now, for: series))
     }
 
     func testOneDayOfWeek() {
-        let rec = Recurrence.every(.daily, at: 30, past: 2)
+        let rec = Recurrence.every(.daily)
         rec.daysOfWeek.append(DayOfWeek.monday.toInt())
 
         let monday = calendar.theNext(weekday: GregorianMonday, onOrAfter: now)
@@ -55,7 +55,7 @@ class RecurrenceTests: XCTestCase {
     }
 
     func testMultipleDaysOfWeek() {
-        let rec = Recurrence.every(.daily, at: 30, past: 2)
+        let rec = Recurrence.every(.daily)
         rec.daysOfWeek.append(DayOfWeek.monday.toInt())
         rec.daysOfWeek.append(DayOfWeek.tuesday.toInt())
 
@@ -73,7 +73,7 @@ class RecurrenceTests: XCTestCase {
     }
 
     func testTrivialMonthly() {
-        let rec = Recurrence.every(.monthly, at: 0, past: 9, on: 8)
+        let rec = Recurrence.every(.monthly, the: 8)
         // need to make sure I get a real date, when not all days are valid in all months...
         let date = Calendar.current.date(byAdding: DateComponents(day: -1*(Calendar.current.component(.day, from: now)-1)), to: now)!
         XCTAssertTrue(rec.recursOn(date, for: series))
@@ -84,7 +84,7 @@ class RecurrenceTests: XCTestCase {
     }
 
     func testEveryOtherMonth() {
-        let rec = Recurrence.every(.monthly, at: 0, past: 9, interval: 2, on: 8)
+        let rec = Recurrence.every(.monthly, by: 2, the: 8)
         let date = Calendar.universalGregorian.startOfMonth(including: now)
         XCTAssertTrue(rec.recursOn(date, for: series))
         let nextMonth = Calendar.current.date(byAdding: DateComponents(month: 1), to: date)!
@@ -96,7 +96,7 @@ class RecurrenceTests: XCTestCase {
     }
 
     func testFirstTuesdayOfMonth() {
-        let rec = Recurrence.every(.monthly, at: 0, past: 9)
+        let rec = Recurrence.every(.monthly)
         rec.daysOfWeek.append(DayOfWeek.tuesday.toInt(week: 1))
 
         let theFirst = calendar.startOfMonth(onOrAfter: now)
@@ -107,7 +107,7 @@ class RecurrenceTests: XCTestCase {
     }
 
     func testSecondTuesdayOfMonth() {
-        let rec = Recurrence.every(.monthly, at: 0, past: 9)
+        let rec = Recurrence.every(.monthly)
         rec.daysOfWeek.append(DayOfWeek.tuesday.toInt(week: 2))
 
         let theFirst = calendar.startOfMonth(onOrAfter: now)
@@ -118,7 +118,7 @@ class RecurrenceTests: XCTestCase {
     }
 
     func testSundaysInFebruary() {
-        let rec = Recurrence.every(.weekly, at: 0, past: 9)
+        let rec = Recurrence.every(.weekly)
         rec.daysOfWeek.append(DayOfWeek.sunday.toInt())
         rec.monthsOfYear.append(IntWrapper.of(2))
 
@@ -144,7 +144,7 @@ class RecurrenceTests: XCTestCase {
 
     func testPositionalInMonth() {
         self.measure {
-            let rec = Recurrence.every(.monthly, at: 0, past: 9)
+            let rec = Recurrence.every(.monthly)
             rec.daysOfWeek.append(DayOfWeek.friday.toInt())
             rec.setPositions.append(2)
 
@@ -158,7 +158,7 @@ class RecurrenceTests: XCTestCase {
     }
 
     func testComplexPositionalInMonth() {
-        let rec = Recurrence.every(.monthly, at: 0, past: 9)
+        let rec = Recurrence.every(.monthly)
         rec.daysOfWeek.append(DayOfWeek.thursday.toInt())
         rec.daysOfWeek.append(DayOfWeek.friday.toInt())
         rec.setPositions.append(2)
@@ -180,7 +180,7 @@ class RecurrenceTests: XCTestCase {
     }
 
     func testPositionalInYear() {
-        let rec = Recurrence.every(.yearly, at: 0, past: 9)
+        let rec = Recurrence.every(.yearly)
         rec.daysOfWeek.append(DayOfWeek.saturday.toInt())
         rec.setPositions.append(IntWrapper.of(3))
 
@@ -204,7 +204,7 @@ class RecurrenceTests: XCTestCase {
     }
 
     func testDayOfWeekMatches() {
-        let rec = Recurrence.every(.yearly, at: 0, past: 9)
+        let rec = Recurrence.every(.yearly)
         rec.daysOfWeek.append(DayOfWeek.saturday.toInt())
 
         XCTAssertTrue(rec.dayOfWeekMatches(for: calendar.theNext(weekday: GregorianSaturday, after: Date())))
@@ -212,7 +212,7 @@ class RecurrenceTests: XCTestCase {
 
     func testSecondAndLastWeekdayInYear() {
         self.measure {
-            let rec = Recurrence.every(.yearly, at: 0, past: 9)
+            let rec = Recurrence.every(.yearly)
             rec.daysOfWeek.append(DayOfWeek.monday.toInt())
             rec.daysOfWeek.append(DayOfWeek.tuesday.toInt())
             rec.daysOfWeek.append(DayOfWeek.wednesday.toInt())
@@ -254,5 +254,15 @@ class RecurrenceTests: XCTestCase {
                 i += 1
             }
         }
+    }
+
+    func testEveryOtherWeekendLongEvent() {
+        let lastFriday = Calendar.current.theLast(.friday, before: now)
+
+        let series = Series.series("Weekend Event", startingOn: lastFriday)
+        series.recurrence = Recurrence.every(.weekly, by: 2, on: .friday)
+        series.template = Template.of("Weekend Event", at: 0, past: 18, lasting: 1200)
+
+        XCTAssertTrue(series.recurs(on: lastFriday))
     }
 }

@@ -51,7 +51,7 @@ class Reminder: _TemporalBase, Temporality, Originating, CalendarLinkable, Alarm
 
     func isDetachedForm(of series: Series) -> Bool {
 
-        if !series.recurs(on: startDate, ignoreActiveRange: true) {
+        if !series.recurs(exactlyAt: startDate, ignoreActiveRange: true) {
             return true
         }
 
@@ -60,11 +60,6 @@ class Reminder: _TemporalBase, Temporality, Originating, CalendarLinkable, Alarm
         }
 
         return series.status != self.status
-    }
-
-    static func between(_ starting: Date, and before: Date) -> Results<Reminder> {
-        let predicate = NSPredicate(format: "statusString = %@ AND startTime >= %d AND startTime < %d", ObjectStatus.active.rawValue, starting.secondsSinceReferenceDate, before.secondsSinceReferenceDate)
-        return Realm.user().objects(Reminder.self).filter(predicate).sorted(byKeyPath: "startTime")
     }
 
     func calculateFuzzyHash() -> Int {
@@ -83,5 +78,14 @@ class Reminder: _TemporalBase, Temporality, Originating, CalendarLinkable, Alarm
         let start = Calendar.current.startOfDay(for: day)
         let end = Calendar.current.startOfDay(for: day.dayAfter)
         return between(start, and: end)
+    }
+
+    static func between(_ starting: Date, and before: Date) -> Results<Reminder> {
+        let start = starting.secondsSinceReferenceDate
+        let end = before.secondsSinceReferenceDate
+        let active = ObjectStatus.active.rawValue
+        let predicate = NSPredicate(format: "statusString = %@ AND ((startTime >= %d AND startTime < %d) OR (startTime < %d AND endTime >= %d))", active, start, end, start, start)
+        //let predicate = NSPredicate(format: "statusString = %@ AND ((startTime >= %d AND startTime < %d) OR (endTime >= %d AND endTime <= %d) OR (startTime < %d AND endTime > %d))", status.rawValue, start, end, start, end, start, end)
+        return Realm.user().objects(Reminder.self).filter(predicate).sorted(byKeyPath: "startTime")
     }
 }

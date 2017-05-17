@@ -79,6 +79,20 @@ class CalendarTests: XCTestCase {
         XCTAssertTrue(calendar.isDate(anotherTuesday, after: firstTuesday))
     }
 
+    func testLastWeekday() {
+
+        let lastTuesday = calendar.theLast(.tuesday, before: now)
+        XCTAssertEqual(calendar.component(.weekday, from: lastTuesday), GregorianTuesday)
+        XCTAssertTrue(lastTuesday < now)
+        let sameTuesday = calendar.theLast(.tuesday, onOrBefore: lastTuesday)
+        XCTAssertEqual(lastTuesday, sameTuesday)
+        print("----\n----\nShould be jumping back a Tuesday now!")
+        let anotherTuesday = calendar.theLast(.tuesday, before: lastTuesday)
+        XCTAssertNotEqual(lastTuesday, anotherTuesday)
+        XCTAssertTrue(anotherTuesday < lastTuesday)
+        XCTAssertEqual(calendar.component(.weekday, from: anotherTuesday), GregorianTuesday)
+    }
+
     func testTheFirst() {
         let theFirst = calendar.startOfMonth(onOrAfter: now)
         XCTAssertEqual(calendar.component(.day, from: theFirst), 1)

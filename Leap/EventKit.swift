@@ -83,7 +83,7 @@ class EventKit {
 
                     case .reminder:
                         if let series = Series.by(title: ekEvent.title),
-                            (series.recurs(on: ekEvent.startDate) || (ekEvent.isAllDay && series.recurrence.recursOn(ekEvent.startDate, for: series))) {
+                            (series.recurs(exactlyAt: ekEvent.startDate) || (ekEvent.isAllDay && series.recurrence.recursOn(ekEvent.startDate, for: series))) {
                             print("reminder DUPLICATE of Series \(ekEvent.title)")
                             self.importSeries(ekEvent, in: calendar, given: series)
 
@@ -186,6 +186,15 @@ class EventKit {
                 series.updateToBestOrigin(with: best)
                 series.template.updateToBestOrigin(with: best)
             }
+        }
+
+        if existing.title.contains("Kids Overnight") {
+            print(existing.recurrence)
+            print(existing.template)
+            print(existing.startDate)
+            let end = existing.endDate
+            print(end == nil ? "No End" : String(describing: end))
+            print("Yup here we are")
         }
 
         print("series UPDATE \(existing.type) \(ekEvent.title) \(existing.status)")

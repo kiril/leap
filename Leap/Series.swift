@@ -222,21 +222,39 @@ class Series: LeapModel, Fuzzy, Originating {
     }
 
     func recurs(on date: Date, ignoreActiveRange: Bool = false) -> Bool {
-        let startOfDay = Calendar.current.startOfDay(for: date)
-        let endOfDay = Calendar.current.dayAfter(startOfDay)
-        guard let range = TimeRange(start: startOfDay, end: endOfDay),
-            let start = template.startTime(in: range),
-            (ignoreActiveRange || recurs(in: range)) else {
-                print("\(title) : doesn't recur on \(DateFormatter.shortFormat(date))")
-                return false
+        return recurs(in: TimeRange.day(of: date))
+    }
+
+    func recurs(exactlyAt date: Date, ignoreActiveRange: Bool = false) -> Bool {
+        let range = TimeRange.day(of: date)
+        guard recurs(in: range, ignoreActiveRange: ignoreActiveRange) else { return false }
+        return date == template.startTime(in: range)
+    }
+
+    func recurs(in range: TimeRange, ignoreActiveRange: Bool = false) -> Bool {
+        return recurs(between: range.start, and: range.end, ignoreActiveRange: ignoreActiveRange)
+    }
+
+    func recurs(between start: Date, and end: Date, ignoreActiveRange: Bool = false) -> Bool {
+        ensureLastRecurrenceDayCalculated()
+        let startSecs = start.secondsSinceReferenceDate
+        let endSecs = end.secondsSinceReferenceDate
+        guard ignoreActiveRange || (startTime <= endSecs && (endTime == 0 || endTime > startSecs)) else {
+            return false
         }
-        return start == date
-    }
+        guard ignoreActiveRange || lastRecurrenceDay == nil || start <= lastRecurrenceDay! else { // this is for count-based max recurrences
+            return false
+        }
 
-    func recurs(in range: TimeRange) -> Bool {
-        return recursBetween(range.start, and: range.end)
+        var date:Date? = startDate
+        while let d = date, d.secondsSinceReferenceDate < endSecs {
+            if recurrence!.recursOn(d, for: self), let when = template.startTime(between: start, and: end), when >= start && when < end {
+                return true
+            }
+            date = Calendar.current.dayAfter(d)
+        }
+        return false
     }
-
 
     func ensureLastRecurrenceDayCalculated() {
         if recurrence!.count > 0 && lastRecurrenceDay == nil {
@@ -244,33 +262,11 @@ class Series: LeapModel, Fuzzy, Originating {
         }
     }
 
-    /**
-     * Note: The general usage should be:
-     *   if series.recursBetween(...), let tm = series.stub(on: date) {
-     *       ...
-     *   }
-     */
-    func recursBetween(_ startDate: Date, and endDate: Date) -> Bool {
-        ensureLastRecurrenceDayCalculated()
-        guard startTime <= endDate.secondsSinceReferenceDate &&
-            (endTime == 0 || endTime > startDate.secondsSinceReferenceDate) else {
-            return false
-        }
-        guard lastRecurrenceDay == nil || startDate <= lastRecurrenceDay! else { // this is for count-based max recurrences
-            return false
-        }
-        var date:Date? = startDate
-        while let d = date, d.secondsSinceReferenceDate < endDate.secondsSinceReferenceDate {
-            if recurrence!.recursOn(d, for: self) {
-                return true
-            }
-            date = Calendar.current.date(byAdding: DateComponents(day: 1), to: d)
-        }
-        return false
-    }
-
     func startTime(in range: TimeRange) -> Date? {
-        return template.startTime(in: range)
+        if let when = template.startTime(in: range), recurrence.recursOn(when, for: self) {
+            return when
+        }
+        return nil
     }
 
     func generateId(in range: TimeRange) -> String? {
@@ -306,7 +302,12 @@ class Series: LeapModel, Fuzzy, Originating {
             return nil
         }
 
-        guard let eventStart = template.startTime(between: start, and: end), recurrence.recursOn(eventStart, for: self) else {
+        // OK, so for multi-day events, this logic is wrong
+        // -> if the event is IN PROGRESS at any time on this day, then it's valid...
+        // SO:
+        // -> check duration of event
+        // -> look back from 'start' by that duration when doing the template.startTime()
+        guard let eventStart = template.startTime(overlappingRegionBetween: start, and: end), recurrence.recursOn(eventStart, for: self) else {
             return nil
         }
         let eventId = generateId(for: eventStart)

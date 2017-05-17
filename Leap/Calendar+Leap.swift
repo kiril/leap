@@ -243,27 +243,76 @@ extension Calendar {
     }
 
     func dayAfter(_ d: Date) -> Date {
-        return date(byAdding: DateComponents(day: 1), to: d)!
+        return date(byAdding: .day, value: 1, to: d)!
     }
 
     func dayBefore(_ d: Date) -> Date {
-        return date(byAdding: DateComponents(day: -1), to: d)!
+        return date(byAdding: .day, value: -1, to: d)!
     }
 
-    func theNext(weekday desired: Int, onOrAfter date: Date) -> Date {
-        let weekday = component(.weekday, from: date)
+    func adding(days: Int, to d: Date) -> Date {
+        return date(byAdding: .day, value: days, to: d)!
+    }
+
+    func subtracting(days: Int, from d: Date) -> Date {
+        return date(byAdding: .day, value: -days, to: d)!
+    }
+
+    func theNext(weekday desired: Int, onOrAfter d: Date) -> Date {
+        let weekday = component(.weekday, from: d)
         if weekday == desired {
-            return date
+            return d
         }
         if desired > weekday {
-            return self.date(byAdding: .day, value: (desired-weekday), to: date)!
+            return adding(days: (desired-weekday), to: d)
         }
         let delta = 7 - (weekday - desired)
-        return self.date(byAdding: .day, value: delta, to: date)!
+        return adding(days: delta, to: d)
     }
 
-    func theNext(weekday: Int, after date: Date) -> Date {
-        return theNext(weekday: weekday, onOrAfter: dayAfter(date))
+    func theNext(weekday: Int, after d: Date) -> Date {
+        return theNext(weekday: weekday, onOrAfter: dayAfter(d))
+    }
+
+    func theNext(_ weekday: Weekday, after d: Date) -> Date {
+        return theNext(weekday: weekday.gregorianIndex, after: d)
+    }
+
+    func theNext(_ weekday: Weekday, onOrAfter d: Date) -> Date {
+        return theNext(weekday: weekday.gregorianIndex, onOrAfter: d)
+    }
+
+    func theLast(_ weekday: Weekday, before d: Date) -> Date {
+        return theLast(weekday: weekday.gregorianIndex, before: d)
+    }
+
+    func theLast(weekday desired: Int, before d: Date) -> Date {
+        return theLast(weekday: desired, onOrBefore: dayBefore(d))
+    }
+
+    func theLast(_ weekday: Weekday, onOrBefore d: Date) -> Date {
+        return theLast(weekday: weekday.gregorianIndex, onOrBefore: d)
+    }
+
+    func theLast(weekday desired: Int, onOrBefore d: Date) -> Date {
+        let weekday = component(.weekday, from: d)
+        let delta:Int = weekday - desired
+
+        switch delta {
+        case 1...Int.max:
+            return subtracting(days: delta, from: d)
+
+        case Int.min..<0:
+            let daysInFuture = -delta // verbose because...
+            let daysIntoPast = 7 - daysInFuture // ... then this logic is more transparent
+            return subtracting(days: daysIntoPast, from: d)
+
+        case 0:
+            return d
+
+        default:
+            fatalError()
+        }
     }
 
     func startOfMonth(onOrAfter d: Date) -> Date {
