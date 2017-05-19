@@ -287,6 +287,8 @@ class Recurrence: LeapModel {
             return false
         }
 
+        let allPositions = Set(setPositions.map({$0.raw}))
+
         switch frequency {
         case .daily:
             if interval != 0 {
@@ -325,7 +327,7 @@ class Recurrence: LeapModel {
                         matchIndices.append(i)
                         if calendar.isDate(day, theSameDayAs: date) {
                             myIndex = i
-                            if setPositions.contains(matchIndices.count) {
+                            if allPositions.contains(matchIndices.count) {
                                 return true // may as well succeed fast in the simple case
                             }
                         }
@@ -333,7 +335,7 @@ class Recurrence: LeapModel {
                     i += 1
                 }
 
-                for position in setPositions.map({ return $0.raw }) {
+                for position in allPositions {
                     let positionalIndex = position < 0 ? matchIndices[matchIndices.count+position] : matchIndices[position-1]
                     if abs(position) < matchIndices.count && positionalIndex == myIndex {
                         return true
@@ -367,8 +369,8 @@ class Recurrence: LeapModel {
                 let daysInYear = calendar.daysInYear(including: date)
                 let weekdays = daysOfWeek.map({ $0.raw }).sorted()
 
-                var positivePositions = setPositions.map({ $0.raw }).filter({ $0 >= 0 }).sorted()
-                let negativePositions = setPositions.map({ $0.raw }).filter({ $0 < 0 }).sorted()
+                var positivePositions = allPositions.filter({ $0 >= 0 }).sorted()
+                let negativePositions = allPositions.filter({ $0 < 0 }).sorted()
 
                 let start = calendar.startOfYear(including: date)
                 let startWeekday = calendar.component(.weekday, from: start)

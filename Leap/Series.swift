@@ -45,11 +45,11 @@ class Series: LeapModel, Fuzzy, Originating {
     }
 
     func calculateFuzzyHash() -> Int {
-        return "\(title)_\(startTime)_\(template.startHour)_\(template.startMinute)_\(template.durationMinutes)_\(template.participants)".hashValue
+        return "\(title)_\(startTime)_\(template.startHour)_\(template.startMinute)_\(template.durationMinutes)".hashValue
     }
 
     func calculateFuzzyHash(from event: Event) -> Int {
-        return "\(event.title)_\(event.startTime)_\(event.startHour)_\(event.startMinute)_\(event.durationMinutes)_\(event.participants)".hashValue
+        return "\(event.title)_\(event.startTime)_\(event.startHour)_\(event.startMinute)_\(event.durationMinutes)".hashValue
     }
 
     var startDate: Date {
@@ -245,6 +245,9 @@ class Series: LeapModel, Fuzzy, Originating {
         guard ignoreActiveRange || lastRecurrenceDay == nil || start <= lastRecurrenceDay! else { // this is for count-based max recurrences
             return false
         }
+
+        let recurrence = self.recurrence!
+        let template = self.template!
 
         var date:Date? = startDate
         while let d = date, d.secondsSinceReferenceDate < endSecs {

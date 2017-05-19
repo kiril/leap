@@ -153,8 +153,7 @@ extension Calendar {
         var year = min(aYear, bYear)
         let endYear = max(aYear, bYear)
         while year < endYear {
-            let lastDay = date(from: DateComponents(year: year, month: 12, day: 31))!
-            let daysInYear = ordinality(of: .day, in: .year, for: lastDay)!
+            let daysInYear = self.daysInYear(including: date(from: DateComponents(year: year, month: 12, day: 31))!)
             interveningDays += daysInYear
             year += 1
         }
@@ -406,20 +405,7 @@ extension Calendar {
     }
 
     func weekdayOrdinal(of date: Date) -> Int {
-        let month = self.component(.month, from: date)
-        let weekday = self.component(.weekday, from: date)
-        let firstOfMonth = self.startOfMonth(including: date)
-        let firstWeekday = self.theNext(weekday: weekday, onOrAfter: firstOfMonth)
-        var d = firstWeekday
-        var nth = 0
-        while self.component(.month, from: d) == month {
-            nth += 1
-            if self.isDate(d, inSameDayAs: date) {
-                break
-            }
-            d = self.theNext(weekday: weekday, after: d)
-        }
-        return nth
+        return self.component(.day, from: date) / 7 + 1
     }
 
     func count(weekday: Int, inMonthOf date: Date) -> Int {
