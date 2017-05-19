@@ -10,7 +10,7 @@ import Foundation
 import EventKit
 import RealmSwift
 
-let importQueue = DispatchQueue(label: "eventkit.import")
+let importQueue = DispatchQueue(label: "eventkit.import", qos: .background, autoreleaseFrequency: .workItem)
 
 class EventKit {
     let store: EKEventStore
@@ -23,9 +23,9 @@ class EventKit {
         return Realm.user().objects(Event.self).isEmpty
     }
 
-    private func doImport(from start: Date, to end: Date) {
-        store.calendars(for: EKEntityType.event).forEach { self.importEvents(in: $0, from: start, to: end) }
-        store.calendars(for: EKEntityType.reminder).forEach { self.importEvents(in: $0, from: start, to: end) }
+    private func doImport(from start: Date, to end: Date, modifiedAfter: Date? = nil) {
+        store.calendars(for: EKEntityType.event).forEach { self.importEvents(in: $0, from: start, to: end, modifiedAfter: modifiedAfter) }
+        store.calendars(for: EKEntityType.reminder).forEach { self.importEvents(in: $0, from: start, to: end, modifiedAfter: modifiedAfter) }
     }
 
     func catchUp() {
@@ -34,10 +34,14 @@ class EventKit {
         let aWeekOut = Calendar.current.adding(days: 7, to: endOfDay)
         let aWeekBack = Calendar.current.subtracting(days: 7, from: startOfDay)
 
-        doImport(from: endOfDay, to: aWeekOut)
-        doImport(from: startOfDay, to: endOfDay)
-        doImport(from: aWeekBack, to: startOfDay)
-        doImport(from: aWeekOut, to: farOffFuture())
+        let lastSynced = EventKitSync.lastSynced()
+        // TODO: make it so this is only set if everything succeeds...
+        //EventKitSync.mark()
+
+        doImport(from: endOfDay, to: aWeekOut, modifiedAfter: lastSynced)
+        doImport(from: startOfDay, to: endOfDay, modifiedAfter: lastSynced)
+        doImport(from: aWeekBack, to: startOfDay, modifiedAfter: lastSynced)
+        doImport(from: aWeekOut, to: farOffFuture(), modifiedAfter: lastSynced)
     }
 
     func importAll() {
@@ -68,13 +72,16 @@ class EventKit {
         return Calendar.current.date(byAdding: plus4years, to: startOfToday, wrappingComponents: true)!
     }
 
-    func importEvents(in calendar: EKCalendar, from: Date, to: Date) {
+    func importEvents(in calendar: EKCalendar, from: Date, to: Date, modifiedAfter: Date? = nil) {
         calendar.asLegacyCalendar(eventStoreId: store.eventStoreIdentifier).update()
-        store.enumerateEvents(in: calendar, from: from, to: to, using: eventSearchCallback(calendar))
+        store.enumerateEvents(in: calendar, from: from, to: to, using: eventSearchCallback(calendar, modifiedAfter: modifiedAfter))
     }
 
-    func eventSearchCallback(_ calendar: EKCalendar) -> EKEventSearchCallback {
-        return { (event:EKEvent, stop:UnsafeMutablePointer<ObjCBool>) in self.importEK(event: event, in: calendar) }
+    func eventSearchCallback(_ calendar: EKCalendar, modifiedAfter: Date? = nil) -> EKEventSearchCallback {
+        return { (event:EKEvent, stop:UnsafeMutablePointer<ObjCBool>) in
+            guard modifiedAfter == nil || (event.lastModifiedDate ?? event.creationDate)! > modifiedAfter! else { return }
+            self.importEK(event: event, in: calendar)
+        }
     }
 
     func importEK(event ekEvent: EKEvent, in calendar: EKCalendar) {
@@ -118,35 +125,26 @@ class EventKit {
         let origin = ekEvent.getOrigin(in: calendar)
 
         let realm = Realm.user()
-        if existing.participants.isEmpty && ekEvent.hasAttendees {
-            try! realm.safeWrite {
+        try! realm.safeWrite {
+            if existing.participants.isEmpty && ekEvent.hasAttendees {
                 existing.addParticipants(ekEvent.getParticipants(origin: origin))
                 existing.status = ekEvent.objectStatus
             }
-        }
 
-        let bestOrigin = existing.origin.winner(vs: origin)
-        if bestOrigin != existing.origin {
-            try! realm.safeWrite {
-                print("\(ekEvent.title) -> \(bestOrigin)")
+            let bestOrigin = existing.origin.winner(vs: origin)
+            if bestOrigin != existing.origin {
                 existing.origin = bestOrigin
             }
-        }
 
-        if !existing.wasDetached && detached {
-            if let event = existing as? Event {
-                try! realm.safeWrite {
+            if !existing.wasDetached && detached {
+                if let event = existing as? Event {
                     event.wasDetached = true
-                }
-            } else if let reminder = existing as? Reminder {
-                try! realm.safeWrite {
+                } else if let reminder = existing as? Reminder {
                     reminder.wasDetached = true
                 }
             }
-        }
 
-        if let linkable = existing as? CalendarLinkable {
-            try! realm.safeWrite {
+            if let linkable = existing as? CalendarLinkable {
                 linkable.addLink(to: calendar)
             }
         }

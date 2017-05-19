@@ -208,7 +208,7 @@ class RecurringEventSurface: EventSurface {
                     populateWith: { (m:LeapModel) in EventResponse.from((m as! Series).engagement) },
                     on: "series",
                     persistWith: { ($0 as! Series).engagement = ($1 as! EventResponse).asEngagement() })
-        bridge.readonlyBind(surface.recurrenceDescription) { recurringDescription(series: ($0 as! Series), in: surface.seriesRange) }
+        bridge.readonlyBind(surface.recurrenceDescription) { recurringDescription(series: ($0 as! Series), in: range) }
 
         bridge.readonlyBind(surface.participants) { (m:LeapModel) -> [ParticipantSurface] in
             let series = m as! Series

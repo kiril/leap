@@ -82,6 +82,7 @@
 		FB171CBC1ECE08B900D540A4 /* DayTraversal.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB171CBB1ECE08B900D540A4 /* DayTraversal.swift */; };
 		FB171CBE1ECE0AAD00D540A4 /* DaySequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB171CBD1ECE0AAD00D540A4 /* DaySequence.swift */; };
 		FB171CC01ECF544900D540A4 /* DaySequenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB171CBF1ECF544900D540A4 /* DaySequenceTests.swift */; };
+		FB171CC21ECF8F7900D540A4 /* EventKitSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB171CC11ECF8F7900D540A4 /* EventKitSync.swift */; };
 		FB180C481EB10EA800FE1CF4 /* FuzzyHashable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB180C471EB10EA700FE1CF4 /* FuzzyHashable.swift */; };
 		FB180C4A1EB260F800FE1CF4 /* EventDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB180C491EB260F800FE1CF4 /* EventDetailViewController.swift */; };
 		FB180C4E1EB261B200FE1CF4 /* EventDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB180C4D1EB261B200FE1CF4 /* EventDetailView.xib */; };
@@ -273,6 +274,7 @@
 		FB171CBB1ECE08B900D540A4 /* DayTraversal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayTraversal.swift; sourceTree = "<group>"; };
 		FB171CBD1ECE0AAD00D540A4 /* DaySequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DaySequence.swift; sourceTree = "<group>"; };
 		FB171CBF1ECF544900D540A4 /* DaySequenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DaySequenceTests.swift; sourceTree = "<group>"; };
+		FB171CC11ECF8F7900D540A4 /* EventKitSync.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventKitSync.swift; sourceTree = "<group>"; };
 		FB180C471EB10EA700FE1CF4 /* FuzzyHashable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FuzzyHashable.swift; sourceTree = "<group>"; };
 		FB180C491EB260F800FE1CF4 /* EventDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDetailViewController.swift; sourceTree = "<group>"; };
 		FB180C4D1EB261B200FE1CF4 /* EventDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventDetailView.xib; sourceTree = "<group>"; };
@@ -691,6 +693,7 @@
 				FB4208561E85A168007F4DBD /* GeoFence.swift */,
 				FB4208691E897A04007F4DBD /* Checklist.swift */,
 				FB42086B1E897AD1007F4DBD /* ChecklistItem.swift */,
+				FB171CC11ECF8F7900D540A4 /* EventKitSync.swift */,
 			);
 			name = Metadata;
 			sourceTree = "<group>";
@@ -1242,6 +1245,7 @@
 				FB1871F61EBCB38F00213913 /* UIView+Leap.swift in Sources */,
 				FB4208511E8593DA007F4DBD /* Venue.swift in Sources */,
 				FBD1045D1E80309300DDF65B /* Property.swift in Sources */,
+				FB171CC21ECF8F7900D540A4 /* EventKitSync.swift in Sources */,
 				FBBE56991EA1692800B9647C /* SeriesSurface.swift in Sources */,
 				83A72D741E82DAE0005EB213 /* TimePerspective.swift in Sources */,
 				FB42086A1E897A04007F4DBD /* Checklist.swift in Sources */,

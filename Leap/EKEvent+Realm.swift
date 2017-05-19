@@ -35,7 +35,7 @@ extension EKEvent {
     }
 
     var me: EKParticipant? {
-        if let attendees = self.attendees {
+        if hasAttendees, let attendees = self.attendees {
             for attendee in attendees {
                 if attendee.isCurrentUser {
                     return attendee
@@ -116,7 +116,7 @@ extension EKEvent {
     func getAlarms() -> [Alarm] {
         var alarms: [Alarm] = []
 
-        if let ekAlarms = self.alarms {
+        if hasAlarms, let ekAlarms = self.alarms {
             for alarm in ekAlarms {
                 alarms.append(alarm.asAlarm())
             }
