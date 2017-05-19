@@ -249,8 +249,12 @@ class EventKit {
     }
 
     func eventExists(withId id: String, in calendar: EKCalendar, during range: TimeRange) -> Bool {
-        // TODO: THIS
-        fatalError()
+        for event in store.events(in: calendar, from: range.start, to: range.end) {
+            if event.cleanId == id {
+                return true
+            }
+        }
+        return false
     }
 
     func findOriginalDate(in series: Series, for event: EKEvent) -> Date? {
@@ -266,23 +270,10 @@ class EventKit {
             later = after
         }
 
-        if let earlier = earlier, later == nil {
-            return earlier
-
-        } else if let later = later, earlier == nil {
-            return later
-
-        } else if let later = later, let earlier = earlier {
-            let laterDays = Calendar.current.daysBetween(event.startDate, and: later)
-            let earlierDays = Calendar.current.daysBetween(earlier, and: event.startDate)
-            if laterDays < earlierDays {
-                return later
-            } else if earlierDays < laterDays {
-                return earlier
-            }
-        }
-
-        return nil
+        let cal = Calendar.current
+        let start = event.startDate
+        let compare = {(a:Date,b:Date) in abs(cal.daysBetween(start, and: a)) < abs(cal.daysBetween(start, and: b))}
+        return [earlier, later].filter({$0 != nil}).map({$0!}).sorted(by: compare).first
     }
 
     func findDetachedIdentifier(in series: Series, of event: EKEvent) -> String? {
