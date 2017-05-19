@@ -168,23 +168,64 @@ class Recurrence: LeapModel {
     }
 
     func nextRecurringDate(after date: Date, for series: Series) -> Date? {
+        let seriesStart = series.startDate
+        let calendar = Calendar.current
+
         switch frequency {
         case .daily:
-            break
+            let maxDays = 7
+            var day = calendar.dayBefore(date)
+            var distance = 1
+            while distance <= maxDays && day >= seriesStart {
+                if recurs(on: day, for: series) {
+                    return day
+                }
+                day = calendar.dayBefore(day)
+                distance += 1
+            }
 
         case .weekly:
-            break
+            if !daysOfWeek.isEmpty {
+                let weekdays = DaySequence.weekdays(startingAt: calendar.dayBefore(date),
+                                                    using: calendar,
+                                                    weekdays: Array(daysOfWeek.map({$0.raw})),
+                                                    max: 14)
+
+                if let day = weekdays.first(where: {self.recurs(on: $0, for: series)}) {
+                    return day
+                }
+            }
+            // TODO: more?
 
         case .monthly:
-            break
+            if !daysOfWeek.isEmpty {
+                let weekdays = DaySequence.weekdays(startingAt: calendar.dayBefore(date),
+                                                    using: calendar,
+                                                    weekdays: Array(daysOfWeek.map({$0.raw})),
+                                                    max: 14)
+
+                if let day = weekdays.first(where: {self.recurs(on: $0, for: series)}) {
+                    return day
+                }
+
+            } else if !daysOfMonth.isEmpty {
+                let days = DaySequence.monthly(startingAt: calendar.dayBefore(date),
+                                               using: calendar,
+                                               on: Array(daysOfMonth.map({$0.raw})),
+                                               max: 8)
+                if let day = days.first(where: {self.recurs(on: $0, for: series)}) {
+                    return day
+                }
+            }
+            // TODO: more?
 
         case .yearly:
-            break
+            break // TODO: this
 
         case .unknown:
             fatalError("Real recurrences can't have unknown frequency")
         }
-
+        
         return nil
     }
 
