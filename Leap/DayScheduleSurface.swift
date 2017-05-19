@@ -169,7 +169,7 @@ class DayScheduleSurface: Surface {
                          end: rangeEnd)
     }
 
-    func latestScheduleEntry() -> ScheduleEntry? {
+    func mostRecentScheduleEntry() -> ScheduleEntry? {
         for entry in entries {
             switch entry {
             case let .event(event):
@@ -183,6 +183,28 @@ class DayScheduleSurface: Surface {
             }
         }
         return nil
+    }
+
+    func mostRecentMaybeScheduleEntry() -> ScheduleEntry? {
+
+        var mostRecentScheduleEntry: ScheduleEntry?
+
+        for entry in entries {
+            switch entry {
+            case let .event(event):
+                if event.userResponse.value == .maybe {
+                    mostRecentScheduleEntry = entry
+
+                    if event.perspective.value != .past {
+                        return mostRecentScheduleEntry
+                    }
+                }
+            default:
+                continue
+            }
+        }
+
+        return mostRecentScheduleEntry
     }
 
     private func scheduleEntries(displayedEvents: [EventSurface],

@@ -89,18 +89,28 @@ class DayScheduleViewController: UIViewController, StoryboardLoadable {
     }
 
     @objc func scrollToCurrentTime(animated: Bool) {
-        if  let latest = surface?.latestScheduleEntry() {
-            let wrappedLatest = ScheduleEntryWrapper(scheduleEntry: latest)
-
-            let section = collectionAdapter.section(for: wrappedLatest)
-            let indexPath = IndexPath(row: 0, section: section)
-            collectionView.scrollToItem(at: indexPath, at: .centeredVertically, animated: animated)
+        if  let latest = surface?.mostRecentScheduleEntry() {
+            scroll(toScheduleEntry: latest,
+                   at: .centeredVertically,
+                   animated: animated)
         }
+    }
+
+    func scroll(toScheduleEntry scheduleEntry: ScheduleEntry,
+                at scrollPosition: UICollectionViewScrollPosition,
+                animated: Bool) {
+        let wrappedEntry = ScheduleEntryWrapper(scheduleEntry: scheduleEntry)
+
+        let section = collectionAdapter.section(for: wrappedEntry)
+        let indexPath = IndexPath(row: 0, section: section)
+        collectionView.scrollToItem(at: indexPath, at: scrollPosition, animated: animated)
     }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
+
+    fileprivate var wasShowingHiddenEvents = false
 }
 
 extension DayScheduleViewController: EventViewCellDelegate {
@@ -368,12 +378,29 @@ extension DayScheduleViewController: SourceIdentifiable {
     var sourceId: String { return "DayScheduleVC" }
 }
 
-
 extension DayScheduleViewController: SurfaceObserver {
+
     func surfaceDidChange(_ surface: Surface) {
         if isCurrentlyAppeared {
             collectionAdapter.performUpdates(animated: true)
         }
+
+        if let surface = surface as? DayScheduleSurface {
+            // Just displayed hidden events.
+
+            if  surface.displayHiddenEvents,
+                !wasShowingHiddenEvents,
+                let maybeEntry = surface.mostRecentMaybeScheduleEntry() {
+
+                DispatchQueue.main.async { [weak self] in
+                    self?.scroll(toScheduleEntry: maybeEntry,
+                                 at: .top,
+                                 animated: true)
+                }
+            }
+            wasShowingHiddenEvents = surface.displayHiddenEvents
+        }
+
     }
 }
 
