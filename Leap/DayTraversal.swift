@@ -171,6 +171,9 @@ class DayOfMonthTraversal: DayTraversal {
         let priorDayOfMonth = (days.reversed().first(where: {$0 < dayOfMonth}) ?? days.last)!
 
         let date = priorDayOfMonth == dayOfMonth ? calendar.date(byAdding: .month, value: -1, to: d)! : d
+        if date < d && calendar.component(.day, from: date) == dayOfMonth {
+            return date
+        }
 
         let components = DateComponents(calendar: calendar, day: priorDayOfMonth)
         return calendar.nextDate(after: date,
