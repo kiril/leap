@@ -249,6 +249,8 @@ class EventKit {
     }
 
     func eventExists(withId id: String, in calendar: EKCalendar, during range: TimeRange) -> Bool {
+        // TODO: THIS
+        fatalError()
     }
 
     func findOriginalDate(in series: Series, for event: EKEvent) -> Date? {
@@ -283,8 +285,8 @@ class EventKit {
         return nil
     }
 
-    func findDetachedIdentifier(in series: Series, near date: Date) -> String? {
-        guard let originalDate = findOriginalDate(in: series, near: date) else { return nil }
+    func findDetachedIdentifier(in series: Series, of event: EKEvent) -> String? {
+        guard let originalDate = findOriginalDate(in: series, for: event) else { return nil }
         return series.generateId(for: originalDate)
     }
 
@@ -292,7 +294,7 @@ class EventKit {
 
         if let series = existing {
             if ekEvent.isDetachedForm(of: series) {
-                guard let id = series.generateId(forDayOf: ekEvent.startDate) ?? findDetachedIdentifier(in: series, near: ekEvent.startDate) else {
+                guard let id = series.generateId(forDayOf: ekEvent.startDate) ?? findDetachedIdentifier(in: series, of: ekEvent) else {
                     print("series BROKEN detached/can't figure out where from \(ekEvent.title)")
                     return
                 }

@@ -66,6 +66,30 @@ extension EKWeekday {
         }
     }
 
+    static func from(_ weekday: Weekday) -> EKWeekday {
+        switch weekday {
+        case .sunday: return .sunday
+        case .monday: return .monday
+        case .tuesday: return .tuesday
+        case .wednesday: return .wednesday
+        case .thursday: return .thursday
+        case .friday: return .friday
+        case .saturday: return .saturday
+        }
+    }
+
+    var weekday: Weekday {
+        switch self {
+        case .sunday: return .sunday
+        case .monday: return .monday
+        case .tuesday: return .tuesday
+        case .wednesday: return .wednesday
+        case .thursday: return .thursday
+        case .friday: return .friday
+        case .saturday: return .saturday
+        }
+    }
+
     var gregorianWeekday: Int {
         return self.rawValue
     }
@@ -87,50 +111,6 @@ extension EKWeekday {
         case .saturday:
             return "Saturday"
         }
-    }
-}
-
-typealias DateTest = (Date) -> Bool
-
-class DayIterator: IteratorProtocol {
-    let calendar: Calendar
-    let test: DateTest
-    let start: Date
-    let reversed: Bool
-    var date: Date
-
-    init(calendar: Calendar, start: Date, while test: @escaping DateTest, reversed: Bool) {
-        self.calendar = calendar
-        self.start = start
-        self.date = start
-        self.test = test
-        self.reversed = reversed
-    }
-
-    func next() -> Date? {
-        let ret = date
-        if !test(ret) {
-            return nil
-        }
-
-        self.date = reversed ? calendar.dayBefore(self.date) : calendar.dayAfter(self.date)
-        return ret
-    }
-
-    func reset() {
-        date = start
-    }
-}
-
-class DaySequence: Sequence {
-    let iterator: DayIterator
-    init(_ iterator: DayIterator) {
-        self.iterator = iterator
-    }
-
-    func makeIterator() -> DayIterator {
-        iterator.reset()
-        return iterator
     }
 }
 
@@ -323,9 +303,17 @@ extension Calendar {
         return date(bySetting: .month, value: 1, of: date(bySetting: .day, value: 1, of: d)!)!
     }
 
+    func endOfYear(including d: Date) -> Date {
+        return dayBefore(startOfYear(onOrAfter: dayAfter(d)))
+    }
+
     func startOfMonth(including d: Date) -> Date {
         let daysBackToFirst = component(.day, from: d) - 1
         return date(byAdding: .day, value: -daysBackToFirst, to: d)!
+    }
+
+    func endOfMonth(including d: Date) -> Date {
+        return dayBefore(startOfMonth(onOrAfter: dayAfter(d)))
     }
 
     func startOfYear(including d: Date) -> Date {
@@ -346,30 +334,16 @@ extension Calendar {
         return weekdays
     }
 
-    func sequence(from start: Date, while test: @escaping DateTest) -> DaySequence {
-        return sequence(from: start, while: test, reversed: false)
-    }
-
-    func sequence(from start: Date, while test: @escaping DateTest, reversed: Bool) -> DaySequence {
-        return DaySequence(DayIterator(calendar: self, start: start, while: test, reversed: reversed))
-    }
-
     func allDays(inMonthOf d: Date) -> DaySequence {
-        let theFirst = startOfMonth(including: d)
-        let month = self.component(.month, from: theFirst)
-        return sequence(from: theFirst, while: {day in return self.component(.month, from: day) == month })
+        return DaySequence.month(of: d, using: self)
     }
 
     func allDays(inYearOf d: Date) -> DaySequence {
-        let theFirst = startOfYear(including: d)
-        let year = self.component(.year, from: theFirst)
-        return sequence(from: theFirst, while: {day in return self.component(.year, from: day) == year })
+        return DaySequence.year(of: d, using: self)
     }
 
     func allDaysReversed(inYearOf d: Date) -> DaySequence {
-        let lastDay = dayBefore(date(byAdding: .year, value: 1, to: startOfYear(including: d))!)
-        let year = self.component(.year, from: lastDay)
-        return sequence(from: lastDay, while: {day in return self.component(.year, from: day) == year }, reversed: true)
+        return DaySequence.year(of: d, using: self, reversed: true)
     }
 
     func all(weekdays day: Int, inYearOf date: Date) -> [Date] {

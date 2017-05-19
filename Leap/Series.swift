@@ -292,13 +292,13 @@ class Series: LeapModel, Fuzzy, Originating {
     }
 
     func lastRecurringDate(before date: Date) -> Date? {
-        guard let last = recurrence.lastRecurringDate(before: date) else { return nil }
+        guard let last = recurrence.lastRecurringDate(before: date, for: self) else { return nil }
         guard isInRange(date: last) else { return nil }
         return last
     }
 
     func nextRecurringDate(after date: Date) -> Date? {
-        guard let next = recurrence.nextRecurringDate(after: date) else { return nil }
+        guard let next = recurrence.nextRecurringDate(after: date, for: self) else { return nil }
         guard isInRange(date: next) else { return nil }
         return next
     }
