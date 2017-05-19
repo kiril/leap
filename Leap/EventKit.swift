@@ -10,7 +10,7 @@ import Foundation
 import EventKit
 import RealmSwift
 
-let importQueue = DispatchQueue(label: "eventkit.import")
+let importQueue = DispatchQueue(label: "eventkit.import", qos: .background, autoreleaseFrequency: .workItem)
 
 class EventKit {
     let store: EKEventStore
@@ -19,26 +19,43 @@ class EventKit {
         self.store = store
     }
 
+    func firstTime() -> Bool {
+        return Realm.user().objects(Event.self).isEmpty
+    }
+
+    private func doImport(from start: Date, to end: Date, modifiedAfter: Date? = nil) {
+        store.calendars(for: EKEntityType.event).forEach { self.importEvents(in: $0, from: start, to: end, modifiedAfter: modifiedAfter) }
+        store.calendars(for: EKEntityType.reminder).forEach { self.importEvents(in: $0, from: start, to: end, modifiedAfter: modifiedAfter) }
+    }
+
+    func catchUp() {
+        let startOfDay = Calendar.current.startOfDay(for: Date())
+        let endOfDay = Calendar.current.dayAfter(startOfDay)
+        let aWeekOut = Calendar.current.adding(days: 7, to: endOfDay)
+        let aWeekBack = Calendar.current.subtracting(days: 7, from: startOfDay)
+
+        let lastSynced = EventKitSync.lastSynced()
+        // TODO: make it so this is only set if everything succeeds...
+        //EventKitSync.mark()
+
+        doImport(from: endOfDay, to: aWeekOut, modifiedAfter: lastSynced)
+        doImport(from: startOfDay, to: endOfDay, modifiedAfter: lastSynced)
+        doImport(from: aWeekBack, to: startOfDay, modifiedAfter: lastSynced)
+        doImport(from: aWeekOut, to: farOffFuture(), modifiedAfter: lastSynced)
+    }
+
     func importAll() {
         let startOfDay = Calendar.current.startOfDay(for: Date())
         let endOfDay = Calendar.current.startOfDay(for: Calendar.current.dayAfter(startOfDay))
-        let aWeekAway = Calendar.current.date(byAdding: .day, value: 7, to: endOfDay)!
+        let aWeekOut = Calendar.current.adding(days: 7, to: endOfDay)
+        let aWeekBack = Calendar.current.subtracting(days: 7, from: startOfDay)
 
-        // some future first, because recurring events are annoying, and this stops some thrash
-        store.calendars(for: EKEntityType.event).forEach { self.importEvents(in: $0, from: endOfDay, to: aWeekAway) }
-        store.calendars(for: EKEntityType.reminder).forEach { self.importEvents(in: $0, from: endOfDay, to: aWeekAway) }
+        doImport(from: endOfDay, to: aWeekOut) // doing immediate future first helps stop recurring event thrash
+        doImport(from: startOfDay, to: endOfDay) // then we populate today quickly
+        doImport(from: aWeekBack, to: startOfDay) // then recent past
 
-        // get today's stuff flowing in fast
-        store.calendars(for: EKEntityType.event).forEach { self.importEvents(in: $0, from: startOfDay, to: endOfDay) }
-        store.calendars(for: EKEntityType.reminder).forEach { self.importEvents(in: $0, from: startOfDay, to: endOfDay) }
-
-        // future, because you're more likely to look there soon
-        store.calendars(for: EKEntityType.event).forEach { self.importEvents(in: $0, from: aWeekAway, to: farOffFuture()) }
-        store.calendars(for: EKEntityType.reminder).forEach { self.importEvents(in: $0, from: aWeekAway, to: farOffFuture()) }
-
-        // then get the past (which cleans up some stuff about event recurrence, too)
-        store.calendars(for: EKEntityType.event).forEach { self.importEvents(in: $0, from: longAgo(), to: startOfDay) }
-        store.calendars(for: EKEntityType.reminder).forEach { self.importEvents(in: $0, from: longAgo(), to: startOfDay) }
+        doImport(from: aWeekOut, to: farOffFuture()) // the rest
+        doImport(from: longAgo(), to: startOfDay) // of time (as we know it)
     }
 
     // max sync distance is 4 years
@@ -55,13 +72,16 @@ class EventKit {
         return Calendar.current.date(byAdding: plus4years, to: startOfToday, wrappingComponents: true)!
     }
 
-    func importEvents(in calendar: EKCalendar, from: Date, to: Date) {
+    func importEvents(in calendar: EKCalendar, from: Date, to: Date, modifiedAfter: Date? = nil) {
         calendar.asLegacyCalendar(eventStoreId: store.eventStoreIdentifier).update()
-        store.enumerateEvents(in: calendar, from: from, to: to, using: eventSearchCallback(calendar))
+        store.enumerateEvents(in: calendar, from: from, to: to, using: eventSearchCallback(calendar, modifiedAfter: modifiedAfter))
     }
 
-    func eventSearchCallback(_ calendar: EKCalendar) -> EKEventSearchCallback {
-        return { (event:EKEvent, stop:UnsafeMutablePointer<ObjCBool>) in self.importEK(event: event, in: calendar) }
+    func eventSearchCallback(_ calendar: EKCalendar, modifiedAfter: Date? = nil) -> EKEventSearchCallback {
+        return { (event:EKEvent, stop:UnsafeMutablePointer<ObjCBool>) in
+            guard modifiedAfter == nil || (event.lastModifiedDate ?? event.creationDate)! > modifiedAfter! else { return }
+            self.importEK(event: event, in: calendar)
+        }
     }
 
     func importEK(event ekEvent: EKEvent, in calendar: EKCalendar) {
@@ -105,35 +125,26 @@ class EventKit {
         let origin = ekEvent.getOrigin(in: calendar)
 
         let realm = Realm.user()
-        if existing.participants.isEmpty && ekEvent.hasAttendees {
-            try! realm.safeWrite {
+        try! realm.safeWrite {
+            if existing.participants.isEmpty && ekEvent.hasAttendees {
                 existing.addParticipants(ekEvent.getParticipants(origin: origin))
                 existing.status = ekEvent.objectStatus
             }
-        }
 
-        let bestOrigin = existing.origin.winner(vs: origin)
-        if bestOrigin != existing.origin {
-            try! realm.safeWrite {
-                print("\(ekEvent.title) -> \(bestOrigin)")
+            let bestOrigin = existing.origin.winner(vs: origin)
+            if bestOrigin != existing.origin {
                 existing.origin = bestOrigin
             }
-        }
 
-        if !existing.wasDetached && detached {
-            if let event = existing as? Event {
-                try! realm.safeWrite {
+            if !existing.wasDetached && detached {
+                if let event = existing as? Event {
                     event.wasDetached = true
-                }
-            } else if let reminder = existing as? Reminder {
-                try! realm.safeWrite {
+                } else if let reminder = existing as? Reminder {
                     reminder.wasDetached = true
                 }
             }
-        }
 
-        if let linkable = existing as? CalendarLinkable {
-            try! realm.safeWrite {
+            if let linkable = existing as? CalendarLinkable {
                 linkable.addLink(to: calendar)
             }
         }
@@ -235,11 +246,47 @@ class EventKit {
         }
     }
 
+    func eventExists(withId id: String, in calendar: EKCalendar, during range: TimeRange) -> Bool {
+        for event in store.events(in: calendar, from: range.start, to: range.end) {
+            if event.cleanId == id {
+                return true
+            }
+        }
+        return false
+    }
+
+    func findOriginalDate(in series: Series, for event: EKEvent) -> Date? {
+        var earlier: Date?
+        var later: Date?
+
+        if let before = series.lastRecurringDate(before: event.startDate),
+            eventExists(withId: series.id, in: event.calendar, during: TimeRange.day(of: before)) {
+            earlier = before
+        }
+        if let after = series.nextRecurringDate(after: event.startDate),
+            eventExists(withId: series.id, in: event.calendar, during: TimeRange.day(of: after)) {
+            later = after
+        }
+
+        let cal = Calendar.current
+        let start = event.startDate
+        let compare = {(a:Date,b:Date) in abs(cal.daysBetween(start, and: a)) < abs(cal.daysBetween(start, and: b))}
+        return [earlier, later].filter({$0 != nil}).map({$0!}).sorted(by: compare).first
+    }
+
+    func findDetachedIdentifier(in series: Series, of event: EKEvent) -> String? {
+        guard let originalDate = findOriginalDate(in: series, for: event) else { return nil }
+        return series.generateId(for: originalDate)
+    }
+
     func importSeries(_ ekEvent: EKEvent, in calendar: EKCalendar, given existing: Series? = nil) {
 
         if let series = existing {
             if ekEvent.isDetachedForm(of: series) {
-                let id = series.generateId(in: TimeRange.day(of: ekEvent.startDate))!
+                guard let id = series.generateId(forDayOf: ekEvent.startDate) ?? findDetachedIdentifier(in: series, of: ekEvent) else {
+                    print("series BROKEN detached/can't figure out where from \(ekEvent.title)")
+                    return
+                }
 
                 switch ekEvent.type {
                 case .event:

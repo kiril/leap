@@ -78,6 +78,11 @@
 		FB166B571E8ABE1C00CB95EC /* RealmUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B561E8ABE1C00CB95EC /* RealmUtil.swift */; };
 		FB166B5C1E8AC3CA00CB95EC /* Fetchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B5B1E8AC3CA00CB95EC /* Fetchable.swift */; };
 		FB166B5E1E8AC6DB00CB95EC /* ModelReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB166B5D1E8AC6DB00CB95EC /* ModelReference.swift */; };
+		FB171CBA1ECE08AC00D540A4 /* DayIterator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB171CB91ECE08AC00D540A4 /* DayIterator.swift */; };
+		FB171CBC1ECE08B900D540A4 /* DayTraversal.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB171CBB1ECE08B900D540A4 /* DayTraversal.swift */; };
+		FB171CBE1ECE0AAD00D540A4 /* DaySequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB171CBD1ECE0AAD00D540A4 /* DaySequence.swift */; };
+		FB171CC01ECF544900D540A4 /* DaySequenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB171CBF1ECF544900D540A4 /* DaySequenceTests.swift */; };
+		FB171CC21ECF8F7900D540A4 /* EventKitSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB171CC11ECF8F7900D540A4 /* EventKitSync.swift */; };
 		FB180C481EB10EA800FE1CF4 /* FuzzyHashable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB180C471EB10EA700FE1CF4 /* FuzzyHashable.swift */; };
 		FB180C4A1EB260F800FE1CF4 /* EventDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB180C491EB260F800FE1CF4 /* EventDetailViewController.swift */; };
 		FB180C4E1EB261B200FE1CF4 /* EventDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB180C4D1EB261B200FE1CF4 /* EventDetailView.xib */; };
@@ -265,6 +270,11 @@
 		FB166B561E8ABE1C00CB95EC /* RealmUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmUtil.swift; sourceTree = "<group>"; };
 		FB166B5B1E8AC3CA00CB95EC /* Fetchable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fetchable.swift; sourceTree = "<group>"; };
 		FB166B5D1E8AC6DB00CB95EC /* ModelReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelReference.swift; sourceTree = "<group>"; };
+		FB171CB91ECE08AC00D540A4 /* DayIterator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayIterator.swift; sourceTree = "<group>"; };
+		FB171CBB1ECE08B900D540A4 /* DayTraversal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayTraversal.swift; sourceTree = "<group>"; };
+		FB171CBD1ECE0AAD00D540A4 /* DaySequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DaySequence.swift; sourceTree = "<group>"; };
+		FB171CBF1ECF544900D540A4 /* DaySequenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DaySequenceTests.swift; sourceTree = "<group>"; };
+		FB171CC11ECF8F7900D540A4 /* EventKitSync.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventKitSync.swift; sourceTree = "<group>"; };
 		FB180C471EB10EA700FE1CF4 /* FuzzyHashable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FuzzyHashable.swift; sourceTree = "<group>"; };
 		FB180C491EB260F800FE1CF4 /* EventDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDetailViewController.swift; sourceTree = "<group>"; };
 		FB180C4D1EB261B200FE1CF4 /* EventDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventDetailView.xib; sourceTree = "<group>"; };
@@ -523,6 +533,9 @@
 				FBBB60E61EB8EBA6009E67AD /* NSAttributedString+Leap.swift */,
 				831EC0811ECBDBC7006F631C /* TimeRangeObserver.swift */,
 				FBD7238B1ECCAE2700B5E126 /* Weekday.swift */,
+				FB171CB91ECE08AC00D540A4 /* DayIterator.swift */,
+				FB171CBB1ECE08B900D540A4 /* DayTraversal.swift */,
+				FB171CBD1ECE0AAD00D540A4 /* DaySequence.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -680,6 +693,7 @@
 				FB4208561E85A168007F4DBD /* GeoFence.swift */,
 				FB4208691E897A04007F4DBD /* Checklist.swift */,
 				FB42086B1E897AD1007F4DBD /* ChecklistItem.swift */,
+				FB171CC11ECF8F7900D540A4 /* EventKitSync.swift */,
 			);
 			name = Metadata;
 			sourceTree = "<group>";
@@ -776,6 +790,7 @@
 				FB1869D31E9FF88A007642F4 /* RecurrenceTests.swift */,
 				FB268B6B1EA5332D006510A7 /* WrapperTest.swift */,
 				FBBB60E41EB7E861009E67AD /* StringTests.swift */,
+				FB171CBF1ECF544900D540A4 /* DaySequenceTests.swift */,
 			);
 			path = LeapTests;
 			sourceTree = "<group>";
@@ -1122,6 +1137,7 @@
 				FB42085B1E85A650007F4DBD /* TimeZone.swift in Sources */,
 				83D5B85D1E94415A00D5F1C6 /* WeekOverviewDayListingView.swift in Sources */,
 				835456181E8AFD7200A03B34 /* UIColor+ProjectExtensions.swift in Sources */,
+				FB171CBE1ECE0AAD00D540A4 /* DaySequence.swift in Sources */,
 				FBE0EFEC1DFBBB80007BD8DF /* Leap.xcdatamodeld in Sources */,
 				839A8AF61EA1300A00893F6F /* DayNavigationWrapperViewController.swift in Sources */,
 				FBEF8E6B1EAC402E000F354C /* EventKit.swift in Sources */,
@@ -1141,6 +1157,7 @@
 				FB39ADBB1E9407FF00B79A7B /* Int+Leap.swift in Sources */,
 				8366F11A1EAFAD4A00E3A448 /* ReminderSectionController.swift in Sources */,
 				FBD7238C1ECCAE2700B5E126 /* Weekday.swift in Sources */,
+				FB171CBC1ECE08B900D540A4 /* DayTraversal.swift in Sources */,
 				FB166B5C1E8AC3CA00CB95EC /* Fetchable.swift in Sources */,
 				FB166B5E1E8AC6DB00CB95EC /* ModelReference.swift in Sources */,
 				833617781E8C4756009A97FF /* StoryboardLoadable.swift in Sources */,
@@ -1206,6 +1223,7 @@
 				8366F1261EB114AD00E3A448 /* NoRemindersPlaceholderObject.swift in Sources */,
 				FBD614561E7F38D4001F4050 /* Schema.swift in Sources */,
 				8336176B1E8C277D009A97FF /* NavigationToggleArrowView.swift in Sources */,
+				FB171CBA1ECE08AC00D540A4 /* DayIterator.swift in Sources */,
 				FB180C4A1EB260F800FE1CF4 /* EventDetailViewController.swift in Sources */,
 				8358CFC51EB90E9D003AB343 /* OpenTimeSectionController.swift in Sources */,
 				8393621F1E8FF53B00543CFC /* WeekOverviewViewController.swift in Sources */,
@@ -1227,6 +1245,7 @@
 				FB1871F61EBCB38F00213913 /* UIView+Leap.swift in Sources */,
 				FB4208511E8593DA007F4DBD /* Venue.swift in Sources */,
 				FBD1045D1E80309300DDF65B /* Property.swift in Sources */,
+				FB171CC21ECF8F7900D540A4 /* EventKitSync.swift in Sources */,
 				FBBE56991EA1692800B9647C /* SeriesSurface.swift in Sources */,
 				83A72D741E82DAE0005EB213 /* TimePerspective.swift in Sources */,
 				FB42086A1E897A04007F4DBD /* Checklist.swift in Sources */,
@@ -1244,6 +1263,7 @@
 				834FBEBA1EA86BD4004D9302 /* TimeRangeTests.swift in Sources */,
 				FB39ADB91E94067200B79A7B /* EventSurfaceTests.swift in Sources */,
 				FB268B6C1EA5332D006510A7 /* WrapperTest.swift in Sources */,
+				FB171CC01ECF544900D540A4 /* DaySequenceTests.swift in Sources */,
 				FB1869D41E9FF88A007642F4 /* RecurrenceTests.swift in Sources */,
 				FB39ADB71E93F1EA00B79A7B /* CalendarTests.swift in Sources */,
 				FB39ADAF1E8EC6B700B79A7B /* TestUtil.swift in Sources */,

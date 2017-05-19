@@ -23,12 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         Fabric.with([Crashlytics.self])
-
-        let attemptSync = true
-        if attemptSync {
-            attemptCalendarSync()
-        }
-
+        attemptCalendarSync()
         setupDefaultAppearance()
 
         return true
@@ -39,7 +34,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         eventStore.requestAccess(to: EKEntityType.event) { (accessGranted:Bool, error:Error?) in
             if accessGranted {
                 let importer = EventKit(store: eventStore)
-                importer.importAll()
+                if importer.firstTime() {
+                    importer.importAll()
+
+                } else {
+                    importer.catchUp()
+                }
             }
         }
     }
@@ -47,45 +47,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ app: UIApplication,
                      open url: URL,
                      options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        // com.singleleap.leap://singleleap.auth0.com/ios/com.singleleap.Leap/callback?code=lEVGl5AJl0K1a9yS&state=oCFr3Esan6AeRS136liSH3YerF1zoxwlKNtea2i6OD4
-        print("URL request: \(url)")
-
-        if url.absoluteString.range(of: "auth0.com") != nil {
-            let context = self.persistentContainer.viewContext
-
-            let credentialFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Credentials")
-
-            do {
-                let credentials = try context.fetch(credentialFetch) as! [NSManagedObject]
-
-                switch credentials.count {
-                case 0:
-                    self.lostCredentials = true
-                    return Lock.resumeAuth(url, options: options)
-
-                case 1:
-                    self.lostCredentials = false
-                    self.credentials = credentials[0]
-                    if url.absoluteString.range(of: "auth0.com") != nil {
-                        return Lock.resumeAuth(url, options: options)
-                    }
-                    return true
-
-                default:
-                    self.lostCredentials = false
-                    self.credentials = credentials[0]
-                    if url.absoluteString.range(of: "auth0.com") != nil {
-                        return Lock.resumeAuth(url, options: options)
-                    }
-                    fatalError("Can't have multiple credential sets")
-                }
-            } catch {
-                print("Error finding credentials \(error)")
-                self.lostCredentials = true
-                return Lock.resumeAuth(url, options: options)
-            }
-        }
-
         return false
     }
 

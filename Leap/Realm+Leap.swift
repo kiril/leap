@@ -17,7 +17,7 @@ extension Realm {
         return try! Realm(configuration: Realm.Configuration(inMemoryIdentifier: name))
     }
 
-    static func diskBacked() -> Realm {
+    static func diskBacked(name: String = "Leap") -> Realm {
         let config = Realm.Configuration(
             schemaVersion: 1,
             migrationBlock: { migration, oldSchemaVersion in
@@ -46,7 +46,7 @@ extension Realm {
         if isInTestMode {
             return inMemory() // always
         }
-        return inMemory() // for now
+        return diskBacked()
     }
 
     static func auth() -> Realm {

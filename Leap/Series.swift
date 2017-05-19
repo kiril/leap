@@ -45,11 +45,11 @@ class Series: LeapModel, Fuzzy, Originating {
     }
 
     func calculateFuzzyHash() -> Int {
-        return "\(title)_\(startTime)_\(template.startHour)_\(template.startMinute)_\(template.durationMinutes)_\(template.participants)".hashValue
+        return "\(title)_\(startTime)_\(template.startHour)_\(template.startMinute)_\(template.durationMinutes)".hashValue
     }
 
     func calculateFuzzyHash(from event: Event) -> Int {
-        return "\(event.title)_\(event.startTime)_\(event.startHour)_\(event.startMinute)_\(event.durationMinutes)_\(event.participants)".hashValue
+        return "\(event.title)_\(event.startTime)_\(event.startHour)_\(event.startMinute)_\(event.durationMinutes)".hashValue
     }
 
     var startDate: Date {
@@ -246,9 +246,12 @@ class Series: LeapModel, Fuzzy, Originating {
             return false
         }
 
+        let recurrence = self.recurrence!
+        let template = self.template!
+
         var date:Date? = startDate
         while let d = date, d.secondsSinceReferenceDate < endSecs {
-            if recurrence!.recurs(on: d, for: self), let when = template.startTime(in: TimeRange.day(of: d)), when >= start && when < end {
+            if recurrence.recurs(on: d, for: self), let when = template.startTime(in: TimeRange.day(of: d)), when >= start && when < end {
                 return true
             }
             date = Calendar.current.dayAfter(d)
@@ -269,6 +272,10 @@ class Series: LeapModel, Fuzzy, Originating {
         return nil
     }
 
+    func generateId(forDayOf date: Date) -> String? {
+        return generateId(in: TimeRange.day(of: date))
+    }
+
     func generateId(in range: TimeRange) -> String? {
         guard let date = startTime(in: range) else { return nil }
         return generateId(for: date)
@@ -283,14 +290,20 @@ class Series: LeapModel, Fuzzy, Originating {
         return "\(id)-\(year).\(month).\(day).\(hour):\(minute)"
     }
 
-    func isExactRecurrence(date: Date) -> Bool {
-        if Calendar.universalGregorian.component(.hour, from: date) == template.startHour &&
-            Calendar.universalGregorian.component(.minute, from: date) == template.startMinute &&
-            recurrence.recurs(on: date, for: self) {
-            return true
+    func isInRange(date: Date) -> Bool {
+        return date.secondsSinceReferenceDate >= startTime && (endTime == 0 || date.secondsSinceReferenceDate < endTime)
+    }
 
-        }
-        return false
+    func lastRecurringDate(before date: Date) -> Date? {
+        guard let last = recurrence.lastRecurringDate(before: date, for: self) else { return nil }
+        guard isInRange(date: last) else { return nil }
+        return last
+    }
+
+    func nextRecurringDate(after date: Date) -> Date? {
+        guard let next = recurrence.nextRecurringDate(after: date, for: self) else { return nil }
+        guard isInRange(date: next) else { return nil }
+        return next
     }
 
     func event(in range: TimeRange, withStatus status: [ObjectStatus] = [.active]) -> Event? {

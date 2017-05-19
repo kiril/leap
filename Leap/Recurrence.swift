@@ -102,17 +102,131 @@ class Recurrence: LeapModel {
         return true // well, ok then! :)
     }
 
-    public static func every(_ frequency: Frequency, max count: Int = 0, by interval: Int = 0, on weekday: Weekday? = nil, the day: Int? = nil) -> Recurrence {
-        var data: ModelInitData = ["frequencyRaw": frequency.rawValue,
-                                   "count": count,
-                                   "interval": interval]
-        if let weekday = weekday {
-            data["daysOfWeek"] = List<IntWrapper>([IntWrapper.of(weekday.gregorianIndex)])
+    func lastRecurringDate(before date: Date, for series: Series) -> Date? {
+        let seriesStart = series.startDate
+        let calendar = Calendar.current
 
-        } else if let day = day {
-            data["daysOfMonth"] = List<IntWrapper>([IntWrapper.of(day)])
+        switch frequency {
+        case .daily:
+            let maxDays = 7
+            var day = calendar.dayBefore(date)
+            var distance = 1
+            while distance <= maxDays && day >= seriesStart {
+                if recurs(on: day, for: series) {
+                    return day
+                }
+                day = calendar.dayBefore(day)
+                distance += 1
+            }
+
+        case .weekly:
+            if !daysOfWeek.isEmpty {
+                let weekdays = DaySequence.weekdays(startingAt: calendar.dayBefore(date),
+                                                    using: calendar,
+                                                    weekdays: Array(daysOfWeek.map({$0.raw})),
+                                                    max: 14,
+                                                    reversed: true)
+
+                if let day = weekdays.first(where: {self.recurs(on: $0, for: series)}) {
+                    return day
+                }
+            }
+            // TODO: more?
+
+        case .monthly:
+            if !daysOfWeek.isEmpty {
+                let weekdays = DaySequence.weekdays(startingAt: calendar.dayBefore(date),
+                                                    using: calendar,
+                                                    weekdays: Array(daysOfWeek.map({$0.raw})),
+                                                    max: 14,
+                                                    reversed: true)
+
+                if let day = weekdays.first(where: {self.recurs(on: $0, for: series)}) {
+                    return day
+                }
+
+            } else if !daysOfMonth.isEmpty {
+                let days = DaySequence.monthly(startingAt: calendar.dayBefore(date),
+                                               using: calendar,
+                                               on: Array(daysOfMonth.map({$0.raw})),
+                                               max: 8,
+                                               reversed: true)
+                if let day = days.first(where: {self.recurs(on: $0, for: series)}) {
+                    return day
+                }
+            }
+            // TODO: more?
+
+        case .yearly:
+            break // TODO: this
+
+        case .unknown:
+            fatalError("Real recurrences can't have unknown frequency")
         }
-        return Recurrence(value: data)
+
+        return nil
+    }
+
+    func nextRecurringDate(after date: Date, for series: Series) -> Date? {
+        let seriesStart = series.startDate
+        let calendar = Calendar.current
+
+        switch frequency {
+        case .daily:
+            let maxDays = 7
+            var day = calendar.dayBefore(date)
+            var distance = 1
+            while distance <= maxDays && day >= seriesStart {
+                if recurs(on: day, for: series) {
+                    return day
+                }
+                day = calendar.dayBefore(day)
+                distance += 1
+            }
+
+        case .weekly:
+            if !daysOfWeek.isEmpty {
+                let weekdays = DaySequence.weekdays(startingAt: calendar.dayBefore(date),
+                                                    using: calendar,
+                                                    weekdays: Array(daysOfWeek.map({$0.raw})),
+                                                    max: 14)
+
+                if let day = weekdays.first(where: {self.recurs(on: $0, for: series)}) {
+                    return day
+                }
+            }
+            // TODO: more?
+
+        case .monthly:
+            if !daysOfWeek.isEmpty {
+                let weekdays = DaySequence.weekdays(startingAt: calendar.dayBefore(date),
+                                                    using: calendar,
+                                                    weekdays: Array(daysOfWeek.map({$0.raw})),
+                                                    max: 14)
+
+                if let day = weekdays.first(where: {self.recurs(on: $0, for: series)}) {
+                    return day
+                }
+
+            } else if !daysOfMonth.isEmpty {
+                let days = DaySequence.monthly(startingAt: calendar.dayBefore(date),
+                                               using: calendar,
+                                               on: Array(daysOfMonth.map({$0.raw})),
+                                               max: 8)
+                if let day = days.first(where: {self.recurs(on: $0, for: series)}) {
+                    return day
+                }
+            }
+            // TODO: more?
+
+        case .yearly:
+            break // TODO: this
+
+        case .unknown:
+            fatalError("Real recurrences can't have unknown frequency")
+        }
+        
+        return nil
     }
 
     func dayOfWeekMatches(for date: Date) -> Bool {
@@ -154,7 +268,6 @@ class Recurrence: LeapModel {
         let week = calendar.component(.weekOfYear, from: date)
 
         if !dayOfWeekMatches(for: date) {
-            print("wrong day of week")
             return false
         }
 
@@ -174,6 +287,8 @@ class Recurrence: LeapModel {
             return false
         }
 
+        let allPositions = Set(setPositions.map({$0.raw}))
+
         switch frequency {
         case .daily:
             if interval != 0 {
@@ -185,13 +300,8 @@ class Recurrence: LeapModel {
             return true
 
         case .weekly:
-            let weeksSinceStart = calendar.weeksBetween(series.startDate, and: date)
-            if interval != 0 {
-                print("interval = \(interval), weeks = \(weeksSinceStart) given \(series.startDate) and \(date)8")
-                if weeksSinceStart % interval != 0 {
-                    print("fail: \(weeksSinceStart) % \(interval) = \(weeksSinceStart % interval), not 0")
-                    return false
-                }
+            if interval != 0 && calendar.weeksBetween(series.startDate, and: date) % interval != 0 {
+                return false
             }
             return true
 
@@ -217,7 +327,7 @@ class Recurrence: LeapModel {
                         matchIndices.append(i)
                         if calendar.isDate(day, theSameDayAs: date) {
                             myIndex = i
-                            if setPositions.contains(matchIndices.count) {
+                            if allPositions.contains(matchIndices.count) {
                                 return true // may as well succeed fast in the simple case
                             }
                         }
@@ -225,7 +335,7 @@ class Recurrence: LeapModel {
                     i += 1
                 }
 
-                for position in setPositions.map({ return $0.raw }) {
+                for position in allPositions {
                     let positionalIndex = position < 0 ? matchIndices[matchIndices.count+position] : matchIndices[position-1]
                     if abs(position) < matchIndices.count && positionalIndex == myIndex {
                         return true
@@ -259,8 +369,8 @@ class Recurrence: LeapModel {
                 let daysInYear = calendar.daysInYear(including: date)
                 let weekdays = daysOfWeek.map({ $0.raw }).sorted()
 
-                var positivePositions = setPositions.map({ $0.raw }).filter({ $0 >= 0 }).sorted()
-                let negativePositions = setPositions.map({ $0.raw }).filter({ $0 < 0 }).sorted()
+                var positivePositions = allPositions.filter({ $0 >= 0 }).sorted()
+                let negativePositions = allPositions.filter({ $0 < 0 }).sorted()
 
                 let start = calendar.startOfYear(including: date)
                 let startWeekday = calendar.component(.weekday, from: start)
@@ -326,5 +436,18 @@ class Recurrence: LeapModel {
         case .unknown:
             return false
         }
+    }
+
+    public static func every(_ frequency: Frequency, max count: Int = 0, by interval: Int = 0, on weekday: Weekday? = nil, the day: Int? = nil) -> Recurrence {
+        var data: ModelInitData = ["frequencyRaw": frequency.rawValue,
+                                   "count": count,
+                                   "interval": interval]
+        if let weekday = weekday {
+            data["daysOfWeek"] = List<IntWrapper>([IntWrapper.of(weekday.gregorianIndex)])
+
+        } else if let day = day {
+            data["daysOfMonth"] = List<IntWrapper>([IntWrapper.of(day)])
+        }
+        return Recurrence(value: data)
     }
 }
