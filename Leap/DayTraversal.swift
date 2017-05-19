@@ -158,30 +158,26 @@ class DayOfMonthTraversal: DayTraversal {
     }
 
     func day(after d: Date) -> Date? {
-        let day = calendar.component(.day, from: d)
+        let dayOfMonth = calendar.component(.day, from: d)
+        let nextDayOfMonth = (days.first(where: {$0 > dayOfMonth}) ?? days.first)!
 
-        if let after = days.filter({$0 > day}).first,
-            let candidate = calendar.date(bySetting: .day, value: after, of: d),
-            calendar.component(.month, from: candidate) == calendar.component(.month, from: d) {
-            return candidate
-        }
+        let date = nextDayOfMonth == dayOfMonth ? calendar.date(byAdding: .month, value: 1, to: d)! : d
 
-        return calendar.date(bySetting: .day, value: days.first!, of: d)
+        return calendar.date(bySetting: .day, value: nextDayOfMonth, of: date)
     }
 
     func day(before d: Date) -> Date? {
-        let day = calendar.component(.day, from: d)
+        let dayOfMonth = calendar.component(.day, from: d)
+        let priorDayOfMonth = (days.reversed().first(where: {$0 < dayOfMonth}) ?? days.last)!
 
-        if let before = days.filter({$0 < day}).last {
-            let components = DateComponents(calendar: calendar, day: before)
-            if let candidate = calendar.nextDate(after: d, matching: components, matchingPolicy: .nextTime, repeatedTimePolicy: .last, direction: .backward),
-                calendar.component(.month, from: candidate) == calendar.component(.month, from: d) {
-                return candidate
-            }
-        }
+        let date = priorDayOfMonth == dayOfMonth ? calendar.date(byAdding: .month, value: -1, to: d)! : d
 
-        let components = DateComponents(calendar: calendar, day: days.last!)
-        return calendar.nextDate(after: d, matching: components, matchingPolicy: .nextTime, repeatedTimePolicy: .last, direction: .backward)
+        let components = DateComponents(calendar: calendar, day: priorDayOfMonth)
+        return calendar.nextDate(after: date,
+                                 matching: components,
+                                 matchingPolicy: .nextTime,
+                                 repeatedTimePolicy: .last,
+                                 direction: .backward)
     }
 }
 

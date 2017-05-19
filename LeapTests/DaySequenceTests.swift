@@ -163,6 +163,41 @@ class DaySequenceTests: XCTestCase {
     }
 
     func testMonthlyTraversal() {
+        let dayOfMonth = calendar.component(.day, from: now)
+        let days = DaySequence.monthly(startingAt: now, using: calendar, on: [dayOfMonth], max: 3)
+
+        var count = 0
+        var last: Date? = nil
+        for day in days {
+            count += 1
+            XCTAssertEqual(dayOfMonth, calendar.component(.day, from: day))
+            if let last = last {
+                XCTAssertTrue(day > last)
+                XCTAssertTrue(calendar.component(.month, from: day) == calendar.component(.month, from: last)+1 || calendar.component(.year, from: day) == calendar.component(.year, from: last) + 1)
+            }
+            last = day
+        }
+
+        XCTAssertTrue(count == 3)
+    }
+
+    func testMonthlyTraversalBackward() {
+        let dayOfMonth = calendar.component(.day, from: now)
+        let days = DaySequence.monthly(startingAt: now, using: calendar, on: [dayOfMonth], max: 3, reversed: true)
+
+        var count = 0
+        var last: Date? = nil
+        for day in days {
+            count += 1
+            XCTAssertEqual(dayOfMonth, calendar.component(.day, from: day))
+            if let last = last {
+                XCTAssertTrue(day < last)
+                XCTAssertTrue(calendar.component(.month, from: day) == calendar.component(.month, from: last)-1 || calendar.component(.year, from: day) == calendar.component(.year, from: last) - 1, "Shoot - \(day) isn't immediately prior to \(last) for \(dayOfMonth)")
+            }
+            last = day
+        }
+
+        XCTAssertTrue(count == 3)
     }
     
 }
