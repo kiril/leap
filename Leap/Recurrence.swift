@@ -131,6 +131,7 @@ class Recurrence: LeapModel {
                     return day
                 }
             }
+            // TODO: more?
 
         case .monthly:
             if !daysOfWeek.isEmpty {
@@ -154,9 +155,10 @@ class Recurrence: LeapModel {
                     return day
                 }
             }
+            // TODO: more?
 
         case .yearly:
-            break
+            break // TODO: this
 
         case .unknown:
             fatalError("Real recurrences can't have unknown frequency")
