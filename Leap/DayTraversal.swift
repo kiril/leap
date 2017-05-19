@@ -70,7 +70,7 @@ class MonthBoundDayTraversal: DayTraversal {
 
     func day(after d: Date) -> Date? {
         if let next = traversal.day(after: d),
-            calendar.component(.month, from: d) == month && calendar.component(.year, from: d) == year {
+            calendar.component(.month, from: next) == month && calendar.component(.year, from: next) == year {
             return next
         }
         return nil
@@ -78,7 +78,7 @@ class MonthBoundDayTraversal: DayTraversal {
 
     func day(before d: Date) -> Date? {
         if let prior = traversal.day(before: d),
-            calendar.component(.month, from: d) == month && calendar.component(.year, from: d) == year {
+            calendar.component(.month, from: prior) == month && calendar.component(.year, from: prior) == year {
             return prior
         }
         return nil
@@ -98,7 +98,7 @@ class YearBoundDayTraversal: DayTraversal {
 
     func day(after d: Date) -> Date? {
         if let next = traversal.day(after: d),
-            calendar.component(.year, from: d) == year {
+            calendar.component(.year, from: next) == year {
             return next
         }
         return nil
@@ -106,7 +106,7 @@ class YearBoundDayTraversal: DayTraversal {
 
     func day(before d: Date) -> Date? {
         if let prior = traversal.day(before: d),
-            calendar.component(.year, from: d) == year {
+            calendar.component(.year, from: prior) == year {
             return prior
         }
         return nil
@@ -129,36 +129,19 @@ class WeekdayTraversal: DayTraversal {
 
     func day(after d: Date) -> Date? {
         let weekday = calendar.component(.weekday, from: d)
-        var next: Int = -1
-        for wd in weekdays {
-            if wd > weekday {
-                next = wd
-                break
-            }
-        }
-        if next == -1 {
-            next = weekdays.first!
-        }
 
-        let daysAhead = next < weekday ? 7-(weekday-next) : next-weekday
+        let next = (weekdays.first(where: {$0 > weekday}) ?? weekdays.first)!
+
+        let daysAhead = (next == weekday ? 7 : (next < weekday ? 7-(weekday-next) : next-weekday))
 
         return calendar.adding(days: daysAhead, to: d)
     }
 
     func day(before d: Date) -> Date? {
         let weekday = calendar.component(.weekday, from: d)
-        var prior: Int = -1
-        for wd in weekdays.reversed() {
-            if wd < weekday {
-                prior = wd
-                break
-            }
-        }
-        if prior == -1 {
-            prior = weekdays.last!
-        }
+        let prior = (weekdays.reversed().first(where: {$0 < weekday}) ?? weekdays.last)!
 
-        let daysBack = prior < weekday ? weekday-prior : 7-(prior-weekday)
+        let daysBack = (prior == weekday ? 7 : (prior < weekday ? weekday-prior : 7-(prior-weekday)))
 
         return calendar.subtracting(days: daysBack, from: d)
     }
