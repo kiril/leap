@@ -12,7 +12,7 @@ import RealmSwift
 class RecurringEventSurface: EventSurface {
 
     var seriesId: String!
-    var seriesRange: TimeRange!
+    var range: TimeRange!
 
     override func hackyShowAsReminder() {
         let realm = Realm.user()
@@ -61,7 +61,7 @@ class RecurringEventSurface: EventSurface {
     }
 
     func detach() -> EventSurface? {
-        guard let series = getSeries(), let event = series.event(in: seriesRange) else { return nil }
+        guard let series = getSeries(), let event = series.event(in: range) else { return nil }
         let realm = Realm.user()
         try! realm.safeWrite {
             realm.add(event)
@@ -94,7 +94,7 @@ class RecurringEventSurface: EventSurface {
 
     func isSplitCompatible(with other: RecurringEventSurface) -> Bool {
         guard let s1 = self.getSeries(), let s2 = other.getSeries() else { return false }
-        return s1.coRecurs(with: s2, after: seriesRange.start)
+        return s1.coRecurs(with: s2, after: range.start)
     }
 
     static func recurringDescription(series: Series, in range: TimeRange) -> String? {
@@ -162,8 +162,13 @@ class RecurringEventSurface: EventSurface {
     }
 
     static func load(with series: Series, in range: TimeRange) -> EventSurface? {
+        var startRange = range
+        if !series.recurs(in: range) {
+            guard series.recurs(overlapping: range) else { return nil }
+            startRange = series.extend(range: range)
+        }
         let surface = RecurringEventSurface(id: series.generateId(for: series.template.startTime(in: range)!))
-        surface.seriesRange = range
+        surface.range = range
         surface.seriesId = series.id
         let bridge = SurfaceModelBridge(id: series.id, surface: surface)
 
@@ -177,17 +182,17 @@ class RecurringEventSurface: EventSurface {
         bridge.readonlyBind(surface.isRecurring) { (m:LeapModel) in return true }
 
 
-        bridge.readonlyBind(surface.startTime) { ($0 as! Series).template.startTime(in: range) }
-        bridge.readonlyBind(surface.endTime) { ($0 as! Series).template.endTime(in: range) }
+        bridge.readonlyBind(surface.startTime) { ($0 as! Series).template.startTime(in: startRange) }
+        bridge.readonlyBind(surface.endTime) { ($0 as! Series).template.endTime(in: startRange) }
 
         bridge.bind(surface.arrivalTime,
-                    populateWith: { ($0 as! Series).template.arrivalDate(in: range) },
+                    populateWith: { ($0 as! Series).template.arrivalDate(in: startRange) },
                     on: "series",
-                    persistWith: { ($0 as! Series).template.setArrivalOffset(from: ($1 as! Date), in: range) })
+                    persistWith: { ($0 as! Series).template.setArrivalOffset(from: ($1 as! Date), in: startRange) })
         bridge.bind(surface.departureTime,
-                    populateWith: { ($0 as! Series).template.departureDate(in: range) },
+                    populateWith: { ($0 as! Series).template.departureDate(in: startRange) },
                     on: "series",
-                    persistWith: { ($0 as! Series).template.setDepartureOffset(from: ($1 as! Date), in: range) })
+                    persistWith: { ($0 as! Series).template.setDepartureOffset(from: ($1 as! Date), in: startRange) })
 
         bridge.readonlyBind(surface.userIsInvited) { (model:LeapModel) in
             guard let series = model as? Series, let me = series.template.participants.me else {
@@ -208,7 +213,7 @@ class RecurringEventSurface: EventSurface {
                     populateWith: { (m:LeapModel) in EventResponse.from((m as! Series).engagement) },
                     on: "series",
                     persistWith: { ($0 as! Series).engagement = ($1 as! EventResponse).asEngagement() })
-        bridge.readonlyBind(surface.recurrenceDescription) { recurringDescription(series: ($0 as! Series), in: range) }
+        bridge.readonlyBind(surface.recurrenceDescription) { recurringDescription(series: ($0 as! Series), in: startRange) }
 
         bridge.readonlyBind(surface.participants) { (m:LeapModel) -> [ParticipantSurface] in
             let series = m as! Series

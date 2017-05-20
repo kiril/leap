@@ -416,7 +416,7 @@ extension DayScheduleViewController: IGListAdapterDataSource {
         }
         else if object is ReminderSurface ||
                 object is NoRemindersPlaceholderObject {
-            return ReminderSectionController()
+            return ReminderSectionController(day: self.surface.day.gregorianDay)
         }
         else if object is VerticalSpacingPlaceholderObject {
             return SpacingSectionController()

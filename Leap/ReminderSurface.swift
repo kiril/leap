@@ -16,8 +16,6 @@ class ReminderSurface: Surface, ModelLoadable {
     let startTime              = SurfaceInt()
     let endTime                = SurfaceInt()
     let refersToEvent          = SurfaceBool()
-    let eventTimeString        = ComputedSurfaceString<ReminderSurface>(by: { $0.eventTimeDescription()! })
-    let timeString             = ComputedSurfaceString<ReminderSurface>(by: { $0.formatDuration()! })
     let reminderType           = SurfaceProperty<ReminderType>()
     let eventId                = SurfaceString()
 
@@ -26,8 +24,8 @@ class ReminderSurface: Surface, ModelLoadable {
         return EventSurface.load(byId: id)
     }
 
-    func eventTimeDescription() -> String? {
-        return event?.formatDuration()
+    func formatEventDuration(viewedFrom day: GregorianDay? = nil) -> String? {
+        return event?.formatDuration(viewedFrom: day)
     }
 
     var startDate: Date { return Date(timeIntervalSinceReferenceDate: TimeInterval(startTime.value)) }
@@ -103,14 +101,44 @@ extension ReminderSurface: Linear {
 
         let from = calendar.formatDisplayTime(from: start, needsAMPM: crossesNoon)
         let to = calendar.formatDisplayTime(from: end, needsAMPM: true)
-        var more = ""
+        var after = ""
+        var before = ""
         if spansDays {
-            let days = calendar.daysBetween(start, and: end)
-            let ess = days == 1 ? "" : "s"
-            more = " (\(days) day\(ess) later)"
+            if let day = day {
+                let range = TimeRange.of(day: day)
+
+                if start < range.start {
+                    let daysEarlier = calendar.daysBetween(start, and: range.start)
+                    switch daysEarlier {
+                    case 0, 1:
+                        before = "(Yesterday) "
+                    default:
+                        before = "(\(daysEarlier) days ago) "
+                    }
+                }
+
+                if end > range.end {
+                    let daysLater = calendar.daysBetween(range.start, and: end)
+                    switch daysLater {
+                    case 0, 1:
+                        after = " (Tomorrow)"
+                    default:
+                        after = " (in \(daysLater) days)"
+                    }
+                } else if start < range.start {
+                    after = " today"
+                }
+
+            } else {
+                if spansDays {
+                    let days = calendar.daysBetween(start, and: end)
+                    let ess = days == 1 ? "" : "s"
+                    after = " (\(days) day\(ess) later)"
+                }
+            }
         }
 
-        return "\(from) - \(to)\(more)"
+        return "\(before)\(from) - \(to)\(after)"
     }
 }
 

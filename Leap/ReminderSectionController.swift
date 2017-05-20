@@ -13,9 +13,11 @@ import IGListKit
 
 class ReminderSectionController: IGListSectionController, IGListSectionType {
     var reminder: ReminderCellDisplayable?
+    var day: GregorianDay!
 
-    override init() {
+    init(day: GregorianDay) {
         super.init()
+        self.day = day
         inset = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0)
     }
 
@@ -28,7 +30,7 @@ class ReminderSectionController: IGListSectionController, IGListSectionType {
 
         let targetSize = CGSize(width: targetCellWidth, height: 100000000)
         configureCellWidth(prototypeReminderCell)
-        prototypeReminderCell.configure(with: reminder)
+        prototypeReminderCell.configure(with: reminder, day: day)
         let size = prototypeReminderCell.systemLayoutSizeFitting(targetSize)
         return size
     }
@@ -49,7 +51,7 @@ class ReminderSectionController: IGListSectionController, IGListSectionType {
                                                       for: self,
                                                       at: index)
 
-        (cell as! ReminderCollectionViewCell).configure(with: reminder)
+        (cell as! ReminderCollectionViewCell).configure(with: reminder, day: day)
 
         configureCellWidth(cell)
 

@@ -220,7 +220,7 @@ class DayScheduleSurface: Surface {
             let openTime = self.openTime(forRange: openRange)
 
             for possibleEvent in sortedPossibleEvents {
-                guard let eventRange = possibleEvent.range else { continue }
+                guard let eventRange = possibleEvent.eventRange else { continue }
 
                 if eventRange.isWithin(timeRange: openRange) {
                     openTime.possibleEventIds.append(possibleEvent.id)
