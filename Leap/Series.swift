@@ -249,7 +249,7 @@ class Series: LeapModel, Fuzzy, Originating {
         let recurrence = self.recurrence!
         let template = self.template!
 
-        var date:Date? = startDate
+        var date:Date? = start
         while let d = date, d.secondsSinceReferenceDate < endSecs {
             if recurrence.recurs(on: d, for: self), let when = template.startTime(in: TimeRange.day(of: d)), when >= start && when < end {
                 return true
@@ -259,6 +259,14 @@ class Series: LeapModel, Fuzzy, Originating {
         return false
     }
 
+    func extend(range: TimeRange) -> TimeRange {
+        return TimeRange(start: range.start.subtracting(minutes: template.durationMinutes), end: range.end)!
+    }
+
+    func recurs(overlapping range: TimeRange) -> Bool {
+        return recurs(in: extend(range: range))
+    }
+
     func ensureLastRecurrenceDayCalculated() {
         if recurrence!.count > 0 && lastRecurrenceDay == nil {
             calculateLastRecurrenceDay()
@@ -266,10 +274,19 @@ class Series: LeapModel, Fuzzy, Originating {
     }
 
     func startTime(in range: TimeRange) -> Date? {
-        if let when = template.startTime(in: range), recurrence.recurs(on: when, for: self) {
-            return when
+        var r:TimeRange? = range
+        while let aRange = r, aRange.start < aRange.end {
+            if let when = template.startTime(in: aRange), recurrence.recurs(on: when, for: self) {
+                return when
+            }
+            r = TimeRange(start: Calendar.current.dayAfter(aRange.start), end: aRange.end)
         }
         return nil
+    }
+
+    func endTime(in range: TimeRange) -> Date? {
+        guard let start = startTime(in: range) else { return nil }
+        return template.endTime(in: range, startTime: start)
     }
 
     func generateId(forDayOf date: Date) -> String? {

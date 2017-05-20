@@ -28,8 +28,8 @@ class SeriesSurface: Surface, ModelLoadable {
 
     func reminder(for day: GregorianDay) -> ReminderSurface? {
         let range = TimeRange.of(day: day)
-        guard let series = Series.by(id: id), series.recurs(in: range) else { return nil }
-        guard let startTime = series.template.startTime(in: range) else { return nil }
+        guard let series = Series.by(id: id), series.recurs(overlapping: range) else { return nil }
+        guard let startTime = series.template.startTime(in: series.extend(range: range)) else { return nil }
 
         if let reminder = Reminder.by(id: series.generateId(for: startTime)) {
             return ReminderSurface.load(with: reminder) as? ReminderSurface
@@ -42,7 +42,7 @@ class SeriesSurface: Surface, ModelLoadable {
         guard let series = Series.by(id: id) else {
             return false
         }
-        return series.recurs(in: TimeRange.of(day: day))
+        return series.recurs(overlapping: TimeRange.of(day: day))
     }
 
     static func load(with model: LeapModel) -> Surface? {

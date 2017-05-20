@@ -597,7 +597,7 @@ extension EventSurface: Hashable {
 }
 
 extension EventSurface {
-    var range: TimeRange? {
+    var eventRange: TimeRange? {
         return TimeRange(start: startTime.value,
                          end: endTime.value)
     }
@@ -607,7 +607,7 @@ extension Array where Element: EventSurface {
     func openTimes(in timeRange: TimeRange) -> [TimeRange] {
         var openTimeRanges = [timeRange]
         for event in self {
-            guard let range = event.range else { continue }
+            guard let range = event.eventRange else { continue }
             openTimeRanges = openTimeRanges.timeRangesByExcluding(timeRange: range)
             if openTimeRanges.isEmpty { break }
         }

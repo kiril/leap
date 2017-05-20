@@ -407,7 +407,7 @@ class EventViewCell: UICollectionViewCell {
 
     private func setupCurrentEventUpdates() {
         guard   let event = event,
-                let range = event.range else { return }
+                let range = event.eventRange else { return }
 
         guard timePerspectiveUpdatesEnabled else {
             timeObserver = nil

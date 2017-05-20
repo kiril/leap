@@ -12,14 +12,17 @@ class ReminderCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var titleLabel: UILabel!
 
+    var day: GregorianDay!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         setup()
     }
 
-    func configure(with reminder: ReminderCellDisplayable) {
-        titleLabel.text = reminder.titleForCell
+    func configure(with reminder: ReminderCellDisplayable, day: GregorianDay) {
+        titleLabel.text = reminder.titleForCell(on: day)
+        self.day = day
 
         if reminder is ReminderSurface {
             // ugh. hacky way to detect this, but this whole reminder vs. placeholder thing is feeling a bit cobbled together...
@@ -37,18 +40,18 @@ class ReminderCollectionViewCell: UICollectionViewCell {
 }
 
 protocol ReminderCellDisplayable {
-    var titleForCell: String { get }
+    func titleForCell(on day: GregorianDay) -> String
 }
 
 extension ReminderSurface: ReminderCellDisplayable {
-    var titleForCell: String {
+    func titleForCell(on day: GregorianDay) -> String {
         switch self.reminderType.value {
         case .day:
             return title.value
         case .time:
-            return "\(timeString.value)  \(title.value)"
+            return "\(formatDuration(viewedFrom: day)!)  \(title.value)"
         case .event:
-            return "\(eventTimeString.value)  \(title.value)"
+            return "\(formatEventDuration(viewedFrom: day)!)  \(title.value)"
         default:
             fatalError()
         }
@@ -56,6 +59,6 @@ extension ReminderSurface: ReminderCellDisplayable {
 }
 
 extension NoRemindersPlaceholderObject: ReminderCellDisplayable {
-    var titleForCell: String { return "No Headlines" }
+    func titleForCell(on day: GregorianDay) -> String { return "No Headlines" }
 }
 
