@@ -9,11 +9,11 @@ PODS:
     - Lock/Classic (= 2.0.0)
   - Lock/Classic (2.0.0):
     - Auth0 (~> 1.2)
-  - Realm (2.4.3):
-    - Realm/Headers (= 2.4.3)
-  - Realm/Headers (2.4.3)
-  - RealmSwift (2.4.3):
-    - Realm (= 2.4.3)
+  - Realm (2.7.0):
+    - Realm/Headers (= 2.7.0)
+  - Realm/Headers (2.7.0)
+  - RealmSwift (2.7.0):
+    - Realm (= 2.7.0)
   - SwiftyJSON (3.1.4)
 
 DEPENDENCIES:
@@ -31,8 +31,8 @@ SPEC CHECKSUMS:
   Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
   IGListKit: ee255e4e61865bc3e01ca96b690c5435c2887849
   Lock: b98cef67f5e6d1fc5222a59c6d97e9d73a8a9365
-  Realm: e08d60b0048ccccd3949c8c28a92c4db5712d7e9
-  RealmSwift: 30d49739ccb3385d201242736ca4dda56aec9dfc
+  Realm: 07e5d3a9e0e41d65fd5f9f05150ed6295d0f093b
+  RealmSwift: 6d06425d3900c86473c4f323bf6949b43fca22bc
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
 PODFILE CHECKSUM: f053cf929b73b1d3aa23188ed520b3757f2575b6
