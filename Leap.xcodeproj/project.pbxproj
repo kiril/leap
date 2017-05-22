@@ -83,6 +83,7 @@
 		FB171CBE1ECE0AAD00D540A4 /* DaySequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB171CBD1ECE0AAD00D540A4 /* DaySequence.swift */; };
 		FB171CC01ECF544900D540A4 /* DaySequenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB171CBF1ECF544900D540A4 /* DaySequenceTests.swift */; };
 		FB171CC21ECF8F7900D540A4 /* EventKitSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB171CC11ECF8F7900D540A4 /* EventKitSync.swift */; };
+		FB171CC51ED37A5500D540A4 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB171CC41ED37A5500D540A4 /* SettingsTableViewController.swift */; };
 		FB180C481EB10EA800FE1CF4 /* FuzzyHashable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB180C471EB10EA700FE1CF4 /* FuzzyHashable.swift */; };
 		FB180C4A1EB260F800FE1CF4 /* EventDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB180C491EB260F800FE1CF4 /* EventDetailViewController.swift */; };
 		FB180C4E1EB261B200FE1CF4 /* EventDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB180C4D1EB261B200FE1CF4 /* EventDetailView.xib */; };
@@ -275,6 +276,7 @@
 		FB171CBD1ECE0AAD00D540A4 /* DaySequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DaySequence.swift; sourceTree = "<group>"; };
 		FB171CBF1ECF544900D540A4 /* DaySequenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DaySequenceTests.swift; sourceTree = "<group>"; };
 		FB171CC11ECF8F7900D540A4 /* EventKitSync.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventKitSync.swift; sourceTree = "<group>"; };
+		FB171CC41ED37A5500D540A4 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		FB180C471EB10EA700FE1CF4 /* FuzzyHashable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FuzzyHashable.swift; sourceTree = "<group>"; };
 		FB180C491EB260F800FE1CF4 /* EventDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDetailViewController.swift; sourceTree = "<group>"; };
 		FB180C4D1EB261B200FE1CF4 /* EventDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventDetailView.xib; sourceTree = "<group>"; };
@@ -547,6 +549,7 @@
 				8351BDCF1E7C5D45001221AF /* Auth */,
 				8336176E1E8C2C1F009A97FF /* WeekNavigation */,
 				831444C21E7AF7AD00A5EF06 /* Schedule */,
+				FB171CC31ED37A0F00D540A4 /* Settings */,
 			);
 			name = Flows;
 			sourceTree = "<group>";
@@ -609,6 +612,14 @@
 				FB1E5FFD1EB68CFB00FFF60C /* ParticipantSurface.swift */,
 			);
 			name = Surfaces;
+			sourceTree = "<group>";
+		};
+		FB171CC31ED37A0F00D540A4 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				FB171CC41ED37A5500D540A4 /* SettingsTableViewController.swift */,
+			);
+			name = Settings;
 			sourceTree = "<group>";
 		};
 		FB2046A41E82E1C300F130C8 /* EventKit */ = {
@@ -1161,6 +1172,7 @@
 				FB166B5C1E8AC3CA00CB95EC /* Fetchable.swift in Sources */,
 				FB166B5E1E8AC6DB00CB95EC /* ModelReference.swift in Sources */,
 				833617781E8C4756009A97FF /* StoryboardLoadable.swift in Sources */,
+				FB171CC51ED37A5500D540A4 /* SettingsTableViewController.swift in Sources */,
 				FB4208661E8976B1007F4DBD /* Series.swift in Sources */,
 				FBD614541E7F3370001F4050 /* EventSurface.swift in Sources */,
 				FB934F261E7EDFA80068CDEF /* Lifecycle.swift in Sources */,
