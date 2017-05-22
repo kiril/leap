@@ -342,7 +342,7 @@ class Series: LeapModel, Fuzzy, Originating {
         }
         let eventId = generateId(for: eventStart)
         if let event = Event.by(id: eventId) {
-            if Calendar.universalGregorian.isDate(event.startDate, betweenInclusive: start, and: end) {
+            if Calendar.current.isDate(event.startDate, betweenInclusive: start, and: end) {
                 return object(event, ifHasStatus: status)
             } else {
                 return nil
@@ -350,7 +350,7 @@ class Series: LeapModel, Fuzzy, Originating {
         }
 
         if let event = template.event(onDayOf: eventStart, id: eventId),
-            Calendar.universalGregorian.isDate(event.startDate, betweenInclusive: start, and: end) &&
+            Calendar.current.isDate(event.startDate, betweenInclusive: start, and: end) &&
                 self.recurrence.recurs(on: event.startDate, for: self) {
             event.engagement = engagement
             event.update()
