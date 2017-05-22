@@ -231,15 +231,6 @@ class EventKit {
             }
         }
 
-        if existing.title.contains("Kids Overnight") {
-            print(existing.recurrence)
-            print(existing.template)
-            print(existing.startDate)
-            let end = existing.endDate
-            print(end == nil ? "No End" : String(describing: end))
-            print("Yup here we are")
-        }
-
         print("series UPDATE \(existing.type) \(ekEvent.title) \(existing.status)")
     }
 
