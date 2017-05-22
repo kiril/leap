@@ -23,19 +23,18 @@ extension EKRecurrenceRule {
         }
     }
 
-    func weekStart() -> DayOfWeek {
+    func weekStart() -> Weekday {
         switch firstDayOfTheWeek {
         case 0: // unset onthis rule, so default to Sunday
             return .sunday
         default:
-            return DayOfWeek(rawValue: firstDayOfTheWeek)! // defined to be 1-7
+            return Weekday.from(gregorian: firstDayOfTheWeek)
         }
     }
 
     func recurrenceDay(from dow: EKRecurrenceDayOfWeek) -> Int {
-        return DayOfWeek.from(int: dow.dayOfTheWeek.rawValue).toInt(week: dow.weekNumber)
+        return OrdinalWeekday(Weekday.from(gregorian: dow.dayOfTheWeek.rawValue), dow.weekNumber).encode()
     }
-
 
     func asSeries(for event: EKEvent, in calendar: EKCalendar) -> Series {
         let origin = event.getOrigin(in: calendar)
@@ -63,7 +62,7 @@ extension EKRecurrenceRule {
             weekdays.forEach { recurrence.daysOfWeek.append(recurrenceDay(from: $0)) }
 
         } else if getFrequency() == .weekly {
-            recurrence.daysOfWeek.append(DayOfWeek.from(date: date).toInt())
+            recurrence.daysOfWeek.append(Weekday.of(date).rawValue)
         }
 
         if let days = daysOfTheMonth {

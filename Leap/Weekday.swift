@@ -40,6 +40,14 @@ enum Weekday: Int {
         }
     }
 
+    func week(_ week: Int) -> OrdinalWeekday {
+        return OrdinalWeekday(self, week)
+    }
+
+    static func of(_ date: Date) -> Weekday {
+        return from(gregorian: Calendar.current.component(.weekday, from: date))
+    }
+
     static func from(gregorian: Int) -> Weekday {
         switch gregorian {
         case GregorianSunday:
@@ -63,5 +71,35 @@ enum Weekday: Int {
 
     static func name(of gregorian: Int) -> String {
         return from(gregorian: gregorian).name
+    }
+}
+
+struct OrdinalWeekday {
+    let ordinal: Int
+    let weekday: Weekday
+
+    init(_ w: Weekday, _ o: Int) {
+        ordinal = o
+        weekday = w
+    }
+
+    func encode() -> Int {
+        switch ordinal {
+        case 0:
+            return weekday.rawValue
+        case 1...Int.max:
+            return (ordinal * 1000) + weekday.rawValue
+        default:
+            return (ordinal * 1000) - weekday.rawValue
+        }
+    }
+
+    static func decode(_ i: Int) -> OrdinalWeekday {
+        switch i {
+        case 1..<8:
+            return OrdinalWeekday(Weekday.from(gregorian: i), 0)
+        default:
+            return OrdinalWeekday(Weekday.from(gregorian: abs(i % 1000)), i / 1000)
+        }
     }
 }

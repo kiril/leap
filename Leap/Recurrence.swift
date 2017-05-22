@@ -19,50 +19,6 @@ enum Frequency: String {
 }
 
 
-public enum DayOfWeek: Int {
-    case sunday    = 1
-    case monday    = 2
-    case tuesday   = 3
-    case wednesday = 4
-    case thursday  = 5
-    case friday    = 6
-    case saturday  = 7
-
-    static func from(date: Date) -> DayOfWeek {
-        let components = Calendar.current.dateComponents([Calendar.Component.weekday], from: date)
-        return DayOfWeek(rawValue: components.weekday!)!
-    }
-
-    func toInt(week: Int = 0) -> Int {
-        if week == 0 {
-            return self.rawValue
-        }
-        return week > 0 ? (week * 1000) + self.rawValue : (week * 1000) - self.rawValue
-    }
-
-    static func from(int: Int) -> DayOfWeek {
-        switch abs(int) % 1000 {
-        case 1:
-            return .sunday
-        case 2:
-            return .monday
-        case 3:
-            return .tuesday
-        case 4:
-            return .wednesday
-        case 5:
-            return .thursday
-        case 6:
-            return .friday
-        case 7:
-            return .saturday
-        default:
-            fatalError("Invalid day of week \(int)")
-        }
-    }
-}
-
-
 // NOTE: can you indicate attendence to all future?
 // Can you make it such that editing doesn't by default even touch the recurrence?
 class Recurrence: LeapModel {
@@ -71,7 +27,7 @@ class Recurrence: LeapModel {
     dynamic var count: Int = 0
     dynamic var frequencyRaw: String = Frequency.unknown.rawValue
     dynamic var interval: Int = 0
-    dynamic var weekStartRaw: Int = DayOfWeek.sunday.rawValue
+    dynamic var weekStartRaw: Int = Weekday.sunday.rawValue
 
     let daysOfWeek = List<IntWrapper>()
     let daysOfMonth = List<IntWrapper>()
@@ -80,8 +36,8 @@ class Recurrence: LeapModel {
     let monthsOfYear = List<IntWrapper>()
     let setPositions = List<IntWrapper>()
 
-    var weekStart: DayOfWeek {
-        get { return DayOfWeek(rawValue: weekStartRaw)! }
+    var weekStart: Weekday {
+        get { return Weekday.from(gregorian: weekStartRaw) }
         set { weekStartRaw = newValue.rawValue }
     }
 
@@ -231,9 +187,9 @@ class Recurrence: LeapModel {
 
     func dayOfWeekMatches(for date: Date) -> Bool {
         guard daysOfWeek.count > 0 else { return true }
-        let day = DayOfWeek.from(date: date)
+        let day = Weekday.of(date)
 
-        if daysOfWeek.contains(day.toInt()) { // 'any Tuesday' is in there, so yay
+        if daysOfWeek.contains(day) { // 'any Tuesday' is in there, so yay
             return true
         }
 
@@ -241,13 +197,13 @@ class Recurrence: LeapModel {
         let ordinal = Recurrence.calendar.weekdayOrdinal(of: date)
         let totalWeekdays = Recurrence.calendar.count(weekday: day.rawValue, inMonthOf: date)
 
-        if daysOfWeek.contains(day.toInt(week: ordinal)) { // exact positive-index match
+        if daysOfWeek.contains(day.week(ordinal)) { // exact positive-index match
             return true
         }
 
         let negativeOrdinal = Recurrence.calendar.negativeOrdinal(ordinal: ordinal, total: totalWeekdays)
 
-        if daysOfWeek.contains(day.toInt(week: negativeOrdinal)) { // exact positive-index match
+        if daysOfWeek.contains(day.week(negativeOrdinal)) { // exact positive-index match
             return true
         }
 
