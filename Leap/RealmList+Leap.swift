@@ -10,13 +10,4 @@ import Foundation
 import RealmSwift
 
 extension List where T: IntWrapper {
-    func hasEqualContents(to other: List<IntWrapper>) -> Bool {
-        guard self.count == other.count else { return false }
-        for (i, e) in self.enumerated() {
-            if e != other[i] {
-                return false
-            }
-        }
-        return true
-    }
 }
