@@ -84,6 +84,7 @@
 		FB171CC01ECF544900D540A4 /* DaySequenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB171CBF1ECF544900D540A4 /* DaySequenceTests.swift */; };
 		FB171CC21ECF8F7900D540A4 /* EventKitSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB171CC11ECF8F7900D540A4 /* EventKitSync.swift */; };
 		FB171CC51ED37A5500D540A4 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB171CC41ED37A5500D540A4 /* SettingsTableViewController.swift */; };
+		FB171CC71ED386C300D540A4 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB171CC61ED386C300D540A4 /* Settings.storyboard */; };
 		FB180C481EB10EA800FE1CF4 /* FuzzyHashable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB180C471EB10EA700FE1CF4 /* FuzzyHashable.swift */; };
 		FB180C4A1EB260F800FE1CF4 /* EventDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB180C491EB260F800FE1CF4 /* EventDetailViewController.swift */; };
 		FB180C4E1EB261B200FE1CF4 /* EventDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB180C4D1EB261B200FE1CF4 /* EventDetailView.xib */; };
@@ -277,6 +278,7 @@
 		FB171CBF1ECF544900D540A4 /* DaySequenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DaySequenceTests.swift; sourceTree = "<group>"; };
 		FB171CC11ECF8F7900D540A4 /* EventKitSync.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventKitSync.swift; sourceTree = "<group>"; };
 		FB171CC41ED37A5500D540A4 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		FB171CC61ED386C300D540A4 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		FB180C471EB10EA700FE1CF4 /* FuzzyHashable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FuzzyHashable.swift; sourceTree = "<group>"; };
 		FB180C491EB260F800FE1CF4 /* EventDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDetailViewController.swift; sourceTree = "<group>"; };
 		FB180C4D1EB261B200FE1CF4 /* EventDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventDetailView.xib; sourceTree = "<group>"; };
@@ -618,6 +620,7 @@
 			isa = PBXGroup;
 			children = (
 				FB171CC41ED37A5500D540A4 /* SettingsTableViewController.swift */,
+				FB171CC61ED386C300D540A4 /* Settings.storyboard */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -959,6 +962,7 @@
 				831444BF1E7AF4E200A5EF06 /* AuthFlow.storyboard in Resources */,
 				FB4E11A51E79ABB400687702 /* LaunchScreen.storyboard in Resources */,
 				831444C81E7B034A00A5EF06 /* EventViewCell.xib in Resources */,
+				FB171CC71ED386C300D540A4 /* Settings.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

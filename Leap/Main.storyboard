@@ -21,12 +21,12 @@
                     <connections>
                         <segue destination="iqo-e8-a0m" kind="relationship" relationship="viewControllers" id="TaJ-4c-Gan"/>
                         <segue destination="42K-by-ISk" kind="relationship" relationship="viewControllers" id="nPg-Mu-Sqp"/>
-                        <segue destination="4GZ-y9-jrV" kind="relationship" relationship="viewControllers" id="uuO-8n-vka"/>
+                        <segue destination="Qqz-rM-jdy" kind="relationship" relationship="viewControllers" id="EPz-Fq-gmP"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="p8f-pJ-Kfm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1550" y="-609"/>
+            <point key="canvasLocation" x="-1537" y="-690"/>
         </scene>
         <!--DayNavigation-->
         <scene sceneID="Fnv-4u-YEZ">
@@ -37,25 +37,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hnH-8w-svx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-597" y="-897"/>
-        </scene>
-        <!--Settings-->
-        <scene sceneID="2ff-gh-AHO">
-            <objects>
-                <viewController title="Settings" id="4GZ-y9-jrV" customClass="SettingsTableViewController" customModule="Leap" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="zIj-hq-NVs"/>
-                        <viewControllerLayoutGuide type="bottom" id="GEF-Cu-P7c"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="7j7-al-RZS" customClass="UITableView">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Settings" image="settings_icon" id="zcs-O2-dli"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="B3y-5e-Qeq" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1065" y="351"/>
         </scene>
         <!--Inbox-->
         <scene sceneID="FtZ-2U-me2">
@@ -87,6 +68,16 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yMW-8G-soQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1882" y="351"/>
+        </scene>
+        <!--Settings-->
+        <scene sceneID="N9V-Vl-EYi">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Settings" id="Qqz-rM-jdy" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Settings" image="settings_icon" id="pwB-h5-WGk"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jl8-MI-JgE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-789" y="232"/>
         </scene>
     </scenes>
     <resources>
