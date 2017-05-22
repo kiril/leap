@@ -11,24 +11,18 @@ import Foundation
 
 enum Origin: String {
     case invite
+    case personal
     case share
     case subscription
-    case personal
     case unknown
 
     func winner(vs other: Origin) -> Origin {
-        switch self {
-        case .invite:
+        if self.rawValue < other.rawValue {
             return self
-
-        default:
-            switch other {
-            case .invite:
-                return other
-
-            default:
-                return self
-            }
+        } else if other.rawValue < rawValue {
+            return other
+        } else {
+            return self
         }
     }
 }
