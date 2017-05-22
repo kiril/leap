@@ -12,18 +12,46 @@ import RealmSwift
 
 let importQueue = DispatchQueue(label: "eventkit.import", qos: .background, autoreleaseFrequency: .workItem)
 
+var _version = 1
+
 class EventKit {
     let store: EKEventStore
+    let version: Int
 
     init(store: EKEventStore) {
         self.store = store
+        version = _version
     }
 
     func firstTime() -> Bool {
         return Realm.user().objects(Event.self).isEmpty
     }
 
+    static func reset() {
+        try! Realm.user().write {
+            _version += 1
+            Realm.user().deleteAll()
+        }
+    }
+
+    static func sync() {
+        let eventStore = EKEventStore()
+        eventStore.requestAccess(to: EKEntityType.event) { (accessGranted:Bool, error:Error?) in
+            if accessGranted {
+                let importer = EventKit(store: eventStore)
+                if importer.firstTime() {
+                    importer.importAll()
+
+                } else {
+                    importer.catchUp()
+                }
+            }
+        }
+    }
+
     private func doImport(from start: Date, to end: Date, modifiedAfter: Date? = nil) {
+        guard self.version == _version else { return }
+
         store.calendars(for: EKEntityType.event).forEach { self.importEvents(in: $0, from: start, to: end, modifiedAfter: modifiedAfter) }
         store.calendars(for: EKEntityType.reminder).forEach { self.importEvents(in: $0, from: start, to: end, modifiedAfter: modifiedAfter) }
     }
@@ -79,6 +107,9 @@ class EventKit {
 
     func eventSearchCallback(_ calendar: EKCalendar, modifiedAfter: Date? = nil) -> EKEventSearchCallback {
         return { (event:EKEvent, stop:UnsafeMutablePointer<ObjCBool>) in
+            guard !stop.pointee.boolValue else { return }
+            guard _version == self.version else { stop.pointee = ObjCBool(true); return }
+
             guard modifiedAfter == nil || (event.lastModifiedDate ?? event.creationDate)! > modifiedAfter! else { return }
             self.importEK(event: event, in: calendar)
         }
@@ -86,6 +117,7 @@ class EventKit {
 
     func importEK(event ekEvent: EKEvent, in calendar: EKCalendar) {
         importQueue.async {
+            guard _version == self.version else { return }
             if let series = Series.by(id: ekEvent.cleanId) { // always keep series as series, even if arrives w/o recurrence info
                 self.importSeries(ekEvent, in: calendar, given: series)
 
