@@ -23,25 +23,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         Fabric.with([Crashlytics.self])
-        attemptCalendarSync()
+        EventKit.sync()
         setupDefaultAppearance()
 
         return true
-    }
-
-    private func attemptCalendarSync() {
-        let eventStore = EKEventStore()
-        eventStore.requestAccess(to: EKEntityType.event) { (accessGranted:Bool, error:Error?) in
-            if accessGranted {
-                let importer = EventKit(store: eventStore)
-                if importer.firstTime() {
-                    importer.importAll()
-
-                } else {
-                    importer.catchUp()
-                }
-            }
-        }
     }
 
     func application(_ app: UIApplication,

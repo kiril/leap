@@ -23,6 +23,21 @@ class EventKit {
         return Realm.user().objects(Event.self).isEmpty
     }
 
+    static func sync() {
+        let eventStore = EKEventStore()
+        eventStore.requestAccess(to: EKEntityType.event) { (accessGranted:Bool, error:Error?) in
+            if accessGranted {
+                let importer = EventKit(store: eventStore)
+                if importer.firstTime() {
+                    importer.importAll()
+
+                } else {
+                    importer.catchUp()
+                }
+            }
+        }
+    }
+
     private func doImport(from start: Date, to end: Date, modifiedAfter: Date? = nil) {
         store.calendars(for: EKEntityType.event).forEach { self.importEvents(in: $0, from: start, to: end, modifiedAfter: modifiedAfter) }
         store.calendars(for: EKEntityType.reminder).forEach { self.importEvents(in: $0, from: start, to: end, modifiedAfter: modifiedAfter) }

@@ -8,6 +8,8 @@
 
 import UIKit
 
+import RealmSwift
+
 class SettingsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
@@ -41,9 +43,15 @@ class SettingsTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell", for: indexPath)
 
         // Configure the cell...
-        cell.textLabel?.text = "Wow Settings"
+        cell.textLabel?.text = "Reset Schedule Data"
+        cell.textLabel?.textColor = UIColor.projectTint
 
         return cell
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        Realm.user().deleteAll()
+        EventKit.sync()
     }
 
     /*
