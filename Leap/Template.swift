@@ -114,7 +114,9 @@ class Template: LeapModel, Originating, Particible, Alarmable, CalendarLinkable 
             Calendar.current.component(.hour, from: start) == startHour {
             return start < end ? start : nil
         }
-        let possibility = Calendar.current.date(bySettingHour: startHour, minute: startMinute, second: 0, of: start)!
+        let comps = DateComponents(hour: 11, minute: 0)
+        let possibility = Calendar.current.nextDate(after: start, matching: comps, matchingPolicy: .nextTime)!
+        //let possibility = Calendar.current.date(bySettingHour: startHour, minute: startMinute, second: 0, of: start)!
 
         guard possibility < end && possibility >= start else {
             return nil
