@@ -50,9 +50,8 @@ class SettingsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        try! Realm.user().write {
-            Realm.user().deleteAll()
-        }
+        tableView.deselectRow(at: indexPath, animated: true)
+        EventKit.reset()
         EventKit.sync()
     }
 
